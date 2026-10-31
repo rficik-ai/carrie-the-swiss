@@ -1,0 +1,97 @@
+---
+import { type Locale, t } from '../i18n';
+import { EPISODES, INSTAGRAM } from '../data/episodes';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const s = t(locale);
+const lines = s.ep as Record<string, { line: string }>;
+const topics = s.topics as Record<string, string>;
+---
+<section class="block light episodes" id="episodes">
+  <div class="wrap">
+    <div class="sec-head split">
+      <p class="eyebrow">{s.episodes.eyebrow}</p>
+      <h2>{s.episodes.title}</h2>
+      <p class="muted">{s.episodes.intro}</p>
+    </div>
+  </div>
+  <div class="rail-wrap">
+    <ol class="rail" data-labels={JSON.stringify({ out: s.episodes.out, soon: s.episodes.soon, prod: s.episodes.production })} data-locale={locale}>
+      {EPISODES.map((e, i) => (
+        <li class:list={['slice', { open: i === 4 }]} data-date={e.date ?? ''}>
+          <a href={INSTAGRAM} target="_blank" rel="noopener" class="inner">
+            <span class="bg" style={e.image ? `background-image:url(${e.image})` : undefined}></span>
+            <span class="num">{e.n}</span>
+            <span class="vtitle" aria-hidden="true">{e.title}</span>
+            <span class="body">
+              <span class="row"><span class="tag">{topics[e.topic]}</span><span class="status"></span></span>
+              <span class="title">{e.title}</span>
+              <span class="line">{lines[e.n]?.line}</span>
+              {e.parts && <span class="parts">{s.episodes.parts}: {e.parts.join(' · ')}</span>}
+              <span class="watch">{s.episodes.watch} →</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .episodes { overflow: hidden; background:
+    repeating-linear-gradient(90deg, transparent 0 calc(100% / 12 - 1px), rgba(138,100,36,.08) calc(100% / 12 - 1px) calc(100% / 12)), var(--paper); }
+  .rail-wrap { padding-left: var(--gutter); padding-right: var(--gutter-r); max-width: calc(var(--max) + 400px); margin: 0 auto; }
+  .rail { list-style: none; margin: 0; padding: 0; display: flex; gap: 10px; }
+
+  .slice { position: relative; border-radius: 14px; overflow: hidden; background: var(--ink); color: var(--ivory); }
+  .inner { position: absolute; inset: 0; display: block; text-decoration: none; }
+  .bg { position: absolute; inset: 0; background: radial-gradient(120% 90% at 60% 30%, #3a2f1c 0%, #15120d 70%); background-size: cover; background-position: center; transition: transform .8s ease; }
+  .slice::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(13,12,10,.92) 0%, rgba(13,12,10,.15) 55%, rgba(13,12,10,.35) 100%); pointer-events: none; }
+  .num { position: absolute; z-index: 2; top: 18px; left: 18px; font-family: var(--f-display); font-size: 34px; font-weight: 600; color: var(--gold-hi); font-variant-numeric: lining-nums; }
+  .vtitle { position: absolute; z-index: 2; left: 50%; bottom: 22px; writing-mode: vertical-rl; transform: translateX(-50%) rotate(180deg); font-family: var(--f-display); font-size: 21px; white-space: nowrap; transition: opacity .3s; }
+  .body { position: absolute; z-index: 2; left: 22px; right: 22px; bottom: 22px; display: grid; gap: 8px; opacity: 0; transform: translateY(10px); transition: opacity .35s ease .1s, transform .35s ease .1s; }
+  .row { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+  .tag { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+  .status { font-size: 11px; font-weight: 700; letter-spacing: .06em; border: 1px solid rgba(234,211,154,.4); border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
+  .status.out { background: var(--gold); color: #1a1408; border-color: var(--gold); }
+  .status:empty { display: none; }
+  .title { font-family: var(--f-display); font-size: clamp(28px, 2.6vw, 36px); line-height: 1.05; font-weight: 600; }
+  .line { font-size: 15px; color: rgba(244,238,226,.82); }
+  .parts { font-size: 13px; color: var(--muted-dark); }
+  .watch { font-size: 14px; font-weight: 600; margin-top: 4px; color: var(--gold-hi); }
+
+  /* Desktop: hover accordion */
+  @media (min-width: 900px) and (hover: hover) {
+    .slice { flex: 1 1 0; height: min(560px, 68vh); transition: flex-grow .6s cubic-bezier(.2,.7,.2,1); }
+    .slice.open, .slice:hover, .slice:focus-within { flex-grow: 5.5; }
+    .rail:hover .slice.open:not(:hover) { flex-grow: 1; }
+    .slice.open .body, .slice:hover .body, .slice:focus-within .body { opacity: 1; transform: none; }
+    .slice.open .vtitle, .slice:hover .vtitle, .slice:focus-within .vtitle { opacity: 0; }
+    .rail:hover .slice.open:not(:hover) .body { opacity: 0; }
+    .rail:hover .slice.open:not(:hover) .vtitle { opacity: 1; }
+    .slice:hover .bg { transform: scale(1.04); }
+  }
+  /* Phone/tablet: swipeable reel cards */
+  @media (max-width: 899px), (hover: none) {
+    .rail { overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: none; }
+    .rail::-webkit-scrollbar { display: none; }
+    .slice { flex: 0 0 min(78vw, 340px); aspect-ratio: 9 / 16; max-height: 72vh; scroll-snap-align: start; }
+    .body { opacity: 1; transform: none; }
+    .vtitle { display: none; }
+  }
+</style>
+
+<script>
+  const rail = document.querySelector<HTMLElement>('.rail')!;
+  const L = JSON.parse(rail.dataset.labels!);
+  const loc = rail.dataset.locale!;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  rail.querySelectorAll<HTMLElement>('.slice').forEach((li) => {
+    const st = li.querySelector<HTMLElement>('.status')!;
+    const d = li.dataset.date;
+    if (!d) { st.textContent = L.prod; return; }
+    const date = new Date(d + 'T00:00:00');
+    if (date <= today) { st.textContent = L.out; st.classList.add('out'); }
+    else st.textContent = `${L.soon} · ${date.toLocaleDateString(loc, { day: 'numeric', month: 'short' })}`;
+  });
+</script>

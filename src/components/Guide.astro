@@ -1,0 +1,91 @@
+---
+import { type Locale, t } from '../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const g = t(locale).guide;
+const articles = [
+  { title: g.a1_title, lead: g.a1_lead, ps: [g.a1_p1, g.a1_p2], src: 'FCI · IEWG · ACVS · OFA · BVA', table: true },
+  { title: g.a2_title, lead: g.a2_lead, ps: [g.a2_p1, g.a2_p2, g.a2_p3], src: 'FCI International Breeding Rules, Art. 16 · SKJ' },
+  { title: g.a3_title, lead: g.a3_lead, ps: [g.a3_p1, g.a3_p2, g.a3_p3], src: 'SKŠSP breeding & bonitation regulations · FCI Standard No. 58' },
+  { title: g.a4_title, lead: g.a4_lead, ps: [g.a4_p1, g.a4_p2, g.a4_p3], src: 'FCI International Breeding Rules & Strategies · GSSH · SKŠSP · Leroy et al. 2015' },
+];
+---
+<section class="block light guide" id="guide">
+  <div class="wrap grid">
+    <div class="dossier" aria-hidden="true">
+      <figure class="doc d1"><img src="/assets/img/doc-xray.jpg" alt="" loading="lazy" /><figcaption>Fig. 1</figcaption></figure>
+      <figure class="doc d2"><img src="/assets/img/doc-pedigree.jpg" alt="" loading="lazy" /><figcaption>Fig. 2</figcaption></figure>
+      <figure class="doc d3"><img src="/assets/img/doc-critique.jpg" alt="" loading="lazy" /><figcaption>Fig. 3</figcaption></figure>
+    </div>
+    <div class="text">
+      <p class="eyebrow">{g.eyebrow}</p>
+      <h2>{g.title}</h2>
+      <p class="muted intro">{g.intro}</p>
+
+      <div class="table" role="region" aria-label={g.a1_title} tabindex="0">
+        <table>
+          <thead><tr><th>{g.table_code}</th><th>{g.table_joint}</th><th>{g.table_scale}</th><th>{g.table_best}</th></tr></thead>
+          <tbody>
+            <tr><td>HD</td><td>{g.hip}</td><td>A – E</td><td>A</td></tr>
+            <tr><td>ED</td><td>{g.elbow}</td><td>0 – 3</td><td>0</td></tr>
+            <tr><td>OCD</td><td>{g.shoulder}</td><td>{g.present_free}</td><td>{g.free}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="articles">
+        {articles.map((a, i) => (
+          <details name="guide" open={i === 0}>
+            <summary>
+              <span class="no">{String(i + 1).padStart(2, '0')}</span>
+              <span class="st"><span class="at">{a.title}</span><span class="al muted">{a.lead}</span></span>
+              <span class="pm" aria-hidden="true"></span>
+            </summary>
+            <div class="ab">
+              {a.ps.map((p) => <p>{p}</p>)}
+              <p class="src">{g.sources}: {a.src}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .guide { background: var(--ivory); border-top: 1px solid var(--paper-line); }
+  .grid { display: grid; gap: clamp(40px, 6vw, 90px); }
+  @media (min-width: 1000px) { .grid { grid-template-columns: 1fr 1fr; align-items: start; } .dossier { position: sticky; top: 110px; } }
+
+  .dossier { position: relative; aspect-ratio: 1 / 1; max-width: 620px; width: 100%; }
+  .doc { position: absolute; margin: 0; background: #fff; padding: 10px 10px 30px; box-shadow: 0 30px 50px -25px rgba(40,30,10,.45), 0 0 0 1px rgba(138,100,36,.18); }
+  .doc img { width: 100%; height: 100%; object-fit: cover; background: #e9e1d0; }
+  .doc figcaption { position: absolute; left: 12px; bottom: 7px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-light); }
+  .d1 { left: 0; top: 4%; width: 46%; height: 62%; transform: rotate(-3deg); }
+  .d2 { left: 30%; top: 0; width: 46%; height: 70%; transform: rotate(1.5deg); z-index: 2; }
+  .d3 { right: 0; bottom: 0; width: 42%; height: 52%; transform: rotate(4deg); z-index: 3; }
+
+  .text { display: grid; gap: 20px; min-width: 0; }
+  .text h2 { font-size: clamp(40px, 5.4vw, 72px); }
+  .intro { max-width: 36em; }
+  .table { overflow-x: auto; margin-top: 10px; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 15px; }
+  th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--paper-line); }
+  th { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted-light); font-weight: 700; }
+  td:first-child { font-weight: 700; color: var(--gold-deep); }
+
+  .articles { margin-top: 18px; border-top: 1px solid #1c1914; }
+  details { border-bottom: 1px solid var(--paper-line); }
+  summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: start; padding: 22px 0; }
+  summary::-webkit-details-marker { display: none; }
+  .no { font-family: var(--f-display); font-size: 22px; color: var(--gold-deep); line-height: 1.2; }
+  .st { display: grid; gap: 4px; }
+  .at { font-family: var(--f-display); font-size: clamp(24px, 2.4vw, 30px); font-weight: 600; line-height: 1.15; }
+  .al { font-size: 15px; }
+  .pm { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--paper-line); position: relative; transition: transform .3s; }
+  .pm::before, .pm::after { content: ''; position: absolute; left: 50%; top: 50%; width: 12px; height: 1.5px; background: #1c1914; transform: translate(-50%, -50%); }
+  .pm::after { transform: translate(-50%, -50%) rotate(90deg); }
+  details[open] .pm { transform: rotate(45deg); }
+  .ab { display: grid; gap: 14px; padding: 0 0 26px 40px; font-size: 17px; max-width: 62ch; }
+  .src { font-size: 13px; color: var(--muted-light); }
+</style>

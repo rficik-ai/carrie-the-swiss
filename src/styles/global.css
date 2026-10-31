@@ -1,0 +1,84 @@
+/* Carrie the Swiss — "the dossier": ink, gold, ivory. Film-dark hero, ivory paper sections. */
+:root {
+  --ink: #0d0c0a;
+  --ink-2: #16140f;
+  --ink-line: #2c2820;
+  --ivory: #f4eee2;
+  --paper: #fbf8f1;
+  --paper-line: #ddd3bf;
+  --muted-dark: #b3a88f;
+  --muted-light: #615848;
+  --gold: #c9a35b;
+  --gold-hi: #ead39a;
+  --gold-deep: #8a6424;
+  --rust: #b4612a;
+  --grad-gold: linear-gradient(180deg, #f3dfa6 0%, #d7b66c 45%, #a57a30 100%);
+
+  --f-mark: 'Cinzel', 'Trajan Pro', Georgia, serif;
+  --f-display: 'Cormorant Garamond', 'Cormorant', Georgia, 'Times New Roman', serif;
+  --f-body: 'Manrope Variable', 'Manrope', 'Helvetica Neue', Arial, sans-serif;
+
+  --gutter: max(20px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(20px, env(safe-area-inset-right, 0px));
+  --max: 1240px;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--ivory);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img, video { max-width: 100%; display: block; }
+a { color: inherit; }
+h1, h2, h3 { margin: 0; font-family: var(--f-display); font-weight: 600; line-height: 1.04; text-wrap: balance; letter-spacing: -0.01em; }
+p { margin: 0; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding-left: var(--gutter); padding-right: var(--gutter-r); }
+.eyebrow {
+  font-family: var(--f-body); font-size: 12px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
+}
+.light .eyebrow { color: var(--gold-deep); }
+
+/* Inline text link with arrow: the site's main CTA garment */
+.link-cta {
+  display: inline-flex; align-items: center; gap: 0.6em;
+  font-weight: 600; font-size: 15px; letter-spacing: 0.03em; text-decoration: none;
+  padding-bottom: 4px; border-bottom: 1px solid currentColor;
+  transition: gap 0.25s ease, color 0.2s;
+}
+.link-cta:hover { gap: 0.9em; color: var(--gold-hi); }
+.light .link-cta:hover { color: var(--gold-deep); }
+
+.pill-cta {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.6em;
+  min-height: 52px; padding: 0 26px; border-radius: 999px;
+  background: var(--grad-gold); color: #1a1408;
+  font-weight: 700; font-size: 15px; letter-spacing: 0.02em; text-decoration: none;
+  box-shadow: 0 10px 30px -12px rgba(201, 163, 91, 0.6);
+}
+
+/* Light (paper) sections */
+.light { background: var(--paper); color: #1c1914; color-scheme: light; }
+.light .muted { color: var(--muted-light); }
+.muted { color: var(--muted-dark); }
+
+section.block { padding-block: clamp(72px, 10vw, 140px); }
+.sec-head { display: grid; gap: 18px; margin-bottom: clamp(36px, 5vw, 64px); }
+.sec-head h2 { font-size: clamp(40px, 6.4vw, 84px); }
+.sec-head p { max-width: 38em; font-size: 17px; }
+@media (min-width: 900px) {
+  .sec-head.split { grid-template-columns: 1.2fr 0.8fr; align-items: end; column-gap: 48px; }
+  .sec-head.split .eyebrow { grid-column: 1 / -1; }
+}

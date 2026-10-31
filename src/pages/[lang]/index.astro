@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Hero from '../../components/Hero.astro';
+import Episodes from '../../components/Episodes.astro';
+import Guide from '../../components/Guide.astro';
+import RealCarrie from '../../components/RealCarrie.astro';
+import Closing from '../../components/Closing.astro';
+import { availableLocales, t, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return availableLocales().map((lang) => ({ params: { lang } }));
+}
+const locale = Astro.params.lang as Locale;
+const s = t(locale);
+---
+<Base locale={locale} title={s.meta.title} description={s.meta.description}>
+  <Header locale={locale} />
+  <main>
+    <Hero locale={locale} />
+    <Episodes locale={locale} />
+    <Guide locale={locale} />
+    <RealCarrie locale={locale} />
+    <Closing locale={locale} />
+  </main>
+</Base>

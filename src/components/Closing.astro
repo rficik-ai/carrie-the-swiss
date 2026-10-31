@@ -1,0 +1,77 @@
+---
+import { type Locale, t } from '../i18n';
+import { INSTAGRAM } from '../data/episodes';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const s = t(locale);
+---
+<section class="light quote-sec">
+  <div class="diptych">
+    <div class="pic"><img src="/assets/img/carrie-porch.jpg" alt="" loading="lazy" /></div>
+    <div class="q wrap">
+      <span class="rule" aria-hidden="true"></span>
+      <blockquote>{s.quote.text}</blockquote>
+      <p class="muted why">{s.quote.why}</p>
+    </div>
+  </div>
+</section>
+
+<section class="shop" id="shop">
+  <img class="leather" src="/assets/img/shop-leather.jpg" alt="" loading="lazy" />
+  <div class="shade" aria-hidden="true"></div>
+  <div class="wrap inner">
+    <p class="eyebrow">{s.shop.eyebrow}</p>
+    <h2>{s.shop.title}</h2>
+    <p class="txt">{s.shop.text}</p>
+    <a class="frame-cta" href={INSTAGRAM} target="_blank" rel="noopener">{s.shop.cta}</a>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap row">
+    <div class="brand">
+      <span class="w"><b>CARRIE</b> / THE SWISS</span>
+      <p class="muted">{s.footer.contact}</p>
+      <p class="muted small">{s.footer.disclaimer}</p>
+    </div>
+    <div class="links">
+      <a href="#episodes">{s.nav.episodes}</a>
+      <a href="#guide">{s.nav.guide}</a>
+      <a href="#carrie">{s.nav.carrie}</a>
+      <a href={INSTAGRAM} target="_blank" rel="noopener" class="ig">@carrietheswiss</a>
+    </div>
+  </div>
+  <div class="wrap legal"><span>© {new Date().getFullYear()} Carrie the Swiss</span></div>
+</footer>
+
+<style>
+  .quote-sec { background: var(--paper); }
+  .diptych { display: grid; }
+  @media (min-width: 900px) { .diptych { grid-template-columns: 1fr 1fr; min-height: 76vh; } }
+  .pic { position: relative; min-height: 56vh; background: #2a2418; }
+  .pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .q { display: grid; align-content: center; gap: 26px; padding-block: clamp(64px, 9vw, 120px); max-width: 640px; }
+  .rule { width: 64px; height: 1px; background: var(--gold); }
+  blockquote { margin: 0; font-family: var(--f-display); font-style: italic; font-weight: 600; font-size: clamp(32px, 3.8vw, 52px); line-height: 1.12; color: #1c1914; }
+  .why { font-size: 17px; }
+
+  .shop { position: relative; overflow: hidden; background: #24170e; min-height: 78vh; display: grid; place-items: center; text-align: center; }
+  .leather { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .shop .shade { position: absolute; inset: 0; background: radial-gradient(60% 60% at 50% 45%, rgba(13,12,10,.35), rgba(13,12,10,.82)); }
+  .shop .inner { position: relative; display: grid; justify-items: center; gap: 20px; padding-block: 120px; }
+  .shop h2 { font-size: clamp(52px, 8vw, 112px); color: var(--ivory); }
+  .txt { max-width: 34em; color: rgba(244,238,226,.82); }
+  .frame-cta { margin-top: 8px; display: inline-flex; align-items: center; min-height: 52px; padding: 0 28px; border: 1px solid var(--gold-hi); color: var(--gold-hi); text-decoration: none; font-weight: 600; letter-spacing: .04em; transition: background .25s, color .25s; }
+  .frame-cta:hover { background: var(--gold-hi); color: #1a1408; }
+
+  .foot { background: var(--ink); border-top: 1px solid var(--ink-line); padding-top: 64px; padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)); }
+  .row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 36px; }
+  .brand { display: grid; gap: 12px; max-width: 34em; }
+  .w { font-family: var(--f-mark); letter-spacing: .2em; color: var(--gold); font-size: 14px; }
+  .w b { font-size: 20px; }
+  .small { font-size: 13px; }
+  .links { display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start; font-size: 15px; }
+  .links a { text-decoration: none; color: var(--muted-dark); }
+  .links a:hover, .ig { color: var(--gold-hi) !important; }
+  .legal { margin-top: 48px; font-size: 12px; color: #6f6754; }
+</style>

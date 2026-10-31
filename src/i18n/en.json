@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "title": "Carrie the Swiss · Read the papers before you buy the puppy",
+    "description": "An animated series hosted by Carrie, a real Greater Swiss Mountain Dog from Slovakia. Pedigrees, health tests, dog shows and responsible breeding, explained with checked facts."
+  },
+  "nav": {
+    "episodes": "Episodes",
+    "guide": "Field guide",
+    "carrie": "Carrie",
+    "shop": "Shop",
+    "language": "Language"
+  },
+  "hero": {
+    "eyebrow": "An educational series from Slovakia",
+    "ch1_title": "Hi, I'm Carrie.",
+    "ch1_text": "A Greater Swiss Mountain Dog, a show dog, and the host of a series about what people should know before they buy a puppy.",
+    "ch2_title": "Everyone says their puppy has papers.",
+    "ch2_text": "Let me show you what's on them. Pedigrees, X-ray results, show grades and breed evaluations, one short episode at a time.",
+    "ch3_title": "I read the papers so you don't have to.",
+    "ch3_text": "Facts checked against the FCI and breed club rules. No drama, a few jokes.",
+    "cta": "Watch my episodes",
+    "scroll": "Scroll"
+  },
+  "episodes": {
+    "eyebrow": "Season one",
+    "title": "Twelve episodes. One honest dog.",
+    "intro": "Watch them in order: each one ends with a teaser for the next. New reels every Monday, Wednesday and Friday.",
+    "watch": "Watch on Instagram",
+    "out": "Out now",
+    "soon": "Coming",
+    "production": "In production",
+    "parts": "3 parts"
+  },
+  "topics": {
+    "intro": "Intro",
+    "pedigrees": "Pedigrees",
+    "health": "Health",
+    "shows": "Dog shows",
+    "history": "History",
+    "genetics": "Genetics",
+    "breeding": "Breeding",
+    "buying": "Puppy buying",
+    "ownership": "Ownership"
+  },
+  "ep": {
+    "01": { "line": "Who I am, and why a dog is explaining paperwork." },
+    "02": { "line": "It's on my pedigree. But the FCI doesn't issue pedigrees. Twist." },
+    "03": { "line": "Same paper, two very different starts in life." },
+    "04": { "line": "I was too nervous to open my X-ray results. So let's crack the code together." },
+    "05": { "line": "Three judges, three days. What were they actually looking at?" },
+    "06": { "line": "1908, a dog called Bello, and a judge who looked closely." },
+    "07": { "line": "One of my three colours is actually missing." },
+    "08": { "line": "Planning puppies? Step one isn't finding a boyfriend." },
+    "09": { "line": "Where the money goes. The mom, one litter, my whole life." },
+    "10": { "line": "The questions that tell you the most about a breeder." },
+    "11": { "line": "Once in my life, a committee decided if I could ever have puppies. No pressure." },
+    "12": { "line": "Is a Swissy the right dog for you? The honest answer." }
+  },
+  "guide": {
+    "eyebrow": "What didn't fit in the video",
+    "title": "What my papers actually mean.",
+    "intro": "The longer version of each topic, with sources. Rules differ by country and breed club, so always ask yours.",
+    "table_code": "Code",
+    "table_joint": "Joint",
+    "table_scale": "Scale",
+    "table_best": "Best",
+    "hip": "Hip",
+    "elbow": "Elbow",
+    "shoulder": "Shoulder (mostly)",
+    "present_free": "present / free",
+    "free": "free",
+    "a1_title": "Health scores, decoded",
+    "a1_lead": "HD-A, ED-0, OCD-free. What the letters next to a puppy's parents mean.",
+    "a1_p1": "These joint problems are partly inherited, which is why good breeders X-ray both parents. Great scores lower the risk; they don't erase it. Fast growth and extra weight still count.",
+    "a1_p2": "A to E is the FCI scale used in Europe. In the US the OFA grades hips from Excellent to Severe, and in the UK the BVA/KC scheme gives a hip score. Ask which scale the papers use.",
+    "a2_title": "A pedigree is not the whole story",
+    "a2_lead": "It proves who a puppy comes from, not how it was raised.",
+    "a2_p1": "The FCI says it itself: a pedigree certifies parentage, not quality. A sunny living room with a mom you can meet, or a garage where the mom is \"not available\": both puppies can get the same paper.",
+    "a2_p2": "Check instead: both parents' health results on paper, the mom at the breeder's home with her puppies, and a breeder who asks you questions.",
+    "a2_p3": "The FCI doesn't issue pedigrees. Your national kennel club does. In Slovakia that's the SKJ, from the Slovak studbook (SPKP).",
+    "a3_title": "What a breed evaluation is",
+    "a3_lead": "Once in a dog's life, a committee decides if it may have puppies.",
+    "a3_p1": "To get in (Slovakia): X-rays of hips (A to C), elbows (0 to 1) and shoulders (clear), a CAC from two dog shows, and at least 15 months of age (18 for males).",
+    "a3_p2": "Character: seven tasks worth 2, 1 or 0 points each, from walking on the lead and a stranger taking the leash to wobbly ground, loud music and a distant bang. 11 points or more is excellent.",
+    "a3_p3": "Body: measurements against the standard (females 60 to 68 cm at the withers), bite and teeth, eye colour, build and temperament. When a breeder says a dog passed, ask to see the card.",
+    "a4_title": "How a responsible litter is planned",
+    "a4_lead": "Step one isn't finding a boyfriend.",
+    "a4_p1": "The mom is old enough, healthy and approved for breeding. The dad is not the closest one but the best match: healthy, good-natured and strong where she is weaker.",
+    "a4_p2": "Breeders check how related the pair is (the inbreeding coefficient, COI). The FCI recommends that no dog should have more offspring than 5% of the puppies registered in the breed over five years.",
+    "a4_p3": "Progesterone tests find the fertile days, and pregnancy takes about 63 days. Good breeders often have families waiting, and take a dog back at any age.",
+    "sources": "Sources",
+    "read": "Read"
+  },
+  "real": {
+    "eyebrow": "Behind the animation",
+    "title": "Yes, I'm real.",
+    "photo_caption": "Me, in real life.",
+    "anim_caption": "Me, in the videos. Same forehead, better lighting.",
+    "drag": "Drag to compare",
+    "standard": "FCI standard No.",
+    "height": "Height at withers",
+    "hips": "Hips",
+    "elbows": "Elbows",
+    "character": "Character test",
+    "show": "Show grade",
+    "show_value": "Excellent · BOB",
+    "approved": "Approved for breeding",
+    "text": "A Greater Swiss Mountain Dog living in Slovakia. Three show days, three judges: excellent and first every day, Best of Breed on day one. Hips, elbows, shoulders, knees and eyes all clear."
+  },
+  "quote": {
+    "text": "Pedigree says who. X-rays say how healthy. The judge says how close to the blueprint. A good breeder shows you all three.",
+    "why": "We make these videos for free, so more people know what the papers mean before they bring a puppy home."
+  },
+  "shop": {
+    "eyebrow": "Coming later",
+    "title": "Made for big dogs.",
+    "text": "Collars, leads, engraved tags and apparel. Follow on Instagram to hear first when the shop opens.",
+    "cta": "Follow @carrietheswiss"
+  },
+  "footer": {
+    "contact": "Questions about the breed, dog shows or an episode? Send a message on Instagram.",
+    "disclaimer": "Educational content only. Ask your vet and your breed club about your own dog."
+  }
+}

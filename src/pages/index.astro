@@ -1,0 +1,29 @@
+---
+import { availableLocales } from '../i18n';
+const locales = availableLocales();
+const site = Astro.site!.toString().replace(/\/$/, '');
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Carrie the Swiss</title>
+    <link rel="canonical" href={`${site}/en/`} />
+    {locales.map((l) => <link rel="alternate" hreflang={l} href={`${site}/${l}/`} />)}
+    <link rel="alternate" hreflang="x-default" href={`${site}/`} />
+    <meta name="robots" content="noindex" />
+    <script is:inline define:vars={{ locales }}>
+      var pick = 'en';
+      var langs = navigator.languages || [navigator.language || 'en'];
+      for (var i = 0; i < langs.length; i++) {
+        var c = (langs[i] || '').slice(0, 2).toLowerCase();
+        if (locales.indexOf(c) !== -1) { pick = c; break; }
+      }
+      location.replace('/' + pick + '/');
+    </script>
+    <noscript><meta http-equiv="refresh" content="0; url=/en/" /></noscript>
+    <style>body{background:#0d0c0a;margin:0}</style>
+  </head>
+  <body></body>
+</html>
