@@ -19,9 +19,6 @@ const BOOK_TOP = 106, BOOK_BOTTOM = 878;
     <div class="sfill" aria-hidden="true"></div>
     <div class="f1920">
       <img class="sbg" src="/assets/img/shelf-scene.jpg" width="1920" height="1080" alt="" decoding="async" />
-      <span class="dim" aria-hidden="true"></span>
-      <span class="lip" aria-hidden="true"></span>
-      <span class="edge" aria-hidden="true"></span>
       <p class="wall"><span class="weye">{s.episodes.eyebrow}</span><span class="wpull">{pull}</span></p>
       {EPISODES.map((e, i) => {
         const x0 = EDGES[i], w = EDGES[i + 1] - EDGES[i];
@@ -243,7 +240,7 @@ const BOOK_TOP = 106, BOOK_BOTTOM = 878;
     .weye { font: 700 16px var(--f-body); letter-spacing: .28em; text-transform: uppercase; color: #d9b46a; }
     .wpull { font: 600 italic 32px var(--f-display); color: #f6e7c4; text-shadow: 0 2px 8px rgba(0,0,0,.7); }
     .sbook { all: unset; position: absolute; cursor: pointer; }
-    .slot { position: absolute; inset: 0; background-image: url(/assets/img/shelf-empty.jpg); background-size: 1920px 1080px; box-shadow: inset 0 0 22px rgba(20,10,3,.55); }
+    .slot { position: absolute; inset: 0; background-image: url(/assets/img/shelf-empty.jpg); background-size: 1920px 1080px; box-shadow: inset 0 18px 18px -12px rgba(20,10,3,.6); }
     .dim { position: absolute; left: 116px; top: 96px; width: 1648px; height: 786px; border-radius: 10px; pointer-events: none;
       box-shadow: 0 0 120px 1600px rgba(16,9,3,.5); opacity: 0; transition: opacity 1.2s ease .35s; }
     .lip { position: absolute; left: 0; right: 0; top: 879px; height: 4px; pointer-events: none; background: linear-gradient(90deg, transparent, rgba(255,214,150,.55) 12%, rgba(255,226,170,.75) 50%, rgba(255,214,150,.55) 88%, transparent);
@@ -253,10 +250,10 @@ const BOOK_TOP = 106, BOOK_BOTTOM = 878;
     .slice::after { content: ''; position: absolute; inset: 0; border-radius: 4px; pointer-events: none; opacity: 0; transition: opacity 1.2s ease .35s;
       box-shadow: inset 2px 0 0 rgba(255,228,175,.28), inset -3px 0 0 rgba(0,0,0,.5), inset 0 2px 0 rgba(255,228,175,.25);
       background: linear-gradient(90deg, rgba(0,0,0,.28), rgba(0,0,0,0) 10%, rgba(255,235,190,.07) 40%, rgba(0,0,0,0) 70%, rgba(0,0,0,.3)); }
-    .scene.live .slice::after { opacity: 1; }
+    .scene.live .slice::after { opacity: 0; }
     .slice { position: absolute; inset: 0; background-image: url(/assets/img/shelf-scene.jpg); background-size: 1920px 1080px; border-radius: 4px;
       transition: transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .45s, filter .45s; }
-    .sbook:hover .slice, .sbook.hov .slice, .sbook:focus-visible .slice { transform: translateY(-26px); box-shadow: 0 34px 40px -18px rgba(0,0,0,.75), 0 0 0 1px rgba(255,214,140,.5), 0 0 34px rgba(255,200,110,.35); filter: brightness(1.08) saturate(1.05); }
+    .sbook:hover .slice, .sbook.hov .slice, .sbook:focus-visible .slice { transform: translateY(-26px); box-shadow: 0 28px 30px -16px rgba(0,0,0,.7); }
     .sbook:focus-visible { outline: none; }
     .snum { position: absolute; left: 14px; right: 14px; top: 13px; height: 58px; display: grid; place-items: center; font: 600 36px var(--f-display); color: #f2d48e; font-variant-numeric: lining-nums;
       text-shadow: 0 1px 0 rgba(0,0,0,.7), 0 0 12px rgba(255,200,110,.35); opacity: 0; transform: scale(.9); transition: opacity .7s ease, transform .7s ease; }
