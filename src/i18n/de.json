@@ -31,7 +31,8 @@
     "production": "In Produktion",
     "parts": "3 Teile",
     "play": "Folge abspielen",
-    "close": "Schließen"
+    "close": "Schließen",
+    "pull": "Zieh ein Buch heraus"
   },
   "topics": {
     "intro": "Intro",

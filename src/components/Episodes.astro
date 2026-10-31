@@ -6,8 +6,10 @@ const { locale } = Astro.props;
 const s = t(locale);
 const lines = s.ep as Record<string, { line: string }>;
 const topics = s.topics as Record<string, string>;
-const play = (s.episodes as any).play ?? 'Play episode';
-const close = (s.episodes as any).close ?? 'Close';
+const E = s.episodes as Record<string, string>;
+const play = E.play ?? 'Play episode';
+const close = E.close ?? 'Close';
+const pull = E.pull ?? 'Pull out a book';
 ---
 <section class="block light episodes" id="episodes">
   <div class="wrap">
@@ -17,28 +19,39 @@ const close = (s.episodes as any).close ?? 'Close';
       <p class="muted">{s.episodes.intro}</p>
     </div>
   </div>
-  <div class="rail-wrap">
-    <ol class="rail" data-labels={JSON.stringify({ out: s.episodes.out, soon: s.episodes.soon, prod: s.episodes.production })} data-locale={locale}>
-      {EPISODES.map((e, i) => (
-        <li class:list={['slice', { open: i === 0 }]} data-date={e.date ?? ''}>
-          <a href={e.yt ? `https://www.youtube.com/shorts/${e.yt[0]}` : INSTAGRAM} target="_blank" rel="noopener" class="inner" data-yt={e.yt ? e.yt.join(',') : undefined} data-title={e.title}>
-            <span class="bg" style={e.image ? `background-image:url(${e.image})` : undefined}></span>
-            {e.image && <video class="clip" muted loop playsinline preload="none" aria-hidden="true" data-src={e.image.replace('.jpg', '.mp4')}></video>}
-            <span class="pano" aria-hidden="true"></span>
-            {e.yt && <span class="playbtn" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span>}
-            <span class="num">{e.n}</span>
-            <span class="vtitle" aria-hidden="true">{e.title}</span>
-            <span class="body">
+  <div class="shelf-wrap">
+    <p class="hint">{pull} <span aria-hidden="true">↓</span></p>
+    <ol class="shelf" data-labels={JSON.stringify({ out: s.episodes.out, soon: s.episodes.soon, prod: s.episodes.production })} data-locale={locale}>
+      {EPISODES.map((e) => (
+        <li class="book" data-date={e.date ?? ''} data-n={e.n}>
+          <button type="button" class="spine" aria-expanded="false" aria-label={`${e.n} · ${e.title}`}>
+            <span class="art" aria-hidden="true"></span>
+            <span class="cap"><span class="num">{e.n}</span></span>
+            <span class="plate"><span class="stitle">{e.title}</span><span class="dot"></span></span>
+          </button>
+          <div class="pages">
+            <a href={e.yt ? `https://www.youtube.com/shorts/${e.yt[0]}` : INSTAGRAM} target="_blank" rel="noopener" class="page cover" data-yt={e.yt ? e.yt.join(',') : undefined} data-title={e.title} aria-label={e.yt ? `${play}: ${e.title}` : s.episodes.watch}>
+              <span class="bg" style={e.image ? `background-image:url(${e.image})` : undefined}></span>
+              {e.image && <video class="clip" muted loop playsinline preload="none" aria-hidden="true" data-src={e.image.replace('.jpg', '.mp4')}></video>}
+              {e.yt && <span class="playbtn" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span>}
+            </a>
+            <div class="page story">
+              <button type="button" class="shut" aria-label={close}>✕</button>
+              <span class="bign" aria-hidden="true">{e.n}</span>
               <span class="row"><span class="tag">{topics[e.topic]}</span><span class="status"></span></span>
-              <span class="title">{e.title}</span>
-              <span class="line">{lines[e.n]?.line}</span>
-              {e.parts && <span class="parts">{s.episodes.parts}: {e.parts.join(' · ')}</span>}
-              <span class="watch">{e.yt ? play : `${s.episodes.watch} →`}</span>
-            </span>
-          </a>
+              <h3 class="title">{e.title}</h3>
+              <span class="rule" aria-hidden="true"></span>
+              <p class="line">{lines[e.n]?.line}</p>
+              {e.parts && <p class="parts">{s.episodes.parts}: {e.parts.join(' · ')}</p>}
+              {e.yt
+                ? <a class="pill-cta go" href={`https://www.youtube.com/shorts/${e.yt[0]}`} data-yt={e.yt.join(',')} data-title={e.title}>{play} <span aria-hidden="true">▸</span></a>
+                : <a class="go link" href={INSTAGRAM} target="_blank" rel="noopener">{s.episodes.watch} →</a>}
+            </div>
+          </div>
         </li>
       ))}
     </ol>
+    <div class="plank" aria-hidden="true"></div>
   </div>
   <dialog class="player" aria-label={play}>
     <div class="pbox">
@@ -50,41 +63,67 @@ const close = (s.episodes as any).close ?? 'Close';
 </section>
 
 <style>
-  .episodes { overflow: hidden; background:
-    repeating-linear-gradient(90deg, transparent 0 calc(100% / 12 - 1px), rgba(138,100,36,.08) calc(100% / 12 - 1px) calc(100% / 12)), var(--paper); }
-  .rail-wrap { padding-left: var(--gutter); padding-right: var(--gutter-r); max-width: calc(var(--max) + 400px); margin: 0 auto; }
-  .rail { list-style: none; margin: 0; padding: 0; display: flex; gap: 10px; }
+  .episodes { overflow: hidden; }
+  .shelf-wrap { position: relative; padding-left: var(--gutter); padding-right: var(--gutter-r); max-width: calc(var(--max) + 400px); margin: 0 auto; }
+  .hint { margin: 0 0 14px; font: 700 12px var(--f-body); letter-spacing: .18em; text-transform: uppercase; color: var(--gold-deep); }
+  .shelf { list-style: none; margin: 0; padding: 0; display: flex; gap: 3px; align-items: flex-end; }
+  .book { position: relative; }
+  .spine { all: unset; box-sizing: border-box; cursor: pointer; position: relative; display: block; width: 100%; height: 100%; overflow: hidden; border-radius: 3px 3px 2px 2px; background: #17120c; }
 
-  .slice { position: relative; border-radius: 14px; overflow: hidden; background: var(--ink); color: var(--ivory); }
-  .inner { position: absolute; inset: 0; display: block; text-decoration: none; }
-  .bg { position: absolute; inset: 0; background: radial-gradient(120% 90% at 60% 30%, #3a2f1c 0%, #15120d 70%); background-size: cover; background-position: center; transition: transform .8s ease; }
+  /* the picture printed across all spines */
+  .art { position: absolute; top: 0; bottom: 0; left: calc(var(--ox, 0) * -1px); width: calc(var(--rw, 1200) * 1px);
+    background: url(/assets/img/pano.jpg) center 40% / cover no-repeat; }
+  /* rounded leather spine shading on top of the picture */
+  .spine::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(90deg, rgba(0,0,0,.5) 0, rgba(0,0,0,.08) 12%, rgba(255,240,210,.12) 36%, rgba(0,0,0,0) 60%, rgba(0,0,0,.4) 100%), linear-gradient(0deg, rgba(0,0,0,.25), rgba(0,0,0,0) 30%); }
+  .cap { position: absolute; z-index: 1; top: 16px; left: 50%; transform: translateX(-50%); width: min(64px, calc(100% - 14px)); height: 54px; display: grid; place-items: center;
+    background: linear-gradient(180deg, #1d160e, #110d08); border: 1px solid rgba(234,211,154,.6); border-radius: 3px; box-shadow: 0 4px 10px rgba(0,0,0,.45), inset 0 0 0 3px #15100a, inset 0 0 0 4px rgba(234,211,154,.28); }
+  .num { font-family: var(--f-display); font-size: 26px; font-weight: 600; color: var(--gold-hi); font-variant-numeric: lining-nums; }
+  .plate { position: absolute; z-index: 1; top: 86px; bottom: 16px; left: 50%; transform: translateX(-50%); width: 32px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 12px; padding: 12px 0;
+    background: linear-gradient(90deg, #110d08, #211910 50%, #110d08); border: 1px solid rgba(234,211,154,.6); border-radius: 3px; box-shadow: 0 4px 12px rgba(0,0,0,.45), inset 0 0 0 2px #15100a, inset 0 0 0 3px rgba(234,211,154,.25); }
+  .stitle { writing-mode: vertical-rl; transform: rotate(180deg); font: 700 11.5px/1 var(--f-body); letter-spacing: .14em; text-transform: uppercase; color: #f6efdf; white-space: nowrap; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; border: 1px solid rgba(234,211,154,.7); flex: none; }
+  .book.out .dot { background: var(--gold); border-color: var(--gold); }
+
+  .pages { display: none; }
+  .page { position: relative; display: block; overflow: hidden; }
+  .cover { text-decoration: none; background: #15120d; color: var(--ivory); }
+  .bg { position: absolute; inset: 0; background: radial-gradient(120% 90% at 60% 30%, #3a2f1c 0%, #15120d 70%); background-size: cover; background-position: center; }
   .clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .5s ease; }
-  .slice.playing .clip { opacity: 1; }
-  .slice::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(13,12,10,.92) 0%, rgba(13,12,10,.15) 55%, rgba(13,12,10,.35) 100%); pointer-events: none; }
-  .pano { display: none; }
-  .num { position: absolute; z-index: 2; text-shadow: 0 1px 3px rgba(0,0,0,.7); top: 18px; left: 18px; font-family: var(--f-display); font-size: 34px; font-weight: 600; color: var(--gold-hi); font-variant-numeric: lining-nums; }
-  .vtitle { position: absolute; z-index: 2; left: 50%; bottom: 22px; writing-mode: vertical-rl; transform: translateX(-50%) rotate(180deg); font-family: var(--f-display); font-size: 22px; font-weight: 600; white-space: nowrap; transition: opacity .3s; text-shadow: 0 1px 3px rgba(0,0,0,.8), 0 0 18px rgba(0,0,0,.6); }
-  .body { position: absolute; z-index: 2; left: 22px; right: 22px; bottom: 22px; display: grid; gap: 8px; opacity: 0; transform: translateY(10px); transition: opacity .35s ease .1s, transform .35s ease .1s; }
+  .book.playing .clip { opacity: 1; }
+  .cover::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,0) 80%, rgba(0,0,0,.35)); pointer-events: none; }
+  .playbtn { position: absolute; z-index: 3; left: 50%; top: 50%; width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%;
+    display: grid; place-items: center; background: rgba(13,12,10,.4); border: 1.5px solid rgba(234,211,154,.9);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 10px 40px rgba(0,0,0,.35); transition: transform .35s cubic-bezier(.2,.7,.2,1), background .35s; }
+  .playbtn::before { content: ''; position: absolute; inset: -9px; border-radius: 50%; border: 1px solid rgba(234,211,154,.4); animation: ring 2.6s ease-out infinite; }
+  .playbtn svg { width: 30px; height: 30px; margin-left: 4px; fill: var(--gold-hi); }
+  .cover:hover .playbtn, .cover:focus-visible .playbtn { transform: scale(1.08); background: var(--gold); }
+  .cover:hover .playbtn svg, .cover:focus-visible .playbtn svg { fill: #1a1408; }
+  @keyframes ring { 0% { transform: scale(.92); opacity: .9; } 100% { transform: scale(1.35); opacity: 0; } }
+
+  .story { padding: 30px 30px 28px; display: flex; flex-direction: column; gap: 12px; color: #1c1914;
+    background:
+      linear-gradient(90deg, rgba(60,40,10,.18), rgba(60,40,10,0) 7%),
+      repeating-linear-gradient(0deg, transparent 0 27px, rgba(138,100,36,.07) 27px 28px),
+      #f8f2e4; }
+  .bign { font-family: var(--f-display); font-size: 64px; font-weight: 600; line-height: .9; color: var(--gold-deep); font-variant-numeric: lining-nums; }
   .row { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
-  .tag { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
-  .status { font-size: 11px; font-weight: 700; letter-spacing: .06em; border: 1px solid rgba(234,211,154,.4); border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
+  .tag { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-deep); }
+  .status { font-size: 11px; font-weight: 700; letter-spacing: .06em; border: 1px solid rgba(138,100,36,.45); color: #5c4520; border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
   .status.out { background: var(--gold); color: #1a1408; border-color: var(--gold); }
   .status:empty { display: none; }
-  .title { font-family: var(--f-display); font-size: clamp(26px, 2.3vw, 32px); line-height: 1.1; font-weight: 600; }
-  .line { font-size: 15px; color: rgba(244,238,226,.82); }
-  .parts { font-size: 13px; color: var(--muted-dark); }
-  .watch { font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; margin-top: 4px; color: var(--gold-hi); }
-  .playbtn { position: absolute; z-index: 3; left: 50%; top: 42%; width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%;
-    display: grid; place-items: center; background: rgba(13,12,10,.38); border: 1.5px solid rgba(234,211,154,.85);
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 10px 40px rgba(0,0,0,.35);
-    transition: transform .35s cubic-bezier(.2,.7,.2,1), background .35s, opacity .35s; }
-  .playbtn::before { content: ''; position: absolute; inset: -9px; border-radius: 50%; border: 1px solid rgba(234,211,154,.35); animation: ring 2.6s ease-out infinite; }
-  .playbtn svg { width: 30px; height: 30px; margin-left: 4px; fill: var(--gold-hi); }
-  .inner:hover .playbtn, .inner:focus-visible .playbtn { transform: scale(1.08); background: var(--gold); }
-  .inner:hover .playbtn svg, .inner:focus-visible .playbtn svg { fill: #1a1408; }
-  @keyframes ring { 0% { transform: scale(.92); opacity: .9; } 100% { transform: scale(1.35); opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) { .playbtn::before { animation: none; } }
+  .title { margin: 0; font-family: var(--f-display); font-size: clamp(26px, 2.2vw, 32px); line-height: 1.1; font-weight: 600; }
+  .rule { width: 46px; height: 2px; background: var(--grad-gold, var(--gold)); }
+  .line { margin: 0; font-size: 16px; line-height: 1.55; color: #3b342a; }
+  .parts { margin: 0; font-size: 13px; color: var(--muted-light); }
+  .go { margin-top: auto; align-self: flex-start; }
+  .go.link { font-weight: 700; color: var(--gold-deep); text-decoration: none; }
+  .shut { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(138,100,36,.4); background: none; color: #5c4520; cursor: pointer; font-size: 14px; }
 
+  .plank { height: 18px; margin-top: 0; border-radius: 2px;
+    background: linear-gradient(180deg, #6b4a2b, #4a311b 60%, #2e1f12); box-shadow: 0 14px 24px -10px rgba(40,25,10,.55), inset 0 1px 0 rgba(255,220,170,.25); }
+
+  /* player */
   .player { border: 0; padding: 0; background: transparent; max-width: 100vw; max-height: 100vh; }
   .player::backdrop { background: rgba(13,12,10,.86); backdrop-filter: blur(6px); }
   .pbox { --fw: min(460px, 94vw, calc((100dvh - 120px) * 9 / 16)); width: var(--fw); display: grid; gap: 12px; color: var(--ivory); }
@@ -96,86 +135,60 @@ const close = (s.episodes as any).close ?? 'Close';
   .pparts { display: flex; gap: 8px; flex-wrap: wrap; }
   .pparts :global(button) { background: none; border: 1px solid rgba(234,211,154,.4); color: var(--ivory); border-radius: 999px; padding: 8px 14px; cursor: pointer; font: 600 13px var(--f-body); }
   .pparts :global(button[aria-pressed='true']) { background: var(--gold); color: #1a1408; border-color: var(--gold); }
-  /* Desktop: hover accordion */
+
+  /* Desktop: the bookshelf */
   @media (min-width: 900px) and (hover: hover) {
-    .slice { flex: 1 1 0; height: min(560px, 68vh); transition: flex-grow .6s cubic-bezier(.2,.7,.2,1); }
-    .slice.open, .slice:hover, .slice:has(:focus-visible) { flex-grow: 5.5; }
-    .rail:hover .slice.open:not(:hover) { flex-grow: 1; }
-    .slice.open .body, .slice:hover .body, .slice:has(:focus-visible) .body { opacity: 1; transform: none; }
-    .slice.open .vtitle, .slice:hover .vtitle, .slice:has(:focus-visible) .vtitle { opacity: 0; }
-    .rail:hover .slice.open:not(:hover) .body { opacity: 0; }
-    .rail:hover .slice.open:not(:hover) .vtitle { opacity: 1; }
-    .slice:hover .bg { transform: scale(1.04); }
-    .pano { display: block; position: absolute; top: 0; bottom: 0; left: calc(var(--ox, 0) * -1px); width: calc(var(--rw, 1200) * 1px);
-      background: url(/assets/img/pano.jpg) center 35% / cover no-repeat; transition: opacity .45s ease; }
-    .slice.open .pano, .slice:hover .pano, .slice:has(:focus-visible) .pano { opacity: 0; }
-    .rail:hover .slice.open:not(:hover) .pano { opacity: 1; }
-    .slice .playbtn { opacity: 0; transform: scale(.8); }
-    .slice.open .playbtn, .slice:hover .playbtn, .slice:has(:focus-visible) .playbtn { opacity: 1; transform: none; }
-    .rail:hover .slice.open:not(:hover) .playbtn { opacity: 0; }
-    .slice:hover .inner:hover .playbtn { transform: scale(1.08); }
+    .shelf { height: min(580px, 70vh); }
+    .book { flex: 1 1 0; min-width: 0; height: 100%; transition: flex-basis .7s cubic-bezier(.2,.7,.2,1), flex-grow .7s cubic-bezier(.2,.7,.2,1), transform .35s ease; }
+    .book:not(.open) .spine { transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s; }
+    .book:not(.open):hover .spine, .book:not(.open) .spine:focus-visible { transform: translateY(-18px); box-shadow: 0 18px 28px -12px rgba(0,0,0,.55); }
+    .book:not(.open) .spine:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+    .book.open { flex: 0 0 min(820px, 58%); }
+    .book.open .spine { display: none; }
+    .pages { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; perspective: 1800px; opacity: 0; pointer-events: none; }
+    .book.open .pages { opacity: 1; pointer-events: auto; transition: opacity .25s ease .25s; }
+    .cover { border-radius: 6px 0 0 6px; box-shadow: -10px 16px 30px -18px rgba(0,0,0,.6); }
+    .story { border-radius: 0 6px 6px 0; transform-origin: left center; transform: rotateY(-100deg); box-shadow: 14px 16px 30px -18px rgba(0,0,0,.5); }
+    .book.open .story { transform: rotateY(0); transition: transform .9s cubic-bezier(.2,.7,.2,1) .35s; }
   }
-  /* Phone/tablet: swipeable reel cards */
+  /* Phone/tablet: open books as swipeable cards */
   @media (max-width: 899px), (hover: none) {
-    .rail { overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: none; }
-    .rail::-webkit-scrollbar { display: none; }
-    .slice { flex: 0 0 min(78vw, 340px); aspect-ratio: 9 / 16; max-height: 72vh; scroll-snap-align: start; }
-    .body { opacity: 1; transform: none; }
-    .vtitle { display: none; }
+    .hint, .plank, .spine { display: none; }
+    .shelf { overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; scrollbar-width: none; gap: 12px; align-items: stretch; }
+    .shelf::-webkit-scrollbar { display: none; }
+    .book { flex: 0 0 min(80vw, 340px); scroll-snap-align: start; }
+    .pages { display: grid; grid-template-rows: auto 1fr; height: 100%; border-radius: 14px; overflow: hidden; box-shadow: 0 14px 30px -18px rgba(0,0,0,.5); }
+    .cover { aspect-ratio: 1 / 1; }
+    .story { padding: 22px 22px 24px; background: #f8f2e4; }
+    .bign { font-size: 44px; }
+    .shut { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .playbtn::before { animation: none; }
+    .book, .story, .spine { transition: none !important; }
   }
 </style>
 
 <script>
-  const rail = document.querySelector<HTMLElement>('.rail')!;
-  const L = JSON.parse(rail.dataset.labels!);
-  const loc = rail.dataset.locale!;
+  const shelf = document.querySelector<HTMLElement>('.shelf')!;
+  const L = JSON.parse(shelf.dataset.labels!);
+  const loc = shelf.dataset.locale!;
+  const books = [...shelf.querySelectorAll<HTMLElement>('.book')];
   const today = new Date(); today.setHours(0, 0, 0, 0);
-  rail.querySelectorAll<HTMLElement>('.slice').forEach((li) => {
+  books.forEach((li) => {
     const st = li.querySelector<HTMLElement>('.status')!;
     const d = li.dataset.date;
     if (!d) { st.textContent = L.prod; return; }
     const date = new Date(d + 'T00:00:00');
-    if (date <= today) { st.textContent = L.out; st.classList.add('out'); }
+    if (date <= today) { st.textContent = L.out; st.classList.add('out'); li.classList.add('out'); }
     else st.textContent = `${L.soon} · ${date.toLocaleDateString(loc, { day: 'numeric', month: 'short' })}`;
   });
 
-  // Play the episode in an in-page YouTube player (privacy-enhanced, loads only on click)
-  const dlg = document.querySelector<HTMLDialogElement>('dialog.player')!;
-  const frame = dlg.querySelector<HTMLElement>('.frame')!;
-  const partsBox = dlg.querySelector<HTMLElement>('.pparts')!;
-  const showPart = (id: string) => {
-    frame.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" title="Carrie the Swiss" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
-    partsBox.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === id)));
-  };
-  rail.querySelectorAll<HTMLAnchorElement>('a.inner[data-yt]').forEach((a) => {
-    a.addEventListener('click', (ev) => {
-      if (typeof dlg.showModal !== 'function') return;
-      ev.preventDefault();
-      const ids = a.dataset.yt!.split(',');
-      dlg.querySelector('.ptitle')!.textContent = a.dataset.title!;
-      partsBox.innerHTML = ids.length > 1 ? ids.map((id, i) => `<button type="button" data-id="${id}">${i + 1}/${ids.length}</button>`).join('') : '';
-      partsBox.querySelectorAll<HTMLButtonElement>('button').forEach((b) => b.addEventListener('click', () => showPart(b.dataset.id!)));
-      showPart(ids[0]);
-      modal = true;
-      if (current) { current.classList.remove('playing'); current.querySelector('video')?.pause(); current = null; }
-      dlg.showModal();
-    });
-  });
-  let modal = false;
-  const shut = () => { frame.innerHTML = ''; dlg.close(); };
-  dlg.querySelector('.pclose')!.addEventListener('click', shut);
-  dlg.addEventListener('click', (e) => { if (e.target === dlg) shut(); });
-  dlg.addEventListener('close', () => {
-    frame.innerHTML = '';
-    modal = false;
-    (document.activeElement as HTMLElement | null)?.blur();
-  });
-
-  // Short muted preview of the episode on the open / hovered / centred card
+  // ---- muted preview clip on the open (desktop) / centred (mobile) book
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const slices = [...rail.querySelectorAll<HTMLElement>('.slice')];
+  let modal = false;
   let current: HTMLElement | null = null;
-  function play(li: HTMLElement | null) {
+  function preview(li: HTMLElement | null) {
     if (reduce || modal || li === current) return;
     if (current) { current.classList.remove('playing'); current.querySelector('video')?.pause(); }
     current = li;
@@ -184,31 +197,76 @@ const close = (s.episodes as any).close ?? 'Close';
     if (!v.src) v.src = v.dataset.src!;
     v.play().then(() => li.classList.add('playing')).catch(() => {});
   }
+
+  // ---- in-page YouTube player (privacy-enhanced, loads only on click)
+  const dlg = document.querySelector<HTMLDialogElement>('dialog.player')!;
+  const frame = dlg.querySelector<HTMLElement>('.frame')!;
+  const partsBox = dlg.querySelector<HTMLElement>('.pparts')!;
+  const showPart = (id: string) => {
+    frame.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" title="Carrie the Swiss" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+    partsBox.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === id)));
+  };
+  shelf.querySelectorAll<HTMLAnchorElement>('a[data-yt]').forEach((a) => {
+    a.addEventListener('click', (ev) => {
+      if (typeof dlg.showModal !== 'function') return;
+      ev.preventDefault();
+      const ids = a.dataset.yt!.split(',');
+      dlg.querySelector('.ptitle')!.textContent = a.dataset.title!;
+      partsBox.innerHTML = ids.length > 1 ? ids.map((id, i) => `<button type="button" data-id="${id}">${i + 1}/${ids.length}</button>`).join('') : '';
+      partsBox.querySelectorAll<HTMLButtonElement>('button').forEach((b) => b.addEventListener('click', () => showPart(b.dataset.id!)));
+      showPart(ids[0]);
+      if (current) { current.classList.remove('playing'); current.querySelector('video')?.pause(); current = null; }
+      modal = true;
+      dlg.showModal();
+    });
+  });
+  const shutPlayer = () => { frame.innerHTML = ''; dlg.close(); };
+  dlg.querySelector('.pclose')!.addEventListener('click', shutPlayer);
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) shutPlayer(); });
+  dlg.addEventListener('close', () => {
+    frame.innerHTML = '';
+    modal = false;
+    (document.activeElement as HTMLElement | null)?.blur();
+    const open = shelf.querySelector<HTMLElement>('.book.open');
+    if (open) preview(open);
+  });
+
   const desktop = matchMedia('(min-width: 900px) and (hover: hover)');
   if (desktop.matches) {
-    // One panorama across all collapsed slices: each slice shows its slice of a rail-wide image
+    // the picture across the spines: each spine shows its own slice of one shelf-wide image
     const layout = () => {
-      const r = rail.getBoundingClientRect();
-      rail.style.setProperty('--rw', String(Math.round(r.width)));
-      slices.forEach((li) => li.style.setProperty('--ox', String(li.getBoundingClientRect().left - r.left)));
+      const r = shelf.getBoundingClientRect();
+      shelf.style.setProperty('--rw', String(Math.round(r.width)));
+      books.forEach((li) => li.style.setProperty('--ox', String(li.getBoundingClientRect().left - r.left)));
     };
     const ro = new ResizeObserver(layout);
-    slices.forEach((li) => ro.observe(li));
-    ro.observe(rail);
+    books.forEach((li) => ro.observe(li));
+    ro.observe(shelf);
     layout();
-    const open = rail.querySelector<HTMLElement>('.slice.open');
-    const io0 = new IntersectionObserver(([en]) => { if (en.isIntersecting && !current) play(open); }, { threshold: 0.4 });
-    io0.observe(rail);
-    slices.forEach((li) => {
-      li.addEventListener('mouseenter', () => play(li));
-      li.addEventListener('focusin', () => play(li));
+
+    const closeAll = () => {
+      books.forEach((b) => { b.classList.remove('open'); b.querySelector('.spine')!.setAttribute('aria-expanded', 'false'); });
+      preview(null);
+    };
+    const openBook = (li: HTMLElement) => {
+      closeAll();
+      li.classList.add('open');
+      li.querySelector('.spine')!.setAttribute('aria-expanded', 'true');
+      setTimeout(() => { preview(li); li.querySelector<HTMLElement>('.story .title')?.focus?.(); }, 450);
+    };
+    books.forEach((li) => {
+      li.querySelector('.spine')!.addEventListener('click', () => openBook(li));
+      li.querySelector('.shut')!.addEventListener('click', () => {
+        closeAll();
+        li.querySelector<HTMLElement>('.spine')!.focus({ preventScroll: true });
+      });
     });
-    rail.addEventListener('mouseleave', () => play(open));
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal) closeAll(); });
   } else {
     const io = new IntersectionObserver((ents) => {
       const best = ents.filter((e) => e.isIntersecting && e.intersectionRatio > 0.7).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (best) play(best.target as HTMLElement);
-    }, { root: rail, threshold: [0.7, 0.9] });
-    slices.forEach((li) => io.observe(li));
+      if (best) preview(best.target as HTMLElement);
+    }, { root: shelf, threshold: [0.7, 0.9] });
+    books.forEach((li) => io.observe(li));
   }
 </script>

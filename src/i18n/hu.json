@@ -31,7 +31,8 @@
     "production": "Készül",
     "parts": "3 rész",
     "play": "Epizód lejátszása",
-    "close": "Bezárás"
+    "close": "Bezárás",
+    "pull": "Húzz ki egy könyvet"
   },
   "topics": {
     "intro": "Bevezető",

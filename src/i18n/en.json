@@ -31,7 +31,8 @@
     "production": "In production",
     "parts": "3 parts",
     "play": "Play episode",
-    "close": "Close"
+    "close": "Close",
+    "pull": "Pull out a book"
   },
   "topics": {
     "intro": "Intro",

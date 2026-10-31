@@ -31,7 +31,8 @@
     "production": "In productie",
     "parts": "3 delen",
     "play": "Aflevering afspelen",
-    "close": "Sluiten"
+    "close": "Sluiten",
+    "pull": "Pak een boek"
   },
   "topics": {
     "intro": "Intro",
