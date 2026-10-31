@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "title": "Carrie the Swiss · Primero los papeles, luego el cachorro",
+    "description": "Una serie animada presentada por Carrie, una auténtica hembra de gran boyero suizo de Eslovaquia. Pedigrís, pruebas de salud, exposiciones caninas y cría responsable, explicados con datos verificados."
+  },
+  "nav": {
+    "episodes": "Episodios",
+    "guide": "Guía",
+    "carrie": "Carrie",
+    "shop": "Tienda",
+    "language": "Idioma"
+  },
+  "hero": {
+    "eyebrow": "Una serie educativa desde Eslovaquia",
+    "ch1_title": "Hola, soy Carrie.",
+    "ch1_text": "Gran boyero suizo, perra de exposición y presentadora de una serie sobre lo que hay que saber antes de comprar un cachorro.",
+    "ch2_title": "Todo el mundo dice que su cachorro tiene papeles.",
+    "ch2_text": "Te enseño lo que pone en ellos. Pedigrís, resultados de radiografías, calificaciones de exposición y evaluaciones de cría, en episodios cortos.",
+    "ch3_title": "Yo leo los papeles para que tú no tengas que hacerlo.",
+    "ch3_text": "Datos contrastados con las normas de la FCI y de los clubes de raza. Sin dramas, con algún chiste.",
+    "cta": "Ver mis episodios",
+    "scroll": "Desliza"
+  },
+  "episodes": {
+    "eyebrow": "Temporada uno",
+    "title": "Doce episodios. Una perra sincera.",
+    "intro": "Míralos en orden: cada uno termina con un adelanto del siguiente. Nuevos reels cada lunes, miércoles y viernes.",
+    "watch": "Ver en Instagram",
+    "out": "Ya disponible",
+    "soon": "Próximamente",
+    "production": "En producción",
+    "parts": "3 partes"
+  },
+  "topics": {
+    "intro": "Intro",
+    "pedigrees": "Pedigrís",
+    "health": "Salud",
+    "shows": "Exposiciones",
+    "history": "Historia",
+    "genetics": "Genética",
+    "breeding": "Cría",
+    "buying": "Comprar un cachorro",
+    "ownership": "Vivir con un perro"
+  },
+  "ep": {
+    "01": { "line": "Quién soy y por qué es una perra la que te explica el papeleo." },
+    "02": { "line": "Pone en mi pedigrí. Pero la FCI no emite pedigrís. Giro inesperado." },
+    "03": { "line": "El mismo papel, dos comienzos de vida muy distintos." },
+    "04": { "line": "Estaba demasiado nerviosa para abrir mis radiografías. Así que vamos a descifrarlas juntos." },
+    "05": { "line": "Tres jueces, tres días. ¿Qué miraban en realidad?" },
+    "06": { "line": "1908, un perro llamado Bello y un juez que se fijó bien." },
+    "07": { "line": "Uno de mis tres colores en realidad falta." },
+    "08": { "line": "¿Planeas una camada? El primer paso no es buscar novio." },
+    "09": { "line": "Adónde va el dinero. La madre, una camada, toda mi vida." },
+    "10": { "line": "Las preguntas que más te dicen de un criador." },
+    "11": { "line": "Una vez en mi vida, un comité decidió si podría tener cachorros algún día. Sin presión." },
+    "12": { "line": "¿Es un Swissy el perro adecuado para ti? La respuesta sincera." }
+  },
+  "guide": {
+    "eyebrow": "Lo que no cupo en el vídeo",
+    "title": "Lo que significan de verdad mis papeles.",
+    "intro": "La versión larga de cada tema, con fuentes. Las normas varían según el país y el club de raza, así que pregunta siempre en el tuyo.",
+    "table_code": "Código",
+    "table_joint": "Articulación",
+    "table_scale": "Escala",
+    "table_best": "Mejor",
+    "hip": "Cadera",
+    "elbow": "Codo",
+    "shoulder": "Hombro (sobre todo)",
+    "present_free": "presente / libre",
+    "free": "libre",
+    "a1_title": "Resultados de salud, descifrados",
+    "a1_lead": "HD-A, ED-0, OCD-free. Qué significan las letras junto a los padres de un cachorro.",
+    "a1_p1": "Estos problemas articulares son en parte hereditarios, por eso los buenos criadores radiografían a ambos progenitores. Unos resultados excelentes reducen el riesgo, pero no lo eliminan. El crecimiento rápido y el sobrepeso siguen contando.",
+    "a1_p2": "La escala de A a E es la de la FCI, la que se usa en Europa. En EE. UU., la OFA califica las caderas de Excellent a Severe, y en el Reino Unido el programa BVA/KC da una puntuación de cadera. Pregunta qué escala usan los papeles.",
+    "a2_title": "Un pedigrí no lo cuenta todo",
+    "a2_lead": "Demuestra de quién viene un cachorro, no cómo se ha criado.",
+    "a2_p1": "Lo dice la propia FCI: un pedigrí certifica la ascendencia, no la calidad. Un salón soleado con una madre a la que puedes conocer, o un garaje donde la madre \"no está disponible\": los dos cachorros pueden recibir el mismo papel.",
+    "a2_p2": "Comprueba mejor: los resultados de salud de ambos padres por escrito, la madre con sus cachorros en casa del criador y un criador que te haga preguntas a ti.",
+    "a2_p3": "La FCI no emite pedigrís. Lo hace tu sociedad canina nacional. En Eslovaquia es la SKJ, a partir del libro de orígenes eslovaco (SPKP).",
+    "a3_title": "Qué es una evaluación de cría",
+    "a3_lead": "Una vez en la vida de un perro, un comité decide si puede tener cachorros.",
+    "a3_p1": "Requisitos (Eslovaquia): radiografías de caderas (A a C), codos (0 a 1) y hombros (libres), un CAC de dos exposiciones y un mínimo de 15 meses de edad (18 en machos).",
+    "a3_p2": "Carácter: siete pruebas de 2, 1 o 0 puntos cada una, desde caminar con correa y que un desconocido coja la correa hasta un suelo inestable, música alta y un estruendo lejano. 11 puntos o más es excelente.",
+    "a3_p3": "Morfología: medidas comparadas con el estándar (hembras de 60 a 68 cm a la cruz), mordida y dentadura, color de ojos, estructura y temperamento. Cuando un criador diga que un perro ha aprobado, pide ver la ficha.",
+    "a4_title": "Cómo se planifica una camada responsable",
+    "a4_lead": "El primer paso no es buscar novio.",
+    "a4_p1": "La madre tiene la edad adecuada, está sana y aprobada para la cría. El padre no es el que vive más cerca, sino el que mejor encaja: sano, de buen carácter y fuerte donde ella es más débil.",
+    "a4_p2": "Los criadores comprueban el grado de parentesco de la pareja (el coeficiente de consanguinidad, COI). La FCI recomienda que ningún perro tenga más descendencia que el 5% de los cachorros registrados en la raza en cinco años.",
+    "a4_p3": "Las pruebas de progesterona marcan los días fértiles, y la gestación dura unos 63 días. Los buenos criadores suelen tener familias en lista de espera y aceptan la devolución de un perro a cualquier edad.",
+    "sources": "Fuentes",
+    "read": "Leer"
+  },
+  "real": {
+    "eyebrow": "Detrás de la animación",
+    "title": "Sí, soy real.",
+    "photo_caption": "Yo, en la vida real.",
+    "anim_caption": "Yo, en los vídeos. La misma frente, mejor iluminación.",
+    "drag": "Arrastra para comparar",
+    "standard": "Estándar FCI n.º",
+    "height": "Altura a la cruz",
+    "hips": "Caderas",
+    "elbows": "Codos",
+    "character": "Test de carácter",
+    "show": "Calificación en exposición",
+    "show_value": "Excelente · BOB",
+    "approved": "Aprobada para la cría",
+    "text": "Una hembra de gran boyero suizo que vive en Eslovaquia. Tres días de exposición, tres jueces: excelente y primera cada día, Mejor de raza el primer día. Caderas, codos, hombros, rodillas y ojos, todo libre."
+  },
+  "quote": {
+    "text": "El pedigrí dice quién. La radiografía dice qué tan sano. El juez dice qué tan cerca del modelo. Un buen criador te enseña las tres cosas.",
+    "why": "Hacemos estos vídeos gratis para que más gente sepa qué significan los papeles antes de llevarse un cachorro a casa."
+  },
+  "shop": {
+    "eyebrow": "Más adelante",
+    "title": "Hecho para perros grandes.",
+    "text": "Collares, correas, chapas grabadas y ropa. Síguenos en Instagram para enterarte antes que nadie de cuándo abre la tienda.",
+    "cta": "Seguir a @carrietheswiss"
+  },
+  "footer": {
+    "contact": "¿Preguntas sobre la raza, las exposiciones o algún episodio? Escribe un mensaje en Instagram.",
+    "disclaimer": "Contenido solo educativo. Consulta a tu veterinario y a tu club de raza sobre tu propio perro."
+  }
+}

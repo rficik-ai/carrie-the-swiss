@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "title": "Carrie the Swiss · Najpierw papiery, potem szczeniak",
+    "description": "Animowana seria, którą prowadzi Carrie, prawdziwa suczka rasy duży szwajcarski pies pasterski ze Słowacji. Rodowody, badania zdrowotne, wystawy psów i odpowiedzialna hodowla, wyjaśnione na sprawdzonych faktach."
+  },
+  "nav": {
+    "episodes": "Odcinki",
+    "guide": "Poradnik",
+    "carrie": "Carrie",
+    "shop": "Sklep",
+    "language": "Język"
+  },
+  "hero": {
+    "eyebrow": "Seria edukacyjna ze Słowacji",
+    "ch1_title": "Cześć, jestem Carrie.",
+    "ch1_text": "Duży szwajcarski pies pasterski, suczka wystawowa i prowadząca serię o tym, co warto wiedzieć, zanim kupi się szczeniaka.",
+    "ch2_title": "Każdy mówi, że jego szczeniak ma papiery.",
+    "ch2_text": "Pokażę ci, co w nich jest. Rodowody, wyniki prześwietleń, oceny wystawowe i przeglądy hodowlane, po jednym krótkim odcinku.",
+    "ch3_title": "Czytam papiery za ciebie.",
+    "ch3_text": "Fakty sprawdzone z zasadami FCI i klubów rasy. Bez dramatów, za to z kilkoma żartami.",
+    "cta": "Obejrzyj moje odcinki",
+    "scroll": "Przewiń"
+  },
+  "episodes": {
+    "eyebrow": "Sezon pierwszy",
+    "title": "Dwanaście odcinków. Jeden szczery pies.",
+    "intro": "Oglądaj po kolei: każdy kończy się zapowiedzią następnego. Nowe rolki w każdy poniedziałek, środę i piątek.",
+    "watch": "Obejrzyj na Instagramie",
+    "out": "Już jest",
+    "soon": "Wkrótce",
+    "production": "W produkcji",
+    "parts": "3 części"
+  },
+  "topics": {
+    "intro": "Wstęp",
+    "pedigrees": "Rodowody",
+    "health": "Zdrowie",
+    "shows": "Wystawy",
+    "history": "Historia",
+    "genetics": "Genetyka",
+    "breeding": "Hodowla",
+    "buying": "Zakup szczeniaka",
+    "ownership": "Życie z psem"
+  },
+  "ep": {
+    "01": { "line": "Kim jestem i dlaczego to pies tłumaczy papierologię." },
+    "02": { "line": "Jest w moim rodowodzie. Tyle że FCI nie wydaje rodowodów. Zwrot akcji." },
+    "03": { "line": "Ten sam papier, dwa zupełnie różne starty w życie." },
+    "04": { "line": "Za bardzo się stresowałam, żeby otworzyć wyniki prześwietleń. Rozszyfrujmy je razem." },
+    "05": { "line": "Trzech sędziów, trzy dni. Na co tak naprawdę patrzyli?" },
+    "06": { "line": "Rok 1908, pies o imieniu Bello i sędzia, który przyjrzał się uważnie." },
+    "07": { "line": "Jednego z moich trzech kolorów tak naprawdę brakuje." },
+    "08": { "line": "Planujesz szczeniaki? Krok pierwszy to wcale nie szukanie chłopaka." },
+    "09": { "line": "Na co idą pieniądze. Mama, jeden miot, całe moje życie." },
+    "10": { "line": "Pytania, które najwięcej mówią o hodowcy." },
+    "11": { "line": "Raz w życiu komisja decydowała, czy kiedykolwiek będę mogła mieć szczeniaki. Bez presji." },
+    "12": { "line": "Czy Swissy to pies dla ciebie? Szczera odpowiedź." }
+  },
+  "guide": {
+    "eyebrow": "Czego nie zmieściłam w filmie",
+    "title": "Co naprawdę znaczą moje papiery.",
+    "intro": "Dłuższa wersja każdego tematu, ze źródłami. Zasady różnią się w zależności od kraju i klubu rasy, więc zawsze pytaj w swoim.",
+    "table_code": "Kod",
+    "table_joint": "Staw",
+    "table_scale": "Skala",
+    "table_best": "Najlepiej",
+    "hip": "Biodrowy",
+    "elbow": "Łokciowy",
+    "shoulder": "Barkowy (głównie)",
+    "present_free": "obecne / brak",
+    "free": "brak",
+    "a1_title": "Wyniki zdrowotne, rozszyfrowane",
+    "a1_lead": "HD-A, ED-0, OCD-free. Co oznaczają litery przy rodzicach szczeniaka.",
+    "a1_p1": "Te schorzenia stawów są częściowo dziedziczne, dlatego dobrzy hodowcy prześwietlają oboje rodziców. Świetne wyniki zmniejszają ryzyko, ale go nie usuwają. Szybki wzrost i nadwaga nadal mają znaczenie.",
+    "a1_p2": "Skala od A do E to skala FCI stosowana w Europie. W USA OFA ocenia biodra od Excellent do Severe, a w Wielkiej Brytanii program BVA/KC przyznaje punktację bioder. Zapytaj, jakiej skali używają papiery.",
+    "a2_title": "Rodowód to nie cała historia",
+    "a2_lead": "Potwierdza, po kim jest szczeniak, a nie jak był wychowany.",
+    "a2_p1": "FCI sama to mówi: rodowód poświadcza pochodzenie, nie jakość. Słoneczny salon z mamą, którą możesz poznać, albo garaż, w którym mama jest „niedostępna”: oba szczeniaki mogą dostać ten sam papier.",
+    "a2_p2": "Sprawdź raczej: wyniki zdrowotne obojga rodziców na papierze, mamę ze szczeniakami w domu hodowcy i hodowcę, który zadaje ci pytania.",
+    "a2_p3": "FCI nie wydaje rodowodów. Robi to twój krajowy związek kynologiczny. Na Słowacji jest to SKJ, na podstawie słowackiej księgi rodowodowej (SPKP).",
+    "a3_title": "Czym jest przegląd hodowlany",
+    "a3_lead": "Raz w życiu psa komisja decyduje, czy może on mieć szczeniaki.",
+    "a3_p1": "Warunki (Słowacja): prześwietlenie bioder (A do C), łokci (0 do 1) i barków (wolne od zmian), CAC z dwóch wystaw i wiek co najmniej 15 miesięcy (18 u psów).",
+    "a3_p2": "Charakter: siedem zadań za 2, 1 lub 0 punktów, od chodzenia na smyczy i obcej osoby przejmującej smycz po chwiejne podłoże, głośną muzykę i odległy huk. 11 punktów lub więcej to wynik doskonały.",
+    "a3_p3": "Eksterier: pomiary w porównaniu ze wzorcem (suki 60 do 68 cm w kłębie), zgryz i uzębienie, kolor oczu, budowa i temperament. Gdy hodowca mówi, że pies zdał, poproś o kartę oceny.",
+    "a4_title": "Jak planuje się odpowiedzialny miot",
+    "a4_lead": "Krok pierwszy to wcale nie szukanie chłopaka.",
+    "a4_p1": "Mama ma odpowiedni wiek, jest zdrowa i dopuszczona do hodowli. Tata to nie ten, który mieszka najbliżej, tylko ten, który najlepiej pasuje: zdrowy, zrównoważony i mocny tam, gdzie ona jest słabsza.",
+    "a4_p2": "Hodowcy sprawdzają, jak bardzo para jest spokrewniona (współczynnik inbredu, COI). FCI zaleca, by żaden pies nie miał więcej potomstwa niż 5% szczeniąt zarejestrowanych w rasie w ciągu pięciu lat.",
+    "a4_p3": "Testy progesteronowe wyznaczają dni płodne, a ciąża trwa około 63 dni. Dobrzy hodowcy często mają rodziny na liście oczekujących i przyjmą psa z powrotem w każdym wieku.",
+    "sources": "Źródła",
+    "read": "Czytaj"
+  },
+  "real": {
+    "eyebrow": "Za kulisami animacji",
+    "title": "Tak, jestem prawdziwa.",
+    "photo_caption": "Ja w prawdziwym życiu.",
+    "anim_caption": "Ja w filmach. To samo czoło, lepsze światło.",
+    "drag": "Przeciągnij, by porównać",
+    "standard": "Wzorzec FCI nr",
+    "height": "Wysokość w kłębie",
+    "hips": "Biodra",
+    "elbows": "Łokcie",
+    "character": "Test charakteru",
+    "show": "Ocena wystawowa",
+    "show_value": "Doskonała · BOB",
+    "approved": "Dopuszczona do hodowli",
+    "text": "Suczka rasy duży szwajcarski pies pasterski, mieszkająca na Słowacji. Trzy dni wystaw, trzech sędziów: codziennie ocena doskonała i pierwsze miejsce, pierwszego dnia Zwycięzca Rasy (BOB). Biodra, łokcie, barki, kolana i oczy bez zmian."
+  },
+  "quote": {
+    "text": "Rodowód mówi kto. Prześwietlenie mówi, jak zdrowy. Sędzia mówi, jak blisko wzorca. Dobry hodowca pokaże ci wszystkie trzy.",
+    "why": "Robimy te filmy za darmo, żeby więcej osób wiedziało, co znaczą papiery, zanim przywiozą szczeniaka do domu."
+  },
+  "shop": {
+    "eyebrow": "Później",
+    "title": "Stworzone dla dużych psów.",
+    "text": "Obroże, smycze, grawerowane adresówki i odzież. Obserwuj nas na Instagramie, a wiadomość o otwarciu sklepu dostaniesz jako jedna z pierwszych osób.",
+    "cta": "Obserwuj @carrietheswiss"
+  },
+  "footer": {
+    "contact": "Pytania o rasę, wystawy albo któryś odcinek? Napisz wiadomość na Instagramie.",
+    "disclaimer": "Treści wyłącznie edukacyjne. W sprawie własnego psa zapytaj weterynarza i klub rasy."
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "title": "Carrie the Swiss · Erst die Papiere, dann der Welpe",
+    "description": "Eine Animationsserie mit Carrie, einer echten Großen Schweizer Sennenhündin aus der Slowakei. Ahnentafeln, Gesundheitstests, Hundeausstellungen und verantwortungsvolle Zucht, erklärt mit geprüften Fakten."
+  },
+  "nav": {
+    "episodes": "Folgen",
+    "guide": "Ratgeber",
+    "carrie": "Carrie",
+    "shop": "Shop",
+    "language": "Sprache"
+  },
+  "hero": {
+    "eyebrow": "Eine Lernserie aus der Slowakei",
+    "ch1_title": "Hallo, ich bin Carrie.",
+    "ch1_text": "Große Schweizer Sennenhündin, Ausstellungshund und Gastgeberin einer Serie darüber, was man wissen sollte, bevor man einen Welpen kauft.",
+    "ch2_title": "Jeder sagt, sein Welpe hat Papiere.",
+    "ch2_text": "Ich zeige dir, was draufsteht. Ahnentafeln, Röntgenbefunde, Formwertnoten und Zuchttauglichkeitsprüfungen, eine kurze Folge nach der anderen.",
+    "ch3_title": "Ich lese die Papiere, damit du es nicht musst.",
+    "ch3_text": "Fakten geprüft anhand der Regeln der FCI und der Zuchtvereine. Kein Drama, dafür ein paar Witze.",
+    "cta": "Meine Folgen ansehen",
+    "scroll": "Scrollen"
+  },
+  "episodes": {
+    "eyebrow": "Staffel eins",
+    "title": "Zwölf Folgen. Ein ehrlicher Hund.",
+    "intro": "Am besten der Reihe nach: Jede Folge endet mit einem Teaser für die nächste. Neue Reels jeden Montag, Mittwoch und Freitag.",
+    "watch": "Auf Instagram ansehen",
+    "out": "Jetzt online",
+    "soon": "Demnächst",
+    "production": "In Produktion",
+    "parts": "3 Teile"
+  },
+  "topics": {
+    "intro": "Intro",
+    "pedigrees": "Ahnentafeln",
+    "health": "Gesundheit",
+    "shows": "Ausstellungen",
+    "history": "Geschichte",
+    "genetics": "Genetik",
+    "breeding": "Zucht",
+    "buying": "Welpenkauf",
+    "ownership": "Hundehaltung"
+  },
+  "ep": {
+    "01": { "line": "Wer ich bin und warum ausgerechnet ein Hund Papierkram erklärt." },
+    "02": { "line": "Steht in meiner Ahnentafel. Aber die FCI stellt gar keine Ahnentafeln aus. Plot-Twist." },
+    "03": { "line": "Dasselbe Papier, zwei völlig verschiedene Starts ins Leben." },
+    "04": { "line": "Ich war zu nervös, meine Röntgenbefunde zu öffnen. Also knacken wir den Code zusammen." },
+    "05": { "line": "Drei Richter, drei Tage. Worauf haben die eigentlich geschaut?" },
+    "06": { "line": "1908, ein Hund namens Bello und ein Richter, der genau hinsah." },
+    "07": { "line": "Eine meiner drei Farben fehlt eigentlich." },
+    "08": { "line": "Welpen geplant? Schritt eins ist nicht, einen Freund zu finden." },
+    "09": { "line": "Wohin das Geld geht. Die Mutter, ein Wurf, mein ganzes Leben." },
+    "10": { "line": "Die Fragen, die am meisten über einen Züchter verraten." },
+    "11": { "line": "Einmal im Leben hat eine Kommission entschieden, ob ich je Welpen haben darf. Kein Druck." },
+    "12": { "line": "Ist ein Swissy der richtige Hund für dich? Die ehrliche Antwort." }
+  },
+  "guide": {
+    "eyebrow": "Was nicht ins Video gepasst hat",
+    "title": "Was meine Papiere wirklich bedeuten.",
+    "intro": "Die lange Version jedes Themas, mit Quellen. Die Regeln unterscheiden sich je nach Land und Zuchtverein, also frag immer bei deinem nach.",
+    "table_code": "Code",
+    "table_joint": "Gelenk",
+    "table_scale": "Skala",
+    "table_best": "Am besten",
+    "hip": "Hüfte",
+    "elbow": "Ellbogen",
+    "shoulder": "Schulter (meist)",
+    "present_free": "vorhanden / frei",
+    "free": "frei",
+    "a1_title": "Gesundheitswerte, entschlüsselt",
+    "a1_lead": "HD-A, ED-0, OCD-frei. Was die Buchstaben neben den Eltern eines Welpen bedeuten.",
+    "a1_p1": "Diese Gelenkerkrankungen sind teilweise erblich, deshalb lassen gute Züchter beide Elterntiere röntgen. Top-Befunde senken das Risiko, löschen es aber nicht aus. Schnelles Wachstum und Übergewicht spielen trotzdem eine Rolle.",
+    "a1_p2": "A bis E ist die FCI-Skala, die in Europa verwendet wird. In den USA bewertet die OFA Hüften von Excellent bis Severe, in Großbritannien vergibt das BVA/KC-Schema einen Hüft-Score. Frag nach, welche Skala in den Papieren steht.",
+    "a2_title": "Eine Ahnentafel ist nicht die ganze Geschichte",
+    "a2_lead": "Sie beweist, von wem ein Welpe abstammt, nicht wie er aufgewachsen ist.",
+    "a2_p1": "Die FCI sagt es selbst: Eine Ahnentafel bestätigt die Abstammung, nicht die Qualität. Ein sonniges Wohnzimmer mit einer Mutter, die du kennenlernen kannst, oder eine Garage, in der die Mutter „gerade nicht verfügbar“ ist: Beide Welpen können dasselbe Papier bekommen.",
+    "a2_p2": "Prüf stattdessen: die Gesundheitsbefunde beider Eltern schwarz auf weiß, die Mutter mit ihren Welpen beim Züchter zu Hause und einen Züchter, der dir Fragen stellt.",
+    "a2_p3": "Die FCI stellt keine Ahnentafeln aus. Das macht dein nationaler Kynologenverband. In der Slowakei ist das die SKJ, aus dem slowakischen Zuchtbuch (SPKP).",
+    "a3_title": "Was eine Zuchttauglichkeitsprüfung ist",
+    "a3_lead": "Einmal im Leben eines Hundes entscheidet eine Kommission, ob er Welpen haben darf.",
+    "a3_p1": "Zulassung (Slowakei): Röntgen von Hüften (A bis C), Ellbogen (0 bis 1) und Schultern (frei), ein CAC von zwei Ausstellungen und ein Mindestalter von 15 Monaten (18 bei Rüden).",
+    "a3_p2": "Wesen: sieben Aufgaben mit je 2, 1 oder 0 Punkten, vom Gehen an der Leine und einer fremden Person, die die Leine übernimmt, bis zu wackeligem Untergrund, lauter Musik und einem entfernten Knall. 11 Punkte oder mehr sind ausgezeichnet.",
+    "a3_p3": "Exterieur: Maße im Vergleich zum Standard (Hündinnen 60 bis 68 cm Widerristhöhe), Gebiss und Zähne, Augenfarbe, Körperbau und Temperament. Wenn ein Züchter sagt, der Hund hat bestanden, lass dir das Protokoll zeigen.",
+    "a4_title": "Wie ein verantwortungsvoller Wurf geplant wird",
+    "a4_lead": "Schritt eins ist nicht, einen Freund zu finden.",
+    "a4_p1": "Die Mutter ist alt genug, gesund und zur Zucht zugelassen. Der Vater ist nicht der Rüde von nebenan, sondern der, der am besten passt: gesund, wesensfest und stark, wo sie schwächer ist.",
+    "a4_p2": "Züchter prüfen, wie eng die beiden verwandt sind (Inzuchtkoeffizient, COI). Die FCI empfiehlt, dass kein Hund mehr Nachkommen haben sollte als 5 % der Welpen, die in fünf Jahren in der Rasse eingetragen werden.",
+    "a4_p3": "Progesterontests bestimmen die fruchtbaren Tage, die Trächtigkeit dauert etwa 63 Tage. Gute Züchter haben oft Familien auf der Warteliste und nehmen einen Hund in jedem Alter zurück.",
+    "sources": "Quellen",
+    "read": "Lesen"
+  },
+  "real": {
+    "eyebrow": "Hinter der Animation",
+    "title": "Ja, mich gibt's wirklich.",
+    "photo_caption": "Ich, im echten Leben.",
+    "anim_caption": "Ich, in den Videos. Gleiche Stirn, besseres Licht.",
+    "drag": "Ziehen zum Vergleichen",
+    "standard": "FCI-Standard Nr.",
+    "height": "Widerristhöhe",
+    "hips": "Hüften",
+    "elbows": "Ellbogen",
+    "character": "Wesenstest",
+    "show": "Formwertnote",
+    "show_value": "Vorzüglich · BOB",
+    "approved": "Zur Zucht zugelassen",
+    "text": "Eine Große Schweizer Sennenhündin, die in der Slowakei lebt. Drei Ausstellungstage, drei Richter: jeden Tag Vorzüglich und Platz eins, am ersten Tag Best of Breed. Hüften, Ellbogen, Schultern, Knie und Augen: alles frei."
+  },
+  "quote": {
+    "text": "Die Ahnentafel sagt, wer. Das Röntgenbild sagt, wie gesund. Der Richter sagt, wie nah am Bauplan. Ein guter Züchter zeigt dir alle drei.",
+    "why": "Wir machen diese Videos kostenlos, damit mehr Menschen wissen, was in den Papieren steht, bevor sie einen Welpen nach Hause holen."
+  },
+  "shop": {
+    "eyebrow": "Kommt später",
+    "title": "Gemacht für große Hunde.",
+    "text": "Halsbänder, Leinen, gravierte Marken und Kleidung. Folge uns auf Instagram und erfahre als Erstes, wann der Shop öffnet.",
+    "cta": "@carrietheswiss folgen"
+  },
+  "footer": {
+    "contact": "Fragen zur Rasse, zu Ausstellungen oder zu einer Folge? Schreib eine Nachricht auf Instagram.",
+    "disclaimer": "Nur zu Informationszwecken. Frag bei deinem eigenen Hund deine Tierärztin oder deinen Tierarzt und deinen Zuchtverein."
+  }
+}

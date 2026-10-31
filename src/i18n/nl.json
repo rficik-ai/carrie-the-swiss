@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "title": "Carrie the Swiss · Eerst de papieren, dan de pup",
+    "description": "Een animatieserie gepresenteerd door Carrie, een echte Grote Zwitserse Sennenhond-teef uit Slowakije. Stambomen, gezondheidstesten, hondenshows en verantwoord fokken, uitgelegd met gecontroleerde feiten."
+  },
+  "nav": {
+    "episodes": "Afleveringen",
+    "guide": "Gids",
+    "carrie": "Carrie",
+    "shop": "Winkel",
+    "language": "Taal"
+  },
+  "hero": {
+    "eyebrow": "Een educatieve serie uit Slowakije",
+    "ch1_title": "Hoi, ik ben Carrie.",
+    "ch1_text": "Een Grote Zwitserse Sennenhond, showhond en presentator van een serie over wat je moet weten voordat je een pup koopt.",
+    "ch2_title": "Iedereen zegt dat zijn pup papieren heeft.",
+    "ch2_text": "Ik laat je zien wat erop staat. Stambomen, röntgenuitslagen, showkwalificaties en fokgeschiktheidskeuringen, steeds in één korte aflevering.",
+    "ch3_title": "Ik lees de papieren, zodat jij dat niet hoeft te doen.",
+    "ch3_text": "Feiten gecontroleerd aan de regels van de FCI en de rasverenigingen. Geen drama, wel een paar grappen.",
+    "cta": "Bekijk mijn afleveringen",
+    "scroll": "Scroll"
+  },
+  "episodes": {
+    "eyebrow": "Seizoen één",
+    "title": "Twaalf afleveringen. Eén eerlijke hond.",
+    "intro": "Kijk ze op volgorde: elke aflevering eindigt met een teaser voor de volgende. Nieuwe reels elke maandag, woensdag en vrijdag.",
+    "watch": "Bekijk op Instagram",
+    "out": "Nu te zien",
+    "soon": "Binnenkort",
+    "production": "In productie",
+    "parts": "3 delen"
+  },
+  "topics": {
+    "intro": "Intro",
+    "pedigrees": "Stambomen",
+    "health": "Gezondheid",
+    "shows": "Hondenshows",
+    "history": "Geschiedenis",
+    "genetics": "Genetica",
+    "breeding": "Fokken",
+    "buying": "Een pup kopen",
+    "ownership": "Leven met een hond"
+  },
+  "ep": {
+    "01": { "line": "Wie ik ben, en waarom uitgerekend een hond papierwerk uitlegt." },
+    "02": { "line": "Het staat op mijn stamboom. Maar de FCI geeft helemaal geen stambomen uit. Plotwending." },
+    "03": { "line": "Hetzelfde papier, twee heel verschillende starts in het leven." },
+    "04": { "line": "Ik was te zenuwachtig om mijn röntgenuitslagen te openen. Dus kraken we de code samen." },
+    "05": { "line": "Drie keurmeesters, drie dagen. Waar keken ze eigenlijk naar?" },
+    "06": { "line": "1908, een hond die Bello heette, en een keurmeester die goed keek." },
+    "07": { "line": "Een van mijn drie kleuren ontbreekt eigenlijk." },
+    "08": { "line": "Pups gepland? Stap één is niet een vriendje zoeken." },
+    "09": { "line": "Waar het geld naartoe gaat. De moeder, één nest, mijn hele leven." },
+    "10": { "line": "De vragen die je het meest vertellen over een fokker." },
+    "11": { "line": "Eén keer in mijn leven besliste een commissie of ik ooit pups mocht krijgen. Geen druk." },
+    "12": { "line": "Is een Swissy de juiste hond voor jou? Het eerlijke antwoord." }
+  },
+  "guide": {
+    "eyebrow": "Wat niet in de video paste",
+    "title": "Wat mijn papieren echt betekenen.",
+    "intro": "De langere versie van elk onderwerp, met bronnen. Regels verschillen per land en rasvereniging, dus vraag het altijd na bij de jouwe.",
+    "table_code": "Code",
+    "table_joint": "Gewricht",
+    "table_scale": "Schaal",
+    "table_best": "Beste",
+    "hip": "Heup",
+    "elbow": "Elleboog",
+    "shoulder": "Schouder (meestal)",
+    "present_free": "aanwezig / vrij",
+    "free": "vrij",
+    "a1_title": "Gezondheidsuitslagen, ontcijferd",
+    "a1_lead": "HD-A, ED-0, OCD-vrij. Wat de letters naast de ouders van een pup betekenen.",
+    "a1_p1": "Deze gewrichtsproblemen zijn deels erfelijk, daarom laten goede fokkers beide ouders röntgenen. Topuitslagen verlagen het risico, maar wissen het niet uit. Snelle groei en overgewicht tellen nog steeds mee.",
+    "a1_p2": "A tot E is de FCI-schaal die in Europa wordt gebruikt. In de VS beoordeelt de OFA heupen van Excellent tot Severe, en in het VK geeft het BVA/KC-schema een heupscore. Vraag welke schaal de papieren gebruiken.",
+    "a2_title": "Een stamboom is niet het hele verhaal",
+    "a2_lead": "Hij bewijst van wie een pup afstamt, niet hoe hij is opgegroeid.",
+    "a2_p1": "De FCI zegt het zelf: een stamboom bevestigt de afstamming, niet de kwaliteit. Een zonnige woonkamer met een moeder die je kunt ontmoeten, of een garage waar de moeder \"niet beschikbaar\" is: beide pups kunnen hetzelfde papier krijgen.",
+    "a2_p2": "Controleer liever: de gezondheidsuitslagen van beide ouders op papier, de moeder met haar pups bij de fokker thuis, en een fokker die jóu vragen stelt.",
+    "a2_p3": "De FCI geeft geen stambomen uit. Dat doet je nationale kennelclub. In Slowakije is dat de SKJ, uit het Slowaakse stamboek (SPKP).",
+    "a3_title": "Wat een fokgeschiktheidskeuring is",
+    "a3_lead": "Eén keer in het leven van een hond beslist een commissie of hij pups mag krijgen.",
+    "a3_p1": "Toelating (Slowakije): röntgenfoto's van heupen (A tot C), ellebogen (0 tot 1) en schouders (vrij), een CAC van twee hondenshows en minstens 15 maanden oud (18 voor reuen).",
+    "a3_p2": "Karakter: zeven opdrachten van 2, 1 of 0 punten, van aan de lijn lopen en een vreemde die de lijn overneemt tot wiebelige ondergrond, harde muziek en een knal in de verte. 11 punten of meer is uitstekend.",
+    "a3_p3": "Exterieur: maten vergeleken met de standaard (teven 60 tot 68 cm schofthoogte), beet en gebit, oogkleur, bouw en temperament. Zegt een fokker dat een hond geslaagd is, vraag dan om het keuringsformulier.",
+    "a4_title": "Hoe een verantwoord nest wordt gepland",
+    "a4_lead": "Stap één is niet een vriendje zoeken.",
+    "a4_p1": "De moeder is oud genoeg, gezond en goedgekeurd voor de fok. De vader is niet de dichtstbijzijnde reu, maar de beste match: gezond, goed van karakter en sterk waar zij zwakker is.",
+    "a4_p2": "Fokkers controleren hoe verwant het koppel is (de inteeltcoëfficiënt, COI). De FCI raadt aan dat geen enkele hond meer nakomelingen heeft dan 5% van de pups die in vijf jaar binnen het ras zijn ingeschreven.",
+    "a4_p3": "Progesterontesten bepalen de vruchtbare dagen, en de dracht duurt ongeveer 63 dagen. Goede fokkers hebben vaak gezinnen op de wachtlijst en nemen een hond op elke leeftijd terug.",
+    "sources": "Bronnen",
+    "read": "Lees"
+  },
+  "real": {
+    "eyebrow": "Achter de animatie",
+    "title": "Ja, ik besta echt.",
+    "photo_caption": "Ik, in het echte leven.",
+    "anim_caption": "Ik, in de video's. Zelfde voorhoofd, beter licht.",
+    "drag": "Sleep om te vergelijken",
+    "standard": "FCI-standaard nr.",
+    "height": "Schofthoogte",
+    "hips": "Heupen",
+    "elbows": "Ellebogen",
+    "character": "Karaktertest",
+    "show": "Showkwalificatie",
+    "show_value": "Uitmuntend · BOB",
+    "approved": "Goedgekeurd voor de fok",
+    "text": "Een Grote Zwitserse Sennenhond die in Slowakije woont. Drie showdagen, drie keurmeesters: elke dag uitmuntend en eerste, op dag één Best of Breed. Heupen, ellebogen, schouders, knieën en ogen allemaal vrij."
+  },
+  "quote": {
+    "text": "De stamboom zegt wie. De röntgenfoto zegt hoe gezond. De keurmeester zegt hoe dicht bij de blauwdruk. Een goede fokker laat je alle drie zien.",
+    "why": "We maken deze video's gratis, zodat meer mensen weten wat de papieren betekenen voordat ze een pup in huis halen."
+  },
+  "shop": {
+    "eyebrow": "Komt later",
+    "title": "Gemaakt voor grote honden.",
+    "text": "Halsbanden, riemen, gegraveerde penningen en kleding. Volg ons op Instagram en hoor als eerste wanneer de winkel opengaat.",
+    "cta": "Volg @carrietheswiss"
+  },
+  "footer": {
+    "contact": "Vragen over het ras, hondenshows of een aflevering? Stuur een bericht op Instagram.",
+    "disclaimer": "Alleen educatieve inhoud. Vraag je dierenarts en je rasvereniging naar je eigen hond."
+  }
+}

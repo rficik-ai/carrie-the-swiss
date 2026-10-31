@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "title": "Carrie the Swiss · Prima i documenti, poi il cucciolo",
+    "description": "Una serie animata condotta da Carrie, una vera femmina di grande bovaro svizzero dalla Slovacchia. Pedigree, test di salute, esposizioni canine e allevamento responsabile, spiegati con fatti verificati."
+  },
+  "nav": {
+    "episodes": "Episodi",
+    "guide": "Guida",
+    "carrie": "Carrie",
+    "shop": "Negozio",
+    "language": "Lingua"
+  },
+  "hero": {
+    "eyebrow": "Una serie educativa dalla Slovacchia",
+    "ch1_title": "Ciao, sono Carrie.",
+    "ch1_text": "Grande bovaro svizzero, cane da esposizione e conduttrice di una serie su ciò che bisognerebbe sapere prima di comprare un cucciolo.",
+    "ch2_title": "Tutti dicono che il loro cucciolo ha i documenti.",
+    "ch2_text": "Ti faccio vedere cosa c'è scritto. Pedigree, esiti delle lastre, qualifiche di esposizione e valutazioni per la riproduzione, un breve episodio alla volta.",
+    "ch3_title": "Leggo i documenti io, così non devi farlo tu.",
+    "ch3_text": "Fatti verificati sulle regole della FCI e dei club di razza. Niente drammi, qualche battuta.",
+    "cta": "Guarda i miei episodi",
+    "scroll": "Scorri"
+  },
+  "episodes": {
+    "eyebrow": "Stagione uno",
+    "title": "Dodici episodi. Una cagnolona sincera.",
+    "intro": "Guardali in ordine: ognuno finisce con un'anticipazione del successivo. Nuovi reel ogni lunedì, mercoledì e venerdì.",
+    "watch": "Guarda su Instagram",
+    "out": "Disponibile",
+    "soon": "In arrivo",
+    "production": "In lavorazione",
+    "parts": "3 parti"
+  },
+  "topics": {
+    "intro": "Intro",
+    "pedigrees": "Pedigree",
+    "health": "Salute",
+    "shows": "Esposizioni",
+    "history": "Storia",
+    "genetics": "Genetica",
+    "breeding": "Allevamento",
+    "buying": "Comprare un cucciolo",
+    "ownership": "Vivere con un cane"
+  },
+  "ep": {
+    "01": { "line": "Chi sono, e perché a spiegarti le scartoffie è una cagnolona." },
+    "02": { "line": "C'è scritto sul mio pedigree. Ma la FCI non rilascia pedigree. Colpo di scena." },
+    "03": { "line": "Lo stesso documento, due inizi di vita molto diversi." },
+    "04": { "line": "Ero troppo agitata per aprire i risultati delle mie lastre. Allora decifriamoli insieme." },
+    "05": { "line": "Tre giudici, tre giorni. Ma cosa guardavano davvero?" },
+    "06": { "line": "1908, un cane di nome Bello e un giudice che guardò da vicino." },
+    "07": { "line": "Uno dei miei tre colori in realtà manca." },
+    "08": { "line": "Pensi a una cucciolata? Il primo passo non è trovare un fidanzato." },
+    "09": { "line": "Dove vanno i soldi. La mamma, una cucciolata, tutta la mia vita." },
+    "10": { "line": "Le domande che ti dicono di più su un allevatore." },
+    "11": { "line": "Una volta nella vita, una commissione ha deciso se avrei mai potuto avere cuccioli. Nessuna pressione." },
+    "12": { "line": "Uno Swissy è il cane giusto per te? La risposta sincera." }
+  },
+  "guide": {
+    "eyebrow": "Quello che non è entrato nel video",
+    "title": "Cosa significano davvero i miei documenti.",
+    "intro": "La versione lunga di ogni argomento, con le fonti. Le regole cambiano a seconda del paese e del club di razza, quindi chiedi sempre al tuo.",
+    "table_code": "Codice",
+    "table_joint": "Articolazione",
+    "table_scale": "Scala",
+    "table_best": "Migliore",
+    "hip": "Anca",
+    "elbow": "Gomito",
+    "shoulder": "Spalla (soprattutto)",
+    "present_free": "presente / esente",
+    "free": "esente",
+    "a1_title": "Esiti sanitari, decifrati",
+    "a1_lead": "HD-A, ED-0, OCD-free. Cosa significano le lettere accanto ai genitori di un cucciolo.",
+    "a1_p1": "Questi problemi articolari sono in parte ereditari, ed è per questo che i buoni allevatori fanno radiografare entrambi i genitori. Ottimi risultati riducono il rischio, ma non lo cancellano. Crescita rapida e chili di troppo contano comunque.",
+    "a1_p2": "La scala da A a E è quella FCI usata in Europa. Negli Stati Uniti l'OFA classifica le anche da Excellent a Severe, e nel Regno Unito lo schema BVA/KC assegna un punteggio alle anche. Chiedi quale scala usano i documenti.",
+    "a2_title": "Il pedigree non racconta tutto",
+    "a2_lead": "Dimostra da chi discende un cucciolo, non come è stato cresciuto.",
+    "a2_p1": "Lo dice la FCI stessa: il pedigree certifica la discendenza, non la qualità. Un soggiorno soleggiato con una mamma che puoi conoscere, o un garage dove la mamma \"non è disponibile\": entrambi i cuccioli possono ricevere lo stesso documento.",
+    "a2_p2": "Controlla piuttosto: gli esiti sanitari di entrambi i genitori nero su bianco, la mamma con i suoi cuccioli a casa dell'allevatore e un allevatore che fa domande a te.",
+    "a2_p3": "La FCI non rilascia pedigree. Lo fa il tuo ente cinofilo nazionale. In Slovacchia è la SKJ, dal libro genealogico slovacco (SPKP).",
+    "a3_title": "Cos'è una valutazione per la riproduzione",
+    "a3_lead": "Una volta nella vita di un cane, una commissione decide se può avere cuccioli.",
+    "a3_p1": "Requisiti (Slovacchia): lastre di anche (da A a C), gomiti (da 0 a 1) e spalle (esenti), un CAC da due esposizioni e almeno 15 mesi di età (18 per i maschi).",
+    "a3_p2": "Carattere: sette prove da 2, 1 o 0 punti ciascuna, dal camminare al guinzaglio e da un estraneo che prende il guinzaglio fino al terreno instabile, alla musica ad alto volume e a uno scoppio lontano. 11 punti o più è eccellente.",
+    "a3_p3": "Morfologia: misure confrontate con lo standard (femmine da 60 a 68 cm al garrese), chiusura e dentatura, colore degli occhi, struttura e temperamento. Quando un allevatore dice che un cane ha superato la prova, chiedi di vedere la scheda.",
+    "a4_title": "Come si pianifica una cucciolata responsabile",
+    "a4_lead": "Il primo passo non è trovare un fidanzato.",
+    "a4_p1": "La mamma ha l'età giusta, è sana e approvata per la riproduzione. Il papà non è il più vicino ma il più adatto: sano, di buon carattere e forte dove lei è più debole.",
+    "a4_p2": "Gli allevatori verificano quanto sono imparentati i due (il coefficiente di consanguineità, COI). La FCI raccomanda che nessun cane abbia più discendenti del 5% dei cuccioli registrati nella razza in cinque anni.",
+    "a4_p3": "I test del progesterone individuano i giorni fertili, e la gravidanza dura circa 63 giorni. I buoni allevatori hanno spesso famiglie in lista d'attesa, e riprendono un cane a qualsiasi età.",
+    "sources": "Fonti",
+    "read": "Leggi"
+  },
+  "real": {
+    "eyebrow": "Dietro l'animazione",
+    "title": "Sì, esisto davvero.",
+    "photo_caption": "Io, nella vita reale.",
+    "anim_caption": "Io, nei video. Stessa fronte, luci migliori.",
+    "drag": "Trascina per confrontare",
+    "standard": "Standard FCI n.",
+    "height": "Altezza al garrese",
+    "hips": "Anche",
+    "elbows": "Gomiti",
+    "character": "Test caratteriale",
+    "show": "Qualifica in esposizione",
+    "show_value": "Eccellente · BOB",
+    "approved": "Approvata per la riproduzione",
+    "text": "Una femmina di grande bovaro svizzero che vive in Slovacchia. Tre giorni di esposizione, tre giudici: eccellente e prima ogni giorno, Migliore di razza il primo giorno. Anche, gomiti, spalle, ginocchia e occhi tutti esenti."
+  },
+  "quote": {
+    "text": "Il pedigree dice chi. Le lastre dicono quanto è sano. Il giudice dice quanto è vicino al modello. Un buon allevatore ti mostra tutti e tre.",
+    "why": "Facciamo questi video gratis, perché più persone sappiano cosa significano i documenti prima di portare a casa un cucciolo."
+  },
+  "shop": {
+    "eyebrow": "Prossimamente",
+    "title": "Fatto per i cani grandi.",
+    "text": "Collari, guinzagli, medagliette incise e abbigliamento. Seguici su Instagram per sapere per primo quando apre il negozio.",
+    "cta": "Segui @carrietheswiss"
+  },
+  "footer": {
+    "contact": "Domande sulla razza, sulle esposizioni o su un episodio? Scrivi un messaggio su Instagram.",
+    "disclaimer": "Contenuti solo a scopo educativo. Per il tuo cane chiedi al tuo veterinario e al tuo club di razza."
+  }
+}

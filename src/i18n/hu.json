@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "title": "Carrie the Swiss · Előbb a papírok, aztán a kiskutya",
+    "description": "Animációs sorozat Carrie-vel, egy valódi szlovákiai nagy svájci havasi kutya szukával. Törzskönyvek, egészségügyi szűrések, kutyakiállítások és felelős tenyésztés, ellenőrzött tényekkel elmagyarázva."
+  },
+  "nav": {
+    "episodes": "Epizódok",
+    "guide": "Kalauz",
+    "carrie": "Carrie",
+    "shop": "Bolt",
+    "language": "Nyelv"
+  },
+  "hero": {
+    "eyebrow": "Ismeretterjesztő sorozat Szlovákiából",
+    "ch1_title": "Szia, Carrie vagyok.",
+    "ch1_text": "Nagy svájci havasi kutya, kiállítási kutya, és egy sorozat házigazdája arról, mit érdemes tudni, mielőtt kiskutyát veszel.",
+    "ch2_title": "Mindenki azt mondja, hogy a kiskutyájának van papírja.",
+    "ch2_text": "Megmutatom, mi áll rajta. Törzskönyvek, röntgeneredmények, kiállítási minősítések és tenyészszemlék, epizódról epizódra, röviden.",
+    "ch3_title": "Elolvasom helyetted a papírokat.",
+    "ch3_text": "Az FCI és a fajtaklubok szabályai alapján ellenőrzött tények. Dráma nincs, pár poén azért igen.",
+    "cta": "Nézd meg az epizódjaimat",
+    "scroll": "Görgess"
+  },
+  "episodes": {
+    "eyebrow": "Első évad",
+    "title": "Tizenkét epizód. Egy őszinte kutya.",
+    "intro": "Nézd őket sorban: mindegyik a következő előzetesével zárul. Új reelek minden hétfőn, szerdán és pénteken.",
+    "watch": "Megnézem az Instagramon",
+    "out": "Már elérhető",
+    "soon": "Hamarosan",
+    "production": "Készül",
+    "parts": "3 rész"
+  },
+  "topics": {
+    "intro": "Bevezető",
+    "pedigrees": "Törzskönyvek",
+    "health": "Egészség",
+    "shows": "Kiállítások",
+    "history": "Történelem",
+    "genetics": "Genetika",
+    "breeding": "Tenyésztés",
+    "buying": "Kiskutya vásárlás",
+    "ownership": "Élet a kutyával"
+  },
+  "ep": {
+    "01": { "line": "Ki vagyok, és miért egy kutya magyarázza el a papírmunkát." },
+    "02": { "line": "Benne van a törzskönyvemben. Csakhogy az FCI nem ad ki törzskönyvet. Csavar." },
+    "03": { "line": "Ugyanaz a papír, két nagyon különböző indulás az életbe." },
+    "04": { "line": "Túl izgultam ahhoz, hogy megnyissam a röntgeneredményeimet. Fejtsük meg együtt." },
+    "05": { "line": "Három bíró, három nap. Valójában mit néztek?" },
+    "06": { "line": "1908, egy Bello nevű kutya és egy bíró, aki alaposan megnézte." },
+    "07": { "line": "A három színem közül az egyik valójában hiányzik." },
+    "08": { "line": "Kölyköket terveztek? Az első lépés nem a pasizás." },
+    "09": { "line": "Hová megy a pénz. Az anya, egy alom, az egész életem." },
+    "10": { "line": "A kérdések, amelyekből a legtöbbet megtudod egy tenyésztőről." },
+    "11": { "line": "Életemben egyszer egy bizottság döntötte el, lehetnek-e valaha kölykeim. Semmi nyomás." },
+    "12": { "line": "Neked való kutya a Swissy? Az őszinte válasz." }
+  },
+  "guide": {
+    "eyebrow": "Ami nem fért bele a videóba",
+    "title": "Mit jelentenek valójában a papírjaim.",
+    "intro": "Minden téma hosszabb változata, forrásokkal. A szabályok országonként és fajtaklubonként eltérnek, ezért mindig a sajátodat kérdezd.",
+    "table_code": "Kód",
+    "table_joint": "Ízület",
+    "table_scale": "Skála",
+    "table_best": "Legjobb",
+    "hip": "Csípő",
+    "elbow": "Könyök",
+    "shoulder": "Váll (főleg)",
+    "present_free": "van / mentes",
+    "free": "mentes",
+    "a1_title": "Egészségügyi eredmények, megfejtve",
+    "a1_lead": "HD-A, ED-0, OCD-mentes. Mit jelentenek a betűk a kiskutya szülei mellett.",
+    "a1_p1": "Ezek az ízületi problémák részben öröklődnek, ezért a jó tenyésztők mindkét szülőt megröntgenezik. A kiváló eredmények csökkentik a kockázatot, de nem tüntetik el. A gyors növekedés és a túlsúly továbbra is számít.",
+    "a1_p2": "Az A-tól E-ig tartó skála az Európában használt FCI-skála. Az USA-ban az OFA Excellenttől Severe-ig minősíti a csípőt, az Egyesült Királyságban pedig a BVA/KC-rendszer csípőpontszámot ad. Kérdezd meg, melyik skálát használják a papírok.",
+    "a2_title": "A törzskönyv nem a teljes történet",
+    "a2_lead": "Azt bizonyítja, kitől származik a kiskutya, nem azt, hogyan nevelték.",
+    "a2_p1": "Maga az FCI mondja: a törzskönyv a származást igazolja, nem a minőséget. Egy napfényes nappali egy anyával, akivel találkozhatsz, vagy egy garázs, ahol az anya „épp nem elérhető”: mindkét kiskutya ugyanazt a papírt kaphatja.",
+    "a2_p2": "Inkább ezt ellenőrizd: mindkét szülő egészségügyi eredményeit papíron, az anyát a kölykeivel a tenyésztő otthonában, és egy tenyésztőt, aki téged is kérdez.",
+    "a2_p3": "Az FCI nem ad ki törzskönyvet. Ezt az országos kinológiai szövetség teszi. Szlovákiában ez az SKJ, a szlovák törzskönyv (SPKP) alapján.",
+    "a3_title": "Mi az a tenyészszemle",
+    "a3_lead": "Egy kutya életében egyszer egy bizottság dönti el, lehetnek-e kölykei.",
+    "a3_p1": "A feltételek (Szlovákia): csípő- (A-tól C-ig), könyök- (0-tól 1-ig) és vállröntgen (mentes), CAC két kiállításról, és legalább 15 hónapos kor (kanoknál 18).",
+    "a3_p2": "Jellem: hét feladat, egyenként 2, 1 vagy 0 pontért, a pórázon sétától és attól, hogy egy idegen átveszi a pórázt, egészen a billegő talajig, a hangos zenéig és egy távoli durranásig. 11 pont vagy több kiváló.",
+    "a3_p3": "Test: méretek a standardhoz viszonyítva (szukák 60–68 cm marmagasság), harapás és fogazat, szemszín, felépítés és vérmérséklet. Ha egy tenyésztő azt mondja, hogy a kutya átment, kérd el a bírálati lapot.",
+    "a4_title": "Hogyan tervezik a felelős almot",
+    "a4_lead": "Az első lépés nem a pasizás.",
+    "a4_p1": "Az anya elég idős, egészséges és tenyésztésre engedélyezett. Az apa nem a legközelebbi kan, hanem a legjobban illő: egészséges, jó természetű, és erős ott, ahol az anya gyengébb.",
+    "a4_p2": "A tenyésztők ellenőrzik, mennyire rokon a pár (beltenyésztettségi együttható, COI). Az FCI azt ajánlja, hogy egyetlen kutyának se legyen több utóda, mint a fajtában öt év alatt bejegyzett kölykök 5%-a.",
+    "a4_p3": "A progeszteronteszt kimutatja a termékeny napokat, a vemhesség pedig körülbelül 63 napig tart. A jó tenyésztőknél gyakran várólista van, és bármilyen korban visszaveszik a kutyát.",
+    "sources": "Források",
+    "read": "Olvasás"
+  },
+  "real": {
+    "eyebrow": "Az animáció mögött",
+    "title": "Igen, létezem.",
+    "photo_caption": "Én, a valóságban.",
+    "anim_caption": "Én, a videókban. Ugyanaz a homlok, jobb világítás.",
+    "drag": "Húzd az összehasonlításhoz",
+    "standard": "FCI standard száma",
+    "height": "Marmagasság",
+    "hips": "Csípő",
+    "elbows": "Könyök",
+    "character": "Jellemteszt",
+    "show": "Kiállítási minősítés",
+    "show_value": "Kitűnő · BOB",
+    "approved": "Tenyésztésre engedélyezve",
+    "text": "Szlovákiában élő nagy svájci havasi kutya szuka. Három kiállítási nap, három bíró: minden nap kitűnő és első, az első napon Fajtagyőztes (BOB). Csípő, könyök, váll, térd és szem: mind mentes."
+  },
+  "quote": {
+    "text": "A törzskönyv megmondja, ki. A röntgen megmondja, mennyire egészséges. A bíró megmondja, mennyire közel áll a tervrajzhoz. Egy jó tenyésztő mindhármat megmutatja.",
+    "why": "Ezeket a videókat ingyen készítjük, hogy többen tudják, mit jelentenek a papírok, mielőtt hazavisznek egy kiskutyát."
+  },
+  "shop": {
+    "eyebrow": "Később",
+    "title": "Nagy kutyáknak készült.",
+    "text": "Nyakörvek, pórázok, gravírozott biléták és ruházat. Kövess minket az Instagramon, hogy elsőként tudd meg, mikor nyit a bolt.",
+    "cta": "Kövesd: @carrietheswiss"
+  },
+  "footer": {
+    "contact": "Kérdésed van a fajtáról, a kiállításokról vagy egy epizódról? Írj üzenetet az Instagramon.",
+    "disclaimer": "Kizárólag ismeretterjesztő tartalom. A saját kutyádról kérdezd az állatorvosodat és a fajtaklubodat."
+  }
+}

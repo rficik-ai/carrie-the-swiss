@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "title": "Carrie the Swiss · Les papiers d'abord, le chiot ensuite",
+    "description": "Une série animée présentée par Carrie, une vraie femelle grand bouvier suisse venue de Slovaquie. Pedigrees, tests de santé, expositions canines et élevage responsable, expliqués avec des faits vérifiés."
+  },
+  "nav": {
+    "episodes": "Épisodes",
+    "guide": "Guide",
+    "carrie": "Carrie",
+    "shop": "Boutique",
+    "language": "Langue"
+  },
+  "hero": {
+    "eyebrow": "Une série éducative venue de Slovaquie",
+    "ch1_title": "Salut, moi c'est Carrie.",
+    "ch1_text": "Grand bouvier suisse, chienne d'exposition et animatrice d'une série sur ce qu'il faut savoir avant d'acheter un chiot.",
+    "ch2_title": "Tout le monde dit que son chiot a des papiers.",
+    "ch2_text": "Je vais vous montrer ce qu'il y a dessus. Pedigrees, résultats de radios, qualificatifs d'exposition et évaluations d'élevage, un court épisode à la fois.",
+    "ch3_title": "Je lis les papiers pour que vous n'ayez pas à le faire.",
+    "ch3_text": "Faits vérifiés d'après les règles de la FCI et des clubs de race. Pas de drame, quelques blagues.",
+    "cta": "Voir mes épisodes",
+    "scroll": "Défiler"
+  },
+  "episodes": {
+    "eyebrow": "Saison un",
+    "title": "Douze épisodes. Une chienne qui dit tout.",
+    "intro": "Regardez-les dans l'ordre : chacun se termine par un teaser du suivant. Nouveaux reels chaque lundi, mercredi et vendredi.",
+    "watch": "Voir sur Instagram",
+    "out": "Disponible",
+    "soon": "Bientôt",
+    "production": "En production",
+    "parts": "3 parties"
+  },
+  "topics": {
+    "intro": "Intro",
+    "pedigrees": "Pedigrees",
+    "health": "Santé",
+    "shows": "Expositions",
+    "history": "Histoire",
+    "genetics": "Génétique",
+    "breeding": "Élevage",
+    "buying": "Achat d'un chiot",
+    "ownership": "Vivre avec un chien"
+  },
+  "ep": {
+    "01": { "line": "Qui je suis, et pourquoi c'est une chienne qui vous explique la paperasse." },
+    "02": { "line": "C'est écrit sur mon pedigree. Sauf que la FCI ne délivre pas de pedigrees. Coup de théâtre." },
+    "03": { "line": "Le même papier, deux départs dans la vie très différents." },
+    "04": { "line": "J'étais trop stressée pour ouvrir mes résultats de radios. Alors on décrypte ensemble." },
+    "05": { "line": "Trois juges, trois jours. Qu'est-ce qu'ils regardaient vraiment ?" },
+    "06": { "line": "1908, un chien nommé Bello, et un juge qui a regardé de très près." },
+    "07": { "line": "L'une de mes trois couleurs manque en réalité." },
+    "08": { "line": "Vous prévoyez des chiots ? La première étape, ce n'est pas de trouver un copain." },
+    "09": { "line": "Où va l'argent. La mère, une portée, toute ma vie." },
+    "10": { "line": "Les questions qui en disent le plus sur un éleveur." },
+    "11": { "line": "Une fois dans ma vie, un comité a décidé si je pourrais un jour avoir des chiots. Aucune pression." },
+    "12": { "line": "Un Swissy est-il le bon chien pour vous ? La réponse honnête." }
+  },
+  "guide": {
+    "eyebrow": "Ce qui n'a pas tenu dans la vidéo",
+    "title": "Ce que mes papiers veulent vraiment dire.",
+    "intro": "La version longue de chaque sujet, avec les sources. Les règles varient selon le pays et le club de race, alors renseignez-vous toujours auprès du vôtre.",
+    "table_code": "Code",
+    "table_joint": "Articulation",
+    "table_scale": "Échelle",
+    "table_best": "Meilleur",
+    "hip": "Hanche",
+    "elbow": "Coude",
+    "shoulder": "Épaule (surtout)",
+    "present_free": "présente / indemne",
+    "free": "indemne",
+    "a1_title": "Résultats de santé, décryptés",
+    "a1_lead": "HD-A, ED-0, OCD-free. Ce que signifient les lettres à côté des parents d'un chiot.",
+    "a1_p1": "Ces problèmes articulaires sont en partie héréditaires, c'est pourquoi les bons éleveurs font radiographier les deux parents. D'excellents résultats réduisent le risque, ils ne l'effacent pas. Une croissance rapide et le surpoids comptent toujours.",
+    "a1_p2": "L'échelle de A à E est celle de la FCI, utilisée en Europe. Aux États-Unis, l'OFA note les hanches de Excellent à Severe, et au Royaume-Uni, le programme BVA/KC attribue un score de hanche. Demandez quelle échelle utilisent les papiers.",
+    "a2_title": "Un pedigree ne dit pas tout",
+    "a2_lead": "Il prouve de qui vient un chiot, pas comment il a été élevé.",
+    "a2_p1": "La FCI le dit elle-même : un pedigree certifie la filiation, pas la qualité. Un salon ensoleillé avec une mère que vous pouvez rencontrer, ou un garage où la mère n'est « pas disponible » : les deux chiots peuvent recevoir le même papier.",
+    "a2_p2": "Vérifiez plutôt : les résultats de santé des deux parents sur papier, la mère avec ses chiots chez l'éleveur, et un éleveur qui vous pose des questions.",
+    "a2_p3": "La FCI ne délivre pas de pedigrees. C'est votre société canine nationale qui le fait. En Slovaquie, c'est la SKJ, à partir du livre des origines slovaque (SPKP).",
+    "a3_title": "Qu'est-ce qu'une évaluation d'élevage",
+    "a3_lead": "Une fois dans la vie d'un chien, un comité décide s'il peut avoir des chiots.",
+    "a3_p1": "Pour y accéder (Slovaquie) : radios des hanches (A à C), des coudes (0 à 1) et des épaules (indemnes), un CAC obtenu dans deux expositions, et au moins 15 mois (18 pour les mâles).",
+    "a3_p2": "Caractère : sept épreuves notées 2, 1 ou 0 point, de la marche en laisse et d'un inconnu qui prend la laisse jusqu'au sol instable, à la musique forte et à une détonation lointaine. 11 points ou plus, c'est excellent.",
+    "a3_p3": "Morphologie : mensurations comparées au standard (femelles de 60 à 68 cm au garrot), occlusion et dentition, couleur des yeux, construction et tempérament. Quand un éleveur dit qu'un chien a réussi, demandez à voir la fiche.",
+    "a4_title": "Comment se prépare une portée responsable",
+    "a4_lead": "La première étape, ce n'est pas de trouver un copain.",
+    "a4_p1": "La mère a l'âge requis, elle est en bonne santé et autorisée à la reproduction. Le père n'est pas le plus proche, mais le mieux assorti : sain, de bon caractère et fort là où elle est plus faible.",
+    "a4_p2": "Les éleveurs vérifient le degré de parenté du couple (le coefficient de consanguinité, COI). La FCI recommande qu'aucun chien n'ait plus de descendants que 5 % des chiots inscrits dans la race sur cinq ans.",
+    "a4_p3": "Des tests de progestérone déterminent les jours fertiles, et la gestation dure environ 63 jours. Les bons éleveurs ont souvent des familles sur liste d'attente, et reprennent un chien à tout âge.",
+    "sources": "Sources",
+    "read": "Lire"
+  },
+  "real": {
+    "eyebrow": "Derrière l'animation",
+    "title": "Oui, j'existe vraiment.",
+    "photo_caption": "Moi, dans la vraie vie.",
+    "anim_caption": "Moi, dans les vidéos. Même front, meilleur éclairage.",
+    "drag": "Glissez pour comparer",
+    "standard": "Standard FCI n°",
+    "height": "Hauteur au garrot",
+    "hips": "Hanches",
+    "elbows": "Coudes",
+    "character": "Test de caractère",
+    "show": "Qualificatif d'exposition",
+    "show_value": "Excellent · BOB",
+    "approved": "Autorisée à la reproduction",
+    "text": "Une femelle grand bouvier suisse qui vit en Slovaquie. Trois jours d'exposition, trois juges : excellent et première chaque jour, Meilleure de race le premier jour. Hanches, coudes, épaules, genoux et yeux : tout est indemne."
+  },
+  "quote": {
+    "text": "Le pedigree dit de qui. La radio dit si c'est sain. Le juge dit si c'est conforme au modèle. Un bon éleveur vous montre les trois.",
+    "why": "Nous faisons ces vidéos gratuitement, pour que plus de gens sachent ce que veulent dire les papiers avant de ramener un chiot à la maison."
+  },
+  "shop": {
+    "eyebrow": "Plus tard",
+    "title": "Pensé pour les grands chiens.",
+    "text": "Colliers, laisses, médailles gravées et vêtements. Suivez-nous sur Instagram pour savoir en premier quand la boutique ouvrira.",
+    "cta": "Suivre @carrietheswiss"
+  },
+  "footer": {
+    "contact": "Une question sur la race, les expositions ou un épisode ? Envoyez un message sur Instagram.",
+    "disclaimer": "Contenu uniquement éducatif. Pour votre propre chien, demandez à votre vétérinaire et à votre club de race."
+  }
+}

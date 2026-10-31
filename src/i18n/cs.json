@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "title": "Carrie the Swiss · Nejdřív papíry, potom štěně",
+    "description": "Animovaný seriál, který moderuje Carrie, skutečná fena velkého švýcarského salašnického psa ze Slovenska. Průkazy původu, zdravotní testy, výstavy a odpovědný chov, vysvětlené s ověřenými fakty."
+  },
+  "nav": {
+    "episodes": "Epizody",
+    "guide": "Průvodce",
+    "carrie": "Carrie",
+    "shop": "Obchod",
+    "language": "Jazyk"
+  },
+  "hero": {
+    "eyebrow": "Vzdělávací seriál ze Slovenska",
+    "ch1_title": "Ahoj, jsem Carrie.",
+    "ch1_text": "Velký švýcarský salašnický pes, výstavní fena a moderátorka seriálu o tom, co byste měli vědět, než si koupíte štěně.",
+    "ch2_title": "Každý tvrdí, že jeho štěně má papíry.",
+    "ch2_text": "Ukážu vám, co v nich stojí. Průkazy původu, výsledky rentgenů, výstavní hodnocení a bonitace, vždy v jedné krátké epizodě.",
+    "ch3_title": "Papíry čtu já, abyste nemuseli vy.",
+    "ch3_text": "Fakta ověřená podle pravidel FCI a chovatelských klubů. Žádné drama, zato pár vtipů.",
+    "cta": "Podívejte se na moje epizody",
+    "scroll": "Posouvejte"
+  },
+  "episodes": {
+    "eyebrow": "První řada",
+    "title": "Dvanáct epizod. Jeden upřímný pes.",
+    "intro": "Dívejte se popořadě: každá končí upoutávkou na tu další. Nová videa každé pondělí, středu a pátek.",
+    "watch": "Sledovat na Instagramu",
+    "out": "Venku",
+    "soon": "Brzy",
+    "production": "Ve výrobě",
+    "parts": "3 díly"
+  },
+  "topics": {
+    "intro": "Úvod",
+    "pedigrees": "Průkazy původu",
+    "health": "Zdraví",
+    "shows": "Výstavy",
+    "history": "Historie",
+    "genetics": "Genetika",
+    "breeding": "Chov",
+    "buying": "Koupě štěněte",
+    "ownership": "Život se psem"
+  },
+  "ep": {
+    "01": { "line": "Kdo jsem a proč vám papírování vysvětluje pes." },
+    "02": { "line": "Stojí to v mém průkazu původu. Jenže FCI průkazy původu nevydává. Zvrat." },
+    "03": { "line": "Stejný papír, dva úplně odlišné starty do života." },
+    "04": { "line": "Bála jsem se otevřít výsledky svých rentgenů. Tak je rozluštíme spolu." },
+    "05": { "line": "Tři rozhodčí, tři dny. Na co se vlastně dívali?" },
+    "06": { "line": "Rok 1908, pes jménem Bello a rozhodčí, který se díval pořádně zblízka." },
+    "07": { "line": "Jedna z mých tří barev ve skutečnosti chybí." },
+    "08": { "line": "Plánujete štěňata? Prvním krokem není hledání kluka." },
+    "09": { "line": "Kam jdou peníze. Máma, jeden vrh, celý můj život." },
+    "10": { "line": "Otázky, které vám o chovateli prozradí nejvíc." },
+    "11": { "line": "Jednou v životě rozhodovala komise, jestli budu moct mít štěňata. Žádný stres." },
+    "12": { "line": "Je Swissy ten pravý pes pro vás? Upřímná odpověď." }
+  },
+  "guide": {
+    "eyebrow": "Co se do videa nevešlo",
+    "title": "Co moje papíry doopravdy znamenají.",
+    "intro": "Delší verze každého tématu, se zdroji. Pravidla se liší podle země a chovatelského klubu, takže se vždy zeptejte toho svého.",
+    "table_code": "Kód",
+    "table_joint": "Kloub",
+    "table_scale": "Stupnice",
+    "table_best": "Nejlepší",
+    "hip": "Kyčelní",
+    "elbow": "Loketní",
+    "shoulder": "Ramenní (většinou)",
+    "present_free": "přítomna / negativní",
+    "free": "negativní",
+    "a1_title": "Zdravotní výsledky, rozluštěné",
+    "a1_lead": "HD-A, ED-0, OCD-free. Co znamenají písmena u rodičů štěněte.",
+    "a1_p1": "Tato onemocnění kloubů jsou částečně dědičná, a proto dobří chovatelé nechávají rentgenovat oba rodiče. Skvělé výsledky riziko snižují, ale nesmažou. Rychlý růst a nadváha pořád hrají roli.",
+    "a1_p2": "Stupnice A až E je stupnice FCI používaná v Evropě. V USA hodnotí OFA kyčle od Excellent po Severe a ve Velké Británii dává schéma BVA/KC bodové skóre kyčlí. Zeptejte se, jakou stupnici papíry používají.",
+    "a2_title": "Průkaz původu není celý příběh",
+    "a2_lead": "Dokazuje, po kom štěně je, ne jak bylo vychované.",
+    "a2_p1": "FCI to říká sama: průkaz původu potvrzuje původ, ne kvalitu. Slunný obývák s mámou, kterou můžete poznat, nebo garáž, kde máma „není k dispozici“: obě štěňata mohou dostat stejný papír.",
+    "a2_p2": "Raději zkontrolujte: zdravotní výsledky obou rodičů na papíře, mámu se štěňaty doma u chovatele a chovatele, který se ptá vás.",
+    "a2_p3": "FCI průkazy původu nevydává. Vydává je váš národní kynologický svaz. Na Slovensku je to SKJ, ze slovenské plemenné knihy (SPKP).",
+    "a3_title": "Co je bonitace",
+    "a3_lead": "Jednou v životě psa rozhoduje komise, jestli smí mít štěňata.",
+    "a3_p1": "Podmínky (Slovensko): rentgen kyčlí (A až C), loktů (0 až 1) a ramen (negativní), CAC ze dvou výstav a věk alespoň 15 měsíců (u psů 18).",
+    "a3_p2": "Povaha: sedm úkolů za 2, 1 nebo 0 bodů, od chůze na vodítku a cizího člověka, který převezme vodítko, po vratký povrch, hlasitou hudbu a vzdálenou ránu. 11 a více bodů je výborný výsledek.",
+    "a3_p3": "Tělo: míry porovnané se standardem (feny 60 až 68 cm v kohoutku), skus a chrup, barva očí, stavba těla a temperament. Když chovatel řekne, že pes bonitací prošel, chtějte vidět bonitační kartu.",
+    "a4_title": "Jak se plánuje odpovědný vrh",
+    "a4_lead": "Prvním krokem není hledání kluka.",
+    "a4_p1": "Máma má dostatečný věk, je zdravá a uchovněná. Táta není ten nejbližší, ale ten, kdo se k ní nejlépe hodí: zdravý, dobré povahy a silný tam, kde je ona slabší.",
+    "a4_p2": "Chovatelé kontrolují, jak moc jsou partneři příbuzní (koeficient příbuzenské plemenitby, COI). FCI doporučuje, aby žádný pes neměl víc potomků než 5 % štěňat zapsaných v plemeni za pět let.",
+    "a4_p3": "Progesteronové testy určí plodné dny a březost trvá asi 63 dní. Dobří chovatelé mívají rodiny v pořadníku a psa si vezmou zpět v jakémkoli věku.",
+    "sources": "Zdroje",
+    "read": "Číst"
+  },
+  "real": {
+    "eyebrow": "Za animací",
+    "title": "Ano, jsem skutečná.",
+    "photo_caption": "Já ve skutečném životě.",
+    "anim_caption": "Já ve videích. Stejné čelo, lepší světlo.",
+    "drag": "Potáhněte a porovnejte",
+    "standard": "Standard FCI č.",
+    "height": "Výška v kohoutku",
+    "hips": "Kyčle",
+    "elbows": "Lokty",
+    "character": "Povahový test",
+    "show": "Výstavní hodnocení",
+    "show_value": "Výborná · BOB",
+    "approved": "Uchovněná",
+    "text": "Fena velkého švýcarského salašnického psa, která žije na Slovensku. Tři výstavní dny, tři rozhodčí: každý den výborná a první, první den vítězka plemene (BOB). Kyčle, lokty, ramena, kolena i oči bez nálezu."
+  },
+  "quote": {
+    "text": "Průkaz původu řekne kdo. Rentgen řekne, jak zdravý. Rozhodčí řekne, jak blízko má ke standardu. Dobrý chovatel vám ukáže všechny tři.",
+    "why": "Tato videa děláme zdarma, aby víc lidí vědělo, co papíry znamenají, než si domů přivezou štěně."
+  },
+  "shop": {
+    "eyebrow": "Později",
+    "title": "Pro velké psy.",
+    "text": "Obojky, vodítka, gravírované známky a oblečení. Sledujte nás na Instagramu a o otevření obchodu se dozvíte jako první.",
+    "cta": "Sledovat @carrietheswiss"
+  },
+  "footer": {
+    "contact": "Otázky k plemeni, výstavám nebo některé epizodě? Napište zprávu na Instagramu.",
+    "disclaimer": "Pouze vzdělávací obsah. O svém psovi se poraďte s veterinářem a chovatelským klubem."
+  }
+}
