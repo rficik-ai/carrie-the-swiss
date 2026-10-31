@@ -82,6 +82,7 @@ const chapters = [
   const split = Number(section.dataset.split || 1); // share of the film that carries the text chapters
   const shade = section.querySelector<HTMLElement>('.shade')!;
   const toPaper = section.querySelector<HTMLElement>('.toPaper')!;
+  const wide = matchMedia('(min-width: 900px) and (hover: hover)').matches; // desktop: the shelf scene takes over 1:1
 
   let target = 0, current = 0, ready = false;
 
@@ -96,8 +97,9 @@ const chapters = [
     const idx = pc > 1.02 ? -1 : Math.min(chapters.length - 1, Math.floor(Math.min(1, pc) * chapters.length * 0.999));
     chapters.forEach((c, i) => c.classList.toggle('on', reduce || i === idx));
     shade.style.opacity = String(1 - Math.min(1, Math.max(0, (p - split) / 0.06)));
-    toPaper.style.opacity = String(Math.min(1, Math.max(0, (p - 0.95) / 0.05)));
+    if (!wide) toPaper.style.opacity = String(Math.min(1, Math.max(0, (p - 0.95) / 0.05)));
     bar.style.width = `${p * 100}%`;
+    bar.parentElement!.style.opacity = p > 0.97 ? '0' : '1';
     hint.style.opacity = p > 0.04 ? '0' : '1';
   }
 

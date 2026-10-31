@@ -10,7 +10,33 @@ const E = s.episodes as Record<string, string>;
 const play = E.play ?? 'Play episode';
 const close = E.close ?? 'Close';
 const pull = E.pull ?? 'Pull out a book';
+// book edges measured on the last frame of the scroll film (1920x1080)
+const EDGES = [123, 264, 400, 537, 678, 818, 959, 1097, 1237, 1378, 1515, 1647, 1757];
+const BOOK_TOP = 106, BOOK_BOTTOM = 878;
 ---
+<div class="scene-wrap" id="shelf">
+  <div class="scene" aria-label={s.episodes.eyebrow}>
+    <div class="f1920">
+      <img class="sbg" src="/assets/img/shelf-scene.jpg" width="1920" height="1080" alt="" decoding="async" />
+      <p class="wall"><span class="weye">{s.episodes.eyebrow}</span><span class="wpull">{pull}</span></p>
+      {EPISODES.map((e, i) => {
+        const x0 = EDGES[i], w = EDGES[i + 1] - EDGES[i];
+        return (
+          <button type="button" class="sbook" data-n={e.n} aria-label={`${e.n} · ${e.title}`} style={`left:${x0}px;width:${w}px;top:${BOOK_TOP}px;height:${BOOK_BOTTOM - BOOK_TOP}px`}>
+            <span class="slot" aria-hidden="true"></span>
+            <span class="slice" aria-hidden="true" style={`background-position:-${x0}px -${BOOK_TOP}px`}><span class="snum">{e.n}</span></span>
+          </button>
+        );
+      })}
+      {EPISODES.map((e, i) => {
+        const x0 = EDGES[i], w = EDGES[i + 1] - EDGES[i];
+        return <span class="plaque" data-n={e.n} aria-hidden="true" style={`left:${x0 + 7}px;width:${w - 14}px`}><span>{e.title}</span></span>;
+      })}
+    </div>
+    <canvas class="dust" aria-hidden="true"></canvas>
+    <div class="reader" hidden><div class="rback"></div></div>
+  </div>
+</div>
 <section class="block light episodes" id="episodes">
   <div class="wrap">
     <div class="sec-head split" data-reveal>
@@ -198,6 +224,56 @@ const pull = E.pull ?? 'Pull out a book';
     .playbtn::before { animation: none; }
     .book, .story, .spine { transition: none !important; }
   }
+
+  /* ---------- Desktop: the shelf scene = last frame of the scroll film, 1:1 ---------- */
+  .scene-wrap { display: none; }
+  @media (min-width: 900px) and (hover: hover) {
+    .scene-wrap { display: block; position: relative; z-index: 3; margin-top: -100vh; margin-top: -100svh; height: 100vh; height: 100svh; }
+    .scene { position: relative; height: 100%; overflow: hidden; background: #2a1a0c; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+    .scene.live { opacity: 1; pointer-events: auto; }
+    .f1920 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+    .sbg { position: absolute; inset: 0; width: 1920px; height: 1080px; display: block; }
+    .wall { position: absolute; left: 0; right: 0; top: 1004px; margin: 0; display: flex; justify-content: center; align-items: baseline; gap: 22px; color: #f2d48e; opacity: 0; transform: translateY(8px); transition: opacity .8s ease .3s, transform .8s ease .3s; }
+    .scene.live .wall { opacity: 1; transform: none; }
+    .weye { font: 700 16px var(--f-body); letter-spacing: .28em; text-transform: uppercase; color: #d9b46a; }
+    .wpull { font: 600 italic 32px var(--f-display); color: #f6e7c4; text-shadow: 0 2px 8px rgba(0,0,0,.7); }
+    .sbook { all: unset; position: absolute; cursor: pointer; }
+    .slot { position: absolute; inset: 0; background: linear-gradient(180deg, #120b05, #241509); border-radius: 4px; box-shadow: inset 0 0 18px rgba(0,0,0,.9); }
+    .slice { position: absolute; inset: 0; background-image: url(/assets/img/shelf-scene.jpg); background-size: 1920px 1080px; border-radius: 4px;
+      transition: transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .45s, filter .45s; }
+    .sbook:hover .slice, .sbook.hov .slice, .sbook:focus-visible .slice { transform: translateY(-26px); box-shadow: 0 34px 40px -18px rgba(0,0,0,.75), 0 0 0 1px rgba(255,214,140,.5), 0 0 34px rgba(255,200,110,.35); filter: brightness(1.08) saturate(1.05); }
+    .sbook:focus-visible { outline: none; }
+    .snum { position: absolute; left: 14px; right: 14px; top: 13px; height: 58px; display: grid; place-items: center; font: 600 36px var(--f-display); color: #f2d48e; font-variant-numeric: lining-nums;
+      text-shadow: 0 1px 0 rgba(0,0,0,.7), 0 0 12px rgba(255,200,110,.35); opacity: 0; transform: scale(.9); transition: opacity .7s ease, transform .7s ease; }
+    .scene.live .snum { opacity: 1; transform: none; }
+    .sbook:nth-of-type(2) .snum { transition-delay: .04s } .sbook:nth-of-type(3) .snum { transition-delay: .08s } .sbook:nth-of-type(4) .snum { transition-delay: .12s }
+    .sbook:nth-of-type(5) .snum { transition-delay: .16s } .sbook:nth-of-type(6) .snum { transition-delay: .2s } .sbook:nth-of-type(7) .snum { transition-delay: .24s }
+    .sbook:nth-of-type(8) .snum { transition-delay: .28s } .sbook:nth-of-type(9) .snum { transition-delay: .32s } .sbook:nth-of-type(10) .snum { transition-delay: .36s }
+    .sbook:nth-of-type(11) .snum { transition-delay: .4s } .sbook:nth-of-type(12) .snum { transition-delay: .44s }
+    .plaque { position: absolute; top: 902px; height: 78px; display: grid; place-items: center; padding: 6px 8px; text-align: center; border-radius: 5px; cursor: pointer;
+      background: linear-gradient(180deg, #f3d995 0%, #c99a46 48%, #a87a2c 52%, #e4c27a 100%); box-shadow: 0 3px 6px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,250,220,.8), inset 0 -1px 0 rgba(90,55,10,.6);
+      opacity: 0; transform: translateY(6px); transition: opacity .7s ease .5s, transform .7s ease .5s, filter .3s; }
+    .plaque span { font: 800 13.5px/1.12 var(--f-body); letter-spacing: .06em; text-transform: uppercase; color: #2a1806; text-shadow: 0 1px 0 rgba(255,240,200,.6);
+      display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+    .scene.live .plaque { opacity: 1; transform: none; }
+    .plaque.hot { filter: brightness(1.12) drop-shadow(0 0 10px rgba(255,210,120,.6)); }
+    /* reader: the pulled-out book opens over the shelf */
+    .reader { position: absolute; inset: 0; z-index: 5; display: grid; place-items: center; }
+    .reader[hidden] { display: none; }
+    .rback { position: absolute; inset: 0; background: rgba(20,12,5,.62); backdrop-filter: blur(5px); animation: fadeIn .35s ease; }
+    @keyframes fadeIn { from { opacity: 0; } }
+    .reader .pages { position: relative; inset: auto; opacity: 1; pointer-events: auto; display: none; grid-template-columns: 1fr 1fr; width: min(980px, 78vw); height: min(600px, 78vh); perspective: 1800px;
+      padding: 6px; border-radius: 8px; background: linear-gradient(90deg, #2a1d12, #3a2817 49%, #1a120a 50%, #3a2817 51%, #2a1d12); box-shadow: 0 50px 80px -30px rgba(0,0,0,.8); }
+    .reader .pages.on { display: grid; animation: pull .55s cubic-bezier(.2,.7,.2,1); }
+    @keyframes pull { from { opacity: 0; transform: translateY(60px) scale(.92); } }
+    .reader .cover { border-radius: 6px 0 0 6px; box-shadow: -1px 1px 0 #e6dcc6, -2px 2px 0 #cfc2a5, -3px 3px 0 #e6dcc6, -4px 4px 0 #c4b697, -5px 5px 0 #e6dcc6, -6px 6px 0 #b9aa8a; }
+    .reader .story { border-radius: 0 6px 6px 0; transform-origin: left center; transform: rotateY(-100deg);
+      box-shadow: 1px 1px 0 #e6dcc6, 2px 2px 0 #cfc2a5, 3px 3px 0 #e6dcc6, 4px 4px 0 #c4b697, 5px 5px 0 #e6dcc6, 6px 6px 0 #b9aa8a; }
+    .reader .pages.on .story { transform: none; transition: transform .9s cubic-bezier(.2,.7,.2,1) .3s; }
+    .pages.playing .clip { opacity: 1; }
+    /* the old flat shelf is replaced by the scene on desktop */
+    .shelf-wrap .hint, .shelf-wrap .shelf, .shelf-wrap .plank { display: none !important; }
+  }
 </style>
 
 <script>
@@ -258,42 +334,70 @@ const pull = E.pull ?? 'Pull out a book';
     frame.innerHTML = '';
     modal = false;
     (document.activeElement as HTMLElement | null)?.blur();
-    const open = shelf.querySelector<HTMLElement>('.book.open');
+    const open = document.querySelector<HTMLElement>('.reader .pages.on');
     if (open) preview(open);
   });
 
   const desktop = matchMedia('(min-width: 900px) and (hover: hover)');
   let openBook: (li: HTMLElement) => void = (li) => li.scrollIntoView({ inline: 'start', block: 'nearest', behavior: 'smooth' });
   if (desktop.matches) {
-    // the picture across the spines: each spine shows its own slice of one shelf-wide image
-    const layout = () => {
-      const r = shelf.getBoundingClientRect();
-      shelf.style.setProperty('--rw', String(Math.round(r.width)));
-      books.forEach((li) => li.style.setProperty('--ox', String(li.getBoundingClientRect().left - r.left)));
+    const sceneWrap = document.querySelector<HTMLElement>('.scene-wrap')!;
+    const scene = sceneWrap.querySelector<HTMLElement>('.scene')!;
+    const f = scene.querySelector<HTMLElement>('.f1920')!;
+    const reader = scene.querySelector<HTMLElement>('.reader')!;
+    // "#episodes" (nav, hero button, other pages) should land on the shelf scene
+    document.getElementById('episodes')!.id = 'episodes-more';
+    sceneWrap.id = 'episodes';
+    // place the 1920x1080 frame exactly like the film (object-fit: cover, centred)
+    const fit = () => {
+      const W = scene.clientWidth, H = scene.clientHeight, k = Math.max(W / 1920, H / 1080);
+      f.style.transform = `translate(${(W - 1920 * k) / 2}px, ${(H - 1080 * k) / 2}px) scale(${k})`;
     };
-    const ro = new ResizeObserver(layout);
-    books.forEach((li) => ro.observe(li));
-    ro.observe(shelf);
-    layout();
-
-    const closeAll = () => {
-      books.forEach((b) => { b.classList.remove('open'); b.querySelector('.spine')!.setAttribute('aria-expanded', 'false'); });
+    new ResizeObserver(fit).observe(scene); fit();
+    // the scene takes over only when it sits exactly where the film's last frame is
+    const watch = () => {
+      const on = sceneWrap.getBoundingClientRect().top <= 1.5;
+      if (on !== scene.classList.contains('live')) { scene.classList.toggle('live', on); if (!on) closeAll(); }
+      requestAnimationFrame(watch);
+    };
+    const pagesOf = new Map<string, HTMLElement>();
+    books.forEach((li) => { const pg = li.querySelector<HTMLElement>('.pages')!; reader.appendChild(pg); pagesOf.set(li.dataset.n!, pg); });
+    const sbooks = [...scene.querySelectorAll<HTMLElement>('.sbook')];
+    const plaques = [...scene.querySelectorAll<HTMLElement>('.plaque')];
+    function closeAll() {
+      reader.hidden = true;
+      pagesOf.forEach((pg) => pg.classList.remove('on'));
       preview(null);
-    };
+    }
     openBook = (li: HTMLElement) => {
+      const pg = pagesOf.get(li.dataset.n!)!;
       closeAll();
-      li.classList.add('open');
-      li.querySelector('.spine')!.setAttribute('aria-expanded', 'true');
-      setTimeout(() => { preview(li); li.querySelector<HTMLElement>('.story .title')?.focus?.(); }, 450);
+      reader.hidden = false;
+      pg.classList.add('on');
+      setTimeout(() => { preview(pg); pg.querySelector<HTMLElement>('.go, .cover')?.focus({ preventScroll: true }); }, 500);
     };
-    books.forEach((li) => {
-      li.querySelector('.spine')!.addEventListener('click', () => openBook(li));
-      li.querySelector('.shut')!.addEventListener('click', () => {
-        closeAll();
-        li.querySelector<HTMLElement>('.spine')!.focus({ preventScroll: true });
-      });
+    const byN = (n: string) => books.find((l) => l.dataset.n === n)!;
+    sbooks.forEach((b, i) => {
+      b.addEventListener('click', () => openBook(byN(b.dataset.n!)));
+      b.addEventListener('mouseenter', () => plaques[i].classList.add('hot'));
+      b.addEventListener('mouseleave', () => plaques[i].classList.remove('hot'));
     });
+    plaques.forEach((pl, i) => {
+      pl.addEventListener('click', () => openBook(byN(pl.dataset.n!)));
+      pl.addEventListener('mouseenter', () => { pl.classList.add('hot'); sbooks[i].classList.add('hov'); });
+      pl.addEventListener('mouseleave', () => { pl.classList.remove('hot'); sbooks[i].classList.remove('hov'); });
+    });
+    reader.querySelector('.rback')!.addEventListener('click', closeAll);
+    reader.querySelectorAll('.shut').forEach((x) => x.addEventListener('click', closeAll));
     addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal) closeAll(); });
+    requestAnimationFrame(watch);
+    // open requests from elsewhere wait until the scene is in place
+    window.addEventListener('open-book', (e) => {
+      const li = byN((e as CustomEvent).detail);
+      const t0 = performance.now();
+      const wait = () => { if (scene.classList.contains('live')) openBook(li); else if (performance.now() - t0 < 4000) requestAnimationFrame(wait); };
+      requestAnimationFrame(wait);
+    });
   } else {
     const io = new IntersectionObserver((ents) => {
       const best = ents.filter((e) => e.isIntersecting && e.intersectionRatio > 0.7).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
@@ -301,8 +405,8 @@ const pull = E.pull ?? 'Pull out a book';
     }, { root: shelf, threshold: [0.7, 0.9] });
     books.forEach((li) => io.observe(li));
   }
-  window.addEventListener('open-book', (e) => {
+  if (!desktop.matches) window.addEventListener('open-book', (e) => {
     const li = books.find((b) => b.dataset.n === (e as CustomEvent).detail);
-    if (li) setTimeout(() => openBook(li), desktop.matches ? 550 : 300);
+    if (li) setTimeout(() => openBook(li), 300);
   });
 </script>
