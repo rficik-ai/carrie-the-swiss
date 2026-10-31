@@ -42,29 +42,54 @@ const ogImage = `${site}/assets/img/og.jpg`;
   // reveal on scroll
   const rio = new IntersectionObserver((ents) => ents.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } }), { threshold: 0.15 });
   document.querySelectorAll('[data-reveal]').forEach((el) => rio.observe(el));
-  // floating gold dust
+  // floating gold dust: three depth layers, wandering paths, mixed speeds
   document.querySelectorAll<HTMLCanvasElement>('canvas.dust').forEach((cv) => {
     if (reduce) return;
     const ctx = cv.getContext('2d')!;
-    let w = 0, h = 0, on = false, raf = 0;
+    let w = 0, h = 0, on = false, raf = 0, last = 0;
     const dpr = Math.min(2, devicePixelRatio || 1);
-    const N = innerWidth < 700 ? 26 : 60;
-    const ps = Array.from({ length: N }, () => ({ x: Math.random(), y: Math.random(), r: .6 + Math.random() * 1.8, s: .00012 + Math.random() * .00035, ph: Math.random() * 6.28, a: .25 + Math.random() * .6 }));
+    const N = innerWidth < 700 ? 14 : 30;
+    const R = Math.random;
+    // near = big, soft, full speed · mid = 20 % slower · far = small, faint, 40 % slower
+    const layers = [
+      { share: .2, r: [2.4, 3.8], glow: 7, a: [.28, .5], speed: 1 },
+      { share: .4, r: [1.1, 2.0], glow: 5, a: [.3, .6], speed: .8 },
+      { share: .4, r: [.5, 1.0], glow: 4, a: [.18, .38], speed: .6 },
+    ];
+    const pick = () => { const x = R(); return x < layers[0].share ? layers[0] : x < layers[0].share + layers[1].share ? layers[1] : layers[2]; };
+    const ps = Array.from({ length: N }, () => {
+      const L = pick();
+      return {
+        x: R(), y: R(), L,
+        r: L.r[0] + R() * (L.r[1] - L.r[0]),
+        a: L.a[0] + R() * (L.a[1] - L.a[0]),
+        v: (0.115 + R() * 0.335) * L.speed,         // share of the height per second
+        f1: .15 + R() * .35, f2: .5 + R() * .9, p1: R() * 6.28, p2: R() * 6.28,
+        A1: .5 + R() * .7, A2: .15 + R() * .35, tw: R() * 6.28, tf: 1 + R() * 2,
+      };
+    });
     const size = () => { w = cv.clientWidth; h = cv.clientHeight; cv.width = w * dpr; cv.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); };
-    const tick = (t: number) => {
+    const tick = (ms: number) => {
+      const t = ms / 1000, dt = Math.min(.05, last ? t - last : .016); last = t;
       ctx.clearRect(0, 0, w, h);
       for (const p of ps) {
-        p.y -= p.s * 16; if (p.y < -0.02) { p.y = 1.02; p.x = Math.random(); }
-        const x = (p.x + Math.sin(t / 2600 + p.ph) * 0.012) * w, y = p.y * h;
-        const tw = .55 + .45 * Math.sin(t / 700 + p.ph * 3);
-        const g = ctx.createRadialGradient(x, y, 0, x, y, p.r * 5);
-        g.addColorStop(0, `rgba(255,228,160,${p.a * tw})`); g.addColorStop(1, 'rgba(255,228,160,0)');
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, p.r * 5, 0, 6.283); ctx.fill();
+        const ang = Math.sin(t * p.f1 + p.p1) * p.A1 + Math.sin(t * p.f2 + p.p2) * p.A2; // wandering heading
+        p.x += Math.sin(ang) * p.v * dt * (h / Math.max(w, 1));
+        p.y -= Math.cos(ang) * p.v * dt;
+        if (p.y < -0.03) { p.y = 1.03; p.x = R(); }
+        if (p.x < -0.03) p.x = 1.03; else if (p.x > 1.03) p.x = -0.03;
+        const x = p.x * w, y = p.y * h, rr = p.r * p.L.glow;
+        const tw = .6 + .4 * Math.sin(t * p.tf + p.tw);
+        const g = ctx.createRadialGradient(x, y, 0, x, y, rr);
+        g.addColorStop(0, `rgba(255,232,170,${p.a * tw})`);
+        g.addColorStop(.35, `rgba(255,214,140,${p.a * tw * .45})`);
+        g.addColorStop(1, 'rgba(255,214,140,0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, rr, 0, 6.283); ctx.fill();
       }
       if (on) raf = requestAnimationFrame(tick);
     };
     new ResizeObserver(size).observe(cv); size();
-    new IntersectionObserver(([e]) => { on = e.isIntersecting; cancelAnimationFrame(raf); if (on) raf = requestAnimationFrame(tick); }).observe(cv);
+    new IntersectionObserver(([e]) => { on = e.isIntersecting; cancelAnimationFrame(raf); last = 0; if (on) raf = requestAnimationFrame(tick); }).observe(cv);
   });
   // links that open a specific book on the shelf
   document.addEventListener('click', (e) => {
