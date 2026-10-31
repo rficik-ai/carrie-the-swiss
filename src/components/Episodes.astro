@@ -11,13 +11,15 @@ const play = E.play ?? 'Play episode';
 const close = E.close ?? 'Close';
 const pull = E.pull ?? 'Pull out a book';
 // book edges measured on the last frame of the scroll film (1920x1080)
-const EDGES = [123, 264, 400, 537, 678, 818, 959, 1097, 1237, 1378, 1515, 1647, 1757];
-const BOOK_TOP = 106, BOOK_BOTTOM = 878;
+import { SHELF } from '../data/shelf';
+const EDGES = SHELF.edges;
+const BOOK_TOP = SHELF.top, BOOK_BOTTOM = SHELF.bottom;
+const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-size:${SHELF.numSize}px;--plaque-top:${SHELF.plaqueTop}px;--plaque-h:${SHELF.plaqueH}px;--caption-top:${SHELF.captionTop}px`;
 ---
 <div class="scene-wrap" id="shelf">
   <div class="scene" aria-label={s.episodes.eyebrow}>
     <div class="sfill" aria-hidden="true"></div>
-    <div class="f1920">
+    <div class="f1920" style={sceneVars}>
       <img class="sbg" src="/assets/img/shelf-scene.jpg" width="1920" height="1080" alt="" decoding="async" />
       <p class="wall"><span class="weye">{s.episodes.eyebrow}</span><span class="wpull">{pull}</span></p>
       {EPISODES.map((e, i) => {
@@ -31,7 +33,7 @@ const BOOK_TOP = 106, BOOK_BOTTOM = 878;
       })}
       {EPISODES.map((e, i) => {
         const x0 = EDGES[i], w = EDGES[i + 1] - EDGES[i];
-        return <span class="plaque" data-n={e.n} aria-hidden="true" style={`left:${x0 + 7}px;width:${w - 14}px`}><span>{e.title}</span></span>;
+        return <span class="plaque" data-n={e.n} aria-hidden="true" style={`left:${x0 + 4}px;width:${w - 8}px`}><span>{e.title}</span></span>;
       })}
     </div>
     <canvas class="dust" aria-hidden="true"></canvas>
@@ -235,7 +237,7 @@ const BOOK_TOP = 106, BOOK_BOTTOM = 878;
     .sfill { position: absolute; inset: -40px; background: url(/assets/img/shelf-scene.jpg) center / cover; filter: blur(26px) brightness(.42) saturate(1.1); }
     .f1920 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
     .sbg { position: absolute; inset: 0; width: 1920px; height: 1080px; display: block; }
-    .wall { position: absolute; left: 0; right: 0; top: 1004px; margin: 0; display: flex; justify-content: center; align-items: baseline; gap: 22px; color: #f2d48e; opacity: 0; transform: translateY(8px); transition: opacity .8s ease .3s, transform .8s ease .3s; }
+    .wall { position: absolute; left: 0; right: 0; top: var(--caption-top); margin: 0; display: flex; justify-content: center; align-items: baseline; gap: 22px; color: #f2d48e; opacity: 0; transform: translateY(8px); transition: opacity .8s ease .3s, transform .8s ease .3s; }
     .scene.live .wall { opacity: 1; transform: none; }
     .weye { font: 700 16px var(--f-body); letter-spacing: .28em; text-transform: uppercase; color: #d9b46a; }
     .wpull { font: 600 italic 32px var(--f-display); color: #f6e7c4; text-shadow: 0 2px 8px rgba(0,0,0,.7); }
@@ -255,17 +257,17 @@ const BOOK_TOP = 106, BOOK_BOTTOM = 878;
       transition: transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .45s, filter .45s; }
     .sbook:hover .slice, .sbook.hov .slice, .sbook:focus-visible .slice { transform: translateY(-26px); box-shadow: 0 28px 30px -16px rgba(0,0,0,.7); }
     .sbook:focus-visible { outline: none; }
-    .snum { position: absolute; left: 14px; right: 14px; top: 13px; height: 58px; display: grid; place-items: center; font: 600 36px var(--f-display); color: #f2d48e; font-variant-numeric: lining-nums;
+    .snum { position: absolute; left: 14px; right: 14px; top: var(--num-top); height: var(--num-h); display: grid; place-items: center; font: 600 var(--num-size) var(--f-display); color: #f2d48e; font-variant-numeric: lining-nums;
       text-shadow: 0 1px 0 rgba(0,0,0,.7), 0 0 12px rgba(255,200,110,.35); opacity: 0; transform: scale(.9); transition: opacity .7s ease, transform .7s ease; }
     .scene.live .snum { opacity: 1; transform: none; }
     .sbook:nth-of-type(2) .snum { transition-delay: .04s } .sbook:nth-of-type(3) .snum { transition-delay: .08s } .sbook:nth-of-type(4) .snum { transition-delay: .12s }
     .sbook:nth-of-type(5) .snum { transition-delay: .16s } .sbook:nth-of-type(6) .snum { transition-delay: .2s } .sbook:nth-of-type(7) .snum { transition-delay: .24s }
     .sbook:nth-of-type(8) .snum { transition-delay: .28s } .sbook:nth-of-type(9) .snum { transition-delay: .32s } .sbook:nth-of-type(10) .snum { transition-delay: .36s }
     .sbook:nth-of-type(11) .snum { transition-delay: .4s } .sbook:nth-of-type(12) .snum { transition-delay: .44s }
-    .plaque { position: absolute; top: 902px; height: 78px; display: grid; place-items: center; padding: 6px 8px; text-align: center; border-radius: 5px; cursor: pointer;
+    .plaque { position: absolute; top: var(--plaque-top); height: var(--plaque-h); display: grid; place-items: center; padding: 4px 6px; text-align: center; border-radius: 4px; cursor: pointer;
       background: linear-gradient(180deg, #f3d995 0%, #c99a46 48%, #a87a2c 52%, #e4c27a 100%); box-shadow: 0 3px 6px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,250,220,.8), inset 0 -1px 0 rgba(90,55,10,.6);
       opacity: 0; transform: translateY(6px); transition: opacity .7s ease .5s, transform .7s ease .5s, filter .3s; }
-    .plaque span { font: 800 13.5px/1.12 var(--f-body); letter-spacing: .06em; text-transform: uppercase; color: #2a1806; text-shadow: 0 1px 0 rgba(255,240,200,.6);
+    .plaque span { font: 800 11.5px/1.1 var(--f-body); letter-spacing: .05em; text-transform: uppercase; color: #2a1806; text-shadow: 0 1px 0 rgba(255,240,200,.6);
       display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
     .scene.live .plaque { opacity: 1; transform: none; }
     .plaque.hot { filter: brightness(1.12) drop-shadow(0 0 10px rgba(255,210,120,.6)); }

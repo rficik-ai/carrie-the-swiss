@@ -1,6 +1,7 @@
 // Shared framing for the last frame of the scroll film and the shelf scene (1920x1080 source).
 // Both must use exactly the same numbers so the hand-over is pixel-identical.
-const REGION = { x: 100, y: 88, w: 1680, h: 972 }; // books + plaques + caption, in source pixels
+import { SHELF } from '../data/shelf';
+const REGION = SHELF.region; // books + plaques + caption, in source pixels
 
 export function headerHeight() {
   return (document.querySelector('header.top') as HTMLElement | null)?.offsetHeight ?? 68;
