@@ -9,7 +9,7 @@ const chapters = [
   { title: s.hero.ch3_title, text: s.hero.ch3_text, cta: true },
 ];
 ---
-<section class="scrub" id="film" aria-label="Carrie">
+<section class="scrub" id="film" aria-label="Carrie" data-split="0.6">
   <div class="stage">
     <video
       class="film"
@@ -21,6 +21,7 @@ const chapters = [
     ></video>
     <div class="shade" aria-hidden="true"></div>
     <canvas class="dust" aria-hidden="true"></canvas>
+    <div class="toPaper" aria-hidden="true"></div>
     <div class="chapters wrap">
       {chapters.map((c, i) => (
         <article class="chapter" data-i={i}>
@@ -37,12 +38,13 @@ const chapters = [
 </section>
 
 <style>
-  .scrub { position: relative; height: 420vh; background: var(--ink); }
+  .scrub { position: relative; height: 680vh; background: var(--ink); }
   .stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
   .film { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: radial-gradient(120% 80% at 70% 60%, #2a2418 0%, #0d0c0a 70%); }
   .shade { position: absolute; inset: 0; background:
     linear-gradient(90deg, rgba(13,12,10,.78) 0%, rgba(13,12,10,.35) 45%, rgba(13,12,10,0) 70%),
     linear-gradient(0deg, rgba(13,12,10,.85) 0%, rgba(13,12,10,0) 40%); }
+  .toPaper { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; background: linear-gradient(180deg, rgba(251,248,241,0) 55%, var(--paper) 100%); }
   .chapters { position: absolute; z-index: 2; inset: 0; display: grid; align-items: end; padding-bottom: max(13vh, 96px); }
   .chapter {
     grid-area: 1 / 1; max-width: 640px; display: grid; gap: 18px; justify-items: start;
@@ -77,6 +79,9 @@ const chapters = [
   const bar = section.querySelector<HTMLElement>('.progress span')!;
   const hint = section.querySelector<HTMLElement>('.hint')!;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const split = Number(section.dataset.split || 1); // share of the film that carries the text chapters
+  const shade = section.querySelector<HTMLElement>('.shade')!;
+  const toPaper = section.querySelector<HTMLElement>('.toPaper')!;
 
   let target = 0, current = 0, ready = false;
 
@@ -87,8 +92,11 @@ const chapters = [
   }
 
   function setChapter(p: number) {
-    const idx = Math.min(chapters.length - 1, Math.floor(p * chapters.length * 0.999));
+    const pc = p / split;
+    const idx = pc > 1.02 ? -1 : Math.min(chapters.length - 1, Math.floor(Math.min(1, pc) * chapters.length * 0.999));
     chapters.forEach((c, i) => c.classList.toggle('on', reduce || i === idx));
+    shade.style.opacity = String(1 - Math.min(1, Math.max(0, (p - split) / 0.06)));
+    toPaper.style.opacity = String(Math.min(1, Math.max(0, (p - 0.95) / 0.05)));
     bar.style.width = `${p * 100}%`;
     hint.style.opacity = p > 0.04 ? '0' : '1';
   }
