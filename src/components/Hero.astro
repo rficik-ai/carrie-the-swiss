@@ -93,7 +93,9 @@ const chapters = [
   }
 
   async function load() {
-    const src = matchMedia('(max-width: 700px)').matches ? video.dataset.srcMobile! : video.dataset.srcDesktop!;
+    const mobile = matchMedia('(max-width: 700px)').matches;
+    if (mobile) video.poster = '/assets/film/poster-mobile.jpg';
+    const src = mobile ? video.dataset.srcMobile! : video.dataset.srcDesktop!;
     try {
       const res = await fetch(src);
       if (!res.ok) throw new Error(String(res.status));
