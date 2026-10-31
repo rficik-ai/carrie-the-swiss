@@ -1,13 +1,13 @@
 ---
 import { type Locale, t } from '../i18n';
 import { EPISODES, INSTAGRAM } from '../data/episodes';
-const play = (s.episodes as any).play ?? 'Play episode';
-const close = (s.episodes as any).close ?? 'Close';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const s = t(locale);
 const lines = s.ep as Record<string, { line: string }>;
 const topics = s.topics as Record<string, string>;
+const play = (s.episodes as any).play ?? 'Play episode';
+const close = (s.episodes as any).close ?? 'Close';
 ---
 <section class="block light episodes" id="episodes">
   <div class="wrap">
