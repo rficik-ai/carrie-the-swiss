@@ -1,0 +1,141 @@
+---
+import { type Locale, t } from '../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = (t(locale) as any).cards;
+const cards = [
+  { img: '/assets/img/doc-pedigree.jpg', name: c.c1_name, big: c.c1_big, text: c.c1_text, ep: '03' },
+  { img: '/assets/img/doc-xray.jpg', name: c.c2_name, big: c.c2_big, text: c.c2_text, ep: '04' },
+  { img: '/assets/img/doc-critique.jpg', name: c.c3_name, big: c.c3_big, text: c.c3_text, ep: '05' },
+];
+---
+<section class="block game" id="papers-game">
+  <canvas class="dust" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="head" data-reveal>
+      <p class="eyebrow">{c.eyebrow}</p>
+      <h2>{c.title}</h2>
+      <p class="muted">{c.intro}</p>
+    </div>
+    <ol class="deck">
+      {cards.map((k, i) => (
+        <li class="slot" data-reveal style={`--d:${i * 120}ms`}>
+          <div class="card" role="button" tabindex="0" aria-pressed="false" aria-label={`${k.name}: ${c.tap}`}>
+            <span class="tilt">
+              <span class="face front">
+                <img src={k.img} alt="" loading="lazy" />
+                <span class="shine" aria-hidden="true"></span>
+                <span class="label"><span class="no">0{i + 1}</span><span class="nm">{k.name}</span><span class="tap">{c.tap} ↻</span></span>
+              </span>
+              <span class="face back">
+                <span class="nm">{k.name}</span>
+                <span class="bigw">{k.big}</span>
+                <span class="txt">{k.text}</span>
+                <a class="ep" href={`/${locale}/#episodes`} data-open-book={k.ep}>▶ {c.watch} {k.ep}</a>
+              </span>
+            </span>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p class="progress" aria-live="polite"><span class="count">0</span> {c.progress}</p>
+    <div class="done" hidden>
+      <p class="done-title">{c.done_title}</p>
+      <p class="muted">{c.done_text}</p>
+      <a class="pill-cta" href={`/${locale}/papers/`}>{c.done_cta} <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .game { position: relative; overflow: hidden; background: radial-gradient(70% 55% at 50% 0%, rgba(201,163,91,.16), transparent 70%), radial-gradient(60% 50% at 50% 100%, rgba(180,97,42,.12), transparent 70%), var(--ink); }
+  .game > .wrap { position: relative; z-index: 2; }
+  .head { position: relative; display: grid; gap: 16px; justify-items: center; text-align: center; max-width: 44em; margin: 0 auto 56px; }
+  .head h2 { font-size: clamp(36px, 5vw, 66px); }
+  .deck { position: relative; list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(18px, 3vw, 40px); grid-template-columns: repeat(3, minmax(0, 1fr)); perspective: 1400px; }
+  .slot { transition-delay: var(--d); }
+  .card { all: unset; box-sizing: border-box; display: block; width: 100%; aspect-ratio: 3 / 4; cursor: pointer; border-radius: 18px; }
+  .card:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 6px; }
+  .tilt { position: relative; display: block; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .9s cubic-bezier(.2,.7,.2,1);
+    transform: rotateX(var(--rx, 0deg)) rotateY(calc(var(--ry, 0deg) + var(--flip, 0deg))); }
+  .card[aria-pressed='true'] .tilt { --flip: 180deg; }
+  .face { position: absolute; inset: 0; border-radius: 18px; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    box-shadow: 0 40px 70px -35px rgba(0,0,0,.9), 0 0 0 1px rgba(234,211,154,.45), inset 0 0 0 8px rgba(13,12,10,.0); }
+  .front img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .8s ease; }
+  .card:hover .front img { transform: scale(1.05); }
+  .front::after { content: ''; position: absolute; inset: 10px; border: 1px solid rgba(234,211,154,.6); border-radius: 12px; pointer-events: none; }
+  .shine { position: absolute; inset: 0; background: radial-gradient(40% 40% at var(--mx, 50%) var(--my, 30%), rgba(255,236,190,.35), transparent 70%); mix-blend-mode: soft-light; opacity: 0; transition: opacity .3s; }
+  .card:hover .shine { opacity: 1; }
+  .label { position: absolute; left: 0; right: 0; bottom: 0; display: grid; gap: 6px; padding: 26px 24px 24px; background: linear-gradient(0deg, rgba(13,12,10,.92), rgba(13,12,10,0)); }
+  .no { font: 600 14px var(--f-display); color: var(--gold); }
+  .label .nm { font: 600 clamp(22px, 2.2vw, 30px)/1.1 var(--f-display); color: var(--ivory); }
+  .tap { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-hi); }
+  .back { transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: clamp(22px, 2.6vw, 36px); text-align: left;
+    background: radial-gradient(90% 70% at 30% 20%, #fffaf0, #f3e9d3 70%, #e8d9b8); color: #1c1914; }
+  .back::after { content: ''; position: absolute; inset: 10px; border: 1px solid rgba(138,100,36,.45); border-radius: 12px; pointer-events: none; }
+  .back .nm { font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-deep); }
+  .bigw { font: 600 italic clamp(40px, 4.4vw, 64px)/1 var(--f-display); background: var(--grad-gold, var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 1px 0 rgba(90,60,20,.25)); }
+  .txt { font-size: clamp(15px, 1.2vw, 17px); line-height: 1.5; color: #3b342a; }
+  .ep { position: relative; z-index: 1; align-self: flex-start; margin-top: 6px; font-weight: 700; font-size: 14px; color: var(--gold-deep); text-decoration: none; border-bottom: 1px solid currentColor; }
+  .progress { position: relative; margin: 34px 0 0; text-align: center; font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+  .done[hidden] { display: none; }
+  .done { position: relative; margin: 30px auto 0; max-width: 40em; display: grid; justify-items: center; gap: 14px; text-align: center; animation: rise .8s cubic-bezier(.2,.7,.2,1); }
+  .done-title { margin: 0; font: 600 italic clamp(30px, 3.6vw, 48px)/1.15 var(--f-display); background: var(--grad-gold, var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  @keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  .burst { position: fixed; z-index: 50; width: 6px; height: 6px; border-radius: 50%; pointer-events: none; background: var(--gold-hi); box-shadow: 0 0 10px 2px rgba(234,211,154,.8); animation: pop .9s ease-out forwards; }
+  @keyframes pop { to { transform: translate(var(--tx), var(--ty)) scale(.2); opacity: 0; } }
+  @media (max-width: 760px) {
+    .deck { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; }
+  }
+  @media (prefers-reduced-motion: reduce) { .tilt { transition: none; } }
+</style>
+
+<script>
+  const game = document.querySelector<HTMLElement>('.game');
+  if (game) {
+    const cards = [...game.querySelectorAll<HTMLElement>('.card')];
+    const count = game.querySelector<HTMLElement>('.count')!;
+    const done = game.querySelector<HTMLElement>('.done')!;
+    const seen = new Set<number>();
+    const burst = (x: number, y: number, n = 18) => {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      for (let i = 0; i < n; i++) {
+        const p = document.createElement('span');
+        p.className = 'burst';
+        const a = Math.random() * Math.PI * 2, r = 40 + Math.random() * 90;
+        p.style.left = x + 'px'; p.style.top = y + 'px';
+        p.style.setProperty('--tx', Math.cos(a) * r + 'px'); p.style.setProperty('--ty', Math.sin(a) * r + 'px');
+        game.appendChild(p);
+        setTimeout(() => p.remove(), 950);
+      }
+    };
+    cards.forEach((card, i) => {
+      const tilt = card.querySelector<HTMLElement>('.tilt')!;
+      card.addEventListener('click', (e) => {
+        if ((e.target as HTMLElement).closest('a')) return;
+        const on = card.getAttribute('aria-pressed') !== 'true';
+        card.setAttribute('aria-pressed', String(on));
+        if (on) {
+          const r = card.getBoundingClientRect();
+          burst(r.left + r.width / 2, r.top + r.height / 2);
+          seen.add(i);
+          count.textContent = String(seen.size);
+          if (seen.size === cards.length && done.hidden) {
+            setTimeout(() => { done.hidden = false; const d = done.getBoundingClientRect(); burst(d.left + d.width / 2, d.top + 20, 40); }, 700);
+          }
+        }
+      });
+      card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); } });
+      if (matchMedia('(hover: hover)').matches) {
+        card.addEventListener('pointermove', (e) => {
+          const r = card.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+          tilt.style.setProperty('--ry', `${(x - 0.5) * 14}deg`);
+          tilt.style.setProperty('--rx', `${(0.5 - y) * 12}deg`);
+          card.style.setProperty('--mx', `${x * 100}%`); card.style.setProperty('--my', `${y * 100}%`);
+        });
+        card.addEventListener('pointerleave', () => { tilt.style.setProperty('--ry', '0deg'); tilt.style.setProperty('--rx', '0deg'); });
+      }
+    });
+  }
+</script>

@@ -8,7 +8,8 @@
     "guide": "Field guide",
     "carrie": "Carrie",
     "shop": "Shop",
-    "language": "Language"
+    "language": "Language",
+    "papers": "My papers"
   },
   "hero": {
     "eyebrow": "An educational series from Slovakia",
@@ -23,8 +24,8 @@
   },
   "episodes": {
     "eyebrow": "Season one",
-    "title": "Twelve episodes. One honest dog.",
-    "intro": "Watch them in order: each one ends with a teaser for the next. New reels every Monday, Wednesday and Friday.",
+    "title": "Pick a book from our shelf and learn something new.",
+    "intro": "Each book is one short episode. Pull one out, open it and press play. Best watched in order: every episode ends with a teaser for the next.",
     "watch": "Watch on Instagram",
     "out": "Out now",
     "soon": "Coming",
@@ -32,7 +33,10 @@
     "parts": "3 parts",
     "play": "Play episode",
     "close": "Close",
-    "pull": "Pull out a book"
+    "pull": "Pull out a book",
+    "more_eyebrow": "Coming next",
+    "more_title": "More seasons are already in production.",
+    "more_text": "So much more to learn. Follow along so you don't miss the next shelf."
   },
   "topics": {
     "intro": "Intro",
@@ -132,7 +136,8 @@
     "show": "Show grade",
     "show_value": "Excellent · BOB",
     "approved": "Approved for breeding",
-    "text": "A Greater Swiss Mountain Dog living in Slovakia. Three show days, three judges: excellent and first every day, Best of Breed on day one. Hips, elbows, shoulders, knees and eyes all clear."
+    "text": "A real Greater Swiss Mountain Dog living in Slovakia. The animation is me, just with better lighting and a bigger vocabulary.",
+    "cta": "See my papers and results"
   },
   "quote": {
     "text": "Pedigree says who. X-rays say how healthy. The judge says how close to the blueprint. A good breeder shows you all three.",
@@ -147,5 +152,68 @@
   "footer": {
     "contact": "Questions about the breed, dog shows or an episode? Send a message on Instagram.",
     "disclaimer": "Educational content only. Ask your vet and your breed club about your own dog."
+  },
+  "cards": {
+    "eyebrow": "A little game",
+    "title": "Every puppy has papers. Can you read them?",
+    "intro": "Tap each paper to see what it really tells you.",
+    "tap": "Tap to flip",
+    "c1_name": "The pedigree",
+    "c1_big": "Who.",
+    "c1_text": "Who I come from. It doesn't say how I was raised, or whether I'm healthy.",
+    "c2_name": "The X-rays",
+    "c2_big": "How healthy.",
+    "c2_text": "How healthy my hips and elbows are. HD-A and ED-0 are the best scores.",
+    "c3_name": "The judge's report",
+    "c3_big": "How close.",
+    "c3_text": "How close I am to the blueprint of my breed, written down after a dog show.",
+    "watch": "Watch episode",
+    "done_title": "A good breeder shows you all three.",
+    "done_text": "Now you know what to ask for. Want the long version, with sources?",
+    "done_cta": "Read my papers",
+    "progress": "of 3 flipped"
+  },
+  "quiz": {
+    "eyebrow": "Carrie asks",
+    "title": "Is a Swissy right for you?",
+    "intro": "Five honest questions from me. No wrong answers, just useful ones.",
+    "start": "Let's find out",
+    "q": "Question",
+    "q1": "How much space do you have?",
+    "q1a": "An apartment, no garden",
+    "q1b": "A house with a small garden",
+    "q1c": "Lots of space and fields nearby",
+    "q2": "How much time can you spend outside with me every day?",
+    "q2a": "Less than an hour",
+    "q2b": "One to two hours",
+    "q2c": "Two hours or more, rain or shine",
+    "q3": "How do you feel about dog hair?",
+    "q3a": "Please, no",
+    "q3b": "I own a vacuum",
+    "q3c": "Dog hair is a condiment",
+    "q4": "An adult Swissy can weigh 40 to 60 kg. Can you handle that?",
+    "q4a": "I'd prefer a small dog",
+    "q4b": "With training, yes",
+    "q4c": "Bring it on",
+    "q5": "We grow up slowly and stay puppies at heart for about three years. Patience?",
+    "q5a": "Not really",
+    "q5b": "I'll try",
+    "q5c": "Patience is my middle name",
+    "r1_title": "Maybe not a Swissy. And that's okay.",
+    "r1_text": "Honest answer: a smaller or calmer breed might make you both happier. Choosing the right dog is a good decision too.",
+    "r2_title": "It could work, with a plan.",
+    "r2_text": "Meet adult Swissies, talk to a few breeders and plan the training before the puppy comes home.",
+    "r3_title": "You might be my kind of human.",
+    "r3_text": "Next step: find a breeder who shows you all the papers. Season one tells you what to look for.",
+    "again": "Try again",
+    "watch": "Start with episode 01"
+  },
+  "sub": {
+    "title": "My papers.",
+    "intro": "Everything behind the animation: my real results, and what each paper means. Rules differ by country and breed club, so always ask yours.",
+    "back": "Back to the bookshelf",
+    "results": "My results",
+    "meta_title": "Carrie's papers · Carrie the Swiss",
+    "meta_description": "Carrie's real health and show results, and a guide to what a puppy's papers mean: pedigree, X-ray scores, show grades and breed evaluation."
   }
 }

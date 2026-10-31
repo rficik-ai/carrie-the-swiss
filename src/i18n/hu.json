@@ -8,7 +8,8 @@
     "guide": "Kalauz",
     "carrie": "Carrie",
     "shop": "Bolt",
-    "language": "Nyelv"
+    "language": "Nyelv",
+    "papers": "A papírjaim"
   },
   "hero": {
     "eyebrow": "Ismeretterjesztő sorozat Szlovákiából",
@@ -23,8 +24,8 @@
   },
   "episodes": {
     "eyebrow": "Első évad",
-    "title": "Tizenkét epizód. Egy őszinte kutya.",
-    "intro": "Nézd őket sorban: mindegyik a következő előzetesével zárul. Új reelek minden hétfőn, szerdán és pénteken.",
+    "title": "Válassz egy könyvet a polcunkról, és tanulj valami újat.",
+    "intro": "Minden könyv egy rövid epizód. Húzd ki, nyisd ki, és nyomd meg a lejátszást. Legjobb sorban nézni: minden epizód a következő előzetesével zárul.",
     "watch": "Megnézem az Instagramon",
     "out": "Már elérhető",
     "soon": "Hamarosan",
@@ -32,7 +33,10 @@
     "parts": "3 rész",
     "play": "Epizód lejátszása",
     "close": "Bezárás",
-    "pull": "Húzz ki egy könyvet"
+    "pull": "Húzz ki egy könyvet",
+    "more_eyebrow": "Hamarosan",
+    "more_title": "Újabb évadok már készülnek.",
+    "more_text": "Még annyi mindent lehet tanulni. Kövess, hogy le ne maradj a következő polcról."
   },
   "topics": {
     "intro": "Bevezető",
@@ -132,7 +136,8 @@
     "show": "Kiállítási minősítés",
     "show_value": "Kitűnő · BOB",
     "approved": "Tenyésztésre engedélyezve",
-    "text": "Szlovákiában élő nagy svájci havasi kutya szuka. Három kiállítási nap, három bíró: minden nap kitűnő és első, az első napon Fajtagyőztes (BOB). Csípő, könyök, váll, térd és szem: mind mentes."
+    "text": "Egy igazi nagy svájci havasi kutya szuka, aki Szlovákiában él. Az animáció én vagyok, csak jobb világítással és bővebb szókinccsel.",
+    "cta": "Nézd meg a papírjaimat és eredményeimet"
   },
   "quote": {
     "text": "A törzskönyv megmondja, ki. A röntgen megmondja, mennyire egészséges. A bíró megmondja, mennyire közel áll a tervrajzhoz. Egy jó tenyésztő mindhármat megmutatja.",
@@ -147,5 +152,68 @@
   "footer": {
     "contact": "Kérdésed van a fajtáról, a kiállításokról vagy egy epizódról? Írj üzenetet az Instagramon.",
     "disclaimer": "Kizárólag ismeretterjesztő tartalom. A saját kutyádról kérdezd az állatorvosodat és a fajtaklubodat."
+  },
+  "cards": {
+    "eyebrow": "Egy kis játék",
+    "title": "Minden kiskutyának vannak papírjai. Tudod olvasni őket?",
+    "intro": "Koppints minden papírra, és nézd meg, mit árul el valójában.",
+    "tap": "Koppints a megfordításhoz",
+    "c1_name": "A törzskönyv",
+    "c1_big": "Ki.",
+    "c1_text": "Kitől származom. Azt nem mondja meg, hogyan neveltek, sem azt, hogy egészséges vagyok-e.",
+    "c2_name": "A röntgenek",
+    "c2_big": "Mennyire egészséges.",
+    "c2_text": "Mennyire egészséges a csípőm és a könyököm. A HD-A és az ED-0 a legjobb eredmény.",
+    "c3_name": "A bírálati lap",
+    "c3_big": "Mennyire közel.",
+    "c3_text": "Mennyire állok közel a fajtám tervrajzához, egy kiállítás után leírva.",
+    "watch": "Megnézem az epizódot",
+    "done_title": "Egy jó tenyésztő mindhármat megmutatja.",
+    "done_text": "Most már tudod, mit kérj. Kéred a hosszabb változatot, forrásokkal?",
+    "done_cta": "Olvasd el a papírjaimat",
+    "progress": "/ 3 megfordítva"
+  },
+  "quiz": {
+    "eyebrow": "Carrie kérdez",
+    "title": "Neked való a Swissy?",
+    "intro": "Öt őszinte kérdés tőlem. Nincs rossz válasz, csak hasznos.",
+    "start": "Derítsük ki",
+    "q": "Kérdés",
+    "q1": "Mennyi helyed van?",
+    "q1a": "Lakás, kert nélkül",
+    "q1b": "Ház kis kerttel",
+    "q1c": "Rengeteg hely, a közelben mezők",
+    "q2": "Mennyi időt tudsz naponta velem kint tölteni?",
+    "q2a": "Kevesebb mint egy órát",
+    "q2b": "Egy-két órát",
+    "q2c": "Két órát vagy többet, esőben is",
+    "q3": "Hogy állsz a kutyaszőrrel?",
+    "q3a": "Csak azt ne",
+    "q3b": "Van porszívóm",
+    "q3c": "A kutyaszőr fűszer",
+    "q4": "Egy felnőtt Swissy 40–60 kg is lehet. Elbírod?",
+    "q4a": "Inkább egy kiskutyát",
+    "q4b": "Kiképzéssel igen",
+    "q4c": "Jöhet",
+    "q5": "Lassan növünk fel, és nagyjából három évig lélekben kölykök maradunk. Türelem?",
+    "q5a": "Nem igazán",
+    "q5b": "Megpróbálom",
+    "q5c": "A türelem a középső nevem",
+    "r1_title": "Talán nem Swissy. És ez így rendben van.",
+    "r1_text": "Őszintén: egy kisebb vagy nyugodtabb fajta mindkettőtöket boldogabbá tehet. A megfelelő kutya kiválasztása is jó döntés.",
+    "r2_title": "Működhet, egy tervvel.",
+    "r2_text": "Ismerkedj meg felnőtt Swissykkel, beszélj több tenyésztővel, és tervezd meg a kiképzést, mielőtt a kiskutya hazaérkezik.",
+    "r3_title": "Lehet, hogy pont az én emberem vagy.",
+    "r3_text": "Következő lépés: keress egy tenyésztőt, aki minden papírt megmutat. Az első évadból megtudod, mire figyelj.",
+    "again": "Újra",
+    "watch": "Kezdd a 01. epizóddal"
+  },
+  "sub": {
+    "title": "A papírjaim.",
+    "intro": "Minden, ami az animáció mögött van: a valódi eredményeim, és hogy mit jelent az egyes papír. A szabályok országonként és fajtaklubonként eltérnek, ezért mindig a sajátodat kérdezd.",
+    "back": "Vissza a könyvespolchoz",
+    "results": "Az eredményeim",
+    "meta_title": "Carrie papírjai · Carrie the Swiss",
+    "meta_description": "Carrie valódi egészségügyi és kiállítási eredményei, és kalauz ahhoz, mit jelentenek egy kiskutya papírjai: törzskönyv, röntgeneredmények, kiállítási minősítések és tenyészszemle."
   }
 }

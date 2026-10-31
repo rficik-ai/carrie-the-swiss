@@ -8,7 +8,8 @@
     "guide": "Průvodce",
     "carrie": "Carrie",
     "shop": "Obchod",
-    "language": "Jazyk"
+    "language": "Jazyk",
+    "papers": "Moje papíry"
   },
   "hero": {
     "eyebrow": "Vzdělávací seriál ze Slovenska",
@@ -23,8 +24,8 @@
   },
   "episodes": {
     "eyebrow": "První řada",
-    "title": "Dvanáct epizod. Jeden upřímný pes.",
-    "intro": "Dívejte se popořadě: každá končí upoutávkou na tu další. Nová videa každé pondělí, středu a pátek.",
+    "title": "Vyberte si knihu z naší poličky a naučte se něco nového.",
+    "intro": "Každá kniha je jedna krátká epizoda. Vytáhněte ji, otevřete a zmáčkněte play. Nejlépe popořadě: každá epizoda končí upoutávkou na tu další.",
     "watch": "Sledovat na Instagramu",
     "out": "Venku",
     "soon": "Brzy",
@@ -32,7 +33,10 @@
     "parts": "3 díly",
     "play": "Přehrát epizodu",
     "close": "Zavřít",
-    "pull": "Vytáhněte si knihu"
+    "pull": "Vytáhněte si knihu",
+    "more_eyebrow": "Připravujeme",
+    "more_title": "Další řady se už točí.",
+    "more_text": "Je toho ještě tolik k naučení. Sledujte mě, ať vám neuteče další polička."
   },
   "topics": {
     "intro": "Úvod",
@@ -132,7 +136,8 @@
     "show": "Výstavní hodnocení",
     "show_value": "Výborná · BOB",
     "approved": "Uchovněná",
-    "text": "Fena velkého švýcarského salašnického psa, která žije na Slovensku. Tři výstavní dny, tři rozhodčí: každý den výborná a první, první den vítězka plemene (BOB). Kyčle, lokty, ramena, kolena i oči bez nálezu."
+    "text": "Skutečná fena velkého švýcarského salašnického psa, která žije na Slovensku. Ta animace jsem já, jen s lepším světlem a bohatší slovní zásobou.",
+    "cta": "Podívejte se na moje papíry a výsledky"
   },
   "quote": {
     "text": "Průkaz původu řekne kdo. Rentgen řekne, jak zdravý. Rozhodčí řekne, jak blízko má ke standardu. Dobrý chovatel vám ukáže všechny tři.",
@@ -147,5 +152,68 @@
   "footer": {
     "contact": "Otázky k plemeni, výstavám nebo některé epizodě? Napište zprávu na Instagramu.",
     "disclaimer": "Pouze vzdělávací obsah. O svém psovi se poraďte s veterinářem a chovatelským klubem."
+  },
+  "cards": {
+    "eyebrow": "Malá hra",
+    "title": "Každé štěně má papíry. Umíte je přečíst?",
+    "intro": "Ťukněte na každý papír a uvidíte, co vám doopravdy prozradí.",
+    "tap": "Ťukněte a otočte",
+    "c1_name": "Průkaz původu",
+    "c1_big": "Kdo.",
+    "c1_text": "Po kom jsem. Neřekne, jak mě vychovali, ani jestli jsem zdravá.",
+    "c2_name": "Rentgeny",
+    "c2_big": "Jak zdravá.",
+    "c2_text": "Jak zdravé mám kyčle a lokty. HD-A a ED-0 jsou nejlepší výsledky.",
+    "c3_name": "Posudek rozhodčího",
+    "c3_big": "Jak blízko.",
+    "c3_text": "Jak moc se podobám ideálu svého plemene. Rozhodčí to sepíše po výstavě.",
+    "watch": "Přehrát epizodu",
+    "done_title": "Dobrý chovatel vám ukáže všechny tři.",
+    "done_text": "Teď už víte, o co si říct. Chcete delší verzi i se zdroji?",
+    "done_cta": "Přečtěte si moje papíry",
+    "progress": "ze 3 otočených"
+  },
+  "quiz": {
+    "eyebrow": "Carrie se ptá",
+    "title": "Je Swissy ten pravý pes pro vás?",
+    "intro": "Pět upřímných otázek ode mě. Žádné špatné odpovědi, jen užitečné.",
+    "start": "Jdeme na to",
+    "q": "Otázka",
+    "q1": "Kolik máte místa?",
+    "q1a": "Byt, bez zahrady",
+    "q1b": "Dům s malou zahradou",
+    "q1c": "Spousta místa a pole hned za domem",
+    "q2": "Kolik času se mnou můžete být každý den venku?",
+    "q2a": "Méně než hodinu",
+    "q2b": "Jednu až dvě hodiny",
+    "q2c": "Dvě hodiny a víc, za každého počasí",
+    "q3": "Jak jste na tom se psími chlupy?",
+    "q3a": "Prosím, ne",
+    "q3b": "Mám vysavač",
+    "q3c": "Chlupy jsou jen koření",
+    "q4": "Dospělý Swissy může vážit 40 až 60 kg. Zvládnete to?",
+    "q4a": "Raději malého pejska",
+    "q4b": "S výcvikem ano",
+    "q4c": "Sem s ním",
+    "q5": "Rosteme pomalu a v duši jsme štěňata asi tři roky. Trpělivost?",
+    "q5a": "Moc ne",
+    "q5b": "Zkusím to",
+    "q5c": "Trpělivost je moje druhé jméno",
+    "r1_title": "Možná ne Swissy. A to je v pořádku.",
+    "r1_text": "Upřímně: menší nebo klidnější plemeno by mohlo udělat šťastnějšími vás oba. Vybrat si správného psa je taky dobré rozhodnutí.",
+    "r2_title": "Mohlo by to fungovat, s plánem.",
+    "r2_text": "Poznejte dospělé Swissy, promluvte si s několika chovateli a naplánujte výcvik ještě předtím, než si štěně přivezete domů.",
+    "r3_title": "Možná jste přesně můj typ člověka.",
+    "r3_text": "Další krok: najděte chovatele, který vám ukáže všechny papíry. První řada vám řekne, na co se dívat.",
+    "again": "Zkusit znovu",
+    "watch": "Začněte epizodou 01"
+  },
+  "sub": {
+    "title": "Moje papíry.",
+    "intro": "Všechno, co je za animací: moje skutečné výsledky a co který papír znamená. Pravidla se liší podle země a chovatelského klubu, takže se vždy zeptejte toho svého.",
+    "back": "Zpět ke knihovně",
+    "results": "Moje výsledky",
+    "meta_title": "Papíry Carrie · Carrie the Swiss",
+    "meta_description": "Skutečné zdravotní a výstavní výsledky Carrie a průvodce tím, co znamenají papíry štěněte: průkaz původu, výsledky rentgenů, výstavní hodnocení a bonitace."
   }
 }

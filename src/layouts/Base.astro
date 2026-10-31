@@ -7,10 +7,10 @@ import '@fontsource-variable/manrope';
 import '../styles/global.css';
 import { availableLocales, HTML_LANG, type Locale } from '../i18n';
 
-interface Props { locale: Locale; title: string; description: string; }
-const { locale, title, description } = Astro.props;
+interface Props { locale: Locale; title: string; description: string; path?: string }
+const { locale, title, description, path = '' } = Astro.props;
 const site = Astro.site!.toString().replace(/\/$/, '');
-const canonical = `${site}/${locale}/`;
+const canonical = `${site}/${locale}/${path}`;
 const ogImage = `${site}/assets/img/og.jpg`;
 ---
 <!doctype html>
@@ -21,7 +21,7 @@ const ogImage = `${site}/assets/img/og.jpg`;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {availableLocales().map((l) => <link rel="alternate" hreflang={HTML_LANG[l]} href={`${site}/${l}/`} />)}
+    {availableLocales().map((l) => <link rel="alternate" hreflang={HTML_LANG[l]} href={`${site}/${l}/${path}`} />)}
     <link rel="alternate" hreflang="x-default" href={`${site}/`} />
     <meta name="theme-color" content="#0d0c0a" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -35,5 +35,45 @@ const ogImage = `${site}/assets/img/og.jpg`;
   </head>
   <body>
     <slot />
-  </body>
+  
+<script>
+  document.documentElement.classList.add('js');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // reveal on scroll
+  const rio = new IntersectionObserver((ents) => ents.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } }), { threshold: 0.15 });
+  document.querySelectorAll('[data-reveal]').forEach((el) => rio.observe(el));
+  // floating gold dust
+  document.querySelectorAll<HTMLCanvasElement>('canvas.dust').forEach((cv) => {
+    if (reduce) return;
+    const ctx = cv.getContext('2d')!;
+    let w = 0, h = 0, on = false, raf = 0;
+    const dpr = Math.min(2, devicePixelRatio || 1);
+    const N = innerWidth < 700 ? 26 : 60;
+    const ps = Array.from({ length: N }, () => ({ x: Math.random(), y: Math.random(), r: .6 + Math.random() * 1.8, s: .00012 + Math.random() * .00035, ph: Math.random() * 6.28, a: .25 + Math.random() * .6 }));
+    const size = () => { w = cv.clientWidth; h = cv.clientHeight; cv.width = w * dpr; cv.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); };
+    const tick = (t: number) => {
+      ctx.clearRect(0, 0, w, h);
+      for (const p of ps) {
+        p.y -= p.s * 16; if (p.y < -0.02) { p.y = 1.02; p.x = Math.random(); }
+        const x = (p.x + Math.sin(t / 2600 + p.ph) * 0.012) * w, y = p.y * h;
+        const tw = .55 + .45 * Math.sin(t / 700 + p.ph * 3);
+        const g = ctx.createRadialGradient(x, y, 0, x, y, p.r * 5);
+        g.addColorStop(0, `rgba(255,228,160,${p.a * tw})`); g.addColorStop(1, 'rgba(255,228,160,0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, p.r * 5, 0, 6.283); ctx.fill();
+      }
+      if (on) raf = requestAnimationFrame(tick);
+    };
+    new ResizeObserver(size).observe(cv); size();
+    new IntersectionObserver(([e]) => { on = e.isIntersecting; cancelAnimationFrame(raf); if (on) raf = requestAnimationFrame(tick); }).observe(cv);
+  });
+  // links that open a specific book on the shelf
+  document.addEventListener('click', (e) => {
+    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('[data-open-book]');
+    if (!a || !document.getElementById('episodes')) return;
+    e.preventDefault();
+    document.getElementById('episodes')!.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    window.dispatchEvent(new CustomEvent('open-book', { detail: a.dataset.openBook }));
+  });
+</script>
+</body>
 </html>

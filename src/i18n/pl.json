@@ -8,7 +8,8 @@
     "guide": "Poradnik",
     "carrie": "Carrie",
     "shop": "Sklep",
-    "language": "Język"
+    "language": "Język",
+    "papers": "Moje papiery"
   },
   "hero": {
     "eyebrow": "Seria edukacyjna ze Słowacji",
@@ -23,8 +24,8 @@
   },
   "episodes": {
     "eyebrow": "Sezon pierwszy",
-    "title": "Dwanaście odcinków. Jeden szczery pies.",
-    "intro": "Oglądaj po kolei: każdy kończy się zapowiedzią następnego. Nowe rolki w każdy poniedziałek, środę i piątek.",
+    "title": "Wybierz książkę z naszej półki i dowiedz się czegoś nowego.",
+    "intro": "Każda książka to jeden krótki odcinek. Wyciągnij ją, otwórz i naciśnij play. Najlepiej oglądać po kolei: każdy odcinek kończy się zapowiedzią następnego.",
     "watch": "Obejrzyj na Instagramie",
     "out": "Już jest",
     "soon": "Wkrótce",
@@ -32,7 +33,10 @@
     "parts": "3 części",
     "play": "Odtwórz odcinek",
     "close": "Zamknij",
-    "pull": "Wyciągnij książkę"
+    "pull": "Wyciągnij książkę",
+    "more_eyebrow": "Już wkrótce",
+    "more_title": "Kolejne sezony są już w produkcji.",
+    "more_text": "Jeszcze tyle do odkrycia. Obserwuj mnie, żeby nie przegapić następnej półki."
   },
   "topics": {
     "intro": "Wstęp",
@@ -132,7 +136,8 @@
     "show": "Ocena wystawowa",
     "show_value": "Doskonała · BOB",
     "approved": "Dopuszczona do hodowli",
-    "text": "Suczka rasy duży szwajcarski pies pasterski, mieszkająca na Słowacji. Trzy dni wystaw, trzech sędziów: codziennie ocena doskonała i pierwsze miejsce, pierwszego dnia Zwycięzca Rasy (BOB). Biodra, łokcie, barki, kolana i oczy bez zmian."
+    "text": "Prawdziwa suczka rasy duży szwajcarski pies pasterski, mieszkająca na Słowacji. Ta animacja to ja, tylko z lepszym oświetleniem i bogatszym słownictwem.",
+    "cta": "Zobacz moje papiery i wyniki"
   },
   "quote": {
     "text": "Rodowód mówi kto. Prześwietlenie mówi, jak zdrowy. Sędzia mówi, jak blisko wzorca. Dobry hodowca pokaże ci wszystkie trzy.",
@@ -147,5 +152,68 @@
   "footer": {
     "contact": "Pytania o rasę, wystawy albo któryś odcinek? Napisz wiadomość na Instagramie.",
     "disclaimer": "Treści wyłącznie edukacyjne. W sprawie własnego psa zapytaj weterynarza i klub rasy."
+  },
+  "cards": {
+    "eyebrow": "Mała gra",
+    "title": "Każdy szczeniak ma papiery. Umiesz je przeczytać?",
+    "intro": "Dotknij każdego papieru i zobacz, co naprawdę ci mówi.",
+    "tap": "Dotknij, by odwrócić",
+    "c1_name": "Rodowód",
+    "c1_big": "Kto.",
+    "c1_text": "Po kim jestem. Nie mówi, jak mnie wychowano ani czy jestem zdrowa.",
+    "c2_name": "Zdjęcia RTG",
+    "c2_big": "Jak zdrowa.",
+    "c2_text": "Jak zdrowe są moje biodra i łokcie. HD-A i ED-0 to najlepsze wyniki.",
+    "c3_name": "Opis sędziego",
+    "c3_big": "Jak blisko.",
+    "c3_text": "Jak blisko mi do wzorca mojej rasy, spisane po wystawie.",
+    "watch": "Obejrzyj odcinek",
+    "done_title": "Dobry hodowca pokaże ci wszystkie trzy.",
+    "done_text": "Teraz wiesz, o co pytać. Chcesz dłuższą wersję, ze źródłami?",
+    "done_cta": "Przeczytaj moje papiery",
+    "progress": "z 3 odwróconych"
+  },
+  "quiz": {
+    "eyebrow": "Carrie pyta",
+    "title": "Czy Swissy to pies dla ciebie?",
+    "intro": "Pięć szczerych pytań ode mnie. Nie ma złych odpowiedzi, są tylko przydatne.",
+    "start": "Sprawdźmy",
+    "q": "Pytanie",
+    "q1": "Ile masz miejsca?",
+    "q1a": "Mieszkanie, bez ogrodu",
+    "q1b": "Dom z małym ogrodem",
+    "q1c": "Mnóstwo miejsca i pola tuż obok",
+    "q2": "Ile czasu dziennie możesz spędzać ze mną na dworze?",
+    "q2a": "Mniej niż godzinę",
+    "q2b": "Od jednej do dwóch godzin",
+    "q2c": "Dwie godziny lub więcej, w deszcz czy słońce",
+    "q3": "Co sądzisz o psiej sierści?",
+    "q3a": "Proszę, nie",
+    "q3b": "Mam odkurzacz",
+    "q3c": "Sierść to przyprawa",
+    "q4": "Dorosły Swissy może ważyć od 40 do 60 kg. Dasz radę?",
+    "q4a": "Wolę małego psa",
+    "q4b": "Ze szkoleniem, tak",
+    "q4c": "Dawaj",
+    "q5": "Rośniemy powoli i w duszy zostajemy szczeniakami przez jakieś trzy lata. Cierpliwość?",
+    "q5a": "Raczej nie",
+    "q5b": "Postaram się",
+    "q5c": "Cierpliwość to moje drugie imię",
+    "r1_title": "Może nie Swissy. I to jest w porządku.",
+    "r1_text": "Szczerze: mniejsza lub spokojniejsza rasa może uszczęśliwić was oboje. Wybór właściwego psa to też dobra decyzja.",
+    "r2_title": "To może się udać, z planem.",
+    "r2_text": "Poznaj dorosłe Swissy, porozmawiaj z kilkoma hodowcami i zaplanuj szkolenie, zanim szczeniak zamieszka w domu.",
+    "r3_title": "Może jesteś moim typem człowieka.",
+    "r3_text": "Następny krok: znajdź hodowcę, który pokaże ci wszystkie papiery. Sezon pierwszy podpowie ci, na co patrzeć.",
+    "again": "Spróbuj jeszcze raz",
+    "watch": "Zacznij od odcinka 01"
+  },
+  "sub": {
+    "title": "Moje papiery.",
+    "intro": "Wszystko, co stoi za animacją: moje prawdziwe wyniki i co oznacza każdy papier. Zasady różnią się w zależności od kraju i klubu rasy, więc zawsze pytaj w swoim.",
+    "back": "Wróć do półki z książkami",
+    "results": "Moje wyniki",
+    "meta_title": "Papiery Carrie · Carrie the Swiss",
+    "meta_description": "Prawdziwe wyniki zdrowotne i wystawowe Carrie oraz poradnik, co oznaczają papiery szczeniaka: rodowód, wyniki RTG, oceny wystawowe i przegląd hodowlany."
   }
 }

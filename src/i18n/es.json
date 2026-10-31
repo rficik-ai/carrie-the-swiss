@@ -8,7 +8,8 @@
     "guide": "Guía",
     "carrie": "Carrie",
     "shop": "Tienda",
-    "language": "Idioma"
+    "language": "Idioma",
+    "papers": "Mis papeles"
   },
   "hero": {
     "eyebrow": "Una serie educativa desde Eslovaquia",
@@ -23,8 +24,8 @@
   },
   "episodes": {
     "eyebrow": "Temporada uno",
-    "title": "Doce episodios. Una perra sincera.",
-    "intro": "Míralos en orden: cada uno termina con un adelanto del siguiente. Nuevos reels cada lunes, miércoles y viernes.",
+    "title": "Elige un libro de nuestra estantería y aprende algo nuevo.",
+    "intro": "Cada libro es un episodio corto. Sácalo, ábrelo y dale al play. Mejor en orden: cada episodio termina con un adelanto del siguiente.",
     "watch": "Ver en Instagram",
     "out": "Ya disponible",
     "soon": "Próximamente",
@@ -32,7 +33,10 @@
     "parts": "3 partes",
     "play": "Ver episodio",
     "close": "Cerrar",
-    "pull": "Saca un libro"
+    "pull": "Saca un libro",
+    "more_eyebrow": "Próximamente",
+    "more_title": "Ya estamos produciendo más temporadas.",
+    "more_text": "Queda muchísimo por aprender. Sígueme para no perderte la próxima estantería."
   },
   "topics": {
     "intro": "Intro",
@@ -132,7 +136,8 @@
     "show": "Calificación en exposición",
     "show_value": "Excelente · BOB",
     "approved": "Aprobada para la cría",
-    "text": "Una hembra de gran boyero suizo que vive en Eslovaquia. Tres días de exposición, tres jueces: excelente y primera cada día, Mejor de raza el primer día. Caderas, codos, hombros, rodillas y ojos, todo libre."
+    "text": "Una hembra real de gran boyero suizo que vive en Eslovaquia. La animación soy yo, solo que con mejor iluminación y más vocabulario.",
+    "cta": "Ver mis papeles y resultados"
   },
   "quote": {
     "text": "El pedigrí dice quién. La radiografía dice qué tan sano. El juez dice qué tan cerca del modelo. Un buen criador te enseña las tres cosas.",
@@ -147,5 +152,68 @@
   "footer": {
     "contact": "¿Preguntas sobre la raza, las exposiciones o algún episodio? Escribe un mensaje en Instagram.",
     "disclaimer": "Contenido solo educativo. Consulta a tu veterinario y a tu club de raza sobre tu propio perro."
+  },
+  "cards": {
+    "eyebrow": "Un pequeño juego",
+    "title": "Todo cachorro tiene papeles. ¿Sabes leerlos?",
+    "intro": "Toca cada papel para ver lo que de verdad te dice.",
+    "tap": "Toca para girar",
+    "c1_name": "El pedigrí",
+    "c1_big": "Quién.",
+    "c1_text": "De quién vengo. No dice cómo me criaron ni si estoy sana.",
+    "c2_name": "Las radiografías",
+    "c2_big": "Qué tan sana.",
+    "c2_text": "Lo sanas que están mis caderas y mis codos. HD-A y ED-0 son los mejores resultados.",
+    "c3_name": "El informe del juez",
+    "c3_big": "Qué tan cerca.",
+    "c3_text": "Lo cerca que estoy del modelo de mi raza, puesto por escrito después de una exposición.",
+    "watch": "Ver episodio",
+    "done_title": "Un buen criador te enseña los tres.",
+    "done_text": "Ahora ya sabes qué pedir. ¿Quieres la versión larga, con fuentes?",
+    "done_cta": "Lee mis papeles",
+    "progress": "de 3 girados"
+  },
+  "quiz": {
+    "eyebrow": "Carrie pregunta",
+    "title": "¿Es un Swissy para ti?",
+    "intro": "Cinco preguntas sinceras de mi parte. No hay respuestas incorrectas, solo útiles.",
+    "start": "Vamos a ver",
+    "q": "Pregunta",
+    "q1": "¿Cuánto espacio tienes?",
+    "q1a": "Un piso, sin jardín",
+    "q1b": "Una casa con un jardín pequeño",
+    "q1c": "Mucho espacio y campo cerca",
+    "q2": "¿Cuánto tiempo puedes pasar fuera conmigo cada día?",
+    "q2a": "Menos de una hora",
+    "q2b": "De una a dos horas",
+    "q2c": "Dos horas o más, llueva o haga sol",
+    "q3": "¿Qué tal llevas el pelo de perro?",
+    "q3a": "Por favor, no",
+    "q3b": "Tengo aspiradora",
+    "q3c": "El pelo es un condimento más",
+    "q4": "Un Swissy adulto puede pesar de 40 a 60 kg. ¿Puedes con eso?",
+    "q4a": "Prefiero un perro pequeño",
+    "q4b": "Con adiestramiento, sí",
+    "q4c": "Que venga",
+    "q5": "Crecemos despacio y seguimos siendo cachorros de corazón unos tres años. ¿Paciencia?",
+    "q5a": "No mucha",
+    "q5b": "Lo intentaré",
+    "q5c": "Paciencia es mi segundo nombre",
+    "r1_title": "Quizá no un Swissy. Y no pasa nada.",
+    "r1_text": "Respuesta sincera: una raza más pequeña o más tranquila podría haceros más felices a los dos. Elegir el perro adecuado también es una buena decisión.",
+    "r2_title": "Podría funcionar, con un plan.",
+    "r2_text": "Conoce Swissies adultos, habla con varios criadores y planifica el adiestramiento antes de que el cachorro llegue a casa.",
+    "r3_title": "Puede que seas mi tipo de humano.",
+    "r3_text": "Siguiente paso: encuentra un criador que te enseñe todos los papeles. La temporada uno te dice en qué fijarte.",
+    "again": "Volver a intentarlo",
+    "watch": "Empieza por el episodio 01"
+  },
+  "sub": {
+    "title": "Mis papeles.",
+    "intro": "Todo lo que hay detrás de la animación: mis resultados reales y lo que significa cada papel. Las normas varían según el país y el club de raza, así que pregunta siempre en el tuyo.",
+    "back": "Volver a la estantería",
+    "results": "Mis resultados",
+    "meta_title": "Los papeles de Carrie · Carrie the Swiss",
+    "meta_description": "Los resultados reales de salud y exposición de Carrie, y una guía de lo que significan los papeles de un cachorro: pedigrí, resultados radiográficos, calificaciones de exposición y evaluación de cría."
   }
 }

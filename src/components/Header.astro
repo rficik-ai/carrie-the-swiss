@@ -1,7 +1,8 @@
 ---
 import { availableLocales, LOCALE_LABELS, type Locale, t } from '../i18n';
-interface Props { locale: Locale }
-const { locale } = Astro.props;
+interface Props { locale: Locale; page?: string }
+const { locale, page = '' } = Astro.props;
+const home = `/${locale}/`;
 const s = t(locale);
 ---
 <header class="top" id="top">
@@ -13,16 +14,16 @@ const s = t(locale);
       <span class="words"><b>CARRIE</b><small>THE SWISS</small></span>
     </a>
     <nav class="links" aria-label="Main">
-      <a href="#episodes">{s.nav.episodes}</a>
-      <a href="#guide">{s.nav.guide}</a>
-      <a href="#carrie">{s.nav.carrie}</a>
-      <a href="#shop">{s.nav.shop}</a>
+      <a href={`${home}#episodes`}>{s.nav.episodes}</a>
+      <a href={`${home}#carrie`}>{s.nav.carrie}</a>
+      <a href={`${home}papers/`} aria-current={page === 'papers/' ? 'page' : undefined}>{(s.nav as any).papers ?? s.nav.guide}</a>
+      <a href={`${home}#shop`}>{s.nav.shop}</a>
     </nav>
     <details class="lang">
       <summary aria-label={s.nav.language}>{locale.toUpperCase()}<span aria-hidden="true">▾</span></summary>
       <ul>
         {availableLocales().map((l) => (
-          <li><a href={`/${l}/`} hreflang={l} aria-current={l === locale ? 'page' : undefined}>{LOCALE_LABELS[l]}</a></li>
+          <li><a href={`/${l}/${page}`} hreflang={l} aria-current={l === locale ? 'page' : undefined}>{LOCALE_LABELS[l]}</a></li>
         ))}
       </ul>
     </details>

@@ -8,7 +8,8 @@
     "guide": "Ratgeber",
     "carrie": "Carrie",
     "shop": "Shop",
-    "language": "Sprache"
+    "language": "Sprache",
+    "papers": "Meine Papiere"
   },
   "hero": {
     "eyebrow": "Eine Lernserie aus der Slowakei",
@@ -23,8 +24,8 @@
   },
   "episodes": {
     "eyebrow": "Staffel eins",
-    "title": "Zwölf Folgen. Ein ehrlicher Hund.",
-    "intro": "Am besten der Reihe nach: Jede Folge endet mit einem Teaser für die nächste. Neue Reels jeden Montag, Mittwoch und Freitag.",
+    "title": "Nimm ein Buch aus unserem Regal und lerne etwas Neues.",
+    "intro": "Jedes Buch ist eine kurze Folge. Zieh eins heraus, schlag es auf und drück auf Play. Am besten der Reihe nach: Jede Folge endet mit einem Teaser für die nächste.",
     "watch": "Auf Instagram ansehen",
     "out": "Jetzt online",
     "soon": "Demnächst",
@@ -32,7 +33,10 @@
     "parts": "3 Teile",
     "play": "Folge abspielen",
     "close": "Schließen",
-    "pull": "Zieh ein Buch heraus"
+    "pull": "Zieh ein Buch heraus",
+    "more_eyebrow": "Demnächst",
+    "more_title": "Weitere Staffeln sind schon in Produktion.",
+    "more_text": "Es gibt noch so viel zu lernen. Folg mir, damit du das nächste Regal nicht verpasst."
   },
   "topics": {
     "intro": "Intro",
@@ -132,7 +136,8 @@
     "show": "Formwertnote",
     "show_value": "Vorzüglich · BOB",
     "approved": "Zur Zucht zugelassen",
-    "text": "Eine Große Schweizer Sennenhündin, die in der Slowakei lebt. Drei Ausstellungstage, drei Richter: jeden Tag Vorzüglich und Platz eins, am ersten Tag Best of Breed. Hüften, Ellbogen, Schultern, Knie und Augen: alles frei."
+    "text": "Eine echte Große Schweizer Sennenhündin, die in der Slowakei lebt. Die Animation bin ich, nur mit besserem Licht und größerem Wortschatz.",
+    "cta": "Meine Papiere und Ergebnisse ansehen"
   },
   "quote": {
     "text": "Die Ahnentafel sagt, wer. Das Röntgenbild sagt, wie gesund. Der Richter sagt, wie nah am Bauplan. Ein guter Züchter zeigt dir alle drei.",
@@ -147,5 +152,68 @@
   "footer": {
     "contact": "Fragen zur Rasse, zu Ausstellungen oder zu einer Folge? Schreib eine Nachricht auf Instagram.",
     "disclaimer": "Nur zu Informationszwecken. Frag bei deinem eigenen Hund deine Tierärztin oder deinen Tierarzt und deinen Zuchtverein."
+  },
+  "cards": {
+    "eyebrow": "Ein kleines Spiel",
+    "title": "Jeder Welpe hat Papiere. Kannst du sie lesen?",
+    "intro": "Tipp jedes Papier an und sieh, was es dir wirklich verrät.",
+    "tap": "Zum Umdrehen tippen",
+    "c1_name": "Die Ahnentafel",
+    "c1_big": "Wer.",
+    "c1_text": "Von wem ich abstamme. Sie verrät nicht, wie ich aufgewachsen bin oder ob ich gesund bin.",
+    "c2_name": "Die Röntgenbilder",
+    "c2_big": "Wie gesund.",
+    "c2_text": "Wie gesund meine Hüften und Ellbogen sind. HD-A und ED-0 sind die besten Befunde.",
+    "c3_name": "Der Richterbericht",
+    "c3_big": "Wie nah dran.",
+    "c3_text": "Wie nah ich am Bauplan meiner Rasse bin, aufgeschrieben nach einer Ausstellung.",
+    "watch": "Folge ansehen",
+    "done_title": "Ein guter Züchter zeigt dir alle drei.",
+    "done_text": "Jetzt weißt du, wonach du fragen musst. Lust auf die lange Version, mit Quellen?",
+    "done_cta": "Meine Papiere lesen",
+    "progress": "von 3 umgedreht"
+  },
+  "quiz": {
+    "eyebrow": "Carrie fragt",
+    "title": "Ist ein Swissy der richtige Hund für dich?",
+    "intro": "Fünf ehrliche Fragen von mir. Keine falschen Antworten, nur nützliche.",
+    "start": "Finden wir’s raus",
+    "q": "Frage",
+    "q1": "Wie viel Platz hast du?",
+    "q1a": "Eine Wohnung, kein Garten",
+    "q1b": "Ein Haus mit kleinem Garten",
+    "q1c": "Viel Platz und Felder vor der Tür",
+    "q2": "Wie viel Zeit kannst du jeden Tag mit mir draußen verbringen?",
+    "q2a": "Weniger als eine Stunde",
+    "q2b": "Ein bis zwei Stunden",
+    "q2c": "Zwei Stunden oder mehr, bei jedem Wetter",
+    "q3": "Wie stehst du zu Hundehaaren?",
+    "q3a": "Bitte nicht",
+    "q3b": "Ich hab einen Staubsauger",
+    "q3c": "Hundehaare sind ein Gewürz",
+    "q4": "Ein erwachsener Swissy kann 40 bis 60 kg wiegen. Schaffst du das?",
+    "q4a": "Lieber ein kleiner Hund",
+    "q4b": "Mit Training, ja",
+    "q4c": "Her damit",
+    "q5": "Wir werden langsam groß und bleiben im Herzen etwa drei Jahre Welpen. Geduld?",
+    "q5a": "Eher nicht",
+    "q5b": "Ich versuch’s",
+    "q5c": "Geduld ist mein zweiter Vorname",
+    "r1_title": "Vielleicht kein Swissy. Und das ist okay.",
+    "r1_text": "Ehrlich gesagt: Eine kleinere oder ruhigere Rasse könnte euch beide glücklicher machen. Den richtigen Hund zu wählen ist auch eine gute Entscheidung.",
+    "r2_title": "Das könnte klappen, mit Plan.",
+    "r2_text": "Lern erwachsene Swissys kennen, sprich mit mehreren Züchtern und plane das Training, bevor der Welpe einzieht.",
+    "r3_title": "Du könntest genau mein Mensch sein.",
+    "r3_text": "Nächster Schritt: Such dir einen Züchter, der dir alle Papiere zeigt. Staffel eins verrät dir, worauf du achten musst.",
+    "again": "Nochmal versuchen",
+    "watch": "Mit Folge 01 starten"
+  },
+  "sub": {
+    "title": "Meine Papiere.",
+    "intro": "Alles hinter der Animation: meine echten Ergebnisse und was jedes Papier bedeutet. Die Regeln unterscheiden sich je nach Land und Zuchtverein, also frag immer bei deinem nach.",
+    "back": "Zurück zum Bücherregal",
+    "results": "Meine Ergebnisse",
+    "meta_title": "Carries Papiere · Carrie the Swiss",
+    "meta_description": "Carries echte Gesundheits- und Ausstellungsergebnisse und ein Ratgeber, was die Papiere eines Welpen bedeuten: Ahnentafel, Röntgenbefunde, Formwertnoten und Zuchttauglichkeitsprüfung."
   }
 }

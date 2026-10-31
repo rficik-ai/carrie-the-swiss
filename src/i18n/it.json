@@ -8,7 +8,8 @@
     "guide": "Guida",
     "carrie": "Carrie",
     "shop": "Negozio",
-    "language": "Lingua"
+    "language": "Lingua",
+    "papers": "I miei documenti"
   },
   "hero": {
     "eyebrow": "Una serie educativa dalla Slovacchia",
@@ -23,8 +24,8 @@
   },
   "episodes": {
     "eyebrow": "Stagione uno",
-    "title": "Dodici episodi. Una cagnolona sincera.",
-    "intro": "Guardali in ordine: ognuno finisce con un'anticipazione del successivo. Nuovi reel ogni lunedì, mercoledì e venerdì.",
+    "title": "Scegli un libro dal nostro scaffale e impara qualcosa di nuovo.",
+    "intro": "Ogni libro è un breve episodio. Tiralo fuori, aprilo e premi play. Meglio guardarli in ordine: ogni episodio finisce con un’anticipazione del successivo.",
     "watch": "Guarda su Instagram",
     "out": "Disponibile",
     "soon": "In arrivo",
@@ -32,7 +33,10 @@
     "parts": "3 parti",
     "play": "Guarda l'episodio",
     "close": "Chiudi",
-    "pull": "Prendi un libro"
+    "pull": "Prendi un libro",
+    "more_eyebrow": "In arrivo",
+    "more_title": "Altre stagioni sono già in lavorazione.",
+    "more_text": "C’è ancora tanto da imparare. Seguimi per non perderti il prossimo scaffale."
   },
   "topics": {
     "intro": "Intro",
@@ -132,7 +136,8 @@
     "show": "Qualifica in esposizione",
     "show_value": "Eccellente · BOB",
     "approved": "Approvata per la riproduzione",
-    "text": "Una femmina di grande bovaro svizzero che vive in Slovacchia. Tre giorni di esposizione, tre giudici: eccellente e prima ogni giorno, Migliore di razza il primo giorno. Anche, gomiti, spalle, ginocchia e occhi tutti esenti."
+    "text": "Una vera femmina di grande bovaro svizzero che vive in Slovacchia. L’animazione sono io, solo con luci migliori e un vocabolario più ricco.",
+    "cta": "Guarda i miei documenti e risultati"
   },
   "quote": {
     "text": "Il pedigree dice chi. Le lastre dicono quanto è sano. Il giudice dice quanto è vicino al modello. Un buon allevatore ti mostra tutti e tre.",
@@ -147,5 +152,68 @@
   "footer": {
     "contact": "Domande sulla razza, sulle esposizioni o su un episodio? Scrivi un messaggio su Instagram.",
     "disclaimer": "Contenuti solo a scopo educativo. Per il tuo cane chiedi al tuo veterinario e al tuo club di razza."
+  },
+  "cards": {
+    "eyebrow": "Un piccolo gioco",
+    "title": "Ogni cucciolo ha i suoi documenti. Sai leggerli?",
+    "intro": "Tocca ogni documento per scoprire cosa ti dice davvero.",
+    "tap": "Tocca per girare",
+    "c1_name": "Il pedigree",
+    "c1_big": "Chi.",
+    "c1_text": "Da chi discendo. Non dice come sono cresciuta, né se sono sana.",
+    "c2_name": "Le lastre",
+    "c2_big": "Quanto sana.",
+    "c2_text": "Quanto sono sani le mie anche e i miei gomiti. HD-A ed ED-0 sono i risultati migliori.",
+    "c3_name": "Il giudizio del giudice",
+    "c3_big": "Quanto vicina.",
+    "c3_text": "Quanto sono vicina al modello della mia razza, messo nero su bianco dopo un’esposizione.",
+    "watch": "Guarda l’episodio",
+    "done_title": "Un buon allevatore te li mostra tutti e tre.",
+    "done_text": "Ora sai cosa chiedere. Vuoi la versione lunga, con le fonti?",
+    "done_cta": "Leggi i miei documenti",
+    "progress": "di 3 girati"
+  },
+  "quiz": {
+    "eyebrow": "Carrie chiede",
+    "title": "Uno Swissy fa per te?",
+    "intro": "Cinque domande sincere da parte mia. Nessuna risposta sbagliata, solo risposte utili.",
+    "start": "Scopriamolo",
+    "q": "Domanda",
+    "q1": "Quanto spazio hai?",
+    "q1a": "Un appartamento, niente giardino",
+    "q1b": "Una casa con un piccolo giardino",
+    "q1c": "Tanto spazio e campi lì vicino",
+    "q2": "Quanto tempo puoi passare fuori con me ogni giorno?",
+    "q2a": "Meno di un’ora",
+    "q2b": "Da una a due ore",
+    "q2c": "Due ore o più, con il sole o con la pioggia",
+    "q3": "Come la vivi con i peli di cane?",
+    "q3a": "Per carità, no",
+    "q3b": "Ho un aspirapolvere",
+    "q3c": "I peli sono un condimento",
+    "q4": "Uno Swissy adulto può pesare dai 40 ai 60 kg. Ce la fai?",
+    "q4a": "Preferirei un cane piccolo",
+    "q4b": "Con l’addestramento, sì",
+    "q4c": "Avanti tutta",
+    "q5": "Cresciamo lentamente e restiamo cuccioli nel cuore per circa tre anni. Pazienza?",
+    "q5a": "Non proprio",
+    "q5b": "Ci provo",
+    "q5c": "Pazienza è il mio secondo nome",
+    "r1_title": "Forse non uno Swissy. E va bene così.",
+    "r1_text": "Risposta sincera: una razza più piccola o più tranquilla potrebbe rendervi più felici entrambi. Scegliere il cane giusto è anche questa una buona decisione.",
+    "r2_title": "Potrebbe funzionare, con un piano.",
+    "r2_text": "Conosci degli Swissy adulti, parla con qualche allevatore e pianifica l’addestramento prima che il cucciolo arrivi a casa.",
+    "r3_title": "Potresti essere proprio il mio tipo di umano.",
+    "r3_text": "Prossimo passo: trova un allevatore che ti mostri tutti i documenti. La stagione uno ti dice cosa guardare.",
+    "again": "Riprova",
+    "watch": "Inizia dall’episodio 01"
+  },
+  "sub": {
+    "title": "I miei documenti.",
+    "intro": "Tutto quello che c’è dietro l’animazione: i miei risultati reali e cosa significa ogni documento. Le regole cambiano a seconda del paese e del club di razza, quindi chiedi sempre al tuo.",
+    "back": "Torna allo scaffale",
+    "results": "I miei risultati",
+    "meta_title": "I documenti di Carrie · Carrie the Swiss",
+    "meta_description": "I veri esiti sanitari e i risultati in esposizione di Carrie, e una guida a cosa significano i documenti di un cucciolo: pedigree, esiti radiografici, qualifiche in esposizione e valutazione di razza."
   }
 }

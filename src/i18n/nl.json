@@ -8,7 +8,8 @@
     "guide": "Gids",
     "carrie": "Carrie",
     "shop": "Winkel",
-    "language": "Taal"
+    "language": "Taal",
+    "papers": "Mijn papieren"
   },
   "hero": {
     "eyebrow": "Een educatieve serie uit Slowakije",
@@ -23,8 +24,8 @@
   },
   "episodes": {
     "eyebrow": "Seizoen één",
-    "title": "Twaalf afleveringen. Eén eerlijke hond.",
-    "intro": "Kijk ze op volgorde: elke aflevering eindigt met een teaser voor de volgende. Nieuwe reels elke maandag, woensdag en vrijdag.",
+    "title": "Pak een boek uit onze kast en leer iets nieuws.",
+    "intro": "Elk boek is één korte aflevering. Trek er een uit, sla het open en druk op play. Het leukst op volgorde: elke aflevering eindigt met een teaser voor de volgende.",
     "watch": "Bekijk op Instagram",
     "out": "Nu te zien",
     "soon": "Binnenkort",
@@ -32,7 +33,10 @@
     "parts": "3 delen",
     "play": "Aflevering afspelen",
     "close": "Sluiten",
-    "pull": "Pak een boek"
+    "pull": "Pak een boek",
+    "more_eyebrow": "Binnenkort",
+    "more_title": "Er zijn al meer seizoenen in de maak.",
+    "more_text": "Er valt nog zoveel te leren. Volg me, dan mis je de volgende plank niet."
   },
   "topics": {
     "intro": "Intro",
@@ -132,7 +136,8 @@
     "show": "Showkwalificatie",
     "show_value": "Uitmuntend · BOB",
     "approved": "Goedgekeurd voor de fok",
-    "text": "Een Grote Zwitserse Sennenhond die in Slowakije woont. Drie showdagen, drie keurmeesters: elke dag uitmuntend en eerste, op dag één Best of Breed. Heupen, ellebogen, schouders, knieën en ogen allemaal vrij."
+    "text": "Een echte Grote Zwitserse Sennenhond die in Slowakije woont. De animatie ben ik, alleen met beter licht en een grotere woordenschat.",
+    "cta": "Bekijk mijn papieren en uitslagen"
   },
   "quote": {
     "text": "De stamboom zegt wie. De röntgenfoto zegt hoe gezond. De keurmeester zegt hoe dicht bij de blauwdruk. Een goede fokker laat je alle drie zien.",
@@ -147,5 +152,68 @@
   "footer": {
     "contact": "Vragen over het ras, hondenshows of een aflevering? Stuur een bericht op Instagram.",
     "disclaimer": "Alleen educatieve inhoud. Vraag je dierenarts en je rasvereniging naar je eigen hond."
+  },
+  "cards": {
+    "eyebrow": "Een spelletje",
+    "title": "Elke pup heeft papieren. Kun jij ze lezen?",
+    "intro": "Tik op elk papier en zie wat het je echt vertelt.",
+    "tap": "Tik om om te draaien",
+    "c1_name": "De stamboom",
+    "c1_big": "Wie.",
+    "c1_text": "Van wie ik afstam. Er staat niet in hoe ik ben opgegroeid, of dat ik gezond ben.",
+    "c2_name": "De röntgenfoto’s",
+    "c2_big": "Hoe gezond.",
+    "c2_text": "Hoe gezond mijn heupen en ellebogen zijn. HD-A en ED-0 zijn de beste uitslagen.",
+    "c3_name": "Het keurverslag",
+    "c3_big": "Hoe dichtbij.",
+    "c3_text": "Hoe dicht ik bij de blauwdruk van mijn ras zit, opgeschreven na een hondenshow.",
+    "watch": "Bekijk aflevering",
+    "done_title": "Een goede fokker laat je alle drie zien.",
+    "done_text": "Nu weet je waar je naar moet vragen. Zin in de lange versie, met bronnen?",
+    "done_cta": "Lees mijn papieren",
+    "progress": "van 3 omgedraaid"
+  },
+  "quiz": {
+    "eyebrow": "Carrie vraagt",
+    "title": "Is een Swissy iets voor jou?",
+    "intro": "Vijf eerlijke vragen van mij. Geen foute antwoorden, alleen nuttige.",
+    "start": "Eens kijken",
+    "q": "Vraag",
+    "q1": "Hoeveel ruimte heb je?",
+    "q1a": "Een appartement, geen tuin",
+    "q1b": "Een huis met een kleine tuin",
+    "q1c": "Heel veel ruimte en weilanden vlakbij",
+    "q2": "Hoeveel tijd kun je elke dag met mij buiten zijn?",
+    "q2a": "Minder dan een uur",
+    "q2b": "Een tot twee uur",
+    "q2c": "Twee uur of meer, weer of geen weer",
+    "q3": "Hoe sta je tegenover hondenhaar?",
+    "q3a": "Liever niet",
+    "q3b": "Ik heb een stofzuiger",
+    "q3c": "Hondenhaar is gewoon een kruiderij",
+    "q4": "Een volwassen Swissy kan 40 tot 60 kg wegen. Kun je dat aan?",
+    "q4a": "Liever een kleine hond",
+    "q4b": "Met training wel",
+    "q4c": "Kom maar op",
+    "q5": "We groeien langzaam op en blijven ongeveer drie jaar een pup in ons hart. Geduld?",
+    "q5a": "Niet echt",
+    "q5b": "Ik ga het proberen",
+    "q5c": "Geduld is mijn tweede naam",
+    "r1_title": "Misschien geen Swissy. En dat is oké.",
+    "r1_text": "Eerlijk antwoord: een kleiner of rustiger ras maakt jullie allebei misschien gelukkiger. De juiste hond kiezen is ook een goede beslissing.",
+    "r2_title": "Het kan werken, met een plan.",
+    "r2_text": "Leer volwassen Swissy’s kennen, praat met een paar fokkers en plan de training voordat de pup thuiskomt.",
+    "r3_title": "Jij bent misschien precies mijn soort mens.",
+    "r3_text": "Volgende stap: zoek een fokker die je alle papieren laat zien. Seizoen één vertelt je waar je op moet letten.",
+    "again": "Opnieuw proberen",
+    "watch": "Begin met aflevering 01"
+  },
+  "sub": {
+    "title": "Mijn papieren.",
+    "intro": "Alles achter de animatie: mijn echte uitslagen en wat elk papier betekent. Regels verschillen per land en rasvereniging, dus vraag het altijd na bij de jouwe.",
+    "back": "Terug naar de boekenkast",
+    "results": "Mijn uitslagen",
+    "meta_title": "Carries papieren · Carrie the Swiss",
+    "meta_description": "Carries echte gezondheids- en showuitslagen, en een gids over wat de papieren van een pup betekenen: stamboom, röntgenuitslagen, showkwalificaties en fokgeschiktheidskeuring."
   }
 }

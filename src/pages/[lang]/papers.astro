@@ -1,0 +1,64 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Guide from '../../components/Guide.astro';
+import Footer from '../../components/Footer.astro';
+import { availableLocales, t, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return availableLocales().map((lang) => ({ params: { lang } }));
+}
+const locale = Astro.params.lang as Locale;
+const s = t(locale);
+const sub = (s as any).sub;
+const r = s.real;
+const stats = [
+  ['63.5 cm', r.height], ['A / A', r.hips], ['0 / 0', r.elbows], ['14 / 14', r.character], [r.show_value, r.show],
+];
+---
+<Base locale={locale} title={sub.meta_title} description={sub.meta_description} path="papers/">
+  <Header locale={locale} page="papers/" />
+  <main>
+    <section class="block sub-hero">
+      <div class="wrap grid">
+        <div class="head">
+          <a class="back" href={`/${locale}/#episodes`}>← {sub.back}</a>
+          <p class="eyebrow">{r.eyebrow}</p>
+          <h1>{sub.title}</h1>
+          <p class="muted lead">{sub.intro}</p>
+        </div>
+        <div class="card">
+          <img src="/assets/img/carrie-real.jpg" alt={r.photo_caption} />
+          <div class="res">
+            <p class="eyebrow">{sub.results}</p>
+            <dl>
+              {stats.map(([v, k]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+            </dl>
+            <p class="approved">✓ {r.approved}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <Guide locale={locale} />
+  </main>
+  <Footer locale={locale} />
+</Base>
+
+<style>
+  .sub-hero { background: radial-gradient(80% 60% at 80% 10%, rgba(201,163,91,.14), transparent 60%), var(--ink); padding-top: clamp(120px, 14vw, 180px); }
+  .grid { display: grid; gap: 48px; align-items: center; }
+  @media (min-width: 1000px) { .grid { grid-template-columns: 1fr 1fr; gap: 72px; } }
+  .head { display: grid; gap: 18px; }
+  .back { color: var(--gold-hi); text-decoration: none; font-weight: 600; font-size: 14px; letter-spacing: .04em; }
+  h1 { font-size: clamp(48px, 7vw, 96px); }
+  .lead { font-size: 18px; max-width: 34em; }
+  .card { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1fr); border-radius: 18px; overflow: hidden; background: #15120d; box-shadow: 0 40px 80px -40px rgba(0,0,0,.8), 0 0 0 1px rgba(234,211,154,.2); }
+  .card img { width: 100%; height: 100%; object-fit: cover; min-height: 380px; }
+  .res { padding: 28px; display: grid; align-content: center; gap: 10px; }
+  dl { margin: 0; }
+  dl div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--ink-line); }
+  dt { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+  dd { margin: 0; font-family: var(--f-display); font-size: clamp(20px, 2vw, 28px); font-weight: 600; text-align: right; }
+  .approved { margin: 12px 0 0; font-family: var(--f-mark); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-hi); }
+  @media (max-width: 600px) { .card { grid-template-columns: 1fr; } .card img { min-height: 0; aspect-ratio: 4 / 5; } }
+</style>

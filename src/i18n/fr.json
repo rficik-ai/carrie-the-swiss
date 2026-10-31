@@ -8,7 +8,8 @@
     "guide": "Guide",
     "carrie": "Carrie",
     "shop": "Boutique",
-    "language": "Langue"
+    "language": "Langue",
+    "papers": "Mes papiers"
   },
   "hero": {
     "eyebrow": "Une série éducative venue de Slovaquie",
@@ -23,8 +24,8 @@
   },
   "episodes": {
     "eyebrow": "Saison un",
-    "title": "Douze épisodes. Une chienne qui dit tout.",
-    "intro": "Regardez-les dans l'ordre : chacun se termine par un teaser du suivant. Nouveaux reels chaque lundi, mercredi et vendredi.",
+    "title": "Choisissez un livre sur notre étagère et apprenez quelque chose de nouveau.",
+    "intro": "Chaque livre est un court épisode. Sortez-en un, ouvrez-le et appuyez sur lecture. Idéalement dans l’ordre : chaque épisode se termine par un teaser du suivant.",
     "watch": "Voir sur Instagram",
     "out": "Disponible",
     "soon": "Bientôt",
@@ -32,7 +33,10 @@
     "parts": "3 parties",
     "play": "Lire l'épisode",
     "close": "Fermer",
-    "pull": "Choisissez un livre"
+    "pull": "Choisissez un livre",
+    "more_eyebrow": "Prochainement",
+    "more_title": "D’autres saisons sont déjà en production.",
+    "more_text": "Il reste tant de choses à apprendre. Suivez-moi pour ne pas rater la prochaine étagère."
   },
   "topics": {
     "intro": "Intro",
@@ -132,7 +136,8 @@
     "show": "Qualificatif d'exposition",
     "show_value": "Excellent · BOB",
     "approved": "Autorisée à la reproduction",
-    "text": "Une femelle grand bouvier suisse qui vit en Slovaquie. Trois jours d'exposition, trois juges : excellent et première chaque jour, Meilleure de race le premier jour. Hanches, coudes, épaules, genoux et yeux : tout est indemne."
+    "text": "Une vraie femelle grand bouvier suisse qui vit en Slovaquie. L’animation, c’est moi, avec un meilleur éclairage et plus de vocabulaire.",
+    "cta": "Voir mes papiers et résultats"
   },
   "quote": {
     "text": "Le pedigree dit de qui. La radio dit si c'est sain. Le juge dit si c'est conforme au modèle. Un bon éleveur vous montre les trois.",
@@ -147,5 +152,68 @@
   "footer": {
     "contact": "Une question sur la race, les expositions ou un épisode ? Envoyez un message sur Instagram.",
     "disclaimer": "Contenu uniquement éducatif. Pour votre propre chien, demandez à votre vétérinaire et à votre club de race."
+  },
+  "cards": {
+    "eyebrow": "Un petit jeu",
+    "title": "Chaque chiot a ses papiers. Savez-vous les lire ?",
+    "intro": "Touchez chaque papier pour voir ce qu’il vous dit vraiment.",
+    "tap": "Touchez pour retourner",
+    "c1_name": "Le pedigree",
+    "c1_big": "Qui.",
+    "c1_text": "De qui je descends. Il ne dit pas comment j’ai été élevée, ni si je suis en bonne santé.",
+    "c2_name": "Les radios",
+    "c2_big": "Quelle santé.",
+    "c2_text": "L’état de mes hanches et de mes coudes. HD-A et ED-0 sont les meilleurs résultats.",
+    "c3_name": "Le rapport du juge",
+    "c3_big": "Quelle ressemblance.",
+    "c3_text": "À quel point je ressemble au modèle de ma race, noté par écrit après une exposition.",
+    "watch": "Voir l’épisode",
+    "done_title": "Un bon éleveur vous montre les trois.",
+    "done_text": "Vous savez maintenant quoi demander. Envie de la version longue, avec les sources ?",
+    "done_cta": "Lire mes papiers",
+    "progress": "sur 3 retournés"
+  },
+  "quiz": {
+    "eyebrow": "Carrie demande",
+    "title": "Un Swissy est-il fait pour vous ?",
+    "intro": "Cinq questions honnêtes de ma part. Pas de mauvaises réponses, que des utiles.",
+    "start": "C’est parti",
+    "q": "Question",
+    "q1": "De combien d’espace disposez-vous ?",
+    "q1a": "Un appartement, sans jardin",
+    "q1b": "Une maison avec un petit jardin",
+    "q1c": "Beaucoup d’espace et des champs tout près",
+    "q2": "Combien de temps pouvez-vous passer dehors avec moi chaque jour ?",
+    "q2a": "Moins d’une heure",
+    "q2b": "Une à deux heures",
+    "q2c": "Deux heures ou plus, qu’il pleuve ou qu’il vente",
+    "q3": "Et les poils de chien, vous en pensez quoi ?",
+    "q3a": "Pitié, non",
+    "q3b": "J’ai un aspirateur",
+    "q3c": "Les poils, c’est un assaisonnement",
+    "q4": "Un Swissy adulte peut peser de 40 à 60 kg. Vous gérez ?",
+    "q4a": "Je préfère un petit chien",
+    "q4b": "Avec de l’éducation, oui",
+    "q4c": "Même pas peur",
+    "q5": "Nous grandissons lentement et restons des chiots dans l’âme pendant environ trois ans. Et la patience ?",
+    "q5a": "Pas vraiment",
+    "q5b": "Je vais essayer",
+    "q5c": "La patience, c’est mon deuxième prénom",
+    "r1_title": "Peut-être pas un Swissy. Et ce n’est pas grave.",
+    "r1_text": "Réponse honnête : une race plus petite ou plus calme pourrait vous rendre heureux tous les deux. Choisir le bon chien, c’est aussi une bonne décision.",
+    "r2_title": "Ça peut marcher, avec un plan.",
+    "r2_text": "Rencontrez des Swissies adultes, parlez à plusieurs éleveurs et prévoyez l’éducation avant l’arrivée du chiot.",
+    "r3_title": "Vous êtes peut-être mon genre d’humain.",
+    "r3_text": "Prochaine étape : trouver un éleveur qui vous montre tous les papiers. La saison un vous dit quoi regarder.",
+    "again": "Recommencer",
+    "watch": "Commencer par l’épisode 01"
+  },
+  "sub": {
+    "title": "Mes papiers.",
+    "intro": "Tout ce qu’il y a derrière l’animation : mes vrais résultats et ce que signifie chaque papier. Les règles varient selon le pays et le club de race, alors renseignez-vous toujours auprès du vôtre.",
+    "back": "Retour à l’étagère",
+    "results": "Mes résultats",
+    "meta_title": "Les papiers de Carrie · Carrie the Swiss",
+    "meta_description": "Les vrais résultats de santé et d’exposition de Carrie, et un guide pour comprendre les papiers d’un chiot : pedigree, résultats radio, qualificatifs d’exposition et confirmation."
   }
 }

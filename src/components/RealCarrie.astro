@@ -3,20 +3,17 @@ import { type Locale, t } from '../i18n';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const r = t(locale).real;
-const stats = [
-  ['63.5 cm', r.height], ['A / A', r.hips], ['0 / 0', r.elbows], ['14 / 14', r.character], [r.show_value, r.show],
-];
 ---
 <section class="block real" id="carrie">
+  <canvas class="dust" aria-hidden="true"></canvas>
   <span class="fifty8" aria-hidden="true">58</span>
   <div class="wrap grid">
-    <div class="head">
+    <div class="head" data-reveal>
       <p class="eyebrow">{r.eyebrow}</p>
       <h2>{r.title}</h2>
-      <p class="muted">{r.text}</p>
     </div>
 
-    <figure class="compare" style="--pos: 50%">
+    <figure class="compare" style="--pos: 50%" data-reveal>
       <img class="anim" src="/assets/img/carrie-anim.jpg" alt={r.anim_caption} loading="lazy" />
       <div class="photo-clip"><img class="photo" src="/assets/img/carrie-real.jpg" alt={r.photo_caption} loading="lazy" /></div>
       <span class="handle" aria-hidden="true"><i>‹ ›</i></span>
@@ -28,10 +25,12 @@ const stats = [
       </figcaption>
     </figure>
 
-    <dl class="stats">
-      {stats.map(([v, k]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
-      <p class="approved">✓ {r.approved}</p>
-    </dl>
+    <div class="side" data-reveal>
+      <p class="big-q" aria-hidden="true">“</p>
+      <p class="say">{r.text}</p>
+      <p class="drag-hint">↔ {r.drag}</p>
+      <a class="pill-cta" href={`/${locale}/papers/`}>{(r as any).cta ?? 'See my papers'} <span aria-hidden="true">→</span></a>
+    </div>
   </div>
 </section>
 
@@ -42,7 +41,7 @@ const stats = [
     font-family: var(--f-display); font-weight: 500; font-size: clamp(320px, 52vw, 820px); line-height: .8;
     color: transparent; -webkit-text-stroke: 1.5px rgba(201,163,91,.32); pointer-events: none; user-select: none;
   }
-  .grid { position: relative; display: grid; gap: 48px; }
+  .grid { position: relative; z-index: 2; display: grid; gap: 48px; }
   @media (min-width: 1000px) { .grid { grid-template-columns: 1.15fr .85fr; grid-template-rows: auto 1fr; column-gap: 64px; } .head { grid-column: 1 / -1; } }
   .head { display: grid; gap: 18px; max-width: 46em; }
   .head h2 { font-size: clamp(42px, 6vw, 82px); }
@@ -50,7 +49,6 @@ const stats = [
   .compare { position: relative; margin: 0; aspect-ratio: 4 / 5; max-width: 100%; border-radius: 16px; overflow: hidden; background: var(--ink-2); box-shadow: 0 40px 80px -40px rgba(0,0,0,.8), 0 0 0 1px rgba(234,211,154,.18); }
   .compare img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .photo-clip { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
-  .photo { filter: sepia(.12) saturate(1.05); }
   .handle { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 2px; background: var(--gold-hi); transform: translateX(-1px); pointer-events: none; }
   .handle i { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 46px; height: 46px; border-radius: 50%; background: var(--gold-hi); color: #1a1408; display: grid; place-items: center; font-style: normal; font-weight: 700; font-size: 15px; box-shadow: 0 6px 20px rgba(0,0,0,.4); }
   .compare input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
@@ -59,11 +57,10 @@ const stats = [
   .cap { font-family: var(--f-display); font-style: italic; font-size: clamp(16px, 1.5vw, 20px); max-width: 48%; }
   .cap.r { text-align: right; }
 
-  .stats { margin: 0; display: grid; align-content: start; border-top: 1px solid rgba(234,211,154,.35); }
-  .stats div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--ink-line); }
-  dt { font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
-  dd { margin: 0; font-family: var(--f-display); font-size: clamp(28px, 3vw, 40px); font-weight: 600; font-variant-numeric: lining-nums tabular-nums; text-align: right; }
-  .approved { margin-top: 22px; font-family: var(--f-mark); font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-hi); }
+  .side { display: grid; gap: 22px; align-content: center; justify-items: start; }
+  .big-q { margin: 0 0 -40px; font: 600 140px/1 var(--f-display); color: var(--gold); opacity: .5; }
+  .say { margin: 0; font-family: var(--f-display); font-style: italic; font-size: clamp(26px, 2.6vw, 38px); line-height: 1.25; color: var(--ivory); }
+  .drag-hint { margin: 0; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
 </style>
 
 <script>
@@ -71,5 +68,23 @@ const stats = [
     const input = fig.querySelector<HTMLInputElement>('input')!;
     const set = () => fig.style.setProperty('--pos', input.value + '%');
     input.addEventListener('input', set); set();
+    // a little "magic" sweep the first time the slider comes into view
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      let touched = false;
+      input.addEventListener('pointerdown', () => (touched = true), { once: true });
+      const io = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return; io.disconnect();
+        const keys = [50, 18, 82, 50]; const t0 = performance.now(); const dur = 2600;
+        const step = (t: number) => {
+          if (touched) return;
+          const k = Math.min(1, (t - t0) / dur) * (keys.length - 1); const i = Math.min(keys.length - 2, Math.floor(k));
+          const f = k - i; const ease = f < .5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2;
+          input.value = String(keys[i] + (keys[i + 1] - keys[i]) * ease); set();
+          if (k < keys.length - 1) requestAnimationFrame(step);
+        };
+        setTimeout(() => requestAnimationFrame(step), 500);
+      }, { threshold: 0.5 });
+      io.observe(fig);
+    }
   });
 </script>

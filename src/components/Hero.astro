@@ -20,6 +20,7 @@ const chapters = [
       aria-hidden="true"
     ></video>
     <div class="shade" aria-hidden="true"></div>
+    <canvas class="dust" aria-hidden="true"></canvas>
     <div class="chapters wrap">
       {chapters.map((c, i) => (
         <article class="chapter" data-i={i}>
@@ -42,7 +43,7 @@ const chapters = [
   .shade { position: absolute; inset: 0; background:
     linear-gradient(90deg, rgba(13,12,10,.78) 0%, rgba(13,12,10,.35) 45%, rgba(13,12,10,0) 70%),
     linear-gradient(0deg, rgba(13,12,10,.85) 0%, rgba(13,12,10,0) 40%); }
-  .chapters { position: absolute; inset: 0; display: grid; align-items: end; padding-bottom: max(13vh, 96px); }
+  .chapters { position: absolute; z-index: 2; inset: 0; display: grid; align-items: end; padding-bottom: max(13vh, 96px); }
   .chapter {
     grid-area: 1 / 1; max-width: 640px; display: grid; gap: 18px; justify-items: start;
     opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; pointer-events: none;

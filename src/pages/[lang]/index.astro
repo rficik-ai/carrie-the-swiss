@@ -3,7 +3,9 @@ import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Hero from '../../components/Hero.astro';
 import Episodes from '../../components/Episodes.astro';
-import Guide from '../../components/Guide.astro';
+import Cards from '../../components/Cards.astro';
+import Quiz from '../../components/Quiz.astro';
+import Footer from '../../components/Footer.astro';
 import RealCarrie from '../../components/RealCarrie.astro';
 import Closing from '../../components/Closing.astro';
 import { availableLocales, t, type Locale } from '../../i18n';
@@ -19,8 +21,10 @@ const s = t(locale);
   <main>
     <Hero locale={locale} />
     <Episodes locale={locale} />
-    <Guide locale={locale} />
+    <Cards locale={locale} />
     <RealCarrie locale={locale} />
+    <Quiz locale={locale} />
     <Closing locale={locale} />
   </main>
+  <Footer locale={locale} />
 </Base>
