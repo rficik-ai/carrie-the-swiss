@@ -7,4 +7,4 @@ Astro static site, deployed on Cloudflare Pages.
 - Episodes: `src/data/episodes.ts`
 - Film for the scroll hero: `public/assets/film/film.mp4` (desktop), `film-mobile.mp4`, `poster.jpg` — each file under 25 MB (Cloudflare Pages limit).
 
-Cloudflare Pages settings: framework preset **Astro**, build command `npm run build`, output directory `dist`.
+Hosting: Cloudflare Workers (static assets, `wrangler.jsonc`). Build command `npm run build`, deploy command `npx wrangler deploy`. Every push to `main` redeploys.
