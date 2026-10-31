@@ -29,7 +29,9 @@
     "out": "Už vonku",
     "soon": "Čoskoro",
     "production": "Vo výrobe",
-    "parts": "3 časti"
+    "parts": "3 časti",
+    "play": "Prehrať epizódu",
+    "close": "Zavrieť"
   },
   "topics": {
     "intro": "Úvod",
@@ -43,18 +45,42 @@
     "ownership": "Život so psom"
   },
   "ep": {
-    "01": { "line": "Kto som a prečo vám papierovačky vysvetľuje pes." },
-    "02": { "line": "Je to v mojom preukaze pôvodu. Lenže FCI preukazy pôvodu nevydáva. Prekvapenie." },
-    "03": { "line": "Rovnaký papier, dva úplne odlišné štarty do života." },
-    "04": { "line": "Bála som sa otvoriť výsledky svojich röntgenov. Tak ich rozlúštime spolu." },
-    "05": { "line": "Traja rozhodcovia, tri dni. Na čo sa vlastne pozerali?" },
-    "06": { "line": "Rok 1908, pes menom Bello a rozhodca, ktorý sa pozrel poriadne zblízka." },
-    "07": { "line": "Jedna z mojich troch farieb v skutočnosti chýba." },
-    "08": { "line": "Plánujete šteniatka? Prvým krokom nie je hľadanie frajera." },
-    "09": { "line": "Kam idú peniaze. Mama, jeden vrh, celý môj život." },
-    "10": { "line": "Otázky, ktoré vám o chovateľovi povedia najviac." },
-    "11": { "line": "Raz v živote rozhodovala komisia, či budem môcť mať šteniatka. Žiadny stres." },
-    "12": { "line": "Je Swissy ten pravý pes pre vás? Úprimná odpoveď." }
+    "01": {
+      "line": "Kto som a prečo vám papierovačky vysvetľuje pes."
+    },
+    "02": {
+      "line": "Je to v mojom preukaze pôvodu. Lenže FCI preukazy pôvodu nevydáva. Prekvapenie."
+    },
+    "03": {
+      "line": "Rovnaký papier, dva úplne odlišné štarty do života."
+    },
+    "04": {
+      "line": "Bála som sa otvoriť výsledky svojich röntgenov. Tak ich rozlúštime spolu."
+    },
+    "05": {
+      "line": "Traja rozhodcovia, tri dni. Na čo sa vlastne pozerali?"
+    },
+    "06": {
+      "line": "Rok 1908, pes menom Bello a rozhodca, ktorý sa pozrel poriadne zblízka."
+    },
+    "07": {
+      "line": "Jedna z mojich troch farieb v skutočnosti chýba."
+    },
+    "08": {
+      "line": "Plánujete šteniatka? Prvým krokom nie je hľadanie frajera."
+    },
+    "09": {
+      "line": "Kam idú peniaze. Mama, jeden vrh, celý môj život."
+    },
+    "10": {
+      "line": "Otázky, ktoré vám o chovateľovi povedia najviac."
+    },
+    "11": {
+      "line": "Raz v živote rozhodovala komisia, či budem môcť mať šteniatka. Žiadny stres."
+    },
+    "12": {
+      "line": "Je Swissy ten pravý pes pre vás? Úprimná odpoveď."
+    }
   },
   "guide": {
     "eyebrow": "Čo sa do videa nezmestilo",

@@ -29,7 +29,9 @@
     "out": "Jetzt online",
     "soon": "Demnächst",
     "production": "In Produktion",
-    "parts": "3 Teile"
+    "parts": "3 Teile",
+    "play": "Folge abspielen",
+    "close": "Schließen"
   },
   "topics": {
     "intro": "Intro",
@@ -43,18 +45,42 @@
     "ownership": "Hundehaltung"
   },
   "ep": {
-    "01": { "line": "Wer ich bin und warum ausgerechnet ein Hund Papierkram erklärt." },
-    "02": { "line": "Steht in meiner Ahnentafel. Aber die FCI stellt gar keine Ahnentafeln aus. Plot-Twist." },
-    "03": { "line": "Dasselbe Papier, zwei völlig verschiedene Starts ins Leben." },
-    "04": { "line": "Ich war zu nervös, meine Röntgenbefunde zu öffnen. Also knacken wir den Code zusammen." },
-    "05": { "line": "Drei Richter, drei Tage. Worauf haben die eigentlich geschaut?" },
-    "06": { "line": "1908, ein Hund namens Bello und ein Richter, der genau hinsah." },
-    "07": { "line": "Eine meiner drei Farben fehlt eigentlich." },
-    "08": { "line": "Welpen geplant? Schritt eins ist nicht, einen Freund zu finden." },
-    "09": { "line": "Wohin das Geld geht. Die Mutter, ein Wurf, mein ganzes Leben." },
-    "10": { "line": "Die Fragen, die am meisten über einen Züchter verraten." },
-    "11": { "line": "Einmal im Leben hat eine Kommission entschieden, ob ich je Welpen haben darf. Kein Druck." },
-    "12": { "line": "Ist ein Swissy der richtige Hund für dich? Die ehrliche Antwort." }
+    "01": {
+      "line": "Wer ich bin und warum ausgerechnet ein Hund Papierkram erklärt."
+    },
+    "02": {
+      "line": "Steht in meiner Ahnentafel. Aber die FCI stellt gar keine Ahnentafeln aus. Plot-Twist."
+    },
+    "03": {
+      "line": "Dasselbe Papier, zwei völlig verschiedene Starts ins Leben."
+    },
+    "04": {
+      "line": "Ich war zu nervös, meine Röntgenbefunde zu öffnen. Also knacken wir den Code zusammen."
+    },
+    "05": {
+      "line": "Drei Richter, drei Tage. Worauf haben die eigentlich geschaut?"
+    },
+    "06": {
+      "line": "1908, ein Hund namens Bello und ein Richter, der genau hinsah."
+    },
+    "07": {
+      "line": "Eine meiner drei Farben fehlt eigentlich."
+    },
+    "08": {
+      "line": "Welpen geplant? Schritt eins ist nicht, einen Freund zu finden."
+    },
+    "09": {
+      "line": "Wohin das Geld geht. Die Mutter, ein Wurf, mein ganzes Leben."
+    },
+    "10": {
+      "line": "Die Fragen, die am meisten über einen Züchter verraten."
+    },
+    "11": {
+      "line": "Einmal im Leben hat eine Kommission entschieden, ob ich je Welpen haben darf. Kein Druck."
+    },
+    "12": {
+      "line": "Ist ein Swissy der richtige Hund für dich? Die ehrliche Antwort."
+    }
   },
   "guide": {
     "eyebrow": "Was nicht ins Video gepasst hat",

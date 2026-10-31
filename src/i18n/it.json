@@ -29,7 +29,9 @@
     "out": "Disponibile",
     "soon": "In arrivo",
     "production": "In lavorazione",
-    "parts": "3 parti"
+    "parts": "3 parti",
+    "play": "Guarda l'episodio",
+    "close": "Chiudi"
   },
   "topics": {
     "intro": "Intro",
@@ -43,18 +45,42 @@
     "ownership": "Vivere con un cane"
   },
   "ep": {
-    "01": { "line": "Chi sono, e perché a spiegarti le scartoffie è una cagnolona." },
-    "02": { "line": "C'è scritto sul mio pedigree. Ma la FCI non rilascia pedigree. Colpo di scena." },
-    "03": { "line": "Lo stesso documento, due inizi di vita molto diversi." },
-    "04": { "line": "Ero troppo agitata per aprire i risultati delle mie lastre. Allora decifriamoli insieme." },
-    "05": { "line": "Tre giudici, tre giorni. Ma cosa guardavano davvero?" },
-    "06": { "line": "1908, un cane di nome Bello e un giudice che guardò da vicino." },
-    "07": { "line": "Uno dei miei tre colori in realtà manca." },
-    "08": { "line": "Pensi a una cucciolata? Il primo passo non è trovare un fidanzato." },
-    "09": { "line": "Dove vanno i soldi. La mamma, una cucciolata, tutta la mia vita." },
-    "10": { "line": "Le domande che ti dicono di più su un allevatore." },
-    "11": { "line": "Una volta nella vita, una commissione ha deciso se avrei mai potuto avere cuccioli. Nessuna pressione." },
-    "12": { "line": "Uno Swissy è il cane giusto per te? La risposta sincera." }
+    "01": {
+      "line": "Chi sono, e perché a spiegarti le scartoffie è una cagnolona."
+    },
+    "02": {
+      "line": "C'è scritto sul mio pedigree. Ma la FCI non rilascia pedigree. Colpo di scena."
+    },
+    "03": {
+      "line": "Lo stesso documento, due inizi di vita molto diversi."
+    },
+    "04": {
+      "line": "Ero troppo agitata per aprire i risultati delle mie lastre. Allora decifriamoli insieme."
+    },
+    "05": {
+      "line": "Tre giudici, tre giorni. Ma cosa guardavano davvero?"
+    },
+    "06": {
+      "line": "1908, un cane di nome Bello e un giudice che guardò da vicino."
+    },
+    "07": {
+      "line": "Uno dei miei tre colori in realtà manca."
+    },
+    "08": {
+      "line": "Pensi a una cucciolata? Il primo passo non è trovare un fidanzato."
+    },
+    "09": {
+      "line": "Dove vanno i soldi. La mamma, una cucciolata, tutta la mia vita."
+    },
+    "10": {
+      "line": "Le domande che ti dicono di più su un allevatore."
+    },
+    "11": {
+      "line": "Una volta nella vita, una commissione ha deciso se avrei mai potuto avere cuccioli. Nessuna pressione."
+    },
+    "12": {
+      "line": "Uno Swissy è il cane giusto per te? La risposta sincera."
+    }
   },
   "guide": {
     "eyebrow": "Quello che non è entrato nel video",

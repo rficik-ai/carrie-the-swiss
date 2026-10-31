@@ -1,6 +1,8 @@
 ---
 import { type Locale, t } from '../i18n';
 import { EPISODES, INSTAGRAM } from '../data/episodes';
+const play = (s.episodes as any).play ?? 'Play episode';
+const close = (s.episodes as any).close ?? 'Close';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const s = t(locale);
@@ -19,7 +21,7 @@ const topics = s.topics as Record<string, string>;
     <ol class="rail" data-labels={JSON.stringify({ out: s.episodes.out, soon: s.episodes.soon, prod: s.episodes.production })} data-locale={locale}>
       {EPISODES.map((e, i) => (
         <li class:list={['slice', { open: i === 4 }]} data-date={e.date ?? ''}>
-          <a href={INSTAGRAM} target="_blank" rel="noopener" class="inner">
+          <a href={e.yt ? `https://www.youtube.com/shorts/${e.yt[0]}` : INSTAGRAM} target="_blank" rel="noopener" class="inner" data-yt={e.yt ? e.yt.join(',') : undefined} data-title={e.title}>
             <span class="bg" style={e.image ? `background-image:url(${e.image})` : undefined}></span>
             {e.image && <video class="clip" muted loop playsinline preload="none" aria-hidden="true" data-src={e.image.replace('.jpg', '.mp4')}></video>}
             <span class="num">{e.n}</span>
@@ -29,13 +31,20 @@ const topics = s.topics as Record<string, string>;
               <span class="title">{e.title}</span>
               <span class="line">{lines[e.n]?.line}</span>
               {e.parts && <span class="parts">{s.episodes.parts}: {e.parts.join(' · ')}</span>}
-              <span class="watch">{s.episodes.watch} →</span>
+              <span class="watch">{e.yt ? `▶ ${play}` : `${s.episodes.watch} →`}</span>
             </span>
           </a>
         </li>
       ))}
     </ol>
   </div>
+  <dialog class="player" aria-label={play}>
+    <div class="pbox">
+      <div class="ptop"><span class="ptitle"></span><button type="button" class="pclose" aria-label={close}>✕</button></div>
+      <div class="frame"></div>
+      <div class="pparts"></div>
+    </div>
+  </dialog>
 </section>
 
 <style>
@@ -63,6 +72,17 @@ const topics = s.topics as Record<string, string>;
   .parts { font-size: 13px; color: var(--muted-dark); }
   .watch { font-size: 14px; font-weight: 600; margin-top: 4px; color: var(--gold-hi); }
 
+  .player { border: 0; padding: 0; background: transparent; max-width: 100vw; max-height: 100vh; }
+  .player::backdrop { background: rgba(13,12,10,.86); backdrop-filter: blur(6px); }
+  .pbox { width: min(420px, 92vw); display: grid; gap: 12px; color: var(--ivory); }
+  .ptop { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .ptitle { font-family: var(--f-display); font-size: 22px; font-weight: 600; }
+  .pclose { background: none; border: 1px solid rgba(234,211,154,.4); color: var(--ivory); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 16px; }
+  .frame { aspect-ratio: 9 / 16; max-height: 78vh; border-radius: 14px; overflow: hidden; background: #000; }
+  .frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .pparts { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pparts button { background: none; border: 1px solid rgba(234,211,154,.4); color: var(--ivory); border-radius: 999px; padding: 8px 14px; cursor: pointer; font: 600 13px var(--f-body); }
+  .pparts button[aria-pressed='true'] { background: var(--gold); color: #1a1408; border-color: var(--gold); }
   /* Desktop: hover accordion */
   @media (min-width: 900px) and (hover: hover) {
     .slice { flex: 1 1 0; height: min(560px, 68vh); transition: flex-grow .6s cubic-bezier(.2,.7,.2,1); }
@@ -97,6 +117,32 @@ const topics = s.topics as Record<string, string>;
     if (date <= today) { st.textContent = L.out; st.classList.add('out'); }
     else st.textContent = `${L.soon} · ${date.toLocaleDateString(loc, { day: 'numeric', month: 'short' })}`;
   });
+
+  // Play the episode in an in-page YouTube player (privacy-enhanced, loads only on click)
+  const dlg = document.querySelector<HTMLDialogElement>('dialog.player')!;
+  const frame = dlg.querySelector<HTMLElement>('.frame')!;
+  const partsBox = dlg.querySelector<HTMLElement>('.pparts')!;
+  const showPart = (id: string) => {
+    frame.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" title="Carrie the Swiss" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+    partsBox.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === id)));
+  };
+  rail.querySelectorAll<HTMLAnchorElement>('a.inner[data-yt]').forEach((a) => {
+    a.addEventListener('click', (ev) => {
+      if (typeof dlg.showModal !== 'function') return;
+      ev.preventDefault();
+      const ids = a.dataset.yt!.split(',');
+      dlg.querySelector('.ptitle')!.textContent = a.dataset.title!;
+      partsBox.innerHTML = ids.length > 1 ? ids.map((id, i) => `<button type="button" data-id="${id}">${i + 1}/${ids.length}</button>`).join('') : '';
+      partsBox.querySelectorAll<HTMLButtonElement>('button').forEach((b) => b.addEventListener('click', () => showPart(b.dataset.id!)));
+      showPart(ids[0]);
+      if (current) { current.classList.remove('playing'); current.querySelector('video')?.pause(); }
+      dlg.showModal();
+    });
+  });
+  const shut = () => { frame.innerHTML = ''; dlg.close(); };
+  dlg.querySelector('.pclose')!.addEventListener('click', shut);
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) shut(); });
+  dlg.addEventListener('close', () => { frame.innerHTML = ''; });
 
   // Short muted preview of the episode on the open / hovered / centred card
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;

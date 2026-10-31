@@ -29,7 +29,9 @@
     "out": "Już jest",
     "soon": "Wkrótce",
     "production": "W produkcji",
-    "parts": "3 części"
+    "parts": "3 części",
+    "play": "Odtwórz odcinek",
+    "close": "Zamknij"
   },
   "topics": {
     "intro": "Wstęp",
@@ -43,18 +45,42 @@
     "ownership": "Życie z psem"
   },
   "ep": {
-    "01": { "line": "Kim jestem i dlaczego to pies tłumaczy papierologię." },
-    "02": { "line": "Jest w moim rodowodzie. Tyle że FCI nie wydaje rodowodów. Zwrot akcji." },
-    "03": { "line": "Ten sam papier, dwa zupełnie różne starty w życie." },
-    "04": { "line": "Za bardzo się stresowałam, żeby otworzyć wyniki prześwietleń. Rozszyfrujmy je razem." },
-    "05": { "line": "Trzech sędziów, trzy dni. Na co tak naprawdę patrzyli?" },
-    "06": { "line": "Rok 1908, pies o imieniu Bello i sędzia, który przyjrzał się uważnie." },
-    "07": { "line": "Jednego z moich trzech kolorów tak naprawdę brakuje." },
-    "08": { "line": "Planujesz szczeniaki? Krok pierwszy to wcale nie szukanie chłopaka." },
-    "09": { "line": "Na co idą pieniądze. Mama, jeden miot, całe moje życie." },
-    "10": { "line": "Pytania, które najwięcej mówią o hodowcy." },
-    "11": { "line": "Raz w życiu komisja decydowała, czy kiedykolwiek będę mogła mieć szczeniaki. Bez presji." },
-    "12": { "line": "Czy Swissy to pies dla ciebie? Szczera odpowiedź." }
+    "01": {
+      "line": "Kim jestem i dlaczego to pies tłumaczy papierologię."
+    },
+    "02": {
+      "line": "Jest w moim rodowodzie. Tyle że FCI nie wydaje rodowodów. Zwrot akcji."
+    },
+    "03": {
+      "line": "Ten sam papier, dwa zupełnie różne starty w życie."
+    },
+    "04": {
+      "line": "Za bardzo się stresowałam, żeby otworzyć wyniki prześwietleń. Rozszyfrujmy je razem."
+    },
+    "05": {
+      "line": "Trzech sędziów, trzy dni. Na co tak naprawdę patrzyli?"
+    },
+    "06": {
+      "line": "Rok 1908, pies o imieniu Bello i sędzia, który przyjrzał się uważnie."
+    },
+    "07": {
+      "line": "Jednego z moich trzech kolorów tak naprawdę brakuje."
+    },
+    "08": {
+      "line": "Planujesz szczeniaki? Krok pierwszy to wcale nie szukanie chłopaka."
+    },
+    "09": {
+      "line": "Na co idą pieniądze. Mama, jeden miot, całe moje życie."
+    },
+    "10": {
+      "line": "Pytania, które najwięcej mówią o hodowcy."
+    },
+    "11": {
+      "line": "Raz w życiu komisja decydowała, czy kiedykolwiek będę mogła mieć szczeniaki. Bez presji."
+    },
+    "12": {
+      "line": "Czy Swissy to pies dla ciebie? Szczera odpowiedź."
+    }
   },
   "guide": {
     "eyebrow": "Czego nie zmieściłam w filmie",

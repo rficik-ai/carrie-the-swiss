@@ -29,7 +29,9 @@
     "out": "Már elérhető",
     "soon": "Hamarosan",
     "production": "Készül",
-    "parts": "3 rész"
+    "parts": "3 rész",
+    "play": "Epizód lejátszása",
+    "close": "Bezárás"
   },
   "topics": {
     "intro": "Bevezető",
@@ -43,18 +45,42 @@
     "ownership": "Élet a kutyával"
   },
   "ep": {
-    "01": { "line": "Ki vagyok, és miért egy kutya magyarázza el a papírmunkát." },
-    "02": { "line": "Benne van a törzskönyvemben. Csakhogy az FCI nem ad ki törzskönyvet. Csavar." },
-    "03": { "line": "Ugyanaz a papír, két nagyon különböző indulás az életbe." },
-    "04": { "line": "Túl izgultam ahhoz, hogy megnyissam a röntgeneredményeimet. Fejtsük meg együtt." },
-    "05": { "line": "Három bíró, három nap. Valójában mit néztek?" },
-    "06": { "line": "1908, egy Bello nevű kutya és egy bíró, aki alaposan megnézte." },
-    "07": { "line": "A három színem közül az egyik valójában hiányzik." },
-    "08": { "line": "Kölyköket terveztek? Az első lépés nem a pasizás." },
-    "09": { "line": "Hová megy a pénz. Az anya, egy alom, az egész életem." },
-    "10": { "line": "A kérdések, amelyekből a legtöbbet megtudod egy tenyésztőről." },
-    "11": { "line": "Életemben egyszer egy bizottság döntötte el, lehetnek-e valaha kölykeim. Semmi nyomás." },
-    "12": { "line": "Neked való kutya a Swissy? Az őszinte válasz." }
+    "01": {
+      "line": "Ki vagyok, és miért egy kutya magyarázza el a papírmunkát."
+    },
+    "02": {
+      "line": "Benne van a törzskönyvemben. Csakhogy az FCI nem ad ki törzskönyvet. Csavar."
+    },
+    "03": {
+      "line": "Ugyanaz a papír, két nagyon különböző indulás az életbe."
+    },
+    "04": {
+      "line": "Túl izgultam ahhoz, hogy megnyissam a röntgeneredményeimet. Fejtsük meg együtt."
+    },
+    "05": {
+      "line": "Három bíró, három nap. Valójában mit néztek?"
+    },
+    "06": {
+      "line": "1908, egy Bello nevű kutya és egy bíró, aki alaposan megnézte."
+    },
+    "07": {
+      "line": "A három színem közül az egyik valójában hiányzik."
+    },
+    "08": {
+      "line": "Kölyköket terveztek? Az első lépés nem a pasizás."
+    },
+    "09": {
+      "line": "Hová megy a pénz. Az anya, egy alom, az egész életem."
+    },
+    "10": {
+      "line": "A kérdések, amelyekből a legtöbbet megtudod egy tenyésztőről."
+    },
+    "11": {
+      "line": "Életemben egyszer egy bizottság döntötte el, lehetnek-e valaha kölykeim. Semmi nyomás."
+    },
+    "12": {
+      "line": "Neked való kutya a Swissy? Az őszinte válasz."
+    }
   },
   "guide": {
     "eyebrow": "Ami nem fért bele a videóba",

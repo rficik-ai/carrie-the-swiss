@@ -29,7 +29,9 @@
     "out": "Out now",
     "soon": "Coming",
     "production": "In production",
-    "parts": "3 parts"
+    "parts": "3 parts",
+    "play": "Play episode",
+    "close": "Close"
   },
   "topics": {
     "intro": "Intro",
@@ -43,18 +45,42 @@
     "ownership": "Ownership"
   },
   "ep": {
-    "01": { "line": "Who I am, and why a dog is explaining paperwork." },
-    "02": { "line": "It's on my pedigree. But the FCI doesn't issue pedigrees. Twist." },
-    "03": { "line": "Same paper, two very different starts in life." },
-    "04": { "line": "I was too nervous to open my X-ray results. So let's crack the code together." },
-    "05": { "line": "Three judges, three days. What were they actually looking at?" },
-    "06": { "line": "1908, a dog called Bello, and a judge who looked closely." },
-    "07": { "line": "One of my three colours is actually missing." },
-    "08": { "line": "Planning puppies? Step one isn't finding a boyfriend." },
-    "09": { "line": "Where the money goes. The mom, one litter, my whole life." },
-    "10": { "line": "The questions that tell you the most about a breeder." },
-    "11": { "line": "Once in my life, a committee decided if I could ever have puppies. No pressure." },
-    "12": { "line": "Is a Swissy the right dog for you? The honest answer." }
+    "01": {
+      "line": "Who I am, and why a dog is explaining paperwork."
+    },
+    "02": {
+      "line": "It's on my pedigree. But the FCI doesn't issue pedigrees. Twist."
+    },
+    "03": {
+      "line": "Same paper, two very different starts in life."
+    },
+    "04": {
+      "line": "I was too nervous to open my X-ray results. So let's crack the code together."
+    },
+    "05": {
+      "line": "Three judges, three days. What were they actually looking at?"
+    },
+    "06": {
+      "line": "1908, a dog called Bello, and a judge who looked closely."
+    },
+    "07": {
+      "line": "One of my three colours is actually missing."
+    },
+    "08": {
+      "line": "Planning puppies? Step one isn't finding a boyfriend."
+    },
+    "09": {
+      "line": "Where the money goes. The mom, one litter, my whole life."
+    },
+    "10": {
+      "line": "The questions that tell you the most about a breeder."
+    },
+    "11": {
+      "line": "Once in my life, a committee decided if I could ever have puppies. No pressure."
+    },
+    "12": {
+      "line": "Is a Swissy the right dog for you? The honest answer."
+    }
   },
   "guide": {
     "eyebrow": "What didn't fit in the video",

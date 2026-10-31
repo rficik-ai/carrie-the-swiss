@@ -29,7 +29,9 @@
     "out": "Disponible",
     "soon": "Bientôt",
     "production": "En production",
-    "parts": "3 parties"
+    "parts": "3 parties",
+    "play": "Lire l'épisode",
+    "close": "Fermer"
   },
   "topics": {
     "intro": "Intro",
@@ -43,18 +45,42 @@
     "ownership": "Vivre avec un chien"
   },
   "ep": {
-    "01": { "line": "Qui je suis, et pourquoi c'est une chienne qui vous explique la paperasse." },
-    "02": { "line": "C'est écrit sur mon pedigree. Sauf que la FCI ne délivre pas de pedigrees. Coup de théâtre." },
-    "03": { "line": "Le même papier, deux départs dans la vie très différents." },
-    "04": { "line": "J'étais trop stressée pour ouvrir mes résultats de radios. Alors on décrypte ensemble." },
-    "05": { "line": "Trois juges, trois jours. Qu'est-ce qu'ils regardaient vraiment ?" },
-    "06": { "line": "1908, un chien nommé Bello, et un juge qui a regardé de très près." },
-    "07": { "line": "L'une de mes trois couleurs manque en réalité." },
-    "08": { "line": "Vous prévoyez des chiots ? La première étape, ce n'est pas de trouver un copain." },
-    "09": { "line": "Où va l'argent. La mère, une portée, toute ma vie." },
-    "10": { "line": "Les questions qui en disent le plus sur un éleveur." },
-    "11": { "line": "Une fois dans ma vie, un comité a décidé si je pourrais un jour avoir des chiots. Aucune pression." },
-    "12": { "line": "Un Swissy est-il le bon chien pour vous ? La réponse honnête." }
+    "01": {
+      "line": "Qui je suis, et pourquoi c'est une chienne qui vous explique la paperasse."
+    },
+    "02": {
+      "line": "C'est écrit sur mon pedigree. Sauf que la FCI ne délivre pas de pedigrees. Coup de théâtre."
+    },
+    "03": {
+      "line": "Le même papier, deux départs dans la vie très différents."
+    },
+    "04": {
+      "line": "J'étais trop stressée pour ouvrir mes résultats de radios. Alors on décrypte ensemble."
+    },
+    "05": {
+      "line": "Trois juges, trois jours. Qu'est-ce qu'ils regardaient vraiment ?"
+    },
+    "06": {
+      "line": "1908, un chien nommé Bello, et un juge qui a regardé de très près."
+    },
+    "07": {
+      "line": "L'une de mes trois couleurs manque en réalité."
+    },
+    "08": {
+      "line": "Vous prévoyez des chiots ? La première étape, ce n'est pas de trouver un copain."
+    },
+    "09": {
+      "line": "Où va l'argent. La mère, une portée, toute ma vie."
+    },
+    "10": {
+      "line": "Les questions qui en disent le plus sur un éleveur."
+    },
+    "11": {
+      "line": "Une fois dans ma vie, un comité a décidé si je pourrais un jour avoir des chiots. Aucune pression."
+    },
+    "12": {
+      "line": "Un Swissy est-il le bon chien pour vous ? La réponse honnête."
+    }
   },
   "guide": {
     "eyebrow": "Ce qui n'a pas tenu dans la vidéo",

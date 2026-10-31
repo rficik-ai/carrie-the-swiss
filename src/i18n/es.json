@@ -29,7 +29,9 @@
     "out": "Ya disponible",
     "soon": "Próximamente",
     "production": "En producción",
-    "parts": "3 partes"
+    "parts": "3 partes",
+    "play": "Ver episodio",
+    "close": "Cerrar"
   },
   "topics": {
     "intro": "Intro",
@@ -43,18 +45,42 @@
     "ownership": "Vivir con un perro"
   },
   "ep": {
-    "01": { "line": "Quién soy y por qué es una perra la que te explica el papeleo." },
-    "02": { "line": "Pone en mi pedigrí. Pero la FCI no emite pedigrís. Giro inesperado." },
-    "03": { "line": "El mismo papel, dos comienzos de vida muy distintos." },
-    "04": { "line": "Estaba demasiado nerviosa para abrir mis radiografías. Así que vamos a descifrarlas juntos." },
-    "05": { "line": "Tres jueces, tres días. ¿Qué miraban en realidad?" },
-    "06": { "line": "1908, un perro llamado Bello y un juez que se fijó bien." },
-    "07": { "line": "Uno de mis tres colores en realidad falta." },
-    "08": { "line": "¿Planeas una camada? El primer paso no es buscar novio." },
-    "09": { "line": "Adónde va el dinero. La madre, una camada, toda mi vida." },
-    "10": { "line": "Las preguntas que más te dicen de un criador." },
-    "11": { "line": "Una vez en mi vida, un comité decidió si podría tener cachorros algún día. Sin presión." },
-    "12": { "line": "¿Es un Swissy el perro adecuado para ti? La respuesta sincera." }
+    "01": {
+      "line": "Quién soy y por qué es una perra la que te explica el papeleo."
+    },
+    "02": {
+      "line": "Pone en mi pedigrí. Pero la FCI no emite pedigrís. Giro inesperado."
+    },
+    "03": {
+      "line": "El mismo papel, dos comienzos de vida muy distintos."
+    },
+    "04": {
+      "line": "Estaba demasiado nerviosa para abrir mis radiografías. Así que vamos a descifrarlas juntos."
+    },
+    "05": {
+      "line": "Tres jueces, tres días. ¿Qué miraban en realidad?"
+    },
+    "06": {
+      "line": "1908, un perro llamado Bello y un juez que se fijó bien."
+    },
+    "07": {
+      "line": "Uno de mis tres colores en realidad falta."
+    },
+    "08": {
+      "line": "¿Planeas una camada? El primer paso no es buscar novio."
+    },
+    "09": {
+      "line": "Adónde va el dinero. La madre, una camada, toda mi vida."
+    },
+    "10": {
+      "line": "Las preguntas que más te dicen de un criador."
+    },
+    "11": {
+      "line": "Una vez en mi vida, un comité decidió si podría tener cachorros algún día. Sin presión."
+    },
+    "12": {
+      "line": "¿Es un Swissy el perro adecuado para ti? La respuesta sincera."
+    }
   },
   "guide": {
     "eyebrow": "Lo que no cupo en el vídeo",

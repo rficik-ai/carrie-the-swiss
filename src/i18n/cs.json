@@ -29,7 +29,9 @@
     "out": "Venku",
     "soon": "Brzy",
     "production": "Ve výrobě",
-    "parts": "3 díly"
+    "parts": "3 díly",
+    "play": "Přehrát epizodu",
+    "close": "Zavřít"
   },
   "topics": {
     "intro": "Úvod",
@@ -43,18 +45,42 @@
     "ownership": "Život se psem"
   },
   "ep": {
-    "01": { "line": "Kdo jsem a proč vám papírování vysvětluje pes." },
-    "02": { "line": "Stojí to v mém průkazu původu. Jenže FCI průkazy původu nevydává. Zvrat." },
-    "03": { "line": "Stejný papír, dva úplně odlišné starty do života." },
-    "04": { "line": "Bála jsem se otevřít výsledky svých rentgenů. Tak je rozluštíme spolu." },
-    "05": { "line": "Tři rozhodčí, tři dny. Na co se vlastně dívali?" },
-    "06": { "line": "Rok 1908, pes jménem Bello a rozhodčí, který se díval pořádně zblízka." },
-    "07": { "line": "Jedna z mých tří barev ve skutečnosti chybí." },
-    "08": { "line": "Plánujete štěňata? Prvním krokem není hledání kluka." },
-    "09": { "line": "Kam jdou peníze. Máma, jeden vrh, celý můj život." },
-    "10": { "line": "Otázky, které vám o chovateli prozradí nejvíc." },
-    "11": { "line": "Jednou v životě rozhodovala komise, jestli budu moct mít štěňata. Žádný stres." },
-    "12": { "line": "Je Swissy ten pravý pes pro vás? Upřímná odpověď." }
+    "01": {
+      "line": "Kdo jsem a proč vám papírování vysvětluje pes."
+    },
+    "02": {
+      "line": "Stojí to v mém průkazu původu. Jenže FCI průkazy původu nevydává. Zvrat."
+    },
+    "03": {
+      "line": "Stejný papír, dva úplně odlišné starty do života."
+    },
+    "04": {
+      "line": "Bála jsem se otevřít výsledky svých rentgenů. Tak je rozluštíme spolu."
+    },
+    "05": {
+      "line": "Tři rozhodčí, tři dny. Na co se vlastně dívali?"
+    },
+    "06": {
+      "line": "Rok 1908, pes jménem Bello a rozhodčí, který se díval pořádně zblízka."
+    },
+    "07": {
+      "line": "Jedna z mých tří barev ve skutečnosti chybí."
+    },
+    "08": {
+      "line": "Plánujete štěňata? Prvním krokem není hledání kluka."
+    },
+    "09": {
+      "line": "Kam jdou peníze. Máma, jeden vrh, celý můj život."
+    },
+    "10": {
+      "line": "Otázky, které vám o chovateli prozradí nejvíc."
+    },
+    "11": {
+      "line": "Jednou v životě rozhodovala komise, jestli budu moct mít štěňata. Žádný stres."
+    },
+    "12": {
+      "line": "Je Swissy ten pravý pes pro vás? Upřímná odpověď."
+    }
   },
   "guide": {
     "eyebrow": "Co se do videa nevešlo",

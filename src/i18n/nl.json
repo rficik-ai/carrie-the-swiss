@@ -29,7 +29,9 @@
     "out": "Nu te zien",
     "soon": "Binnenkort",
     "production": "In productie",
-    "parts": "3 delen"
+    "parts": "3 delen",
+    "play": "Aflevering afspelen",
+    "close": "Sluiten"
   },
   "topics": {
     "intro": "Intro",
@@ -43,18 +45,42 @@
     "ownership": "Leven met een hond"
   },
   "ep": {
-    "01": { "line": "Wie ik ben, en waarom uitgerekend een hond papierwerk uitlegt." },
-    "02": { "line": "Het staat op mijn stamboom. Maar de FCI geeft helemaal geen stambomen uit. Plotwending." },
-    "03": { "line": "Hetzelfde papier, twee heel verschillende starts in het leven." },
-    "04": { "line": "Ik was te zenuwachtig om mijn röntgenuitslagen te openen. Dus kraken we de code samen." },
-    "05": { "line": "Drie keurmeesters, drie dagen. Waar keken ze eigenlijk naar?" },
-    "06": { "line": "1908, een hond die Bello heette, en een keurmeester die goed keek." },
-    "07": { "line": "Een van mijn drie kleuren ontbreekt eigenlijk." },
-    "08": { "line": "Pups gepland? Stap één is niet een vriendje zoeken." },
-    "09": { "line": "Waar het geld naartoe gaat. De moeder, één nest, mijn hele leven." },
-    "10": { "line": "De vragen die je het meest vertellen over een fokker." },
-    "11": { "line": "Eén keer in mijn leven besliste een commissie of ik ooit pups mocht krijgen. Geen druk." },
-    "12": { "line": "Is een Swissy de juiste hond voor jou? Het eerlijke antwoord." }
+    "01": {
+      "line": "Wie ik ben, en waarom uitgerekend een hond papierwerk uitlegt."
+    },
+    "02": {
+      "line": "Het staat op mijn stamboom. Maar de FCI geeft helemaal geen stambomen uit. Plotwending."
+    },
+    "03": {
+      "line": "Hetzelfde papier, twee heel verschillende starts in het leven."
+    },
+    "04": {
+      "line": "Ik was te zenuwachtig om mijn röntgenuitslagen te openen. Dus kraken we de code samen."
+    },
+    "05": {
+      "line": "Drie keurmeesters, drie dagen. Waar keken ze eigenlijk naar?"
+    },
+    "06": {
+      "line": "1908, een hond die Bello heette, en een keurmeester die goed keek."
+    },
+    "07": {
+      "line": "Een van mijn drie kleuren ontbreekt eigenlijk."
+    },
+    "08": {
+      "line": "Pups gepland? Stap één is niet een vriendje zoeken."
+    },
+    "09": {
+      "line": "Waar het geld naartoe gaat. De moeder, één nest, mijn hele leven."
+    },
+    "10": {
+      "line": "De vragen die je het meest vertellen over een fokker."
+    },
+    "11": {
+      "line": "Eén keer in mijn leven besliste een commissie of ik ooit pups mocht krijgen. Geen druk."
+    },
+    "12": {
+      "line": "Is een Swissy de juiste hond voor jou? Het eerlijke antwoord."
+    }
   },
   "guide": {
     "eyebrow": "Wat niet in de video paste",
