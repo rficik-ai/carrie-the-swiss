@@ -51,6 +51,10 @@ async function chat(request, env) {
   }
   const data = await res.json();
   const text = (data.content || []).filter((c) => c.type === 'text').map((c) => c.text).join('\n').trim();
+  if (!text) {
+    console.log('empty reply', data.stop_reason, JSON.stringify((data.content || []).map((c) => c.type)), JSON.stringify(data).slice(0, 400));
+    return json({ error: 'empty_reply' }, 502);
+  }
   return json({ reply: text });
 }
 
