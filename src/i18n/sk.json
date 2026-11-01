@@ -235,7 +235,8 @@
     "c4": "Ako kŕmiť šteňa veľkého plemena?",
     "err_rate": "Haf, to je veľa otázok naraz! Dajte mi chvíľu vydýchnuť.",
     "err_gen": "Hm, stratila som niť. Skúsite to o chvíľu znova?",
-    "err_off": "Ešte sa tu učím rozprávať. Čoskoro som späť!"
+    "err_off": "Ešte sa tu učím rozprávať. Čoskoro som späť!",
+    "close": "Zavrieť"
   },
   "follow": {
     "eyebrow": "Sledujte ma",

@@ -8,6 +8,7 @@ const a = (t(locale) as any).ask;
 ---
 <div class="hstop fstop ask" data-stop="fire" aria-label={a.title}>
   <div class="panel">
+    <button type="button" class="cx" aria-label={a.close ?? 'Close'}>×</button>
     <p class="eyebrow">{a.eyebrow}</p>
     <h2>{a.title}</h2>
     <ChatPanel locale={locale} />
@@ -18,18 +19,25 @@ const a = (t(locale) as any).ask;
 <style>
   .hstop { position: absolute; inset: 0; z-index: 6; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
   .hstop.live { opacity: 1; pointer-events: auto; }
-  .panel { position: absolute; right: max(24px, 4vw); top: calc(var(--hh, 68px) + 20px); bottom: 24px; width: min(520px, 40vw); display: flex; flex-direction: column; gap: 10px; box-sizing: border-box;
+  .panel { position: absolute; right: max(96px, 7vw); top: calc(var(--hh, 68px) + 20px); bottom: 24px; width: min(520px, 40vw); display: flex; flex-direction: column; gap: 10px; box-sizing: border-box;
     padding: 24px 24px 16px; border-radius: 10px; background: rgba(16,11,7,.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 0 0 1px rgba(234,211,154,.18), 0 40px 80px -30px rgba(0,0,0,.8); }
   .panel h2 { font-size: clamp(26px, 2.4vw, 36px); color: var(--ivory); margin: 0 0 4px; }
   .panel :global(.chat) { flex: 1; min-height: 0; grid-template-rows: 1fr auto auto; padding: 0; background: none; box-shadow: none; }
   .panel :global(.log) { height: auto; min-height: 0; }
   .note { margin: 0; font-size: 12px; color: var(--muted-dark); }
+  .cx { display: none; }
   @media (max-width: 899px), (hover: none) {
-    .panel { left: 0; right: 0; top: auto; bottom: 0; width: auto; height: 60svh; border-radius: 18px 18px 0 0; padding: 18px 16px calc(12px + env(safe-area-inset-bottom, 0px)); }
+    /* at rest: a compact sheet under Carrie; typing or a question chip opens the chat full screen */
+    .panel { left: 0; right: 0; top: auto; bottom: 0; width: auto; height: calc(100% - 420px); min-height: 330px; border-radius: 18px 18px 0 0; padding: 18px 16px calc(12px + env(safe-area-inset-bottom, 0px)); }
     .panel h2 { font-size: 22px; }
-    .panel :global(.chips) { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
-    .panel :global(.chip) { flex: none; }
+    .panel :global(.chips) { gap: 6px; }
+    .panel :global(.chip) { padding: 7px 12px; font-size: 12.5px; }
     .note { display: none; }
+    .fstop.chatting .panel { position: fixed; z-index: 45; top: var(--vt, var(--hh, 64px)); bottom: auto; height: var(--vh, calc(100dvh - var(--hh, 64px))); border-radius: 0; background: rgba(16,11,7,.97); }
+    .fstop.chatting .panel h2, .fstop.chatting .panel .eyebrow { display: none; }
+    .fstop.chatting .panel :global(.chips) { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    .fstop.chatting .panel :global(.chip) { flex: none; }
+    .fstop.chatting .cx { display: grid; place-items: center; position: absolute; top: 8px; right: 10px; z-index: 2; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(234,211,154,.45); background: rgba(13,12,10,.6); color: var(--ivory); font-size: 24px; cursor: pointer; }
   }
 </style>
 
@@ -37,5 +45,31 @@ const a = (t(locale) as any).ask;
   import { mountStop } from '../lib/stop';
   import { headerHeight } from '../lib/frame';
   const el = document.querySelector<HTMLElement>('.fstop');
-  if (el) mountStop('fire', el, { onFrame: () => el.style.setProperty('--hh', `${headerHeight()}px`) });
+  if (el) {
+    const narrow = () => matchMedia('(max-width: 899px), (hover: none)').matches;
+    const panel = el.querySelector<HTMLElement>('.panel')!;
+    const fit = () => {
+      // follow the on-screen keyboard: the chat always fills exactly what is visible below the menu
+      const vv = window.visualViewport, hh = headerHeight();
+      if (!vv) return;
+      el.style.setProperty('--vt', `${vv.offsetTop + hh}px`);
+      el.style.setProperty('--vh', `${vv.height - hh}px`);
+    };
+    const open = () => {
+      if (!narrow() || el.classList.contains('chatting')) return;
+      el.classList.add('chatting'); fit();
+      document.documentElement.style.overflow = 'hidden';
+      window.visualViewport?.addEventListener('resize', fit); window.visualViewport?.addEventListener('scroll', fit);
+    };
+    const close = () => {
+      el.classList.remove('chatting');
+      document.documentElement.style.overflow = '';
+      window.visualViewport?.removeEventListener('resize', fit); window.visualViewport?.removeEventListener('scroll', fit);
+      (document.activeElement as HTMLElement | null)?.blur();
+    };
+    panel.addEventListener('focusin', (e) => { if ((e.target as HTMLElement).matches('input')) open(); });
+    panel.querySelectorAll('.chip').forEach((c) => c.addEventListener('click', open));
+    panel.querySelector('.cx')!.addEventListener('click', close);
+    mountStop('fire', el, { onFrame: () => el.style.setProperty('--hh', `${headerHeight()}px`), onLive: (on) => { if (!on) close(); } });
+  }
 </script>

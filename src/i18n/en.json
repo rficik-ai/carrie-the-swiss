@@ -235,7 +235,8 @@
     "c4": "How should I feed a big puppy?",
     "err_rate": "Woof, that's a lot of questions! Give me a minute to catch my breath.",
     "err_gen": "Hmm, I lost my train of thought. Try again in a moment?",
-    "err_off": "I'm still learning to talk here. Back very soon!"
+    "err_off": "I'm still learning to talk here. Back very soon!",
+    "close": "Close"
   },
   "follow": {
     "eyebrow": "Follow me",
