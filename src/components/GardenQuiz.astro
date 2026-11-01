@@ -5,13 +5,13 @@ import type { Locale } from '../i18n';
 import { QUESTIONS, DIMS, FLAGS, UI } from '../data/quiz';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
-const L = locale === 'sk' ? 'sk' : 'en';
-const u = UI[L];
+const L: string = UI[locale] ? locale : 'en';
+const u: Record<string, string> = { ...UI.en, ...UI[L] };
 const data = {
   lang: locale,
-  q: QUESTIONS.map((q) => ({ id: q.id, dim: q.dim, t: q.t[L], opts: q.opts.map((o) => ({ p: o.p, flag: o.flag ?? null, t: o.t[L] })) })),
-  dims: DIMS.map((d) => ({ id: d.id, t: d.t[L] })),
-  flags: Object.fromEntries(Object.entries(FLAGS).map(([k, v]) => [k, v[L]])),
+  q: QUESTIONS.map((q) => ({ id: q.id, dim: q.dim, t: q.t[L] ?? q.t.en, opts: q.opts.map((o) => ({ p: o.p, flag: o.flag ?? null, t: o.t[L] ?? o.t.en })) })),
+  dims: DIMS.map((d) => ({ id: d.id, t: d.t[L] ?? d.t.en })),
+  flags: Object.fromEntries(Object.entries(FLAGS).map(([k, v]) => [k, v[L] ?? v.en])),
   r: [u.r1, u.r2, u.r3],
 };
 ---
@@ -28,10 +28,10 @@ const data = {
 
   {QUESTIONS.map((q, i) => (
     <fieldset class="step question" data-i={i} hidden>
-      <legend><span class="qn">{u.q} {i + 1} / {QUESTIONS.length}</span><span class="qt">{q.t[L]}</span></legend>
+      <legend><span class="qn">{u.q} {i + 1} / {QUESTIONS.length}</span><span class="qt">{q.t[L] ?? q.t.en}</span></legend>
       <div class="opts">
         {q.opts.map((o, v) => (
-          <button type="button" class="opt" data-v={v}><span class="mark" aria-hidden="true">{'ABCD'[v]}</span><span>{o.t[L]}</span></button>
+          <button type="button" class="opt" data-v={v}><span class="mark" aria-hidden="true">{'ABCD'[v]}</span><span>{o.t[L] ?? o.t.en}</span></button>
         ))}
       </div>
       {i > 0 && <button type="button" class="link back">← {u.back}</button>}
@@ -42,7 +42,7 @@ const data = {
     <p class="eyebrow">{u.result}</p>
     <div class="score"><span class="pct">0 %</span><p class="rtitle"></p></div>
     <p class="sub">{u.areas}</p>
-    <ul class="bars">{DIMS.map((d) => <li data-dim={d.id}><span class="bl">{d.t[L]}</span><span class="bt"><i></i></span><span class="bv"></span></li>)}</ul>
+    <ul class="bars">{DIMS.map((d) => <li data-dim={d.id}><span class="bl">{d.t[L] ?? d.t.en}</span><span class="bt"><i></i></span><span class="bv"></span></li>)}</ul>
     <div class="warns" hidden><p class="sub">{u.warn}</p><ul></ul></div>
     <div class="aibox">
       <button type="button" class="ai-go">
@@ -67,7 +67,7 @@ const data = {
     <button type="button" class="mx" aria-label={u.close}>×</button>
     <p class="eyebrow">{u.method_title}</p>
     <p>{u.method_intro}</p>
-    <dl>{DIMS.map((d) => <><dt>{d.t[L]}</dt><dd>{d.m[L]}</dd></>)}</dl>
+    <dl>{DIMS.map((d) => <><dt>{d.t[L] ?? d.t.en}</dt><dd>{d.m[L] ?? d.m.en}</dd></>)}</dl>
     <p class="mscore">{u.method_score}</p>
   </div>
 </div>
