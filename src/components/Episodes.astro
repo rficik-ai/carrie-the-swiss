@@ -370,7 +370,11 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     };
     new ResizeObserver(fit).observe(scene); fit();
     // the scene takes over only when it sits exactly where the film's last frame is
+    let lastKey = '';
     const watch = () => {
+      // keep the framing identical to the film's even if the header or viewport changes
+      const key = `${scene.clientWidth}x${scene.clientHeight}x${(document.querySelector('header.top') as HTMLElement | null)?.offsetHeight}`;
+      if (key !== lastKey) { lastKey = key; fit(); }
       const w = window as any;
       const at = sceneWrap.getBoundingClientRect().top <= 1.5;
       // hand over only when the film rests on its last frame (or has no video at all); once past the film, stay on

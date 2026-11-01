@@ -10,14 +10,14 @@ export function headerHeight() {
 /** cover placement (what object-fit: cover does) */
 export function coverFrame(W: number, H: number) {
   const k = Math.max(W / 1920, H / 1080);
-  return { k, left: (W - 1920 * k) / 2, top: (H - 1080 * k) / 2 };
+  return { k, left: Math.round((W - 1920 * k) / 2), top: Math.round((H - 1080 * k) / 2) };
 }
 
 /** final placement: the whole shelf region fits below the header, never bigger than cover */
 export function fitFrame(W: number, H: number, hh = headerHeight()) {
   const c = coverFrame(W, H);
   const k = Math.min(c.k, (W * 0.96) / REGION.w, (H - hh - 14) / REGION.h);
-  const left = W / 2 - (REGION.x + REGION.w / 2) * k;
-  const top = hh + (H - hh - REGION.h * k) / 2 - REGION.y * k;
+  const left = Math.round(W / 2 - (REGION.x + REGION.w / 2) * k);
+  const top = Math.round(hh + (H - hh - REGION.h * k) / 2 - REGION.y * k);
   return { k, left, top };
 }

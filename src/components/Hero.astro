@@ -104,7 +104,7 @@ const chapters = [
     if (wide) {
       // camera pulls back a little at the very end so the whole shelf sits below the menu (same framing as the shelf scene)
       const x = Math.min(1, Math.max(0, (p - 0.92) / 0.07)); const e = x * x * (3 - 2 * x);
-      const W = innerWidth, H = section.querySelector<HTMLElement>('.stage')!.clientHeight;
+      const st = section.querySelector<HTMLElement>('.stage')!; const W = st.clientWidth, H = st.clientHeight; // same box as the shelf scene (excludes the scrollbar)
       const c = coverFrame(W, H), f = fitFrame(W, H);
       const k = c.k + (f.k - c.k) * e, r = k / c.k;
       const L = c.left + (f.left - c.left) * e, T = c.top + (f.top - c.top) * e;
