@@ -243,6 +243,15 @@
     "intro": "Brevi video su cani grandi, documenti e cuccioli. Seguimi per non perderti il prossimo.",
     "yt": "Iscriviti su YouTube",
     "ig": "Seguimi su Instagram",
-    "play": "Guarda l'episodio"
+    "play": "Guarda l'episodio",
+    "nl_title": "Ti avviso quando arrivano la nuova stagione o il negozio",
+    "nl_placeholder": "La tua e-mail",
+    "nl_button": "Avvisami",
+    "nl_consent": "Accetto di ricevere e-mail occasionali da Carrie the Swiss su nuovi episodi e sul negozio. Posso disiscrivermi in qualsiasi momento.",
+    "ok": "Quasi fatto! Controlla la posta e conferma l'e-mail.",
+    "err": "Qualcosa è andato storto. Riprovi più tardi?",
+    "invalid": "Inserisci un'e-mail valida e spunta la casella.",
+    "off": "Le iscrizioni aprono prestissimo!",
+    "done": "Ci sei! Grazie per la conferma."
   }
 }

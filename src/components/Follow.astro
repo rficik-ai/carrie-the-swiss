@@ -14,6 +14,17 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
       <p class="eyebrow">{f.eyebrow}</p>
       <h2>{f.title}</h2>
       <p class="muted">{f.intro}</p>
+      <form class="notify" novalidate data-lang={locale} data-msg={JSON.stringify({ ok: f.ok, err: f.err, invalid: f.invalid, off: f.off, done: f.done })}>
+        <p class="nl-title">{f.nl_title}</p>
+        <div class="nl-row">
+          <label class="sr-only" for="nl-email">{f.nl_placeholder}</label>
+          <input id="nl-email" type="email" name="email" autocomplete="email" placeholder={f.nl_placeholder} required />
+          <button type="submit">{f.nl_button}</button>
+        </div>
+        <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <label class="consent"><input type="checkbox" name="consent" required /> <span>{f.nl_consent}</span></label>
+        <p class="nl-msg" aria-live="polite"></p>
+      </form>
       <div class="links">
         <a class="pill-cta" href={`${YOUTUBE}?sub_confirmation=1`} target="_blank" rel="noopener">{f.yt}</a>
         <a class="ghost" href={INSTAGRAM} target="_blank" rel="noopener">{f.ig}</a>
@@ -35,6 +46,19 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
   .follow { background: radial-gradient(60% 50% at 10% 0%, rgba(201,163,91,.12), transparent 70%), var(--ink); overflow: hidden; }
   .head { display: grid; gap: 14px; max-width: 46em; margin-bottom: 34px; }
   .head h2 { font-size: clamp(34px, 4.6vw, 60px); }
+  .notify { display: grid; gap: 10px; margin-top: 8px; padding: 18px; border-radius: 18px; background: rgba(251,248,241,.04); box-shadow: 0 0 0 1px rgba(234,211,154,.2); max-width: 560px; }
+  .nl-title { margin: 0; font: 600 18px var(--f-display); color: var(--ivory); }
+  .nl-row { display: flex; gap: 10px; }
+  .nl-row input { flex: 1; min-width: 0; height: 50px; border-radius: 999px; border: 1px solid rgba(234,211,154,.35); background: rgba(13,12,10,.6); color: var(--ivory); padding: 0 18px; font: 500 16px var(--f-body); }
+  .nl-row input:focus { outline: none; border-color: var(--gold); }
+  .nl-row button { flex: none; height: 50px; padding: 0 20px; border: 0; border-radius: 999px; background: var(--grad-gold, var(--gold)); color: #1a1408; font: 700 15px var(--f-body); cursor: pointer; }
+  .nl-row button:disabled { opacity: .5; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .consent { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; line-height: 1.45; color: var(--muted-dark); cursor: pointer; }
+  .consent input { margin-top: 2px; accent-color: var(--gold); width: 16px; height: 16px; flex: none; }
+  .nl-msg { margin: 0; font-size: 14px; color: var(--gold-hi); min-height: 1em; }
+  .nl-msg.err { color: #e7a07a; }
+  @media (max-width: 520px) { .nl-row { flex-direction: column; } }
   .links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
   .ghost { display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border-radius: 999px; border: 1px solid rgba(234,211,154,.45); color: var(--ivory); text-decoration: none; font-weight: 600; }
   .ghost:hover { border-color: var(--gold); color: var(--gold-hi); }
@@ -53,6 +77,27 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
 </style>
 
 <script>
+  const form = document.querySelector<HTMLFormElement>('.follow .notify');
+  if (form) {
+    const M = JSON.parse(form.dataset.msg!);
+    const msg = form.querySelector<HTMLElement>('.nl-msg')!;
+    const btn = form.querySelector<HTMLButtonElement>('button')!;
+    const say = (t: string, err = false) => { msg.textContent = t; msg.classList.toggle('err', err); };
+    if (new URLSearchParams(location.search).has('subscribed')) say(M.done);
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = (form.elements.namedItem('email') as HTMLInputElement).value.trim();
+      const consent = (form.elements.namedItem('consent') as HTMLInputElement).checked;
+      if (!/^\S+@\S+\.\S+$/.test(email) || !consent) return say(M.invalid, true);
+      btn.disabled = true;
+      try {
+        const r = await fetch('/api/subscribe', { method: 'POST', headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ email, consent, lang: form.dataset.lang, website: (form.elements.namedItem('website') as HTMLInputElement).value }) });
+        if (r.ok) { say(M.ok); form.reset(); } else say(r.status === 503 ? M.off : r.status === 400 ? M.invalid : M.err, true);
+      } catch { say(M.err, true); }
+      btn.disabled = false;
+    });
+  }
   const row = document.querySelector<HTMLElement>('.follow .row');
   if (row) {
     const card = (v: { id: string; title: string }) => {

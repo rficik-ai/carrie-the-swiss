@@ -243,6 +243,15 @@
     "intro": "Kurze Reels über große Hunde, Papiere und Welpen. Folge mir, damit du keine verpasst.",
     "yt": "Auf YouTube abonnieren",
     "ig": "Auf Instagram folgen",
-    "play": "Folge abspielen"
+    "play": "Folge abspielen",
+    "nl_title": "Ich sage dir Bescheid, wenn die nächste Staffel oder der Shop startet",
+    "nl_placeholder": "Deine E-Mail",
+    "nl_button": "Benachrichtige mich",
+    "nl_consent": "Ich möchte gelegentlich E-Mails von Carrie the Swiss über neue Folgen und den Shop erhalten. Abmelden kann ich mich jederzeit.",
+    "ok": "Fast geschafft! Schau in dein Postfach und bestätige deine E-Mail.",
+    "err": "Etwas ist schiefgelaufen. Versuch es später noch einmal?",
+    "invalid": "Bitte gib eine gültige E-Mail ein und setz das Häkchen.",
+    "off": "Die Anmeldung startet sehr bald!",
+    "done": "Du bist dabei! Danke fürs Bestätigen."
   }
 }

@@ -243,6 +243,15 @@
     "intro": "Krótkie filmy o dużych psach, papierach i szczeniętach. Obserwuj, żeby nie przegapić kolejnego.",
     "yt": "Subskrybuj na YouTube",
     "ig": "Obserwuj na Instagramie",
-    "play": "Odtwórz odcinek"
+    "play": "Odtwórz odcinek",
+    "nl_title": "Dam znać, gdy będzie nowy sezon albo sklep",
+    "nl_placeholder": "Twój e-mail",
+    "nl_button": "Powiadom mnie",
+    "nl_consent": "Zgadzam się na otrzymywanie okazjonalnych e-maili od Carrie the Swiss o nowych odcinkach i sklepie. Mogę zrezygnować w każdej chwili.",
+    "ok": "Prawie gotowe! Sprawdź skrzynkę i potwierdź e-mail.",
+    "err": "Coś poszło nie tak. Spróbujesz później?",
+    "invalid": "Wpisz poprawny e-mail i zaznacz zgodę.",
+    "off": "Zapisy ruszą już wkrótce!",
+    "done": "Jesteś zapisany! Dzięki za potwierdzenie."
   }
 }

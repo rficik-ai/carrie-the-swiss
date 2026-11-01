@@ -243,6 +243,15 @@
     "intro": "Korte reels over grote honden, papieren en pups. Volg me zodat je de volgende niet mist.",
     "yt": "Abonneren op YouTube",
     "ig": "Volgen op Instagram",
-    "play": "Aflevering afspelen"
+    "play": "Aflevering afspelen",
+    "nl_title": "Ik laat het je weten als het volgende seizoen of de shop klaar is",
+    "nl_placeholder": "Je e-mail",
+    "nl_button": "Houd me op de hoogte",
+    "nl_consent": "Ik ga akkoord met af en toe een e-mail van Carrie the Swiss over nieuwe afleveringen en de shop. Ik kan me altijd afmelden.",
+    "ok": "Bijna klaar! Check je inbox en bevestig je e-mail.",
+    "err": "Er ging iets mis. Probeer je het later nog eens?",
+    "invalid": "Vul een geldig e-mailadres in en vink het vakje aan.",
+    "off": "Aanmelden kan heel binnenkort!",
+    "done": "Je bent erbij! Bedankt voor het bevestigen."
   }
 }

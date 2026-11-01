@@ -243,6 +243,15 @@
     "intro": "Vídeos cortos sobre perros grandes, papeles y cachorros. Sígueme para no perderte el próximo.",
     "yt": "Suscríbete en YouTube",
     "ig": "Sígueme en Instagram",
-    "play": "Ver episodio"
+    "play": "Ver episodio",
+    "nl_title": "Te aviso cuando lleguen la nueva temporada o la tienda",
+    "nl_placeholder": "Tu e-mail",
+    "nl_button": "Avísame",
+    "nl_consent": "Acepto recibir correos ocasionales de Carrie the Swiss sobre nuevos episodios y la tienda. Puedo darme de baja cuando quiera.",
+    "ok": "¡Casi listo! Revisa tu correo y confirma tu e-mail.",
+    "err": "Algo salió mal. ¿Lo intentas más tarde?",
+    "invalid": "Introduce un e-mail válido y marca la casilla.",
+    "off": "¡Las suscripciones abren muy pronto!",
+    "done": "¡Ya estás dentro! Gracias por confirmar."
   }
 }

@@ -85,7 +85,7 @@ async function latest(request, ctx) {
     const items = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].slice(0, 12).map((m) => {
       const e = m[1];
       const pick = (re) => (e.match(re) || [])[1] || '';
-      return { id: pick(/<yt:videoId>([^<]+)<\/yt:videoId>/), title: unescape(pick(/<title>([^<]*)<\/title>/)), published: pick(/<published>([^<]+)<\/published>/) };
+      return { id: pick(/<yt:videoId>([^<]+)<\/yt:videoId>/), title: unescape(pick(/<title>([^<]*)<\/title>/)).replace(/\s*\|\s*Carrie the Swiss.*$/i, ''), published: pick(/<published>([^<]+)<\/published>/) };
     }).filter((v) => /^[\w-]{11}$/.test(v.id));
     return new Response(JSON.stringify({ items }), { headers: { 'content-type': 'application/json; charset=utf-8' } });
   });
@@ -103,11 +103,46 @@ async function thumb(request, ctx, id) {
   });
 }
 
+// ---- newsletter: Brevo double opt-in (the visitor confirms by e-mail before being added)
+async function subscribe(request, env) {
+  if (request.method !== 'POST') return json({ error: 'method' }, 405);
+  const origin = request.headers.get('origin') || '';
+  if (origin && new URL(origin).host !== new URL(request.url).host) return json({ error: 'origin' }, 403);
+  if (!env.BREVO_API_KEY || !env.BREVO_LIST_ID || !env.BREVO_DOI_TEMPLATE_ID) return json({ error: 'not_configured' }, 503);
+  if (env.CHAT_LIMIT) {
+    const { success } = await env.CHAT_LIMIT.limit({ key: 'sub:' + (request.headers.get('cf-connecting-ip') || 'anon') });
+    if (!success) return json({ error: 'rate' }, 429);
+  }
+  let b; try { b = await request.json(); } catch { return json({ error: 'bad_json' }, 400); }
+  const email = String(b?.email || '').trim().toLowerCase();
+  if (b?.website) return json({ ok: true }); // honeypot: bots fill hidden fields
+  if (!/^[^\s@]{1,64}@[^\s@]{1,190}\.[a-z]{2,}$/i.test(email) || b?.consent !== true) return json({ error: 'invalid' }, 400);
+  const lang = LANGS.has(b?.lang) ? b.lang : 'en';
+  const host = new URL(request.url).origin;
+  const r = await fetch('https://api.brevo.com/v3/contacts/doubleOptinConfirmation', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', accept: 'application/json', 'api-key': env.BREVO_API_KEY },
+    body: JSON.stringify({
+      email,
+      includeListIds: [Number(env.BREVO_LIST_ID)],
+      templateId: Number(env.BREVO_DOI_TEMPLATE_ID),
+      redirectionUrl: `${host}/${lang}/?subscribed=1#follow`,
+      attributes: { LANGUAGE: lang },
+    }),
+  });
+  if (r.ok || r.status === 204) return json({ ok: true });
+  const t = await r.text();
+  if (/duplicate|already/i.test(t)) return json({ ok: true });
+  console.log('brevo error', r.status, t.slice(0, 300));
+  return json({ error: 'upstream' }, 502);
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === '/api/ask') return chat(request, env);
     if (url.pathname === '/api/latest') return latest(request, ctx);
+    if (url.pathname === '/api/subscribe') return subscribe(request, env);
     const t = url.pathname.match(/^\/api\/thumb\/([\w-]+)\.jpg$/);
     if (t) return thumb(request, ctx, t[1]);
     return env.ASSETS.fetch(request);

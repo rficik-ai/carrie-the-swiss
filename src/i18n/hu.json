@@ -243,6 +243,15 @@
     "intro": "Rövid videók nagytestű kutyákról, papírokról és kölykökről. Kövess, hogy ne maradj le a következőről.",
     "yt": "Feliratkozás YouTube-on",
     "ig": "Követés Instagramon",
-    "play": "Epizód lejátszása"
+    "play": "Epizód lejátszása",
+    "nl_title": "Szólok, ha jön az új évad vagy a webshop",
+    "nl_placeholder": "Az e-mail címed",
+    "nl_button": "Értesíts",
+    "nl_consent": "Hozzájárulok, hogy a Carrie the Swiss időnként e-mailt küldjön új epizódokról és a webshopról. Bármikor leiratkozhatok.",
+    "ok": "Majdnem kész! Nézd meg a postafiókod, és erősítsd meg az e-mailt.",
+    "err": "Valami hiba történt. Megpróbálod később?",
+    "invalid": "Adj meg érvényes e-mail címet, és pipáld be a négyzetet.",
+    "off": "A feliratkozás hamarosan indul!",
+    "done": "Bent vagy! Köszönöm a megerősítést."
   }
 }

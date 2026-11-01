@@ -243,6 +243,15 @@
     "intro": "Krátke videá o veľkých psoch, papieroch a šteňatách. Sledujte ma, nech vám neujde ďalšie.",
     "yt": "Odoberať na YouTube",
     "ig": "Sledovať na Instagrame",
-    "play": "Prehrať epizódu"
+    "play": "Prehrať epizódu",
+    "nl_title": "Dám vám vedieť, keď bude nová séria alebo obchod",
+    "nl_placeholder": "Váš e-mail",
+    "nl_button": "Dajte mi vedieť",
+    "nl_consent": "Súhlasím so zasielaním občasných e-mailov od Carrie the Swiss o nových epizódach a obchode. Odhlásiť sa môžem kedykoľvek.",
+    "ok": "Takmer hotovo! Pozrite si schránku a potvrďte e-mail.",
+    "err": "Niečo sa pokazilo. Skúsite to neskôr?",
+    "invalid": "Zadajte platný e-mail a zaškrtnite súhlas.",
+    "off": "Prihlasovanie čoskoro spustíme!",
+    "done": "Ste prihlásení! Ďakujem za potvrdenie."
   }
 }

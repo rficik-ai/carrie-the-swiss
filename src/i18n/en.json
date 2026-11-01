@@ -243,6 +243,15 @@
     "intro": "Short reels about big dogs, papers and puppies. Follow along so you never miss the next one.",
     "yt": "Subscribe on YouTube",
     "ig": "Follow on Instagram",
-    "play": "Play episode"
+    "play": "Play episode",
+    "nl_title": "Get a note when the next season or the shop is ready",
+    "nl_placeholder": "Your e-mail",
+    "nl_button": "Notify me",
+    "nl_consent": "I agree to receive occasional e-mails from Carrie the Swiss about new episodes and the shop. I can unsubscribe anytime.",
+    "ok": "Almost done! Check your inbox and confirm your e-mail.",
+    "err": "Something went wrong. Try again later?",
+    "invalid": "Please enter a valid e-mail and tick the box.",
+    "off": "Sign-ups open very soon!",
+    "done": "You're in! Thanks for confirming."
   }
 }
