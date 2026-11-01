@@ -43,7 +43,7 @@ async function chat(request, env) {
       'x-api-key': env.ANTHROPIC_API_KEY,
       'anthropic-version': '2023-06-01',
     },
-    body: JSON.stringify({ model: MODEL, max_tokens: 450, system: systemPrompt(lang), messages: clean }),
+    body: JSON.stringify({ model: MODEL, max_tokens: 700, thinking: { type: 'disabled' }, system: systemPrompt(lang), messages: clean }),
   });
   if (!res.ok) {
     console.log('anthropic error', res.status, (await res.text()).slice(0, 300));
