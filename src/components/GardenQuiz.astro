@@ -58,6 +58,7 @@ const data = {
       <button type="button" class="link method-open">{u.method}</button>
       <button type="button" class="link again">↻ {u.again}</button>
     </div>
+    <button type="button" class="next-go">{u.next} <span aria-hidden="true">↓</span></button>
   </section>
 
   <div class="dots" aria-hidden="true">{QUESTIONS.map(() => <i></i>)}</div>
@@ -126,6 +127,8 @@ const data = {
   .aw b { font: 600 clamp(18px, 1.6vw, 21px)/1.15 var(--f-display); color: var(--ivory); }
   .aw small { font-size: 13px; line-height: 1.35; color: rgba(244,238,226,.75); }
   .ar { font-size: 22px; color: var(--gold-hi); }
+  .next-go { all: unset; cursor: pointer; justify-self: stretch; text-align: center; margin-top: 6px; padding: 12px; border-radius: 999px; font: 700 13px var(--f-body); letter-spacing: .14em; text-transform: uppercase; color: #5a4220; box-shadow: inset 0 0 0 1px rgba(120,90,40,.4); }
+  .next-go:hover { background: rgba(160,120,50,.1); }
   .ai-out { padding: 14px 16px; border-radius: 12px; background: rgba(201,163,91,.12); box-shadow: inset 0 0 0 1px rgba(138,100,36,.2); }
   @media (prefers-reduced-motion: reduce) { .ai-go::after { animation: none; } }
   .ai-out { font-size: 15px; line-height: 1.55; color: #2a2016; }
@@ -218,6 +221,7 @@ const data = {
       root.querySelectorAll('.opt').forEach((o) => o.classList.remove('picked'));
       show(steps[0]);
     });
+    root.querySelector('.next-go')!.addEventListener('click', () => document.getElementById('ask')?.scrollIntoView({ behavior: 'smooth' }));
     root.querySelectorAll('.method-open').forEach((b) => b.addEventListener('click', () => { method.hidden = false; method.scrollTop = 0; }));
     root.querySelector('.mx')!.addEventListener('click', () => (method.hidden = true));
 
