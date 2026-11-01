@@ -85,6 +85,8 @@ const href = (h: string) => (h.startsWith('#') ? `/${locale}/${h}` : `/${locale}
   .stamp { width: min(64%, 300px); aspect-ratio: 1; border-radius: 50%; display: grid; place-content: center; gap: 2px; text-align: center; transform: rotate(-12deg);
     border: 4px double rgba(160,60,30,.75); color: rgba(160,60,30,.8); font: 700 clamp(18px, 2.2vw, 30px)/1.1 var(--f-display); letter-spacing: .04em; }
   .stamp span:first-child { font-size: 1.5em; }
+  /* stamp pressed over a photo */
+  .pic ~ .stamp { position: absolute; right: 0; bottom: 2%; width: 40%; z-index: 3; font-size: clamp(13px, 1.4vw, 20px); background: rgba(251,246,234,.9); color: rgba(150,50,22,.95); border-color: rgba(150,50,22,.85); box-shadow: 0 6px 14px -6px rgba(60,35,10,.5); pointer-events: none; }
   /* the turning leaf */
   .leaf { position: absolute; top: 14px; bottom: 14px; left: 50%; width: calc(50% - 14px); transform-origin: left center; transform-style: preserve-3d; pointer-events: none; display: none; z-index: 5; }
   .leaf.go { display: block; }
