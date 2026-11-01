@@ -12,7 +12,7 @@ export type HouseStop = {
 
 export const HOUSE_START = 0.97;         // share of the old 1000vh film where the house begins
 export const STOPS: HouseStop[] = [
-  { id: 'wall', img: '/assets/house/wall-v1.jpg', region: { x: 270, y: 40, w: 1450, h: 960 }, phone: { cx: 990, cy: 560, h: 980, ui: 0 } },
+  { id: 'wall', img: '/assets/house/wall-hd-v1.jpg', region: { x: 270, y: 40, w: 1450, h: 960 }, phone: { cx: 990, cy: 560, h: 980, ui: 0 } },
   { id: 'desk', img: '/assets/house/desk-v1.jpg', region: { x: 320, y: 160, w: 1300, h: 800 }, phone: { cx: 905, cy: 540, h: 1080, ui: 0 } },
   { id: 'garden', img: '/assets/house/garden-v1.jpg', region: { x: 0, y: 0, w: 1920, h: 1080 }, phone: { cx: 1230, cy: 560, h: 1080, ui: 0 } },
   { id: 'fire', img: '/assets/house/fire-v1.jpg', region: { x: 0, y: 0, w: 1920, h: 1080 }, phone: { cx: 560, cy: 560, h: 1080, ui: 0 } },
@@ -21,7 +21,7 @@ export const STOPS: HouseStop[] = [
 
 // scroll lengths in vh (of the visible height) after the old film
 const MOVE = 160, MOVE_VIDEO = 220;
-const HOLD: Record<HouseStop['id'], number> = { wall: 200, desk: 150, garden: 170, fire: 160, door: 140 };
+const HOLD: Record<HouseStop['id'], number> = { wall: 700, desk: 150, garden: 170, fire: 160, door: 140 };
 export type Step = { kind: 'move' | 'hold'; stop: HouseStop['id']; from: number; len: number };
 
 function build() {

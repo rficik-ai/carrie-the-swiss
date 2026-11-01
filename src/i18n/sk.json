@@ -338,6 +338,8 @@
     "door_title": "Dobrú noc. Zajtra zase.",
     "door_say": "Ďalšie epizódy už mám rozpísané. Sledujte ma alebo mi nechajte e-mail, nech o nich viete prví.",
     "door_hint_wide": "Kliknite na obojok na vešiaku",
-    "door_hint_tap": "Ťuknite na obojok na vešiaku"
+    "door_hint_tap": "Ťuknite na obojok na vešiaku",
+    "wall_hint_scroll": "Posúvajte ďalej a prejdete sa mojím životom",
+    "today": "dnes"
   }
 }

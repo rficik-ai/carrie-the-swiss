@@ -338,6 +338,8 @@
     "door_title": "Good night. More tomorrow.",
     "door_say": "The next episodes are already in the works. Follow me or leave your e-mail and you'll hear about them first.",
     "door_hint_wide": "Click the collar on the hook",
-    "door_hint_tap": "Tap the collar on the hook"
+    "door_hint_tap": "Tap the collar on the hook",
+    "wall_hint_scroll": "Keep scrolling to walk through my life",
+    "today": "today"
   }
 }

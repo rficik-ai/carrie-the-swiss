@@ -132,7 +132,7 @@ const chapters = [
     if (!HT || !spacer) return;
     const vh = stage.clientHeight / 100;
     spacer.style.height = `${(HT.start * 1000 + HT.total) * vh}px`;
-    spacer.querySelectorAll<HTMLElement>('.anchor').forEach((a) => { a.style.top = `${(HT.start * 1000 + Number(a.dataset.at)) * vh}px`; });
+    spacer.querySelectorAll<HTMLElement>('.anchor').forEach((a) => { a.style.top = `${(HT.start * 1000 + Number(a.dataset.at) - 100) * vh}px`; }); // the spacer starts below the 100vh stage
   }
   sizeSpacer(); addEventListener('resize', sizeSpacer);
 

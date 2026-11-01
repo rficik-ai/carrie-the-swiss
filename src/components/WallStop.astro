@@ -1,12 +1,13 @@
 ---
-// House walk, stop 1: the wall of my life. Real photos and papers hang in the frames of the hallway still.
-// Click a frame: the camera moves to it and a story card opens (photos, papers, a few lines in Carrie's voice).
+// House walk, stop 1: the wall of my life. Real photos and papers hang in the frames of the hallway,
+// one chapter per frame, in time order from left to right. Scrolling walks the camera along the wall,
+// frame by frame; next to each one a little plaque tells its story (photos and papers open full screen).
 import { type Locale, t } from '../i18n';
 import { WALL } from '../data/wall';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const h = (t(locale) as any).house;
-const href = (x: string) => (x.startsWith('#') ? `/${locale}/${x}` : `/${locale}/${x}`);
+const href = (x: string) => `/${locale}/${x}`;
 ---
 <div class="hstop wstop" data-stop="wall" aria-label={h.wall_title}>
   <div class="layer">
@@ -16,43 +17,31 @@ const href = (x: string) => (x.startsWith('#') ? `/${locale}/${x}` : `/${locale}
       </button>
     ))}
   </div>
-  <div class="veil" aria-hidden="true"></div>
   <div class="cap">
     <p class="eyebrow">{h.wall_eyebrow}</p>
     <h2>{h.wall_title}</h2>
     <p class="say">{h.wall_say}</p>
-    <p class="hint"><span class="h-wide">{h.wall_hint_wide}</span><span class="h-tap">{h.wall_hint_tap}</span></p>
+    <p class="hint">{h.wall_hint_scroll} <i aria-hidden="true">↓</i></p>
   </div>
-  <div class="card" role="dialog" aria-modal="false" hidden>
+  <div class="plaques">
     {WALL.map((w, i) => (
-      <article class="story" data-i={i} hidden>
-        <div class="media">
-          <button type="button" class:list={['main', w.pics[0].kind]} data-full={w.pics[0].src} aria-label={h.zoom}>
-            <img src={w.pics[0].src} alt="" loading="lazy" decoding="async" />
-          </button>
-          {w.pics.length > 1 && (
-            <div class="thumbs">
-              {w.pics.map((p, j) => (
-                <button type="button" class:list={['th', p.kind, { on: j === 0 }]} data-src={p.src} data-kind={p.kind} aria-label={h.zoom}><img src={p.src} alt="" loading="lazy" decoding="async" /></button>
-              ))}
-            </div>
-          )}
-        </div>
-        <div class="words">
-          {w.date && <p class="date">{w.date}</p>}
-          <h3>{h[`${w.id}_t`]}</h3>
-          <p class="txt">{h[`${w.id}_x`]}</p>
+      <article class="plaque" data-i={i}>
+        {w.date && <p class="date">{w.date}</p>}
+        <h3>{h[`${w.id}_t`]}</h3>
+        <p class="txt">{h[`${w.id}_x`]}</p>
+        <div class="row">
+          <div class="ths">{w.pics.map((p) => (
+            <button type="button" class:list={['th', p.kind]} data-full={p.src} aria-label={h.zoom}><img src={p.src} alt="" loading="lazy" decoding="async" /></button>
+          ))}</div>
           {w.link && <a class="lnk" href={href(w.link.href)} data-open-book={w.link.ep}>{h[w.link.key]} →</a>}
         </div>
       </article>
     ))}
-    <div class="nav">
-      <button type="button" class="prev" aria-label={h.prev}>‹</button>
-      <span class="count" aria-hidden="true"></span>
-      <button type="button" class="next" aria-label={h.next}>›</button>
-    </div>
-    <button type="button" class="x" aria-label={h.close}>×</button>
   </div>
+  <ol class="line" aria-hidden="true">
+    {WALL.map((w, i) => <li data-i={i}><span>{w.short ?? h.today}</span></li>)}
+    <i class="mark"></i>
+  </ol>
   <dialog class="wlbx"><button type="button" class="lx" aria-label={h.close}>×</button><img alt="" /></dialog>
 </div>
 
@@ -61,169 +50,150 @@ const href = (x: string) => (x.startsWith('#') ? `/${locale}/${x}` : `/${locale}
   .hstop.live { opacity: 1; pointer-events: auto; }
   .layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
   /* pictures behind glass, lit by the same afternoon sun */
-  .wf { all: unset; position: absolute; cursor: zoom-in; overflow: hidden; background: #e9dcc4; }
+  .wf { all: unset; position: absolute; cursor: pointer; overflow: hidden; background: #e9dcc4; }
   .wf img { width: 100%; height: 100%; object-fit: cover; display: block; filter: sepia(.18) saturate(.92) contrast(.96) brightness(.98); }
   .wf::after { content: ''; position: absolute; inset: 0; pointer-events: none;
-    box-shadow: inset 0 0 0 3px #f3ead8, inset 0 2px 10px rgba(60,30,5,.55);
+    box-shadow: inset 0 0 0 2px #f3ead8, inset 0 2px 8px rgba(60,30,5,.55);
     background: linear-gradient(115deg, rgba(255,230,190,.28) 0%, rgba(255,230,190,0) 38%, rgba(255,255,255,.08) 52%, rgba(255,240,210,0) 60%); }
-  .wf:focus-visible { outline: 3px solid var(--gold-hi); outline-offset: 6px; }
-  .veil { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .5s ease; background: radial-gradient(120% 90% at 30% 50%, rgba(13,9,4,0) 30%, rgba(13,9,4,.55) 100%); }
-  .wstop.focus .veil { opacity: 1; }
+  .wf img { transition: filter .6s ease; }
+  .wstop.walking .wf:not(.cur) img { filter: sepia(.25) saturate(.75) contrast(.94) brightness(.78); }
+  .wf:focus-visible { outline: 3px solid var(--gold-hi); outline-offset: 4px; }
+
   .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 120px var(--gutter-r) max(40px, 5vh) var(--gutter); display: grid; gap: 8px; justify-items: start; pointer-events: none;
-    background: linear-gradient(0deg, rgba(20,11,4,.82) 0%, rgba(20,11,4,.5) 55%, rgba(20,11,4,0) 100%); transition: opacity .4s ease; }
+    background: linear-gradient(0deg, rgba(20,11,4,.82) 0%, rgba(20,11,4,.5) 55%, rgba(20,11,4,0) 100%); opacity: var(--cap, 1); }
   .cap h2 { font-size: clamp(36px, 4.4vw, 64px); color: var(--ivory); }
   .cap .say { margin: 0; max-width: 34em; font-family: var(--f-display); font-style: italic; font-size: clamp(16px, 1.4vw, 20px); color: rgba(244,238,226,.9); }
   .cap .hint { margin: 4px 0 0; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-hi); }
-  .h-tap { display: none; }
-  .wstop.focus .cap { opacity: 0; }
+  .cap .hint i { display: inline-block; font-style: normal; animation: nudge 1.6s ease-in-out infinite; }
+  @keyframes nudge { 50% { transform: translateY(4px); } }
 
-  .card { position: absolute; z-index: 3; right: max(24px, 3vw); top: calc(var(--hh, 68px) + 24px); bottom: 24px; width: min(480px, 40vw); display: flex; flex-direction: column;
-    background: #f7f0e1; color: #2a2016; border-radius: 6px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.7), inset 0 0 0 1px rgba(120,90,40,.15);
-    animation: cardIn .5s cubic-bezier(.2,.7,.2,1); overflow: hidden; }
-  @keyframes cardIn { from { opacity: 0; transform: translateX(30px) rotate(1deg); } }
-  .card[hidden], .story[hidden] { display: none; }
-  .story { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow-y: auto; }
-  .media { padding: 22px 22px 0; display: grid; gap: 10px; }
-  .main { all: unset; cursor: zoom-in; display: block; height: min(38vh, 360px); }
-  .main img { width: 100%; height: 100%; object-fit: contain; display: block; filter: drop-shadow(0 10px 16px rgba(60,35,10,.35)); }
-  .thumbs { display: flex; gap: 8px; justify-content: center; }
-  .th { all: unset; cursor: pointer; width: 52px; height: 52px; border-radius: 4px; overflow: hidden; opacity: .55; box-shadow: 0 0 0 1px rgba(120,90,40,.3); transition: opacity .2s; }
-  .th img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
-  .th.on, .th:hover { opacity: 1; box-shadow: 0 0 0 2px var(--gold-deep, #9a7432); }
-  .words { padding: 18px 26px 10px; display: grid; gap: 8px; }
+  /* the museum plaque next to the frame the camera is looking at */
+  .plaque { position: absolute; left: 50%; bottom: calc(58px + env(safe-area-inset-bottom, 0px)); width: min(860px, calc(100vw - 2 * var(--gutter))); box-sizing: border-box; padding: 20px 26px 18px; display: grid; grid-template-columns: 1fr auto; column-gap: 26px; row-gap: 6px; align-items: start;
+    background: rgba(247,240,225,.96); color: #2a2016; border-radius: 4px; box-shadow: 0 26px 50px -18px rgba(40,20,0,.6), inset 0 0 0 1px rgba(120,90,40,.15);
+    opacity: 0; transform: translate(-50%, 14px); pointer-events: none; transition: opacity .35s ease, transform .5s cubic-bezier(.2,.7,.2,1); }
+  .plaque.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+  .plaque > :not(.row) { grid-column: 1; }
+  .plaque .row { grid-column: 2; grid-row: 1 / span 3; flex-direction: column; align-items: flex-end; margin: 0; }
+  .plaque .row .ths { display: flex; gap: 8px; }
   .date { margin: 0; font: italic 600 15px var(--f-display); color: #8a6a35; }
-  .words h3 { margin: 0; font-size: clamp(24px, 2.2vw, 32px); line-height: 1.12; color: #1d160e; }
+  .plaque h3 { margin: 0; font-size: clamp(24px, 2.2vw, 32px); line-height: 1.12; color: #1d160e; }
   .txt { margin: 0; font-size: 16px; line-height: 1.6; color: #3d3226; }
-  .lnk { justify-self: start; margin-top: 4px; font-weight: 700; color: #7a5520; text-decoration: none; border-bottom: 1px solid currentColor; }
-  .nav { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px 16px; border-top: 1px solid rgba(120,90,40,.15); }
-  .nav button, .x { all: unset; cursor: pointer; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; line-height: 1; color: #5a4220; box-shadow: inset 0 0 0 1px rgba(120,90,40,.35); }
-  .nav button:hover, .x:hover { background: rgba(160,120,50,.12); }
-  .count { font: 600 13px var(--f-body); letter-spacing: .14em; color: #8a6a35; }
-  .x { position: absolute; top: 10px; right: 10px; width: 38px; height: 38px; font-size: 24px; background: rgba(247,240,225,.9); }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 6px; }
+  .th { all: unset; cursor: zoom-in; width: 54px; height: 54px; border-radius: 3px; overflow: hidden; box-shadow: 0 0 0 1px rgba(120,90,40,.3), 0 4px 10px -4px rgba(60,35,10,.4); transition: transform .2s; }
+  .th:hover, .th:focus-visible { transform: translateY(-2px) scale(1.05); }
+  .th img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+  .th.doc img { object-position: 50% 0; }
+  .lnk { margin-top: 6px; font-weight: 700; font-size: 15px; color: #7a5520; text-decoration: none; border-bottom: 1px solid currentColor; }
+
+  /* a thin timeline: where on the wall (and in my life) we are */
+  .line { position: absolute; left: var(--gutter); right: var(--gutter-r); bottom: calc(22px + env(safe-area-inset-bottom, 0px)); margin: 0; padding: 0; list-style: none; display: flex; justify-content: space-between;
+    border-top: 1px solid rgba(234,211,154,.35); opacity: calc(1 - var(--cap, 1)); pointer-events: none; }
+  .line li { position: relative; width: 0; }
+  .line li::before { content: ''; position: absolute; left: -3px; top: -4px; width: 7px; height: 7px; border-radius: 50%; background: rgba(234,211,154,.5); }
+  .line li span { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); white-space: nowrap; font: 600 11px var(--f-body); letter-spacing: .06em; color: rgba(244,238,226,.55); transition: color .3s; }
+  .line li.on::before { background: var(--gold-hi); box-shadow: 0 0 0 4px rgba(234,211,154,.25); }
+  .line li.on span { color: var(--gold-hi); }
+  .mark { position: absolute; top: -1px; left: 0; height: 1px; width: var(--prog, 0%); background: var(--gold-hi); }
+
   .wlbx { border: 0; padding: 0; background: transparent; max-width: 96vw; max-height: 94vh; }
-  .wlbx::backdrop { background: rgba(10,8,5,.88); }
+  .wlbx::backdrop { background: rgba(10,8,5,.9); }
   .wlbx img { display: block; max-width: 96vw; max-height: 94vh; object-fit: contain; }
   .lx { all: unset; position: fixed; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 28px; color: var(--ivory); cursor: pointer; border: 1px solid rgba(234,211,154,.5); }
 
   @media (max-width: 899px), (hover: none) {
-    .h-wide { display: none; } .h-tap { display: inline; }
     .cap { padding: 70px 18px calc(22px + env(safe-area-inset-bottom, 0px)); gap: 6px; }
     .cap h2 { font-size: 32px; } .cap .say { font-size: 15px; }
-    .card { left: 0; right: 0; top: auto; bottom: 0; width: auto; height: 58svh; border-radius: 18px 18px 0 0; animation-name: sheetIn; }
-    @keyframes sheetIn { from { transform: translateY(40px); opacity: 0; } }
-    .story { flex-direction: row; flex-wrap: wrap; align-content: flex-start; }
-    .media { padding: 16px 16px 0; width: 100%; box-sizing: border-box; }
-    .main { height: 24svh; }
+    .plaque { left: 12px; right: 12px; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); width: auto; padding: 16px 18px 14px; grid-template-columns: 1fr; transform: translateY(12px); }
+    .plaque.on { transform: none; }
+    .plaque .row { grid-column: 1; grid-row: auto; flex-direction: row; align-items: center; flex-wrap: wrap; }
+    .plaque .row .lnk { margin: 0 0 0 6px; }
+    .plaque h3 { font-size: 22px; } .txt { font-size: 14.5px; line-height: 1.5; }
     .th { width: 44px; height: 44px; }
-    .words { padding: 12px 18px 8px; }
-    .words h3 { font-size: 23px; } .txt { font-size: 15px; line-height: 1.55; }
-    .nav { padding: 8px 12px calc(10px + env(safe-area-inset-bottom, 0px)); }
+    .line { left: 14px; right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+    .line li span { display: none; }
   }
 </style>
 
 <script>
   import { mountStop } from '../lib/stop';
-  import { stopFrame, headerHeight, isWide, lerpFrame, peek, type Frame } from '../lib/frame';
-  import { STOPS } from '../data/house';
+  import { stopFrame, headerHeight, isWide, lerpFrame, type Frame } from '../lib/frame';
+  import { STOPS, HOUSE } from '../data/house';
   import { WALL } from '../data/wall';
 
   const el = document.querySelector<HTMLElement>('.wstop');
   if (el) {
     const W_ = window as any;
-    const card = el.querySelector<HTMLElement>('.card')!;
-    const stories = [...card.querySelectorAll<HTMLElement>('.story')];
-    const count = card.querySelector<HTMLElement>('.count')!;
+    const S = STOPS.find((s) => s.id === 'wall')!;
+    const plaques = [...el.querySelectorAll<HTMLElement>('.plaque')];
+    const ticks = [...el.querySelectorAll<HTMLElement>('.line li')];
+    const frames = [...el.querySelectorAll<HTMLElement>('.wf')];
     const lbx = el.querySelector<HTMLDialogElement>('.wlbx')!;
     const stage = () => document.querySelector<HTMLElement>('.scrub .stage')!;
-    const S = STOPS.find((s) => s.id === 'wall')!;
-    let cur = -1, anim = { from: 0, to: 0, t0: 0 }, target: Frame | null = null;
-    const baseFrame = () => {
-      const st = stage(); const keep = W_.__stopFrame?.wall; if (W_.__stopFrame) W_.__stopFrame.wall = null;
-      const f = stopFrame(S, st.clientWidth, st.clientHeight, headerHeight(), W_.__pan?.wall ?? 0);
-      if (W_.__stopFrame) W_.__stopFrame.wall = keep; return f;
-    };
-    const ease = (x: number) => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+    const N = WALL.length, IN = 0.07, OUT = 0.07, SPAN = (1 - IN - OUT) / N;
+    const smooth = (x: number) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
 
-    // framing while a picture is open: the camera moves toward the frame (the card covers the rest)
-    function focusFrame(i: number, base: Frame, W: number, H: number, hh: number): Frame {
+    // the camera at frame i: the whole height of the gallery stays in view and the camera only travels sideways,
+    // so the wall slides from left to right as you scroll; the plaque sits below the frames
+    const TOP = 62, BOT = 552;           // the gallery band in the still (frames from top to bottom)
+    function target(i: number, base: Frame, W: number, H: number, hh: number): Frame {
       const r = WALL[i].r, wide = isWide();
-      const cardW = wide ? Math.min(480, W * 0.4) + Math.max(24, W * 0.03) : 0;
-      const areaW = W - cardW, areaTop = hh, areaH = wide ? H - hh : H * 0.42 - hh;
-      const z = Math.max(1.15, Math.min(wide ? 1.9 : 2.4, (areaH * 0.62) / (r.h * base.k)));
-      const k = base.k * z;
-      let left = areaW / 2 - (r.x + r.w / 2) * k, top = areaTop + Math.max(areaH, 120) / 2 - (r.y + r.h / 2) * k;
+      const band = wide ? (H - hh) * 0.64 : (H - hh) * 0.5;
+      const k = Math.max(base.k, band / (BOT - TOP));
+      let left = W / 2 - (r.x + r.w / 2) * k, top = hh + 6 - TOP * k;
       left = Math.max(W - 1920 * k, Math.min(0, left)); top = Math.max(H - 1080 * k, Math.min(0, top));
-      return { k, left: Math.round(left), top: Math.round(top) };
+      return { k, left, top };
     }
+    // the camera along the wall, driven by the scroll position inside this stop
+    const view = () => {
+      const t = W_.__stopT ?? 0;
+      if (t < IN) return { a: -1, b: -1, e: 0, t };
+      if (t > 1 - OUT) return { a: N - 1, b: -1, e: smooth((t - (1 - OUT)) / OUT), t };
+      const u = (t - IN) / SPAN, i = Math.min(N - 1, Math.floor(u)), f = u - i;
+      return { a: i - 1, b: i, e: smooth(f / 0.45), t };   // 45 % of each span sliding to the next frame, the rest resting
+    };
     W_.__stopFrame ??= {};
     W_.__stopFrame.wall = (W: number, H: number, hh: number) => {
-      const e = ease(Math.min(1, (performance.now() - anim.t0) / 650));
-      const amt = anim.from + (anim.to - anim.from) * e;
-      if (amt <= 0.0001 && !target) return null;
       const keep = W_.__stopFrame.wall; W_.__stopFrame.wall = null;
-      const base = stopFrame(S, W, H, hh, W_.__pan?.wall ?? 0);
+      const base = stopFrame(S, W, H, hh, 0);
       W_.__stopFrame.wall = keep;
-      const tg = target ?? base;
-      return lerpFrame(base, tg, amt);
+      if (W_.__stop !== 'wall') return base;
+      const v = view();
+      const A = v.a < 0 ? base : target(v.a, base, W, H, hh);
+      const B = v.b < 0 ? base : target(v.b, base, W, H, hh);
+      const f = lerpFrame(A, B, v.e);
+      return { k: f.k, left: Math.round(f.left), top: Math.round(f.top) };
     };
 
-    const show = (i: number) => {
-      cur = (i + WALL.length) % WALL.length;
-      stories.forEach((s, j) => (s.hidden = j !== cur));
-      count.textContent = `${cur + 1} / ${WALL.length}`;
-      const st = stage(); const W = st.clientWidth, H = st.clientHeight, hh = headerHeight();
-      const base = baseFrame();
-      const now = performance.now(), e = ease(Math.min(1, (now - anim.t0) / 650));
-      const amt = anim.from + (anim.to - anim.from) * e;
-      target = focusFrame(cur, base, W, H, hh);
-      anim = { from: card.hidden ? 0 : amt, to: 1, t0: now };
-      el.style.setProperty('--hh', `${hh}px`);
-      card.hidden = false; el.classList.add('focus');
-    };
-    const close = () => {
-      if (card.hidden) return;
-      const now = performance.now(), e = ease(Math.min(1, (now - anim.t0) / 650));
-      anim = { from: anim.from + (anim.to - anim.from) * e, to: 0, t0: now };
-      card.hidden = true; el.classList.remove('focus');
-      setTimeout(() => { if (card.hidden) target = null; }, 700);
+    let shown = -2;
+    const update = () => {
+      const v = view();
+      const cur = v.b >= 0 ? (v.e > 0.55 ? v.b : v.a) : (v.a === N - 1 && v.e < 0.4 ? N - 1 : -1);
+      if (cur !== shown) {
+        shown = cur;
+        plaques.forEach((p, i) => p.classList.toggle('on', i === cur));
+        frames.forEach((f, i) => f.classList.toggle('cur', i === cur));
+        el.classList.toggle('walking', cur >= 0);
+        ticks.forEach((tk, i) => tk.classList.toggle('on', i <= cur && cur >= 0));
+      }
+      const cap = v.t < IN ? 1 - smooth(v.t / IN * 1.4) : v.t > 1 - OUT ? smooth((v.t - (1 - OUT)) / OUT) : 0;
+      el.style.setProperty('--cap', cap.toFixed(3));
+      el.style.setProperty('--prog', `${Math.max(0, Math.min(1, (v.t - IN) / (1 - IN - OUT - SPAN))) * 100}%`);
     };
 
-    el.querySelectorAll<HTMLButtonElement>('.wf').forEach((b) => b.addEventListener('click', () => show(Number(b.dataset.i))));
-    card.querySelector('.prev')!.addEventListener('click', () => show(cur - 1));
-    card.querySelector('.next')!.addEventListener('click', () => show(cur + 1));
-    card.querySelector('.x')!.addEventListener('click', close);
-    // thumbnails switch the main picture; the main picture opens full screen
-    card.querySelectorAll<HTMLElement>('.story').forEach((s) => {
-      const main = s.querySelector<HTMLButtonElement>('.main')!;
-      s.querySelectorAll<HTMLButtonElement>('.th').forEach((th) => th.addEventListener('click', () => {
-        s.querySelectorAll('.th').forEach((x) => x.classList.toggle('on', x === th));
-        main.dataset.full = th.dataset.src!; main.className = `main ${th.dataset.kind}`;
-        main.querySelector('img')!.src = th.dataset.src!;
-      }));
-      main.addEventListener('click', () => { lbx.querySelector('img')!.src = main.dataset.full!; lbx.showModal(); });
-    });
+    // click a frame: scroll to it (the camera then walks there)
+    const step = HOUSE.timeline.steps.find((s) => s.kind === 'hold' && s.stop === 'wall')!;
+    const scrollToFrame = (i: number) => {
+      const sec = document.querySelector<HTMLElement>('.scrub')!, vh = stage().clientHeight / 100;
+      const t = IN + SPAN * (i + 0.5);
+      scrollTo({ top: sec.offsetTop + (HOUSE.timeline.start * 1000 + step.from + t * step.len) * vh, behavior: 'smooth' });
+    };
+    el.querySelectorAll<HTMLButtonElement>('.wf').forEach((b) => b.addEventListener('click', () => scrollToFrame(Number(b.dataset.i))));
+    el.querySelectorAll<HTMLButtonElement>('.th').forEach((th) => th.addEventListener('click', () => { lbx.querySelector('img')!.src = th.dataset.full!; lbx.showModal(); }));
     lbx.addEventListener('click', () => lbx.close());
-    addEventListener('keydown', (e) => {
-      if (card.hidden || lbx.open) return;
-      if (e.key === 'Escape') close();
-      else if (e.key === 'ArrowRight') show(cur + 1);
-      else if (e.key === 'ArrowLeft') show(cur - 1);
-    });
-    // swipe between stories on the card (phones)
-    let sx = 0, sy = 0;
-    card.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
-    card.addEventListener('touchend', (e) => {
-      const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
-      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4) show(cur + (dx < 0 ? 1 : -1));
-    }, { passive: true });
 
-    let peeked = false;
-    mountStop('wall', el, {
-      pan: true,
-      onLive: (on) => {
-        if (!on) { card.hidden = true; el.classList.remove('focus'); target = null; anim = { from: 0, to: 0, t0: 0 }; }
-        else if (!isWide() && !peeked) { peeked = true; peek('__panTmp_wall', () => (baseFrame().maxPan ?? 0), el); }
-      },
-    });
+    mountStop('wall', el, { onFrame: () => update() });
+    // the frame moves even when nothing else changes (scroll drives it), so keep the plaques in step
+    const loop = () => { if (W_.__stop === 'wall') update(); requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
   }
 </script>
