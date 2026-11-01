@@ -32,7 +32,7 @@ const s = t(locale) as any, h = s.house;
   .layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
   .hook { all: unset; position: absolute; cursor: pointer; border-radius: 30px; }
   .hook:focus-visible { outline: 3px solid var(--gold-hi); }
-  .cap { position: absolute; left: var(--gutter); top: 50%; transform: translateY(-40%); max-width: min(520px, 40vw); display: grid; gap: 10px; justify-items: start; pointer-events: none; transition: opacity .4s; }
+  .cap { position: absolute; left: var(--gutter); top: 50%; transform: translateY(-40%); max-width: min(520px, 40vw); display: grid; gap: 10px; justify-items: start; pointer-events: none; transition: opacity .4s; opacity: var(--fade, 1); }
   .cap h2 { font-size: clamp(38px, 4.6vw, 68px); color: var(--ivory); }
   .cap .say { margin: 0; font-family: var(--f-display); font-style: italic; font-size: clamp(17px, 1.5vw, 21px); color: rgba(244,238,226,.9); }
   .cap .hint { margin: 6px 0 0; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-hi); }
@@ -70,6 +70,17 @@ const s = t(locale) as any, h = s.house;
     const set = (open: boolean) => { tag.hidden = !open; el.classList.toggle('tagged', open); if (open) place(); };
     el.querySelector('.hook')!.addEventListener('click', () => set(tag.hidden));
     tag.querySelector('.x')!.addEventListener('click', () => set(false));
+    // the caption makes way when the last part of the page (episodes, e-mail, footer) slides up over the scene
+    const cap = el.querySelector<HTMLElement>('.cap')!;
+    const W_ = window as any;
+    import('../data/house').then(({ HOUSE }) => {
+      const loop = () => {
+        const y = W_.__houseY ?? 0, end = HOUSE.timeline.total;
+        cap.style.setProperty('--fade', String(Math.max(0, Math.min(1, 1 - (y - end + 30) / 40))));
+        requestAnimationFrame(loop);
+      };
+      requestAnimationFrame(loop);
+    });
     mountStop('door', el, { onFrame: (f) => { fr = f; place(); }, onLive: (on) => { if (!on) set(false); } });
   }
 </script>
