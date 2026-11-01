@@ -9,7 +9,8 @@
     "carrie": "Carrie",
     "shop": "Bolt",
     "language": "Nyelv",
-    "papers": "A papírjaim"
+    "papers": "A papírjaim",
+    "ask": "Kérdezd Carrie-t"
   },
   "hero": {
     "eyebrow": "Ismeretterjesztő sorozat Szlovákiából",
@@ -216,5 +217,21 @@
     "results": "Az eredményeim",
     "meta_title": "Carrie papírjai · Carrie the Swiss",
     "meta_description": "Carrie valódi egészségügyi és kiállítási eredményei, és kalauz ahhoz, mit jelentenek egy kiskutya papírjai: törzskönyv, röntgeneredmények, kiállítási minősítések és tenyészszemle."
+  },
+  "ask": {
+    "eyebrow": "Kérdezd Carrie-t",
+    "title": "Kérdezz bármit a nagytestű kutyákról.",
+    "intro": "Tenyésztés, kölykök, egészségügyi szűrések, nevelés, etetés, kiállítások. Én elolvasom helyetted a papírokat.",
+    "note": "A válaszaimat MI készíti abból, amit a sorozathoz tanultam. A kutyád egészségéről mindig kérdezd az állatorvost.",
+    "hello": "Szia! Carrie vagyok. Mit szeretnél tudni?",
+    "placeholder": "Írd be a kérdésed…",
+    "send": "Küldés",
+    "c1": "Hogyan ismerek fel egy jó tenyésztőt?",
+    "c2": "Mit jelent a HD-A és az ED-0?",
+    "c3": "Jó egy Swissy lakásba?",
+    "c4": "Hogyan etessek egy nagytestű kölyköt?",
+    "err_rate": "Vau, ez sok kérdés! Adj egy percet, hogy kifújjam magam.",
+    "err_gen": "Hm, elvesztettem a fonalat. Megpróbálod mindjárt újra?",
+    "err_off": "Még tanulok itt beszélni. Hamarosan visszajövök!"
   }
 }

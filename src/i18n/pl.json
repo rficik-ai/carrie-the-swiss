@@ -9,7 +9,8 @@
     "carrie": "Carrie",
     "shop": "Sklep",
     "language": "Język",
-    "papers": "Moje papiery"
+    "papers": "Moje papiery",
+    "ask": "Zapytaj Carrie"
   },
   "hero": {
     "eyebrow": "Seria edukacyjna ze Słowacji",
@@ -216,5 +217,21 @@
     "results": "Moje wyniki",
     "meta_title": "Papiery Carrie · Carrie the Swiss",
     "meta_description": "Prawdziwe wyniki zdrowotne i wystawowe Carrie oraz poradnik, co oznaczają papiery szczeniaka: rodowód, wyniki RTG, oceny wystawowe i przegląd hodowlany."
+  },
+  "ask": {
+    "eyebrow": "Zapytaj Carrie",
+    "title": "Zapytaj mnie o wszystko o dużych psach.",
+    "intro": "Hodowla, szczenięta, badania zdrowotne, szkolenie, żywienie, wystawy. Czytam papiery, żebyś ty nie musiał.",
+    "note": "Moje odpowiedzi generuje AI na podstawie tego, czego nauczyłam się do serii. W sprawie zdrowia twojego psa zawsze pytaj weterynarza.",
+    "hello": "Cześć! Jestem Carrie. Co chcesz wiedzieć?",
+    "placeholder": "Wpisz pytanie…",
+    "send": "Wyślij",
+    "c1": "Jak rozpoznać dobrego hodowcę?",
+    "c2": "Co znaczy HD-A i ED-0?",
+    "c3": "Czy Swissy nadaje się do mieszkania?",
+    "c4": "Jak karmić szczeniaka dużej rasy?",
+    "err_rate": "Hau, dużo pytań naraz! Daj mi chwilę na oddech.",
+    "err_gen": "Hm, zgubiłam wątek. Spróbujesz za chwilę?",
+    "err_off": "Jeszcze uczę się tu mówić. Wracam niedługo!"
   }
 }

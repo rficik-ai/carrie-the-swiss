@@ -9,7 +9,8 @@
     "carrie": "Carrie",
     "shop": "Winkel",
     "language": "Taal",
-    "papers": "Mijn papieren"
+    "papers": "Mijn papieren",
+    "ask": "Vraag het Carrie"
   },
   "hero": {
     "eyebrow": "Een educatieve serie uit Slowakije",
@@ -216,5 +217,21 @@
     "results": "Mijn uitslagen",
     "meta_title": "Carries papieren · Carrie the Swiss",
     "meta_description": "Carries echte gezondheids- en showuitslagen, en een gids over wat de papieren van een pup betekenen: stamboom, röntgenuitslagen, showkwalificaties en fokgeschiktheidskeuring."
+  },
+  "ask": {
+    "eyebrow": "Vraag het Carrie",
+    "title": "Vraag me alles over grote honden.",
+    "intro": "Fokken, pups, gezondheidstests, training, voeding, hondenshows. Ik lees de papieren, zodat jij dat niet hoeft.",
+    "note": "Mijn antwoorden worden door AI gemaakt op basis van wat ik voor de serie heb geleerd. Vraag voor de gezondheid van je hond altijd je dierenarts.",
+    "hello": "Hoi! Ik ben Carrie. Wat wil je weten?",
+    "placeholder": "Typ je vraag…",
+    "send": "Versturen",
+    "c1": "Hoe herken ik een goede fokker?",
+    "c2": "Wat betekenen HD-A en ED-0?",
+    "c3": "Past een Swissy in een appartement?",
+    "c4": "Hoe voer ik een pup van een groot ras?",
+    "err_rate": "Woef, dat zijn veel vragen! Geef me even om op adem te komen.",
+    "err_gen": "Hmm, ik ben de draad kwijt. Probeer je het zo nog eens?",
+    "err_off": "Ik leer hier nog praten. Ik ben snel terug!"
   }
 }

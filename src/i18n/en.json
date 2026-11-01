@@ -9,7 +9,8 @@
     "carrie": "Carrie",
     "shop": "Shop",
     "language": "Language",
-    "papers": "My papers"
+    "papers": "My papers",
+    "ask": "Ask Carrie"
   },
   "hero": {
     "eyebrow": "An educational series from Slovakia",
@@ -216,5 +217,21 @@
     "results": "My results",
     "meta_title": "Carrie's papers · Carrie the Swiss",
     "meta_description": "Carrie's real health and show results, and a guide to what a puppy's papers mean: pedigree, X-ray scores, show grades and breed evaluation."
+  },
+  "ask": {
+    "eyebrow": "Ask Carrie",
+    "title": "Ask me anything about big dogs.",
+    "intro": "Breeding, puppies, health tests, training, food, dog shows. I read the papers so you don't have to.",
+    "note": "My answers are AI-generated from what I've learned for the series. For your own dog's health, always ask your vet.",
+    "hello": "Hi! I'm Carrie. What would you like to know?",
+    "placeholder": "Type your question…",
+    "send": "Send",
+    "c1": "How do I spot a good breeder?",
+    "c2": "What do HD-A and ED-0 mean?",
+    "c3": "Is a Swissy good for a flat?",
+    "c4": "How should I feed a big puppy?",
+    "err_rate": "Woof, that's a lot of questions! Give me a minute to catch my breath.",
+    "err_gen": "Hmm, I lost my train of thought. Try again in a moment?",
+    "err_off": "I'm still learning to talk here. Back very soon!"
   }
 }

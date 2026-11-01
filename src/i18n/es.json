@@ -9,7 +9,8 @@
     "carrie": "Carrie",
     "shop": "Tienda",
     "language": "Idioma",
-    "papers": "Mis papeles"
+    "papers": "Mis papeles",
+    "ask": "Pregúntale a Carrie"
   },
   "hero": {
     "eyebrow": "Una serie educativa desde Eslovaquia",
@@ -216,5 +217,21 @@
     "results": "Mis resultados",
     "meta_title": "Los papeles de Carrie · Carrie the Swiss",
     "meta_description": "Los resultados reales de salud y exposición de Carrie, y una guía de lo que significan los papeles de un cachorro: pedigrí, resultados radiográficos, calificaciones de exposición y evaluación de cría."
+  },
+  "ask": {
+    "eyebrow": "Pregúntale a Carrie",
+    "title": "Pregúntame lo que quieras sobre perros grandes.",
+    "intro": "Cría, cachorros, pruebas de salud, adiestramiento, alimentación, exposiciones. Yo leo los papeles por ti.",
+    "note": "Mis respuestas las genera una IA a partir de lo que aprendí para la serie. Sobre la salud de tu perro, consulta siempre a tu veterinario.",
+    "hello": "¡Hola! Soy Carrie. ¿Qué quieres saber?",
+    "placeholder": "Escribe tu pregunta…",
+    "send": "Enviar",
+    "c1": "¿Cómo reconozco a un buen criador?",
+    "c2": "¿Qué significan HD-A y ED-0?",
+    "c3": "¿Un Swissy puede vivir en un piso?",
+    "c4": "¿Cómo alimento a un cachorro de raza grande?",
+    "err_rate": "¡Guau, cuántas preguntas! Dame un minuto para respirar.",
+    "err_gen": "Mmm, perdí el hilo. ¿Lo intentas en un momento?",
+    "err_off": "Todavía estoy aprendiendo a hablar aquí. ¡Vuelvo muy pronto!"
   }
 }

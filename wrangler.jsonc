@@ -1,10 +1,16 @@
 {
-  // Static site on Cloudflare Workers: serves the Astro build output.
+  // Astro static site + a small Worker for the "Ask Carrie" chat (/api/ask).
   "name": "carrie-the-swiss",
+  "main": "worker/index.js",
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "./dist",
+    "binding": "ASSETS",
     "not_found_handling": "404-page",
-    "html_handling": "auto-trailing-slash"
-  }
+    "html_handling": "auto-trailing-slash",
+    "run_worker_first": ["/api/*"]
+  },
+  // 15 questions per minute per visitor
+  "ratelimits": [{ "name": "CHAT_LIMIT", "namespace_id": "1001", "simple": { "limit": 15, "period": 60 } }],
+  "observability": { "enabled": true }
 }

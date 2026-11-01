@@ -17,6 +17,7 @@ const s = t(locale);
       <a href={`${home}#episodes`}>{s.nav.episodes}</a>
       <a href={`${home}#carrie`}>{s.nav.carrie}</a>
       <a href={`${home}papers/`} aria-current={page === 'papers/' ? 'page' : undefined}>{(s.nav as any).papers ?? s.nav.guide}</a>
+      <a href={`${home}#ask`}>{(s.nav as any).ask ?? 'Ask Carrie'}</a>
       <a href={`${home}#shop`}>{s.nav.shop}</a>
     </nav>
     <details class="lang">

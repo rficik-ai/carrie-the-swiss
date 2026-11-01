@@ -9,7 +9,8 @@
     "carrie": "Carrie",
     "shop": "Negozio",
     "language": "Lingua",
-    "papers": "I miei documenti"
+    "papers": "I miei documenti",
+    "ask": "Chiedi a Carrie"
   },
   "hero": {
     "eyebrow": "Una serie educativa dalla Slovacchia",
@@ -216,5 +217,21 @@
     "results": "I miei risultati",
     "meta_title": "I documenti di Carrie · Carrie the Swiss",
     "meta_description": "I veri esiti sanitari e i risultati in esposizione di Carrie, e una guida a cosa significano i documenti di un cucciolo: pedigree, esiti radiografici, qualifiche in esposizione e valutazione di razza."
+  },
+  "ask": {
+    "eyebrow": "Chiedi a Carrie",
+    "title": "Chiedimi tutto sui cani grandi.",
+    "intro": "Allevamento, cuccioli, test di salute, educazione, alimentazione, esposizioni. Leggo i documenti al posto tuo.",
+    "note": "Le mie risposte sono generate da un'IA in base a ciò che ho imparato per la serie. Per la salute del tuo cane chiedi sempre al veterinario.",
+    "hello": "Ciao! Sono Carrie. Cosa vuoi sapere?",
+    "placeholder": "Scrivi la tua domanda…",
+    "send": "Invia",
+    "c1": "Come riconosco un buon allevatore?",
+    "c2": "Cosa significano HD-A ed ED-0?",
+    "c3": "Uno Swissy va bene in appartamento?",
+    "c4": "Come nutrire un cucciolo di taglia grande?",
+    "err_rate": "Bau, quante domande! Dammi un attimo per respirare.",
+    "err_gen": "Hmm, ho perso il filo. Riprovi tra poco?",
+    "err_off": "Sto ancora imparando a parlare qui. Torno prestissimo!"
   }
 }

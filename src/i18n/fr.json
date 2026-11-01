@@ -9,7 +9,8 @@
     "carrie": "Carrie",
     "shop": "Boutique",
     "language": "Langue",
-    "papers": "Mes papiers"
+    "papers": "Mes papiers",
+    "ask": "Demandez à Carrie"
   },
   "hero": {
     "eyebrow": "Une série éducative venue de Slovaquie",
@@ -216,5 +217,21 @@
     "results": "Mes résultats",
     "meta_title": "Les papiers de Carrie · Carrie the Swiss",
     "meta_description": "Les vrais résultats de santé et d’exposition de Carrie, et un guide pour comprendre les papiers d’un chiot : pedigree, résultats radio, qualificatifs d’exposition et confirmation."
+  },
+  "ask": {
+    "eyebrow": "Demandez à Carrie",
+    "title": "Demandez-moi tout sur les grands chiens.",
+    "intro": "Élevage, chiots, tests de santé, éducation, alimentation, expositions. Je lis les papiers pour vous.",
+    "note": "Mes réponses sont générées par une IA à partir de ce que j'ai appris pour la série. Pour la santé de votre chien, demandez toujours à votre vétérinaire.",
+    "hello": "Bonjour ! Je suis Carrie. Que voulez-vous savoir ?",
+    "placeholder": "Écrivez votre question…",
+    "send": "Envoyer",
+    "c1": "Comment reconnaître un bon éleveur ?",
+    "c2": "Que signifient HD-A et ED-0 ?",
+    "c3": "Un Swissy en appartement, c'est possible ?",
+    "c4": "Comment nourrir un chiot de grande race ?",
+    "err_rate": "Ouaf, beaucoup de questions ! Laissez-moi reprendre mon souffle.",
+    "err_gen": "Hmm, j'ai perdu le fil. Vous réessayez dans un instant ?",
+    "err_off": "J'apprends encore à parler ici. Je reviens très vite !"
   }
 }

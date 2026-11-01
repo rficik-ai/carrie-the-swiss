@@ -9,7 +9,8 @@
     "carrie": "Carrie",
     "shop": "Shop",
     "language": "Sprache",
-    "papers": "Meine Papiere"
+    "papers": "Meine Papiere",
+    "ask": "Frag Carrie"
   },
   "hero": {
     "eyebrow": "Eine Lernserie aus der Slowakei",
@@ -216,5 +217,21 @@
     "results": "Meine Ergebnisse",
     "meta_title": "Carries Papiere · Carrie the Swiss",
     "meta_description": "Carries echte Gesundheits- und Ausstellungsergebnisse und ein Ratgeber, was die Papiere eines Welpen bedeuten: Ahnentafel, Röntgenbefunde, Formwertnoten und Zuchttauglichkeitsprüfung."
+  },
+  "ask": {
+    "eyebrow": "Frag Carrie",
+    "title": "Frag mich alles über große Hunde.",
+    "intro": "Zucht, Welpen, Gesundheitstests, Training, Futter, Hundeausstellungen. Ich lese die Papiere, damit du es nicht musst.",
+    "note": "Meine Antworten erzeugt eine KI aus dem, was ich für die Serie gelernt habe. Zur Gesundheit deines Hundes frag immer deinen Tierarzt.",
+    "hello": "Hallo! Ich bin Carrie. Was möchtest du wissen?",
+    "placeholder": "Schreib deine Frage…",
+    "send": "Senden",
+    "c1": "Woran erkenne ich einen guten Züchter?",
+    "c2": "Was bedeuten HD-A und ED-0?",
+    "c3": "Passt ein Swissy in eine Wohnung?",
+    "c4": "Wie füttere ich einen großen Welpen?",
+    "err_rate": "Wuff, das sind viele Fragen! Gib mir kurz Zeit zum Durchatmen.",
+    "err_gen": "Hm, ich habe den Faden verloren. Versuch es gleich noch einmal?",
+    "err_off": "Ich lerne hier noch sprechen. Bald bin ich zurück!"
   }
 }

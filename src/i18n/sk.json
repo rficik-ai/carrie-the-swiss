@@ -9,7 +9,8 @@
     "carrie": "Carrie",
     "shop": "Obchod",
     "language": "Jazyk",
-    "papers": "Moje papiere"
+    "papers": "Moje papiere",
+    "ask": "Opýtajte sa Carrie"
   },
   "hero": {
     "eyebrow": "Vzdelávací seriál zo Slovenska",
@@ -216,5 +217,21 @@
     "results": "Moje výsledky",
     "meta_title": "Papiere Carrie · Carrie the Swiss",
     "meta_description": "Skutočné zdravotné a výstavné výsledky Carrie a sprievodca tým, čo znamenajú papiere šteňaťa: preukaz pôvodu, výsledky röntgenov, výstavné hodnotenia a bonitácia."
+  },
+  "ask": {
+    "eyebrow": "Opýtajte sa Carrie",
+    "title": "Spýtajte sa ma čokoľvek o veľkých psoch.",
+    "intro": "Chov, šteňatá, zdravotné testy, výcvik, kŕmenie, výstavy. Papiere čítam ja, aby ste nemuseli vy.",
+    "note": "Moje odpovede generuje AI z toho, čo som sa naučila pre seriál. O zdraví vášho psa sa vždy poraďte s veterinárom.",
+    "hello": "Ahoj! Som Carrie. Čo by ste chceli vedieť?",
+    "placeholder": "Napíšte svoju otázku…",
+    "send": "Odoslať",
+    "c1": "Ako spoznám dobrého chovateľa?",
+    "c2": "Čo znamená HD-A a ED-0?",
+    "c3": "Hodí sa Swissy do bytu?",
+    "c4": "Ako kŕmiť šteňa veľkého plemena?",
+    "err_rate": "Haf, to je veľa otázok naraz! Dajte mi chvíľu vydýchnuť.",
+    "err_gen": "Hm, stratila som niť. Skúsite to o chvíľu znova?",
+    "err_off": "Ešte sa tu učím rozprávať. Čoskoro som späť!"
   }
 }
