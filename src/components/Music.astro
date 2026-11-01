@@ -8,8 +8,12 @@ const m = (t(locale) as any).music;
 const FILES = ['everyday', 'triumph', 'sneaky', 'suspense'];
 ---
 <details class="music" data-play={m.play} data-pause={m.pause}>
-  <summary aria-label={m.label}>
-    <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  <summary>
+    <span class="ic" aria-hidden="true">
+      <svg class="note" viewBox="0 0 24 24"><path d="M9 18.5a3 3 0 1 1-2-2.83V5.5l11-2.5v12.5a3 3 0 1 1-2-2.83V7.6l-7 1.6z"/></svg>
+      <span class="eq"><i></i><i></i><i></i><i></i></span>
+    </span>
+    <span class="lb">{m.label}</span>
   </summary>
   <div class="panel">
     <p class="ttl">{m.label}</p>
@@ -26,8 +30,18 @@ const FILES = ['everyday', 'triumph', 'sneaky', 'suspense'];
 
 <style>
   .music { position: relative; }
-  .music summary { list-style: none; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
-    border: 1px solid rgba(234,211,154,.35); transition: border-color .2s, background .2s; }
+  .music summary { list-style: none; cursor: pointer; height: 40px; padding: 0 14px 0 6px; border-radius: 999px; display: flex; align-items: center; gap: 8px;
+    border: 1px solid rgba(234,211,154,.45); font: 700 12px var(--f-body); letter-spacing: .12em; text-transform: uppercase; color: var(--ivory);
+    transition: border-color .2s, background .2s; }
+  .ic { position: relative; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--grad-gold, var(--gold)); }
+  .note { width: 15px; height: 15px; fill: #1a1408; }
+  .ic .eq { display: none; }
+  .music.on .note { display: none; } .music.on .ic .eq { display: flex; }
+  .ic .eq i { background: #1a1408; }
+  /* until the visitor has tried it once: a soft ring that says "tap me" */
+  .music.hint .ic::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 1.5px solid var(--gold-hi); animation: ring 2.4s ease-out infinite; }
+  @keyframes ring { 0% { transform: scale(.8); opacity: .9; } 70%, 100% { transform: scale(1.5); opacity: 0; } }
+  @media (max-width: 380px) { .lb { display: none; } .music summary { padding: 0 6px; } }
   .music summary::-webkit-details-marker { display: none; }
   .music summary:hover, .music[open] summary { border-color: var(--gold); background: rgba(234,211,154,.08); }
   .eq { display: flex; align-items: flex-end; gap: 2.5px; height: 14px; }
@@ -77,6 +91,7 @@ const FILES = ['everyday', 'triumph', 'sneaky', 'suspense'];
     ['play', 'pause'].forEach((ev) => audio.addEventListener(ev, ui));
     vol.addEventListener('input', () => { audio.volume = +vol.value; save(); });
     const s = load();
+    if (!('i' in s)) { box.classList.add('hint'); box.addEventListener('toggle', () => box.classList.remove('hint'), { once: true }); }
     audio.volume = typeof s.v === 'number' ? s.v : 0.5; vol.value = String(audio.volume);
     if (typeof s.i === 'number' && btns[s.i]) { cur = s.i; audio.src = btns[s.i].dataset.src!; }
     // it was playing on the previous page: browsers need one tap before sound, so resume on the first interaction
