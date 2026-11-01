@@ -231,8 +231,8 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
   /* ---------- Desktop: the shelf scene = last frame of the scroll film, 1:1 ---------- */
   .scene-wrap { display: none; }
   @media (min-width: 900px) and (hover: hover) {
-    .scene-wrap { display: block; position: relative; z-index: 3; margin-top: -100vh; margin-top: -100svh; height: 175vh; }
-    .scene { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: #2a1a0c; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
+    .scene-wrap { display: block; position: absolute; left: 0; width: 1px; height: 1px; top: calc(93% - 93vh); pointer-events: none; }
+    .scene { position: absolute; inset: 0; z-index: 4; overflow: hidden; background: #2a1a0c; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
     .scene.live { opacity: 1; pointer-events: auto; }
     .sfill { position: absolute; inset: -40px; background: url(/assets/img/shelf-scene-v2.jpg) center / cover; filter: blur(26px) brightness(.42) saturate(1.1); }
     .f1920 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
@@ -360,9 +360,14 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     const scene = sceneWrap.querySelector<HTMLElement>('.scene')!;
     const f = scene.querySelector<HTMLElement>('.f1920')!;
     const reader = scene.querySelector<HTMLElement>('.reader')!;
+    // the scene lives inside the film's sticky stage, so it can never slide against the film
+    const scrub = document.querySelector<HTMLElement>('.scrub')!;
+    scrub.querySelector('.stage')!.appendChild(scene);
+    scrub.appendChild(sceneWrap); // becomes an anchor at the calm end of the film
     // "#episodes" (nav, hero button, other pages) should land on the shelf scene
     document.getElementById('episodes')!.id = 'episodes-more';
     sceneWrap.id = 'episodes';
+    if (location.hash === '#episodes') requestAnimationFrame(() => sceneWrap.scrollIntoView());
     // place the 1920x1080 frame exactly like the film (object-fit: cover, centred)
     const fit = () => {
       const fr = fitFrame(scene.clientWidth, scene.clientHeight);
@@ -375,10 +380,9 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
       // keep the framing identical to the film's even if the header or viewport changes
       const key = `${scene.clientWidth}x${scene.clientHeight}x${(document.querySelector('header.top') as HTMLElement | null)?.offsetHeight}`;
       if (key !== lastKey) { lastKey = key; fit(); }
-      const w = window as any;
-      const at = sceneWrap.getBoundingClientRect().top <= 1.5;
-      // hand over only when the film rests on its last frame (or has no video at all); once past the film, stay on
-      const on = at && (w.__filmAtEnd !== false || sceneWrap.getBoundingClientRect().top < -2);
+      const w = window as any, q = w.__filmQ ?? 0, live = scene.classList.contains('live');
+      // take over when the film rests on its last frame; let go only after a clear scroll back (no flicker)
+      const on = live ? q > 0.975 : q >= 0.999 && w.__filmAtEnd !== false;
       if (on !== scene.classList.contains('live')) { scene.classList.toggle('live', on); if (!on) closeAll(); }
       requestAnimationFrame(watch);
     };
