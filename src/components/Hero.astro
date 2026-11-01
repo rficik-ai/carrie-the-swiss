@@ -39,6 +39,7 @@ const chapters = [
       <div class="house" aria-hidden="true">
         <div class="hfill"></div>
         {HOUSE.stops.map((h) => <img class="still" data-stop={h.id} data-src={h.img} alt="" width="1920" height="1080" decoding="async" />)}
+        {HOUSE.stops.filter((h) => h.video).map((h) => <video class="still hvid" data-stop={h.id} data-src={h.video} data-src-mobile={h.videoMobile ?? h.video} muted playsinline preload="none" disablepictureinpicture></video>)}
       </div>
     )}
     <slot />
@@ -145,12 +146,28 @@ const chapters = [
   const houseY = () => -section.getBoundingClientRect().top / stage.clientHeight * 100 - (HT ? HT.start * 1000 : 0);
 
   function place(im: HTMLImageElement, f: Frame, op: number) {
-    if (op > 0 && !im.src) im.src = im.dataset.src!;
+    if (op > 0 && !im.src && im.tagName === 'IMG') im.src = im.dataset.src!;
     im.style.opacity = String(op);
     im.style.transform = `translate(${f.left}px, ${f.top}px) scale(${f.k})`;
   }
   const frameOf = (id: string) => { const [W, H] = dims(); return stopFrame(STOPS.find((s) => s.id === id)!, W, H, undefined, (W_.__pan?.[id]) ?? 0); };
   const zoom = (f: Frame, z: number, W: number, H: number): Frame => ({ k: f.k * z, left: W / 2 - (W / 2 - f.left) * z, top: H / 2 - (H / 2 - f.top) * z });
+  // the moves between rooms: generated videos, scrubbed by the scroll like the film
+  const vids = new Map([...section.querySelectorAll<HTMLVideoElement>('.house .hvid')].map((v) => [v.dataset.stop!, v]));
+  const vst = new Map<string, { cur: number; ready: boolean; loading: boolean }>();
+  vids.forEach((_, id) => vst.set(id, { cur: 0, ready: false, loading: false }));
+  async function loadVid(id: string) {
+    const v = vids.get(id), st = vst.get(id);
+    if (!v || !st || st.loading) return;
+    st.loading = true;
+    v.src = await blobSrc(wide ? v.dataset.src! : v.dataset.srcMobile!);
+    v.addEventListener('loadedmetadata', () => { st.ready = true; }, { once: true });
+    v.load();
+  }
+  function scrubVid(id: string, t: number) {
+    const v = vids.get(id)!, st = vst.get(id)!;
+    st.cur = seek(v, st.cur, t * (v.duration - 0.05));
+  }
   function renderHouse() {
     if (!HT || !houseEl) return;
     const y = houseY();
@@ -161,11 +178,25 @@ const chapters = [
     houseEl.style.opacity = '1';
     const i = STOPS.findIndex((s) => s.id === step!.stop);
     [i, i + 1].forEach((j) => { const n = STOPS[j] && stills.get(STOPS[j].id); if (n && !n.src) n.src = n.dataset.src!; });
+    [i, i + 1].forEach((j) => { if (STOPS[j]) loadVid(STOPS[j].id); });
+    vids.forEach((v, id) => { if (id !== step!.stop) v.style.opacity = '0'; });
+    const vid = vids.get(step.stop), vs = vst.get(step.stop), vReady = !!(vid && vs?.ready && vid.duration);
     const t = clamp((y - step.from) / step.len);
     const cur = stills.get(step.stop)!, f = frameOf(step.stop);
     stills.forEach((im, id) => { if (id !== step!.stop && (i === 0 || id !== STOPS[i - 1].id)) im.style.opacity = '0'; });
     const needFill = f.k < coverFrame(W, H).k - 1e-3 || 1080 * f.k < H - 1;
-    if (step.kind === 'move') {
+    if (step.kind === 'move' && vReady) {
+      // the generated move: starts in the previous room's framing, ends in this room's framing
+      const cov = coverFrame(W, H);
+      const s0 = i > 0 ? frameOf(STOPS[i - 1].id) : (wide ? cov : wallFrame(W, H, undefined, W_.__panW ?? 0));
+      const fr = lerpFrame(lerpFrame(cov, s0, 1 - smooth(t / 0.25)), f, smooth((t - 0.75) / 0.25));
+      if (i > 0) stills.get(STOPS[i - 1].id)!.style.opacity = '0';
+      cur.style.opacity = '0';
+      place(vid as unknown as HTMLImageElement, fr, 1);
+      scrubVid(step.stop, t);
+      W_.__stop = null;
+      if (hfill) hfill.style.opacity = '0';
+    } else if (step.kind === 'move') {
       // stills phase: a slow push into the next room (replaced by the generated video later)
       const x = smooth(t);
       if (i > 0) { const pid = STOPS[i - 1].id; place(stills.get(pid)!, zoom(frameOf(pid), 1 + 0.12 * x, W, H), 1); }
@@ -174,7 +205,8 @@ const chapters = [
       if (hfill) hfill.style.opacity = '0';
     } else {
       if (i > 0) stills.get(STOPS[i - 1].id)!.style.opacity = '0';
-      place(cur, f, 1);
+      if (vReady) { place(vid as unknown as HTMLImageElement, f, 1); scrubVid(step.stop, 1); cur.style.opacity = '0'; }   // stay on the video's own last frame
+      else place(cur, f, 1);
       W_.__stop = step.stop; W_.__stopT = t;
       if (hfill) {
         if (needFill && hfill.dataset.img !== step.stop) { hfill.dataset.img = step.stop; hfill.style.backgroundImage = `url(${cur.dataset.src})`; }
