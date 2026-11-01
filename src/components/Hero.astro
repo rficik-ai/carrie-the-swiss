@@ -60,9 +60,9 @@ const chapters = [
   .spacer { position: relative; height: 1000vh; pointer-events: none; }
   .anchor { position: absolute; left: 0; width: 1px; height: 1px; }
   .house { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
-  .house .still { z-index: 2; } .house .hvid { z-index: 1; }
+  .house img.still { z-index: 2; } .house .hvid { z-index: 1; }
   .hfill { position: absolute; inset: -40px; background: #0d0c0a center / cover; filter: blur(26px) brightness(.45) saturate(1.1); opacity: 0; transition: opacity .3s; }
-  .still { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; max-width: none; transform-origin: 0 0; opacity: 0; will-change: transform, opacity; }
+  .still { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; max-width: none; max-height: none; opacity: 0; object-fit: fill; }
   .toInk { position: absolute; inset: 0; z-index: 6; pointer-events: none; opacity: 0; background: var(--ink); }
   .stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
   .fill { position: absolute; inset: -40px; background: url(/assets/img/shelf-scene-v2.jpg) center / cover; filter: blur(26px) brightness(.42) saturate(1.1); opacity: 0; }
@@ -128,7 +128,7 @@ const chapters = [
   // ---- the walk through the house (beta page): continues after the photo wall
   const HT = section.dataset.house ? JSON.parse(section.dataset.house) as { steps: Step[]; total: number; start: number } : null;
   const spacer = section.querySelector<HTMLElement>('.spacer');
-  const stills = new Map([...section.querySelectorAll<HTMLImageElement>('.house .still')].map((im) => [im.dataset.stop!, im]));
+  const stills = new Map([...section.querySelectorAll<HTMLImageElement>('.house img.still')].map((im) => [im.dataset.stop!, im]));
   const houseEl = section.querySelector<HTMLElement>('.house');
   const hfill = section.querySelector<HTMLElement>('.house .hfill');
   function sizeSpacer() {
@@ -149,7 +149,10 @@ const chapters = [
   function place(im: HTMLImageElement, f: Frame, op: number) {
     if (op > 0 && !im.src && im.tagName === 'IMG') im.src = im.dataset.src!;
     im.style.opacity = String(op);
-    im.style.transform = `translate(${f.left}px, ${f.top}px) scale(${f.k})`;
+    // laid out at its real size (no scale transform): iPhones drop composited layers that grow past the GPU limit,
+    // which a zoomed 1920px picture on a 3x screen easily does
+    im.style.left = `${f.left}px`; im.style.top = `${f.top}px`;
+    im.style.width = `${1920 * f.k}px`; im.style.height = `${1080 * f.k}px`;
   }
   const frameOf = (id: string) => { const [W, H] = dims(); return stopFrame(STOPS.find((s) => s.id === id)!, W, H, undefined, (W_.__pan?.[id]) ?? 0); };
   const zoom = (f: Frame, z: number, W: number, H: number): Frame => ({ k: f.k * z, left: W / 2 - (W / 2 - f.left) * z, top: H / 2 - (H / 2 - f.top) * z });
