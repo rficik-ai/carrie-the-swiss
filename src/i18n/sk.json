@@ -340,6 +340,16 @@
     "door_hint_wide": "Kliknite na obojok na vešiaku",
     "door_hint_tap": "Ťuknite na obojok na vešiaku",
     "wall_hint_scroll": "Posúvajte ďalej a prejdete sa mojím životom",
-    "today": "dnes"
+    "today": "dnes",
+    "nav_label": "Kde sa nachádzate",
+    "nav_intro": "Úvod",
+    "nav_library": "Knižnica epizód",
+    "nav_real": "Som skutočná",
+    "nav_wall": "Môj život",
+    "nav_desk": "Papiere",
+    "nav_garden": "Kvíz",
+    "nav_fire": "Opýtajte sa ma",
+    "nav_door": "Dobrú noc",
+    "more": "Posúvajte ďalej"
   }
 }

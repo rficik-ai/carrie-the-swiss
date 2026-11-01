@@ -1,0 +1,106 @@
+---
+// Where am I in the film, and is there more? A page-wide guide: chapter rail on the right (desktop),
+// a thin bar + chapter name under the menu (phone), and a "keep scrolling" cue whenever the visitor pauses.
+import { type Locale, t } from '../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const h = (t(locale) as any).house;
+const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'];
+---
+<nav class="prog" aria-label={h.nav_label}>
+  <div class="bar" aria-hidden="true"><i></i></div>
+  <ol class="rail">
+    {CH.map((c) => <li data-c={c}><button type="button"><span class="lb">{h[`nav_${c}`]}</span><i aria-hidden="true"></i></button></li>)}
+  </ol>
+  <p class="now" aria-live="polite"></p>
+  <button type="button" class="more" aria-label={h.more}><span>{h.more}</span><i aria-hidden="true">↓</i></button>
+</nav>
+
+<style>
+  .prog { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
+  .bar { position: fixed; left: 0; right: 0; top: 0; height: 3px; background: rgba(234,211,154,.12); }
+  .bar i { display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: linear-gradient(90deg, var(--gold), var(--gold-hi)); box-shadow: 0 0 10px rgba(234,211,154,.6); }
+  .rail { position: fixed; right: 18px; top: 50%; transform: translateY(-50%); margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; pointer-events: auto; }
+  .rail::before { content: ''; position: absolute; right: 6px; top: 6px; bottom: 6px; width: 2px; background: rgba(13,12,10,.45); box-shadow: 0 0 0 1px rgba(234,211,154,.25); }
+  .rail:hover .lb { opacity: .85; transform: none; }
+  .rail button { all: unset; cursor: pointer; display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+  .rail i { position: relative; width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; border: 2px solid rgba(244,238,226,.85); background: rgba(13,12,10,.7); box-shadow: 0 0 0 3px rgba(13,12,10,.35); transition: transform .3s, background .3s; }
+  .rail li.past i { background: var(--gold); border-color: var(--gold); }
+  .rail li.on i { background: var(--gold-hi); border-color: var(--gold-hi); transform: scale(1.35); box-shadow: 0 0 0 5px rgba(234,211,154,.2); }
+  .lb { font: 600 12px var(--f-body); letter-spacing: .08em; color: var(--ivory); padding: 4px 10px; border-radius: 999px; background: rgba(13,12,10,.72); opacity: 0; transform: translateX(6px); transition: opacity .25s, transform .25s; white-space: nowrap; }
+  .rail li.on .lb, .rail button:hover .lb, .rail button:focus-visible .lb { opacity: 1; transform: none; }
+  .now { display: none; }
+  .more { all: unset; position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 10px); display: flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: 999px; cursor: pointer;
+    background: rgba(13,12,10,.78); backdrop-filter: blur(8px); box-shadow: 0 0 0 1px rgba(234,211,154,.45), 0 10px 30px -10px rgba(0,0,0,.7); color: var(--ivory); font: 700 12px var(--f-body); letter-spacing: .14em; text-transform: uppercase;
+    opacity: 0; pointer-events: none; transition: opacity .4s, transform .4s; }
+  .more i { font-style: normal; color: var(--gold-hi); font-size: 16px; animation: bob 1.4s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(4px); } }
+  .prog.idle .more { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+  /* inside a scene the bottom is busy (cards, quiz, chat): the cue moves up beside the rail */
+  .prog.busy .more { left: auto; right: 14px; bottom: auto; top: calc(50% + 150px); transform: none; padding: 10px; }
+  .prog.busy .more span { display: none; }
+  @media (max-width: 899px), (hover: none) {
+    .rail { display: none; }
+    .bar { top: var(--hh, 64px); height: 2px; }
+    .now { display: block; position: fixed; left: 50%; top: calc(var(--hh, 64px) + 10px); transform: translateX(-50%); margin: 0; padding: 5px 12px; border-radius: 999px; background: rgba(13,12,10,.72); color: var(--gold-hi);
+      font: 700 11px var(--f-body); letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; opacity: 0; transition: opacity .4s; }
+    .now.show { opacity: 1; }
+    .prog.busy .more { right: 10px; top: calc(var(--hh, 64px) + 44px); }
+  }
+  @media (prefers-reduced-motion: reduce) { .more i { animation: none; } }
+</style>
+
+<script>
+  import { HOUSE } from '../data/house';
+  const nav = document.querySelector<HTMLElement>('.prog');
+  const sec = document.querySelector<HTMLElement>('.scrub.with-house');
+  if (nav && sec) {
+    const W_ = window as any;
+    const items = [...nav.querySelectorAll<HTMLLIElement>('.rail li')];
+    const now = nav.querySelector<HTMLElement>('.now')!;
+    const more = nav.querySelector<HTMLButtonElement>('.more')!;
+    const stage = sec.querySelector<HTMLElement>('.stage')!;
+    const hold = (id: string) => HOUSE.timeline.steps.find((s) => s.kind === 'hold' && s.stop === id)!;
+    // chapter starts in page pixels (old film: 1000vh of scroll; house after HOUSE_START)
+    let starts: number[] = [];
+    const measure = () => {
+      const vh = stage.clientHeight / 100, top = sec.offsetTop, hs = HOUSE.timeline.start * 1000;
+      starts = [0, top + 500 * vh, top + 840 * vh, ...['wall', 'desk', 'garden', 'fire', 'door'].map((id) => top + (hs + hold(id).from) * vh)];
+      nav.style.setProperty('--hh', `${(document.querySelector('header.top') as HTMLElement)?.offsetHeight ?? 64}px`);
+    };
+    measure(); addEventListener('resize', measure); addEventListener('load', measure);
+
+    let cur = -1, idleT = 0;
+    const update = () => {
+      const y = scrollY + innerHeight * 0.35, max = document.documentElement.scrollHeight - innerHeight;
+      nav.style.setProperty('--p', String(Math.min(1, scrollY / Math.max(1, max))));
+      let c = 0; starts.forEach((s, i) => { if (y >= s) c = i; });
+      if (c !== cur) {
+        cur = c;
+        items.forEach((li, i) => { li.classList.toggle('on', i === c); li.classList.toggle('past', i < c); });
+        now.textContent = items[c].textContent!.trim(); now.classList.add('show');
+        clearTimeout((now as any)._t); (now as any)._t = setTimeout(() => now.classList.remove('show'), 2200);
+      }
+      nav.classList.toggle('busy', !!W_.__stop);
+      // hide the cue at the very end of the page
+      if (scrollY > max - 40) nav.classList.remove('idle');
+    };
+    const poke = () => {
+      nav.classList.remove('idle'); clearTimeout(idleT);
+      idleT = window.setTimeout(() => { if (scrollY < document.documentElement.scrollHeight - innerHeight - 40) nav.classList.add('idle'); }, 2600);
+    };
+    addEventListener('scroll', () => { update(); poke(); }, { passive: true });
+    update(); poke();
+    const jump = (i: number) => {
+      const target = i < starts.length ? starts[i] + innerHeight * 0.2 : document.documentElement.scrollHeight;
+      scrollTo({ top: target, behavior: Math.abs(target - scrollY) > innerHeight * 4 ? 'auto' : 'smooth' });
+    };
+    items.forEach((li, i) => li.querySelector('button')!.addEventListener('click', () => jump(i)));
+    // "keep scrolling": a gentle step forward (one screen), or to the next chapter if it's close
+    more.addEventListener('click', () => {
+      const next = starts[cur + 1];
+      const target = next !== undefined && next - scrollY < innerHeight * 1.6 ? next + innerHeight * 0.2 : scrollY + innerHeight * 0.9;
+      scrollTo({ top: target, behavior: 'smooth' });
+    });
+  }
+</script>

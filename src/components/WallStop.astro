@@ -17,6 +17,7 @@ const href = (x: string) => `/${locale}/${x}`;
       </button>
     ))}
   </div>
+  <div class="vig" aria-hidden="true"></div>
   <div class="cap">
     <p class="eyebrow">{h.wall_eyebrow}</p>
     <h2>{h.wall_title}</h2>
@@ -38,10 +39,6 @@ const href = (x: string) => `/${locale}/${x}`;
       </article>
     ))}
   </div>
-  <ol class="line" aria-hidden="true">
-    {WALL.map((w, i) => <li data-i={i}><span>{w.short ?? h.today}</span></li>)}
-    <i class="mark"></i>
-  </ol>
   <dialog class="wlbx"><button type="button" class="lx" aria-label={h.close}>×</button><img alt="" /></dialog>
 </div>
 
@@ -56,7 +53,10 @@ const href = (x: string) => `/${locale}/${x}`;
     box-shadow: inset 0 0 0 2px #f3ead8, inset 0 2px 8px rgba(60,30,5,.55);
     background: linear-gradient(115deg, rgba(255,230,190,.28) 0%, rgba(255,230,190,0) 38%, rgba(255,255,255,.08) 52%, rgba(255,240,210,0) 60%); }
   .wf img { transition: filter .6s ease; }
-  .wstop.walking .wf:not(.cur) img { filter: sepia(.25) saturate(.75) contrast(.94) brightness(.78); }
+  .wstop.walking .wf:not(.cur) img { filter: sepia(.3) saturate(.6) contrast(.9) brightness(.62); }
+  .vig { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .6s ease; background: radial-gradient(70% 80% at 34% 52%, rgba(20,10,3,0) 35%, rgba(20,10,3,.6) 100%); }
+  .wstop.walking .vig { opacity: 1; }
+  @media (max-width: 899px), (hover: none) { .vig { background: radial-gradient(90% 50% at 50% 28%, rgba(20,10,3,0) 30%, rgba(20,10,3,.6) 100%); } }
   .wf:focus-visible { outline: 3px solid var(--gold-hi); outline-offset: 4px; }
 
   .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 120px var(--gutter-r) max(40px, 5vh) var(--gutter); display: grid; gap: 8px; justify-items: start; pointer-events: none;
@@ -68,13 +68,12 @@ const href = (x: string) => `/${locale}/${x}`;
   @keyframes nudge { 50% { transform: translateY(4px); } }
 
   /* the museum plaque next to the frame the camera is looking at */
-  .plaque { position: absolute; left: 50%; bottom: calc(58px + env(safe-area-inset-bottom, 0px)); width: min(860px, calc(100vw - 2 * var(--gutter))); box-sizing: border-box; padding: 20px 26px 18px; display: grid; grid-template-columns: 1fr auto; column-gap: 26px; row-gap: 6px; align-items: start;
+  .plaque { position: absolute; left: 58vw; top: calc(50% + var(--hh, 68px) / 2); width: min(420px, 31vw); box-sizing: border-box; padding: 24px 26px 20px; display: grid; gap: 8px;
     background: rgba(247,240,225,.96); color: #2a2016; border-radius: 4px; box-shadow: 0 26px 50px -18px rgba(40,20,0,.6), inset 0 0 0 1px rgba(120,90,40,.15);
-    opacity: 0; transform: translate(-50%, 14px); pointer-events: none; transition: opacity .35s ease, transform .5s cubic-bezier(.2,.7,.2,1); }
-  .plaque.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
-  .plaque > :not(.row) { grid-column: 1; }
-  .plaque .row { grid-column: 2; grid-row: 1 / span 3; flex-direction: column; align-items: flex-end; margin: 0; }
-  .plaque .row .ths { display: flex; gap: 8px; }
+    opacity: 0; transform: translate(16px, -50%); pointer-events: none; transition: opacity .35s ease, transform .5s cubic-bezier(.2,.7,.2,1); }
+  .plaque.on { opacity: 1; transform: translate(0, -50%); pointer-events: auto; }
+  .wstop.flip .plaque { left: var(--gutter); }   /* the picture is on the right half: the plaque moves to the left */
+  .plaque .row .ths { display: flex; gap: 8px; flex-wrap: wrap; }
   .date { margin: 0; font: italic 600 15px var(--f-display); color: #8a6a35; }
   .plaque h3 { margin: 0; font-size: clamp(24px, 2.2vw, 32px); line-height: 1.12; color: #1d160e; }
   .txt { margin: 0; font-size: 16px; line-height: 1.6; color: #3d3226; }
@@ -83,7 +82,7 @@ const href = (x: string) => `/${locale}/${x}`;
   .th:hover, .th:focus-visible { transform: translateY(-2px) scale(1.05); }
   .th img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
   .th.doc img { object-position: 50% 0; }
-  .lnk { margin-top: 6px; font-weight: 700; font-size: 15px; color: #7a5520; text-decoration: none; border-bottom: 1px solid currentColor; }
+  .lnk { margin-left: 4px; font-weight: 700; font-size: 15px; color: #7a5520; text-decoration: none; border-bottom: 1px solid currentColor; }
 
   /* a thin timeline: where on the wall (and in my life) we are */
   .line { position: absolute; left: var(--gutter); right: var(--gutter-r); bottom: calc(22px + env(safe-area-inset-bottom, 0px)); margin: 0; padding: 0; list-style: none; display: flex; justify-content: space-between;
@@ -103,10 +102,8 @@ const href = (x: string) => `/${locale}/${x}`;
   @media (max-width: 899px), (hover: none) {
     .cap { padding: 70px 18px calc(22px + env(safe-area-inset-bottom, 0px)); gap: 6px; }
     .cap h2 { font-size: 32px; } .cap .say { font-size: 15px; }
-    .plaque { left: 12px; right: 12px; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); width: auto; padding: 16px 18px 14px; grid-template-columns: 1fr; transform: translateY(12px); }
+    .plaque { left: 12px; right: 12px; top: auto; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); width: auto; padding: 16px 18px 14px; gap: 6px; transform: translateY(12px); }
     .plaque.on { transform: none; }
-    .plaque .row { grid-column: 1; grid-row: auto; flex-direction: row; align-items: center; flex-wrap: wrap; }
-    .plaque .row .lnk { margin: 0 0 0 6px; }
     .plaque h3 { font-size: 22px; } .txt { font-size: 14.5px; line-height: 1.5; }
     .th { width: 44px; height: 44px; }
     .line { left: 14px; right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
@@ -125,21 +122,21 @@ const href = (x: string) => `/${locale}/${x}`;
     const W_ = window as any;
     const S = STOPS.find((s) => s.id === 'wall')!;
     const plaques = [...el.querySelectorAll<HTMLElement>('.plaque')];
-    const ticks = [...el.querySelectorAll<HTMLElement>('.line li')];
     const frames = [...el.querySelectorAll<HTMLElement>('.wf')];
     const lbx = el.querySelector<HTMLDialogElement>('.wlbx')!;
     const stage = () => document.querySelector<HTMLElement>('.scrub .stage')!;
     const N = WALL.length, IN = 0.07, OUT = 0.07, SPAN = (1 - IN - OUT) / N;
     const smooth = (x: number) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
 
-    // the camera at frame i: the whole height of the gallery stays in view and the camera only travels sideways,
-    // so the wall slides from left to right as you scroll; the plaque sits below the frames
-    const TOP = 62, BOT = 552;           // the gallery band in the still (frames from top to bottom)
+    // the camera at frame i: one steady zoom for the whole walk (so the wall glides, it doesn't pump),
+    // the current picture big on the left and its plaque right next to it (phone: picture on top, plaque below)
     function target(i: number, base: Frame, W: number, H: number, hh: number): Frame {
       const r = WALL[i].r, wide = isWide();
-      const band = wide ? (H - hh) * 0.64 : (H - hh) * 0.5;
-      const k = Math.max(base.k, band / (BOT - TOP));
-      let left = W / 2 - (r.x + r.w / 2) * k, top = hh + 6 - TOP * k;
+      const availH = wide ? H - hh : H * 0.58 - hh;
+      // desktop: one zoom for the whole walk; phone: each picture as big as the screen allows
+      const k = wide ? Math.min(base.k * 2.8, (availH * 0.5) / 200) : Math.min(base.k * 3, (W * 0.84) / r.w, (availH * 0.82) / r.h);
+      const cx = wide ? W * 0.34 : W / 2, cy = hh + availH / 2;
+      let left = cx - (r.x + r.w / 2) * k, top = cy - (r.y + r.h / 2) * k;
       left = Math.max(W - 1920 * k, Math.min(0, left)); top = Math.max(H - 1080 * k, Math.min(0, top));
       return { k, left, top };
     }
@@ -164,7 +161,7 @@ const href = (x: string) => `/${locale}/${x}`;
       return { k: f.k, left: Math.round(f.left), top: Math.round(f.top) };
     };
 
-    let shown = -2;
+    let shown = -2, flipAt = 0;
     const update = () => {
       const v = view();
       const cur = v.b >= 0 ? (v.e > 0.55 ? v.b : v.a) : (v.a === N - 1 && v.e < 0.4 ? N - 1 : -1);
@@ -173,10 +170,15 @@ const href = (x: string) => `/${locale}/${x}`;
         plaques.forEach((p, i) => p.classList.toggle('on', i === cur));
         frames.forEach((f, i) => f.classList.toggle('cur', i === cur));
         el.classList.toggle('walking', cur >= 0);
-        ticks.forEach((tk, i) => tk.classList.toggle('on', i <= cur && cur >= 0));
+        flipAt = performance.now() + 120;
       }
       const cap = v.t < IN ? 1 - smooth(v.t / IN * 1.4) : v.t > 1 - OUT ? smooth((v.t - (1 - OUT)) / OUT) : 0;
       el.style.setProperty('--cap', cap.toFixed(3));
+      // keep the plaque beside the picture, never on top of it
+      if (shown >= 0 && performance.now() > flipAt && isWide()) {
+        const r = frames[shown].getBoundingClientRect();
+        el.classList.toggle('flip', r.left + r.width / 2 > innerWidth * 0.5);
+      }
       el.style.setProperty('--prog', `${Math.max(0, Math.min(1, (v.t - IN) / (1 - IN - OUT - SPAN))) * 100}%`);
     };
 

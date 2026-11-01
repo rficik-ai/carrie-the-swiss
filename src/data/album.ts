@@ -6,7 +6,7 @@ export type Chapter = { id: string; date: string; pics: Pic[]; stamp?: string[];
 const A = '/assets/album/';
 export const ALBUM: Chapter[] = [
   { id: 'c1', date: '28. 3. 2025', pics: [{ src: A + 'ig-puppy.jpg', kind: 'photo', w: 1080, h: 1350 }], stamp: ['28', 'III', '2025'] },
-  { id: 'c2', date: '27. 9. 2025', pics: [{ src: A + 'ig-show-2025.jpg', kind: 'photo', w: 680, h: 430 }, { src: A + 'doc-2025-09.jpg', kind: 'doc', w: 919, h: 1300 }] },
+  { id: 'c2', date: '27. 9. 2025', pics: [{ src: A + 'ig-show-2025.jpg', kind: 'photo', w: 680, h: 480 }, { src: A + 'doc-2025-09.jpg', kind: 'doc', w: 919, h: 1300 }] },
   { id: 'c3', date: '11–12 / 2025', pics: [{ src: A + 'p-2025-11.jpg', kind: 'photo', w: 619, h: 1100 }, { src: A + 'p-2025-12a.jpg', kind: 'photo', w: 825, h: 1100 }, { src: A + 'p-2025-12b.jpg', kind: 'photo', w: 825, h: 1100 }] },
   { id: 'c4', date: '1 / 2026', pics: [{ src: A + 'p-2026-01.jpg', kind: 'photo', w: 825, h: 1100 }, { src: A + 'ig-snow.jpg', kind: 'photo', w: 1100, h: 1218 }] },
   { id: 'c5', date: '30. 5. 2026', pics: [{ src: A + 'doc-2026-05.jpg', kind: 'doc', w: 919, h: 1300 }] },

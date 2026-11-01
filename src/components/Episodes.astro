@@ -409,6 +409,12 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     // "#episodes" (nav, hero button, other pages) should land on the shelf scene
     document.getElementById('episodes')!.id = 'episodes-more';
     sceneWrap.id = 'episodes';
+    // in the long (house walk) film the section is taller, so pin the anchor in pixels at 55 % of the old film
+    if (scrub.classList.contains('with-house')) {
+      const st = scrub.querySelector<HTMLElement>('.stage')!;
+      const pin = () => { sceneWrap.style.top = `${5.5 * st.clientHeight}px`; };
+      pin(); addEventListener('resize', pin);
+    }
     if (location.hash === '#episodes') requestAnimationFrame(() => sceneWrap.scrollIntoView());
     // place the 1920x1080 frame exactly like the film (object-fit: cover, centred)
     const W_ = window as any;

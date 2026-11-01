@@ -340,6 +340,16 @@
     "door_hint_wide": "Click the collar on the hook",
     "door_hint_tap": "Tap the collar on the hook",
     "wall_hint_scroll": "Keep scrolling to walk through my life",
-    "today": "today"
+    "today": "today",
+    "nav_label": "Where you are",
+    "nav_intro": "Intro",
+    "nav_library": "Episode library",
+    "nav_real": "I'm real",
+    "nav_wall": "My life",
+    "nav_desk": "Papers",
+    "nav_garden": "Quiz",
+    "nav_fire": "Ask me",
+    "nav_door": "Good night",
+    "more": "Keep scrolling"
   }
 }
