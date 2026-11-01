@@ -37,7 +37,9 @@
     "pull": "Choisissez un livre",
     "more_eyebrow": "Prochainement",
     "more_title": "D’autres saisons sont déjà en production.",
-    "more_text": "Il reste tant de choses à apprendre. Suivez-moi pour ne pas rater la prochaine étagère."
+    "more_text": "Il reste tant de choses à apprendre. Suivez-moi pour ne pas rater la prochaine étagère.",
+    "open": "Ouvrir le livre",
+    "swipe": "glissez"
   },
   "topics": {
     "intro": "Intro",
@@ -139,7 +141,8 @@
     "approved": "Autorisée à la reproduction",
     "text": "Une vraie femelle grand bouvier suisse qui vit en Slovaquie. L’animation, c’est moi, avec un meilleur éclairage et plus de vocabulaire.",
     "cta": "Voir mes papiers et résultats",
-    "hover": "Survolez une vraie photo pour rencontrer mon double animé"
+    "hover": "Survolez une vraie photo pour rencontrer mon double animé",
+    "tap": "Touchez une vraie photo pour rencontrer mon double animé"
   },
   "quote": {
     "text": "Le pedigree dit de qui. La radio dit si c'est sain. Le juge dit si c'est conforme au modèle. Un bon éleveur vous montre les trois.",

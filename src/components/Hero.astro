@@ -17,10 +17,10 @@ const chapters = [
       muted playsinline preload="auto" disablepictureinpicture
       poster="/assets/film/poster.jpg"
       data-src-desktop="/assets/film/film-v3.mp4"
-      data-src-mobile="/assets/film/film-mobile-v3.mp4"
+      data-src-mobile="/assets/film/film-m-v4.mp4"
       aria-hidden="true"
     ></video>
-    <video class="film film2" muted playsinline preload="none" disablepictureinpicture data-src="/assets/film/film2-v1.mp4" aria-hidden="true"></video>
+    <video class="film film2" muted playsinline preload="none" disablepictureinpicture data-src="/assets/film/film2-v1.mp4" data-src-mobile="/assets/film/film2-m-v1.mp4" aria-hidden="true"></video>
     <div class="shade" aria-hidden="true"></div>
     <canvas class="dust" aria-hidden="true"></canvas>
     <div class="toPaper" aria-hidden="true"></div>
@@ -42,7 +42,7 @@ const chapters = [
 
 <style>
   .scrub { position: relative; height: 680vh; background: var(--ink); }
-  @media (min-width: 900px) and (hover: hover) { .scrub { height: 1100vh; } }
+  .scrub { height: 1100vh; }
   .film2 { opacity: 0; }
   .toInk { position: absolute; inset: 0; z-index: 6; pointer-events: none; opacity: 0; background: var(--ink); }
   .stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
@@ -80,7 +80,7 @@ const chapters = [
 </style>
 
 <script>
-  import { coverFrame, fitFrame } from '../lib/frame';
+  import { coverFrame, fitFrame, wallFrame, lerpFrame, type Frame } from '../lib/frame';
   const section = document.querySelector<HTMLElement>('.scrub')!;
   const stage = section.querySelector<HTMLElement>('.stage')!;
   const video = section.querySelector<HTMLVideoElement>('.film:not(.film2)')!;
@@ -99,7 +99,7 @@ const chapters = [
   // Desktop timeline (share of the whole scroll):
   //  film 1 (intro + dive into the eye)  0 → A1 · shelf stop A1 → H1 · film 2 (fall with the books) H1 → B1
   //  photo-wall stop B1 → H2 · dissolve into the dark next section H2 → 1
-  const A1 = wide ? 0.5 : 1, H1 = 0.6, B1 = 0.84, H2 = 0.94;
+  const A1 = reduce ? 1 : 0.5, H1 = 0.6, B1 = 0.84, H2 = 0.94;
   const clamp = (x: number) => Math.min(1, Math.max(0, x));
   const smooth = (x: number) => { x = clamp(x); return x * x * (3 - 2 * x); };
   let cur1 = 0, cur2 = 0, ready1 = false, ready2 = false, loading2 = false;
@@ -113,15 +113,17 @@ const chapters = [
   // place a 1920x1080 film box: e = 0 cover … 1 framing that fits the shelf below the menu
   // corr (0..1) undoes the small scale/offset between film 2's first frame and film 1's last frame
   const C2 = { s: 1 / 0.9866, x: 3.5728 / 0.9866, y: 4.8793 / 0.9866 };
-  function frameVideo(v: HTMLVideoElement, e: number, corr = 0) {
+  function frameVideo(v: HTMLVideoElement, target: Frame | null, corr = 0) {
     const W = stage.clientWidth, H = stage.clientHeight; // same box as the overlays (excludes the scrollbar)
-    const c = coverFrame(W, H), f = fitFrame(W, H);
-    const k0 = c.k + (f.k - c.k) * e;
-    const sc = 1 + (C2.s - 1) * corr, k = k0 * sc, r = k / c.k;
-    const L = c.left + (f.left - c.left) * e + k0 * C2.x * corr, T = c.top + (f.top - c.top) * e + k0 * C2.y * corr;
+    const c = coverFrame(W, H), f = target ?? c;
+    const sc = 1 + (C2.s - 1) * corr, k = f.k * sc, r = k / c.k;
+    const L = f.left + f.k * C2.x * corr, T = f.top + f.k * C2.y * corr;
     v.style.cssText += `;object-fit:fill;max-width:none;max-height:none;inset:auto;left:${c.left}px;top:${c.top}px;width:${1920 * c.k}px;height:${1080 * c.k}px`;
-    v.style.transform = e > 0 ? `translate(${L - c.left}px, ${T - c.top}px) scale(${r})` : '';
+    v.style.transform = (L !== c.left || T !== c.top || r !== 1) ? `translate(${L - c.left}px, ${T - c.top}px) scale(${r})` : '';
   }
+  const dims = () => [stage.clientWidth, stage.clientHeight] as const;
+  const shelfF = () => { const [W, H] = dims(); return fitFrame(W, H, undefined, W_.__panS ?? 0); };
+  const wallF = () => { const [W, H] = dims(); return wallFrame(W, H, undefined, W_.__panW ?? 0); };
 
   function seek(v: HTMLVideoElement, cur: number, target: number) {
     cur += (target - cur) * 0.18;
@@ -140,18 +142,24 @@ const chapters = [
     bar.parentElement!.style.opacity = q1 > 0.97 ? '0' : '1';
     hint.style.opacity = p > 0.02 ? '0' : '1';
     W_.__filmQ = q1;
-    if (!wide) { toPaper.style.opacity = String(clamp((p - 0.95) / 0.05)); return { q1, q2: 0 }; }
+    if (reduce) return { q1, q2: 0 };
 
     // film 1: camera pulls back at the end so the whole shelf sits below the menu
     const e1 = smooth((q1 - 0.88) / 0.08);
     const q2 = clamp((p - H1) / (B1 - H1));
     // the painted Carrie slowly fades from the spines while the real one jumps up: she leaves the painting
     const x = ready2 ? smooth(q2 / 0.1) : 0;
-    if (x < 1) frameVideo(video, e1);
-    if (ready2) frameVideo(video2, 1 - smooth((q2 - 0.1) / 0.3), 1 - smooth((q2 - 0.1) / 0.3)); // film 2 starts in the shelf framing and eases back to full screen
+    const [W, H] = dims(), cov = coverFrame(W, H);
+    if (x < 1) frameVideo(video, lerpFrame(cov, shelfF(), e1));
+    if (ready2) {
+      // film 2 starts in the shelf framing, eases back to full screen, and on phones pulls back again for the photo wall
+      const eS = 1 - smooth((q2 - 0.1) / 0.3), eW = wide ? 0 : smooth((q2 - 0.86) / 0.14);
+      frameVideo(video2, lerpFrame(lerpFrame(cov, shelfF(), eS), wallF(), eW), eS);
+      if (!wide && eW > 0 && W_.__photosFrame && fill.dataset.img !== 'photos') { fill.dataset.img = 'photos'; fill.style.backgroundImage = `url(${W_.__photosFrame})`; }
+    }
     video.style.opacity = String(1 - x);
     video2.style.opacity = String(x);
-    fill.style.opacity = String(x < 1 ? e1 : 1 - smooth((q2 - 0.1) / 0.3));
+    fill.style.opacity = String(x < 1 ? e1 : Math.max(1 - smooth((q2 - 0.1) / 0.3), wide ? 0 : smooth((q2 - 0.86) / 0.14)));
     toInk.style.opacity = String(smooth((p - H2) / 0.06));
     W_.__filmP = p; W_.__film2Q = q2;
     if (p > 0.25 && !loading2) loadFilm2();
@@ -163,17 +171,15 @@ const chapters = [
   }
 
   async function load() {
-    const mobile = matchMedia('(max-width: 700px)').matches;
-    if (mobile) video.poster = '/assets/film/poster-mobile.jpg';
-    video.src = await blobSrc(mobile ? video.dataset.srcMobile! : video.dataset.srcDesktop!);
+    video.src = await blobSrc(wide ? video.dataset.srcDesktop! : video.dataset.srcMobile!);
     video.addEventListener('loadedmetadata', () => { ready1 = true; }, { once: true });
     video.load();
-    if (wide) snapshot(video.src, 'shelf-frame', '__shelfFrame');
+    snapshot(video.src, 'shelf-frame', '__shelfFrame');
   }
 
   async function loadFilm2() {
     loading2 = true;
-    video2.src = await blobSrc(video2.dataset.src!);
+    video2.src = await blobSrc(wide ? video2.dataset.src! : video2.dataset.srcMobile!);
     video2.addEventListener('loadedmetadata', () => { ready2 = true; }, { once: true });
     video2.load();
     snapshot(video2.src, 'photos-frame', '__photosFrame');
@@ -204,7 +210,7 @@ const chapters = [
       cur1 = seek(video, cur1, q1 * (video.duration - 0.05));
       W_.__filmAtEnd = q1 >= 0.999 && !video.seeking && Math.abs(video.currentTime - (video.duration - 0.05)) < 0.02;
     }
-    if (wide && ready2 && video2.duration) {
+    if (ready2 && video2.duration) {
       cur2 = seek(video2, cur2, q2 * (video2.duration - 0.05));
       W_.__film2AtEnd = q2 >= 0.999 && !video2.seeking && Math.abs(video2.currentTime - (video2.duration - 0.05)) < 0.02;
     }

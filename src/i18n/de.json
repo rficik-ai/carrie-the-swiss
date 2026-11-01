@@ -37,7 +37,9 @@
     "pull": "Zieh ein Buch heraus",
     "more_eyebrow": "Demnächst",
     "more_title": "Weitere Staffeln sind schon in Produktion.",
-    "more_text": "Es gibt noch so viel zu lernen. Folg mir, damit du das nächste Regal nicht verpasst."
+    "more_text": "Es gibt noch so viel zu lernen. Folg mir, damit du das nächste Regal nicht verpasst.",
+    "open": "Buch öffnen",
+    "swipe": "wischen"
   },
   "topics": {
     "intro": "Intro",
@@ -139,7 +141,8 @@
     "approved": "Zur Zucht zugelassen",
     "text": "Eine echte Große Schweizer Sennenhündin, die in der Slowakei lebt. Die Animation bin ich, nur mit besserem Licht und größerem Wortschatz.",
     "cta": "Meine Papiere und Ergebnisse ansehen",
-    "hover": "Fahr mit der Maus über ein echtes Foto und triff meine animierte Doppelgängerin"
+    "hover": "Fahr mit der Maus über ein echtes Foto und triff meine animierte Doppelgängerin",
+    "tap": "Tipp auf ein echtes Foto und triff meine animierte Doppelgängerin"
   },
   "quote": {
     "text": "Die Ahnentafel sagt, wer. Das Röntgenbild sagt, wie gesund. Der Richter sagt, wie nah am Bauplan. Ein guter Züchter zeigt dir alle drei.",

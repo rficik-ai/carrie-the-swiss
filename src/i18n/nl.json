@@ -37,7 +37,9 @@
     "pull": "Pak een boek",
     "more_eyebrow": "Binnenkort",
     "more_title": "Er zijn al meer seizoenen in de maak.",
-    "more_text": "Er valt nog zoveel te leren. Volg me, dan mis je de volgende plank niet."
+    "more_text": "Er valt nog zoveel te leren. Volg me, dan mis je de volgende plank niet.",
+    "open": "Open het boek",
+    "swipe": "veeg"
   },
   "topics": {
     "intro": "Intro",
@@ -139,7 +141,8 @@
     "approved": "Goedgekeurd voor de fok",
     "text": "Een echte Grote Zwitserse Sennenhond die in Slowakije woont. De animatie ben ik, alleen met beter licht en een grotere woordenschat.",
     "cta": "Bekijk mijn papieren en uitslagen",
-    "hover": "Beweeg over een echte foto en ontmoet mijn geanimeerde tweeling"
+    "hover": "Beweeg over een echte foto en ontmoet mijn geanimeerde tweeling",
+    "tap": "Tik op een echte foto en ontmoet mijn geanimeerde tweeling"
   },
   "quote": {
     "text": "De stamboom zegt wie. De röntgenfoto zegt hoe gezond. De keurmeester zegt hoe dicht bij de blauwdruk. Een goede fokker laat je alle drie zien.",

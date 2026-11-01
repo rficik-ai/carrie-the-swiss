@@ -39,6 +39,7 @@ const ogImage = `${site}/assets/img/og.jpg`;
 <script>
   document.documentElement.classList.add('js');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) document.documentElement.classList.add('nofilm');
   // reveal on scroll
   const rio = new IntersectionObserver((ents) => ents.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } }), { threshold: 0.15 });
   document.querySelectorAll('[data-reveal]').forEach((el) => rio.observe(el));

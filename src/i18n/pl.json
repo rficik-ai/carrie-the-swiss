@@ -37,7 +37,9 @@
     "pull": "Wyciągnij książkę",
     "more_eyebrow": "Już wkrótce",
     "more_title": "Kolejne sezony są już w produkcji.",
-    "more_text": "Jeszcze tyle do odkrycia. Obserwuj mnie, żeby nie przegapić następnej półki."
+    "more_text": "Jeszcze tyle do odkrycia. Obserwuj mnie, żeby nie przegapić następnej półki.",
+    "open": "Otwórz książkę",
+    "swipe": "przesuń"
   },
   "topics": {
     "intro": "Wstęp",
@@ -139,7 +141,8 @@
     "approved": "Dopuszczona do hodowli",
     "text": "Prawdziwa suczka rasy duży szwajcarski pies pasterski, mieszkająca na Słowacji. Ta animacja to ja, tylko z lepszym oświetleniem i bogatszym słownictwem.",
     "cta": "Zobacz moje papiery i wyniki",
-    "hover": "Najedź myszką na prawdziwe zdjęcie i poznaj moją animowaną bliźniaczkę"
+    "hover": "Najedź myszką na prawdziwe zdjęcie i poznaj moją animowaną bliźniaczkę",
+    "tap": "Dotknij prawdziwego zdjęcia i poznaj moją animowaną bliźniaczkę"
   },
   "quote": {
     "text": "Rodowód mówi kto. Prześwietlenie mówi, jak zdrowy. Sędzia mówi, jak blisko wzorca. Dobry hodowca pokaże ci wszystkie trzy.",

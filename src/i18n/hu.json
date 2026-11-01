@@ -37,7 +37,9 @@
     "pull": "Húzz ki egy könyvet",
     "more_eyebrow": "Hamarosan",
     "more_title": "Újabb évadok már készülnek.",
-    "more_text": "Még annyi mindent lehet tanulni. Kövess, hogy le ne maradj a következő polcról."
+    "more_text": "Még annyi mindent lehet tanulni. Kövess, hogy le ne maradj a következő polcról.",
+    "open": "Könyv kinyitása",
+    "swipe": "húzd"
   },
   "topics": {
     "intro": "Bevezető",
@@ -139,7 +141,8 @@
     "approved": "Tenyésztésre engedélyezve",
     "text": "Egy igazi nagy svájci havasi kutya szuka, aki Szlovákiában él. Az animáció én vagyok, csak jobb világítással és bővebb szókinccsel.",
     "cta": "Nézd meg a papírjaimat és eredményeimet",
-    "hover": "Vidd az egeret egy valódi fotóra, és megismered az animált hasonmásomat"
+    "hover": "Vidd az egeret egy valódi fotóra, és megismered az animált hasonmásomat",
+    "tap": "Koppints egy valódi fotóra, és megismered az animált hasonmásomat"
   },
   "quote": {
     "text": "A törzskönyv megmondja, ki. A röntgen megmondja, mennyire egészséges. A bíró megmondja, mennyire közel áll a tervrajzhoz. Egy jó tenyésztő mindhármat megmutatja.",

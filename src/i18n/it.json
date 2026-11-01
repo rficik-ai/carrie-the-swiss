@@ -37,7 +37,9 @@
     "pull": "Prendi un libro",
     "more_eyebrow": "In arrivo",
     "more_title": "Altre stagioni sono già in lavorazione.",
-    "more_text": "C’è ancora tanto da imparare. Seguimi per non perderti il prossimo scaffale."
+    "more_text": "C’è ancora tanto da imparare. Seguimi per non perderti il prossimo scaffale.",
+    "open": "Apri il libro",
+    "swipe": "scorri"
   },
   "topics": {
     "intro": "Intro",
@@ -139,7 +141,8 @@
     "approved": "Approvata per la riproduzione",
     "text": "Una vera femmina di grande bovaro svizzero che vive in Slovacchia. L’animazione sono io, solo con luci migliori e un vocabolario più ricco.",
     "cta": "Guarda i miei documenti e risultati",
-    "hover": "Passa il mouse su una foto vera e conosci la mia gemella animata"
+    "hover": "Passa il mouse su una foto vera e conosci la mia gemella animata",
+    "tap": "Tocca una foto vera e conosci la mia gemella animata"
   },
   "quote": {
     "text": "Il pedigree dice chi. Le lastre dicono quanto è sano. Il giudice dice quanto è vicino al modello. Un buon allevatore ti mostra tutti e tre.",

@@ -22,21 +22,21 @@ const r = t(locale).real as Record<string, string>;
     <p class="eyebrow">{r.eyebrow}</p>
     <h2>{r.title}</h2>
     <p class="say">{r.text}</p>
-    <p class="hint">{r.hover ?? 'Hover a real photo to meet my animated twin'}</p>
+    <p class="hint"><span class="h-wide">{r.hover}</span><span class="h-tap">{r.tap}</span></p>
     <a class="pill-cta" href={`/${locale}/papers/`}>{r.cta ?? 'See my papers'} <span aria-hidden="true">→</span></a>
   </div>
 </div>
 
 <style>
   .pwall { display: none; }
-  @media (min-width: 900px) and (hover: hover) {
-    .pwall { display: block; position: absolute; inset: 0; z-index: 4; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
+  :global(.js:not(.nofilm)) .pwall { display: block; }
+  .pwall { position: absolute; inset: 0; z-index: 4; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
     .pwall.live { opacity: 1; pointer-events: auto; }
     .pf { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
     .pcard { all: unset; position: absolute; left: 0; top: 0; transform-origin: 0 0; transform-style: preserve-3d; perspective: 1000px; cursor: pointer; }
     .flip { position: absolute; inset: 0; transform-style: preserve-3d; opacity: 0;
       transition: transform .85s cubic-bezier(.2,.7,.2,1), opacity 0s .85s; }
-    .pcard:hover .flip, .pcard:focus-visible .flip { opacity: 1; transform: translateZ(14px) rotateY(180deg); transition: transform .85s cubic-bezier(.2,.7,.2,1), opacity 0s 0s; }
+    .pcard.flipped .flip, .pcard:focus-visible .flip { opacity: 1; transform: translateZ(14px) rotateY(180deg); transition: transform .85s cubic-bezier(.2,.7,.2,1), opacity 0s 0s; }
     .front, .back { position: absolute; inset: 0; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: block; }
     .back { transform: rotateY(180deg); padding: 3.5%; background: #f6efe0; box-shadow: 0 20px 40px -12px rgba(0,0,0,.6); box-sizing: border-box; }
     .back img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -48,23 +48,39 @@ const r = t(locale).real as Record<string, string>;
     .ptext .say { margin: 0; max-width: 40em; font-family: var(--f-display); font-style: italic; font-size: clamp(18px, 1.6vw, 22px); color: rgba(244,238,226,.9); }
     .ptext .hint { margin: 2px 0 6px; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
     .ptext .pill-cta { pointer-events: auto; }
+  .h-tap { display: none; }
+  @media (hover: hover) and (min-width: 900px) { .pcard:hover .flip { opacity: 1; transform: translateZ(14px) rotateY(180deg); transition: transform .85s cubic-bezier(.2,.7,.2,1), opacity 0s 0s; } }
+  @media (max-width: 899px), (hover: none) {
+    .h-wide { display: none; } .h-tap { display: inline; }
+    .ptext { padding: 60px 18px calc(22px + env(safe-area-inset-bottom, 0px)); gap: 8px; }
+    .ptext h2 { font-size: 34px; }
+    .ptext .say { font-size: 16px; }
+    .ptext .hint { font-size: 11px; letter-spacing: .12em; }
   }
 </style>
 
 <script>
-  import { coverFrame } from '../lib/frame';
-  const wide = matchMedia('(min-width: 900px) and (hover: hover)').matches;
+  import { wallFrame, attachPan, isWide } from '../lib/frame';
+  const wide = isWide();
   const wall = document.querySelector<HTMLElement>('.pwall');
-  if (wide && wall) {
+  if (wall && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const stage = document.querySelector<HTMLElement>('.scrub .stage')!;
     stage.appendChild(wall); // lives on the frozen film frame
     const pf = wall.querySelector<HTMLElement>('.pf')!;
     const W_ = window as any;
-    let lastKey = '';
+    let lastKey = '', maxPan = 0;
     const fit = () => {
-      const c = coverFrame(stage.clientWidth, stage.clientHeight);
+      const c = wallFrame(stage.clientWidth, stage.clientHeight, undefined, W_.__panW ?? 0);
+      maxPan = c.maxPan ?? 0;
       pf.style.transform = `translate(${c.left}px, ${c.top}px) scale(${c.k})`;
     };
+    wall.querySelectorAll<HTMLElement>('.pcard').forEach((card) => card.addEventListener('click', () => {
+      if (wide) return;
+      const was = card.classList.contains('flipped');
+      wall.querySelectorAll('.pcard').forEach((c) => c.classList.remove('flipped'));
+      if (!was) card.classList.add('flipped');
+    }));
+    if (!wide) attachPan(wall, '__panW', () => maxPan);
     // front faces: the photo exactly as it appears in the film, unwarped into the card rectangle
     const paint = (url: string) => {
       const img = new Image();
@@ -96,7 +112,7 @@ const r = t(locale).real as Record<string, string>;
     if (W_.__photosFrame) paint(W_.__photosFrame);
     window.addEventListener('photos-frame', (e) => paint((e as CustomEvent).detail));
     const watch = () => {
-      const key = `${stage.clientWidth}x${stage.clientHeight}`;
+      const key = `${stage.clientWidth}x${stage.clientHeight}x${W_.__panW ?? 0}`;
       if (key !== lastKey) { lastKey = key; fit(); }
       const p = W_.__filmP ?? 0, live = wall.classList.contains('live');
       const on = live ? p > 0.83 && p < 0.985 : p >= 0.84 && p < 0.97 && W_.__film2AtEnd !== false && W_.__film2Q >= 0.999;

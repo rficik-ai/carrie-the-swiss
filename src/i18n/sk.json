@@ -37,7 +37,9 @@
     "pull": "Vytiahnite si knihu",
     "more_eyebrow": "Pripravujeme",
     "more_title": "Ďalšie série sa už nakrúcajú.",
-    "more_text": "Je toho ešte toľko, čo sa dá naučiť. Sledujte ma, nech vám neujde ďalšia polička."
+    "more_text": "Je toho ešte toľko, čo sa dá naučiť. Sledujte ma, nech vám neujde ďalšia polička.",
+    "open": "Otvoriť knihu",
+    "swipe": "potiahnite"
   },
   "topics": {
     "intro": "Úvod",
@@ -139,7 +141,8 @@
     "approved": "Uchovnená",
     "text": "Skutočná fenka veľkého švajčiarskeho salašníckeho psa, ktorá žije na Slovensku. Tá animácia som ja, len s lepším svetlom a bohatšou slovnou zásobou.",
     "cta": "Pozrite si moje papiere a výsledky",
-    "hover": "Prejdite myšou na skutočnú fotku a spoznáte moju animovanú dvojníčku"
+    "hover": "Prejdite myšou na skutočnú fotku a spoznáte moju animovanú dvojníčku",
+    "tap": "Ťuknite na skutočnú fotku a spoznáte moju animovanú dvojníčku"
   },
   "quote": {
     "text": "Preukaz pôvodu povie kto. Röntgen povie, aký zdravý. Rozhodca povie, ako blízko má k štandardu. Dobrý chovateľ vám ukáže všetky tri.",

@@ -36,6 +36,11 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
         return <span class="plaque" data-n={e.n} aria-hidden="true" style={`left:${x0 + 4}px;width:${w - 8}px`}><span>{e.title}</span></span>;
       })}
     </div>
+    <div class="cap-bar" aria-live="polite">
+      <span class="cb-eye">{s.episodes.eyebrow}</span>
+      <p class="cb-title"></p>
+      <div class="cb-row"><button type="button" class="cb-open">{E.open ?? 'Open the book'}</button><span class="cb-swipe" aria-hidden="true">← {E.swipe ?? 'swipe'} →</span></div>
+    </div>
     <div class="reader" hidden><div class="rback"></div></div>
   </div>
 </div>
@@ -227,9 +232,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     .book, .story, .spine { transition: none !important; }
   }
 
-  /* ---------- Desktop: the shelf scene = last frame of the scroll film, 1:1 ---------- */
-  .scene-wrap { display: none; }
-  @media (min-width: 900px) and (hover: hover) {
+  /* ---------- Shelf scene = last frame of the scroll film, 1:1 ---------- */
     .scene-wrap { display: block; position: absolute; left: 0; width: 1px; height: 1px; top: calc(55% - 55vh); pointer-events: none; }
     .scene { position: absolute; inset: 0; z-index: 4; overflow: hidden; background: transparent; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
     .scene.live { opacity: 1; pointer-events: auto; }
@@ -240,8 +243,8 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     .scene.live .wall { opacity: 1; transform: none; }
     .wmore { font: 600 15px var(--f-body); letter-spacing: .04em; color: #d9b46a; opacity: .85; }
     /* on desktop the shelf scene replaces the flat list; keep the section only as a host for the player dialog */
-    .episodes { padding: 0 !important; background: var(--ink) !important; }
-    .episodes > .wrap, .episodes > .shelf-wrap { display: none !important; }
+    :global(.js:not(.nofilm)) .episodes { padding: 0 !important; background: var(--ink) !important; }
+    :global(.js:not(.nofilm)) .episodes > .wrap, :global(.js:not(.nofilm)) .episodes > .shelf-wrap { display: none !important; }
     .weye { font: 700 16px var(--f-body); letter-spacing: .28em; text-transform: uppercase; color: #d9b46a; }
     .wpull { font: 600 italic 32px var(--f-display); color: #f6e7c4; text-shadow: 0 2px 8px rgba(0,0,0,.7); }
     .sbook { all: unset; position: absolute; cursor: pointer; }
@@ -293,12 +296,32 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     .reader .pages.on .story { transform: none; transition: transform .9s cubic-bezier(.2,.7,.2,1) .3s; }
     .pages.playing .clip { opacity: 1; }
     /* the old flat shelf is replaced by the scene on desktop */
-    .shelf-wrap .hint, .shelf-wrap .shelf, .shelf-wrap .plank { display: none !important; }
+
+  /* phone: bigger books you pan sideways, the centred book's title in a caption bar */
+  .cap-bar { display: none; }
+  @media (max-width: 899px), (hover: none) {
+    .plaque, .wall { display: none; }
+    .cap-bar { display: grid; position: absolute; left: 12px; right: 12px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 3; gap: 8px; justify-items: center; text-align: center;
+      padding: 14px 14px 12px; border-radius: 18px; background: rgba(16,10,4,.78); backdrop-filter: blur(8px); box-shadow: 0 0 0 1px rgba(234,211,154,.25);
+      opacity: 0; transform: translateY(10px); transition: opacity .6s ease .3s, transform .6s ease .3s; }
+    .scene.live .cap-bar { opacity: 1; transform: none; }
+    .cb-eye { font: 700 11px var(--f-body); letter-spacing: .22em; text-transform: uppercase; color: #d9b46a; }
+    .cb-title { margin: 0; font: 600 21px/1.15 var(--f-display); color: var(--ivory); min-height: 1.15em; }
+    .cb-row { display: flex; gap: 10px; align-items: center; }
+    .cb-open { border: 0; border-radius: 999px; padding: 10px 18px; background: var(--grad-gold, var(--gold)); color: #1a1408; font: 700 14px var(--f-body); }
+    .cb-swipe { font: 600 12px var(--f-body); color: rgba(244,238,226,.65); }
+    .sbook.hov .slice, .sbook.hov .slice::before, .sbook.hov .slot { transition-delay: 0s; }
+    .reader { place-items: stretch; }
+    .reader .pages { width: 100%; height: 100%; grid-template-columns: 1fr; grid-template-rows: 40% 1fr; padding: 0; border-radius: 0; background: #f8f2e4; }
+    .reader .cover { border-radius: 0 !important; box-shadow: none !important; aspect-ratio: auto; }
+    .reader .story { border-radius: 0; box-shadow: none; overflow-y: auto; padding: 22px 22px calc(28px + env(safe-area-inset-bottom, 0px)); transform-origin: top center; transform: rotateX(-80deg); }
+    .reader .shut { display: block; z-index: 2; background: #f8f2e4; }
+    .reader .bign { font-size: 44px; }
   }
 </style>
 
 <script>
-  import { fitFrame } from '../lib/frame';
+  import { fitFrame, attachPan, isWide } from '../lib/frame';
   const shelf = document.querySelector<HTMLElement>('.shelf')!;
   const L = JSON.parse(shelf.dataset.labels!);
   const loc = shelf.dataset.locale!;
@@ -362,7 +385,9 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
 
   const desktop = matchMedia('(min-width: 900px) and (hover: hover)');
   let openBook: (li: HTMLElement) => void = (li) => li.scrollIntoView({ inline: 'start', block: 'nearest', behavior: 'smooth' });
-  if (desktop.matches) {
+  const film = !reduce;
+  if (film) {
+    const wide = isWide();
     const sceneWrap = document.querySelector<HTMLElement>('.scene-wrap')!;
     const scene = sceneWrap.querySelector<HTMLElement>('.scene')!;
     const f = scene.querySelector<HTMLElement>('.f1920')!;
@@ -376,8 +401,11 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     sceneWrap.id = 'episodes';
     if (location.hash === '#episodes') requestAnimationFrame(() => sceneWrap.scrollIntoView());
     // place the 1920x1080 frame exactly like the film (object-fit: cover, centred)
+    const W_ = window as any;
+    let maxPan = 0;
     const fit = () => {
-      const fr = fitFrame(scene.clientWidth, scene.clientHeight);
+      const fr = fitFrame(scene.clientWidth, scene.clientHeight, undefined, W_.__panS ?? 0);
+      maxPan = fr.maxPan ?? 0;
       f.style.transform = `translate(${fr.left}px, ${fr.top}px) scale(${fr.k})`;
     };
     new ResizeObserver(fit).observe(scene); fit();
@@ -385,13 +413,14 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     let lastKey = '';
     const watch = () => {
       // keep the framing identical to the film's even if the header or viewport changes
-      const key = `${scene.clientWidth}x${scene.clientHeight}x${(document.querySelector('header.top') as HTMLElement | null)?.offsetHeight}`;
+      const key = `${scene.clientWidth}x${scene.clientHeight}x${(document.querySelector('header.top') as HTMLElement | null)?.offsetHeight}x${W_.__panS ?? 0}`;
       if (key !== lastKey) { lastKey = key; fit(); }
       const w = window as any, q = w.__filmQ ?? 0, live = scene.classList.contains('live');
       // take over when the film rests on its last frame; let go only after a clear scroll back (no flicker)
       const fp = w.__filmP ?? 0;
       const on = (live ? q > 0.975 : q >= 0.999 && w.__filmAtEnd !== false) && fp < 0.6; // film 2 takes over at 60 %
       if (on !== scene.classList.contains('live')) { scene.classList.toggle('live', on); if (!on) closeAll(); }
+      if (!wide && on) caption();
       requestAnimationFrame(watch);
     };
     const pagesOf = new Map<string, HTMLElement>();
@@ -411,8 +440,31 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
       setTimeout(() => { preview(pg); pg.querySelector<HTMLElement>('.go, .cover')?.focus({ preventScroll: true }); }, 500);
     };
     const byN = (n: string) => books.find((l) => l.dataset.n === n)!;
+    // phone: the book nearest the middle of the screen is "selected"; its title shows in the caption bar
+    const capTitle = scene.querySelector<HTMLElement>('.cb-title')!;
+    let sel = '';
+    function caption() {
+      const mid = scene.clientWidth / 2;
+      let best = sbooks[0], d = 1e9;
+      sbooks.forEach((b) => { const r = b.getBoundingClientRect(); const dd = Math.abs(r.left + r.width / 2 - mid); if (dd < d) { d = dd; best = b; } });
+      if (best.dataset.n === sel) return;
+      sel = best.dataset.n!;
+      sbooks.forEach((b) => b.classList.toggle('hov', b === best));
+      capTitle.textContent = best.getAttribute('aria-label') ?? sel;
+    }
+    if (!wide) {
+      attachPan(scene.querySelector<HTMLElement>('.f1920')!.parentElement!, '__panS', () => maxPan);
+      scene.querySelector('.cb-open')!.addEventListener('click', () => sel && openBook(byN(sel)));
+    }
     sbooks.forEach((b, i) => {
-      b.addEventListener('click', () => openBook(byN(b.dataset.n!)));
+      b.addEventListener('click', () => {
+        if (wide) return openBook(byN(b.dataset.n!));
+        // phone: first tap centres + lifts the book, then it opens
+        const r = b.getBoundingClientRect();
+        W_.__panS = Math.max(-maxPan, Math.min(maxPan, (W_.__panS ?? 0) + scene.clientWidth / 2 - (r.left + r.width / 2)));
+        sel = ''; caption();
+        setTimeout(() => openBook(byN(b.dataset.n!)), 380);
+      });
       b.addEventListener('mouseenter', () => plaques[i].classList.add('hot'));
       b.addEventListener('mouseleave', () => plaques[i].classList.remove('hot'));
     });
@@ -436,14 +488,15 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
       const wait = () => { if (scene.classList.contains('live')) openBook(li); else if (performance.now() - t0 < 4000) requestAnimationFrame(wait); };
       requestAnimationFrame(wait);
     });
-  } else {
+  }
+  if (!film) {
     const io = new IntersectionObserver((ents) => {
       const best = ents.filter((e) => e.isIntersecting && e.intersectionRatio > 0.7).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
       if (best) preview(best.target as HTMLElement);
     }, { root: shelf, threshold: [0.7, 0.9] });
     books.forEach((li) => io.observe(li));
   }
-  if (!desktop.matches) window.addEventListener('open-book', (e) => {
+  if (!film) window.addEventListener('open-book', (e) => {
     const li = books.find((b) => b.dataset.n === (e as CustomEvent).detail);
     if (li) setTimeout(() => openBook(li), 300);
   });

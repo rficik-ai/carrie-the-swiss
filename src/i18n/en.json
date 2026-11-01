@@ -37,7 +37,9 @@
     "pull": "Pull out a book",
     "more_eyebrow": "Coming next",
     "more_title": "More seasons are already in production.",
-    "more_text": "So much more to learn. Follow along so you don't miss the next shelf."
+    "more_text": "So much more to learn. Follow along so you don't miss the next shelf.",
+    "open": "Open the book",
+    "swipe": "swipe"
   },
   "topics": {
     "intro": "Intro",
@@ -139,7 +141,8 @@
     "approved": "Approved for breeding",
     "text": "A real Greater Swiss Mountain Dog living in Slovakia. The animation is me, just with better lighting and a bigger vocabulary.",
     "cta": "See my papers and results",
-    "hover": "Hover a real photo to meet my animated twin"
+    "hover": "Hover a real photo to meet my animated twin",
+    "tap": "Tap a real photo to meet my animated twin"
   },
   "quote": {
     "text": "Pedigree says who. X-rays say how healthy. The judge says how close to the blueprint. A good breeder shows you all three.",
