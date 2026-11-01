@@ -36,10 +36,12 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
         return <span class="plaque" data-n={e.n} aria-hidden="true" style={`left:${x0 + 4}px;width:${w - 8}px`}><span>{e.title}</span></span>;
       })}
     </div>
+    <button type="button" class="nav-arrow prev" aria-label="‹">‹</button>
+    <button type="button" class="nav-arrow next" aria-label="›">›</button>
     <div class="cap-bar" aria-live="polite">
       <span class="cb-eye">{s.episodes.eyebrow}</span>
       <p class="cb-title"></p>
-      <div class="cb-row"><button type="button" class="cb-open">{E.open ?? 'Open the book'}</button><span class="cb-swipe" aria-hidden="true">← {E.swipe ?? 'swipe'} →</span></div>
+      <div class="cb-row"><button type="button" class="cb-open">{E.open ?? 'Open the book'}</button><span class="cb-swipe" aria-hidden="true"><svg class="hand" viewBox="0 0 24 24"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10l4.6.9a2 2 0 0 1 1.6 2.2l-.5 4.3A3 3 0 0 1 14.7 20h-3.4a3 3 0 0 1-2.4-1.2L5.6 14.5a1.4 1.4 0 0 1 2-2L9 13.6z"/></svg>{E.swipe ?? 'swipe'}</span></div>
     </div>
     <div class="reader" hidden><div class="rback"></div></div>
   </div>
@@ -298,7 +300,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     /* the old flat shelf is replaced by the scene on desktop */
 
   /* phone: bigger books you pan sideways, the centred book's title in a caption bar */
-  .cap-bar { display: none; }
+  .cap-bar, .nav-arrow { display: none; }
   @media (max-width: 899px), (hover: none) {
     .plaque, .wall { display: none; }
     .cap-bar { display: grid; position: absolute; left: 12px; right: 12px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 3; gap: 8px; justify-items: center; text-align: center;
@@ -309,7 +311,15 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     .cb-title { margin: 0; font: 600 21px/1.15 var(--f-display); color: var(--ivory); min-height: 1.15em; }
     .cb-row { display: flex; gap: 10px; align-items: center; }
     .cb-open { border: 0; border-radius: 999px; padding: 10px 18px; background: var(--grad-gold, var(--gold)); color: #1a1408; font: 700 14px var(--f-body); }
-    .cb-swipe { font: 600 12px var(--f-body); color: rgba(244,238,226,.65); }
+    .cb-swipe { display: inline-flex; align-items: center; gap: 6px; font: 600 12px var(--f-body); color: rgba(244,238,226,.75); }
+    .hand { width: 22px; height: 22px; fill: none; stroke: var(--gold-hi); stroke-width: 1.6; stroke-linejoin: round; animation: swipeHand 1.8s ease-in-out infinite; }
+    @keyframes swipeHand { 0%, 100% { transform: translateX(-7px) rotate(-8deg); } 50% { transform: translateX(7px) rotate(8deg); } }
+    .nav-arrow { display: grid; position: absolute; z-index: 3; top: 42%; width: 44px; height: 64px; place-items: center; border: 0; border-radius: 14px; background: rgba(16,10,4,.62); backdrop-filter: blur(6px);
+      color: var(--gold-hi); font: 400 34px/1 var(--f-display); box-shadow: 0 0 0 1px rgba(234,211,154,.3); opacity: 0; pointer-events: none; transition: opacity .4s ease; }
+    .nav-arrow.prev { left: 6px; } .nav-arrow.next { right: 6px; }
+    .scene.live .nav-arrow:not([disabled]) { opacity: 1; pointer-events: auto; animation: nudge 2.4s ease-in-out 1.2s 2; }
+    .nav-arrow.next { --dir: 1; } .nav-arrow.prev { --dir: -1; }
+    @keyframes nudge { 0%, 100% { translate: 0; } 50% { translate: calc(var(--dir) * 5px); } }
     .sbook.hov .slice, .sbook.hov .slice::before, .sbook.hov .slot { transition-delay: 0s; }
     .reader { place-items: stretch; }
     .reader .pages { width: 100%; height: 100%; grid-template-columns: 1fr; grid-template-rows: 40% 1fr; padding: 0; border-radius: 0; background: #f8f2e4; }
@@ -321,7 +331,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
 </style>
 
 <script>
-  import { fitFrame, attachPan, isWide } from '../lib/frame';
+  import { fitFrame, attachPan, isWide, peek } from '../lib/frame';
   const shelf = document.querySelector<HTMLElement>('.shelf')!;
   const L = JSON.parse(shelf.dataset.labels!);
   const loc = shelf.dataset.locale!;
@@ -402,7 +412,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     if (location.hash === '#episodes') requestAnimationFrame(() => sceneWrap.scrollIntoView());
     // place the 1920x1080 frame exactly like the film (object-fit: cover, centred)
     const W_ = window as any;
-    let maxPan = 0;
+    let maxPan = 0, peeked = false;
     const fit = () => {
       const fr = fitFrame(scene.clientWidth, scene.clientHeight, undefined, W_.__panS ?? 0);
       maxPan = fr.maxPan ?? 0;
@@ -419,7 +429,10 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
       // take over when the film rests on its last frame; let go only after a clear scroll back (no flicker)
       const fp = w.__filmP ?? 0;
       const on = (live ? q > 0.975 : q >= 0.999 && w.__filmAtEnd !== false) && fp < 0.6; // film 2 takes over at 60 %
-      if (on !== scene.classList.contains('live')) { scene.classList.toggle('live', on); if (!on) closeAll(); }
+      if (on !== scene.classList.contains('live')) {
+        scene.classList.toggle('live', on); if (!on) closeAll();
+        if (on && !wide && !peeked) { peeked = true; peek('__panS', () => maxPan, scene); }
+      }
       if (!wide && on) caption();
       requestAnimationFrame(watch);
     };
@@ -450,11 +463,21 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
       if (best.dataset.n === sel) return;
       sel = best.dataset.n!;
       sbooks.forEach((b) => b.classList.toggle('hov', b === best));
+      const idx = sbooks.indexOf(best);
+      (scene.querySelector('.nav-arrow.prev') as HTMLButtonElement).disabled = idx === 0;
+      (scene.querySelector('.nav-arrow.next') as HTMLButtonElement).disabled = idx === sbooks.length - 1;
       capTitle.textContent = best.getAttribute('aria-label') ?? sel;
     }
     if (!wide) {
       attachPan(scene.querySelector<HTMLElement>('.f1920')!.parentElement!, '__panS', () => maxPan);
       scene.querySelector('.cb-open')!.addEventListener('click', () => sel && openBook(byN(sel)));
+      const go = (d: number) => {
+        const i = Math.max(0, Math.min(sbooks.length - 1, sbooks.findIndex((b) => b.dataset.n === sel) + d));
+        const r = sbooks[i].getBoundingClientRect();
+        W_.__panS = Math.max(-maxPan, Math.min(maxPan, (W_.__panS ?? 0) + scene.clientWidth / 2 - (r.left + r.width / 2)));
+      };
+      scene.querySelector('.nav-arrow.prev')!.addEventListener('click', () => go(-1));
+      scene.querySelector('.nav-arrow.next')!.addEventListener('click', () => go(1));
     }
     sbooks.forEach((b, i) => {
       b.addEventListener('click', () => {

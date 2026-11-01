@@ -60,7 +60,7 @@ const r = t(locale).real as Record<string, string>;
 </style>
 
 <script>
-  import { wallFrame, attachPan, isWide } from '../lib/frame';
+  import { wallFrame, attachPan, isWide, peek } from '../lib/frame';
   const wide = isWide();
   const wall = document.querySelector<HTMLElement>('.pwall');
   if (wall && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -68,7 +68,7 @@ const r = t(locale).real as Record<string, string>;
     stage.appendChild(wall); // lives on the frozen film frame
     const pf = wall.querySelector<HTMLElement>('.pf')!;
     const W_ = window as any;
-    let lastKey = '', maxPan = 0;
+    let lastKey = '', maxPan = 0, peeked = false;
     const fit = () => {
       const c = wallFrame(stage.clientWidth, stage.clientHeight, undefined, W_.__panW ?? 0);
       maxPan = c.maxPan ?? 0;
@@ -116,7 +116,7 @@ const r = t(locale).real as Record<string, string>;
       if (key !== lastKey) { lastKey = key; fit(); }
       const p = W_.__filmP ?? 0, live = wall.classList.contains('live');
       const on = live ? p > 0.83 && p < 0.985 : p >= 0.84 && p < 0.97 && W_.__film2AtEnd !== false && W_.__film2Q >= 0.999;
-      if (on !== live) wall.classList.toggle('live', on);
+      if (on !== live) { wall.classList.toggle('live', on); if (on && !wide && !peeked) { peeked = true; peek('__panW', () => maxPan, wall); } }
       requestAnimationFrame(watch);
     };
     requestAnimationFrame(watch);

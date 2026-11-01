@@ -71,3 +71,25 @@ export function attachPan(el: HTMLElement, key: string, getMax: () => number) {
   // a drag must not count as a tap on whatever is under the finger
   el.addEventListener('click', (e) => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
 }
+
+/** one gentle sideways "peek" so visitors see there is more to the left and right; stops as soon as they touch */
+export function peek(key: string, getMax: () => number, el: HTMLElement) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const W_ = window as any;
+  let stop = false;
+  const cancel = () => { stop = true; };
+  el.addEventListener('pointerdown', cancel, { once: true });
+  const p0 = W_[key] ?? 0, dur = 2400;
+  let t0 = 0;
+  const keys = [0, -0.55, 0.55, 0];
+  const step = (t: number) => {
+    if (stop) return;
+    if (!t0) t0 = t;
+    const m = getMax();
+    const k = Math.min(1, (t - t0) / dur) * (keys.length - 1), i = Math.min(keys.length - 2, Math.floor(k)), f = k - i;
+    const e = f < .5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2;
+    W_[key] = Math.max(-m, Math.min(m, p0 + (keys[i] + (keys[i + 1] - keys[i]) * e) * m));
+    if (k < keys.length - 1) requestAnimationFrame(step);
+  };
+  setTimeout(() => requestAnimationFrame(step), 700);
+}
