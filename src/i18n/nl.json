@@ -236,5 +236,13 @@
     "err_rate": "Woef, dat zijn veel vragen! Geef me even om op adem te komen.",
     "err_gen": "Hmm, ik ben de draad kwijt. Probeer je het zo nog eens?",
     "err_off": "Ik leer hier nog praten. Ik ben snel terug!"
+  },
+  "follow": {
+    "eyebrow": "Volg mij",
+    "title": "Nieuwe afleveringen, vers van de plank.",
+    "intro": "Korte reels over grote honden, papieren en pups. Volg me zodat je de volgende niet mist.",
+    "yt": "Abonneren op YouTube",
+    "ig": "Volgen op Instagram",
+    "play": "Aflevering afspelen"
   }
 }

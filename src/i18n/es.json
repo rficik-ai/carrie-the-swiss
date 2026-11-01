@@ -236,5 +236,13 @@
     "err_rate": "¡Guau, cuántas preguntas! Dame un minuto para respirar.",
     "err_gen": "Mmm, perdí el hilo. ¿Lo intentas en un momento?",
     "err_off": "Todavía estoy aprendiendo a hablar aquí. ¡Vuelvo muy pronto!"
+  },
+  "follow": {
+    "eyebrow": "Sígueme",
+    "title": "Nuevos episodios, recién salidos de la estantería.",
+    "intro": "Vídeos cortos sobre perros grandes, papeles y cachorros. Sígueme para no perderte el próximo.",
+    "yt": "Suscríbete en YouTube",
+    "ig": "Sígueme en Instagram",
+    "play": "Ver episodio"
   }
 }

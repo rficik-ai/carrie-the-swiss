@@ -236,5 +236,13 @@
     "err_rate": "Ouaf, beaucoup de questions ! Laissez-moi reprendre mon souffle.",
     "err_gen": "Hmm, j'ai perdu le fil. Vous réessayez dans un instant ?",
     "err_off": "J'apprends encore à parler ici. Je reviens très vite !"
+  },
+  "follow": {
+    "eyebrow": "Suivez-moi",
+    "title": "Nouveaux épisodes, tout juste sortis de l'étagère.",
+    "intro": "De courtes vidéos sur les grands chiens, les papiers et les chiots. Suivez-moi pour ne rien manquer.",
+    "yt": "S'abonner sur YouTube",
+    "ig": "Suivre sur Instagram",
+    "play": "Lire l'épisode"
   }
 }

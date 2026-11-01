@@ -236,5 +236,13 @@
     "err_rate": "Haf, to je hodně otázek najednou! Dejte mi chvilku vydechnout.",
     "err_gen": "Hm, ztratila jsem nit. Zkusíte to za chvíli znovu?",
     "err_off": "Ještě se tu učím mluvit. Brzy jsem zpátky!"
+  },
+  "follow": {
+    "eyebrow": "Sledujte mě",
+    "title": "Nové epizody, čerstvě z poličky.",
+    "intro": "Krátká videa o velkých psech, papírech a štěňatech. Sledujte mě, ať vám neuteče další.",
+    "yt": "Odebírat na YouTube",
+    "ig": "Sledovat na Instagramu",
+    "play": "Přehrát epizodu"
   }
 }

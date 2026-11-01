@@ -236,5 +236,13 @@
     "err_rate": "Hau, dużo pytań naraz! Daj mi chwilę na oddech.",
     "err_gen": "Hm, zgubiłam wątek. Spróbujesz za chwilę?",
     "err_off": "Jeszcze uczę się tu mówić. Wracam niedługo!"
+  },
+  "follow": {
+    "eyebrow": "Obserwuj mnie",
+    "title": "Nowe odcinki, prosto z półki.",
+    "intro": "Krótkie filmy o dużych psach, papierach i szczeniętach. Obserwuj, żeby nie przegapić kolejnego.",
+    "yt": "Subskrybuj na YouTube",
+    "ig": "Obserwuj na Instagramie",
+    "play": "Odtwórz odcinek"
   }
 }

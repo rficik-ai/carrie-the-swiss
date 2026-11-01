@@ -236,5 +236,13 @@
     "err_rate": "Wuff, das sind viele Fragen! Gib mir kurz Zeit zum Durchatmen.",
     "err_gen": "Hm, ich habe den Faden verloren. Versuch es gleich noch einmal?",
     "err_off": "Ich lerne hier noch sprechen. Bald bin ich zurück!"
+  },
+  "follow": {
+    "eyebrow": "Folge mir",
+    "title": "Neue Folgen, frisch aus dem Regal.",
+    "intro": "Kurze Reels über große Hunde, Papiere und Welpen. Folge mir, damit du keine verpasst.",
+    "yt": "Auf YouTube abonnieren",
+    "ig": "Auf Instagram folgen",
+    "play": "Folge abspielen"
   }
 }

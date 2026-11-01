@@ -236,5 +236,13 @@
     "err_rate": "Haf, to je veľa otázok naraz! Dajte mi chvíľu vydýchnuť.",
     "err_gen": "Hm, stratila som niť. Skúsite to o chvíľu znova?",
     "err_off": "Ešte sa tu učím rozprávať. Čoskoro som späť!"
+  },
+  "follow": {
+    "eyebrow": "Sledujte ma",
+    "title": "Nové epizódy, čerstvo z poličky.",
+    "intro": "Krátke videá o veľkých psoch, papieroch a šteňatách. Sledujte ma, nech vám neujde ďalšie.",
+    "yt": "Odoberať na YouTube",
+    "ig": "Sledovať na Instagrame",
+    "play": "Prehrať epizódu"
   }
 }

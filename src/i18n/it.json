@@ -236,5 +236,13 @@
     "err_rate": "Bau, quante domande! Dammi un attimo per respirare.",
     "err_gen": "Hmm, ho perso il filo. Riprovi tra poco?",
     "err_off": "Sto ancora imparando a parlare qui. Torno prestissimo!"
+  },
+  "follow": {
+    "eyebrow": "Seguimi",
+    "title": "Nuovi episodi, appena tolti dallo scaffale.",
+    "intro": "Brevi video su cani grandi, documenti e cuccioli. Seguimi per non perderti il prossimo.",
+    "yt": "Iscriviti su YouTube",
+    "ig": "Seguimi su Instagram",
+    "play": "Guarda l'episodio"
   }
 }

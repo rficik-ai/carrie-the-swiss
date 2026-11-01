@@ -58,10 +58,58 @@ async function chat(request, env) {
   return json({ reply: text });
 }
 
+// ---- latest YouTube videos (public RSS, no key), cached for an hour at the edge
+const CHANNEL = 'UCDXuilIy2fdJZ6wRTh1yDgA';
+const unescape = (t) => t.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+
+async function cached(request, ctx, ttl, make) {
+  const cache = caches.default;
+  const key = new Request(new URL(request.url).toString(), { method: 'GET' });
+  const hit = await cache.match(key);
+  if (hit) return hit;
+  const res = await make();
+  if (res.ok) {
+    const r = new Response(res.body, res);
+    r.headers.set('cache-control', `public, max-age=${ttl}`);
+    ctx.waitUntil(cache.put(key, r.clone()));
+    return r;
+  }
+  return res;
+}
+
+async function latest(request, ctx) {
+  return cached(request, ctx, 3600, async () => {
+    const r = await fetch(`https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL}`, { cf: { cacheTtl: 1800 } });
+    if (!r.ok) return json({ error: 'feed' }, 502);
+    const xml = await r.text();
+    const items = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].slice(0, 12).map((m) => {
+      const e = m[1];
+      const pick = (re) => (e.match(re) || [])[1] || '';
+      return { id: pick(/<yt:videoId>([^<]+)<\/yt:videoId>/), title: unescape(pick(/<title>([^<]*)<\/title>/)), published: pick(/<published>([^<]+)<\/published>/) };
+    }).filter((v) => /^[\w-]{11}$/.test(v.id));
+    return new Response(JSON.stringify({ items }), { headers: { 'content-type': 'application/json; charset=utf-8' } });
+  });
+}
+
+// thumbnails are proxied so visitors' browsers never contact Google (no third-party requests)
+async function thumb(request, ctx, id) {
+  if (!/^[\w-]{11}$/.test(id)) return new Response('bad id', { status: 400 });
+  return cached(request, ctx, 86400, async () => {
+    for (const q of ['oardefault', 'hq720', 'hqdefault']) {
+      const r = await fetch(`https://i.ytimg.com/vi/${id}/${q}.jpg`);
+      if (r.ok) return new Response(r.body, { headers: { 'content-type': 'image/jpeg' } });
+    }
+    return new Response('not found', { status: 404 });
+  });
+}
+
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === '/api/ask') return chat(request, env);
+    if (url.pathname === '/api/latest') return latest(request, ctx);
+    const t = url.pathname.match(/^\/api\/thumb\/([\w-]+)\.jpg$/);
+    if (t) return thumb(request, ctx, t[1]);
     return env.ASSETS.fetch(request);
   },
 };

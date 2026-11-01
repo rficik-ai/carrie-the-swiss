@@ -236,5 +236,13 @@
     "err_rate": "Woof, that's a lot of questions! Give me a minute to catch my breath.",
     "err_gen": "Hmm, I lost my train of thought. Try again in a moment?",
     "err_off": "I'm still learning to talk here. Back very soon!"
+  },
+  "follow": {
+    "eyebrow": "Follow me",
+    "title": "New episodes, fresh off the shelf.",
+    "intro": "Short reels about big dogs, papers and puppies. Follow along so you never miss the next one.",
+    "yt": "Subscribe on YouTube",
+    "ig": "Follow on Instagram",
+    "play": "Play episode"
   }
 }

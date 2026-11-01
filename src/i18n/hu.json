@@ -236,5 +236,13 @@
     "err_rate": "Vau, ez sok kérdés! Adj egy percet, hogy kifújjam magam.",
     "err_gen": "Hm, elvesztettem a fonalat. Megpróbálod mindjárt újra?",
     "err_off": "Még tanulok itt beszélni. Hamarosan visszajövök!"
+  },
+  "follow": {
+    "eyebrow": "Kövess",
+    "title": "Új epizódok, frissen a polcról.",
+    "intro": "Rövid videók nagytestű kutyákról, papírokról és kölykökről. Kövess, hogy ne maradj le a következőről.",
+    "yt": "Feliratkozás YouTube-on",
+    "ig": "Követés Instagramon",
+    "play": "Epizód lejátszása"
   }
 }
