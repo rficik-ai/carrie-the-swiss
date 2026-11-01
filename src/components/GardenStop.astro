@@ -19,7 +19,7 @@ const q = (t(locale) as any).quiz;
   .hstop { position: absolute; inset: 0; z-index: 6; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
   .hstop.live { opacity: 1; pointer-events: auto; }
   .layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; pointer-events: none; }
-  .anchor { position: absolute; left: 1130px; top: 170px; width: 1px; height: 1px; }
+  .anchor { position: absolute; left: 1075px; top: 330px; width: 1px; height: 1px; }
   /* Carrie's speech bubble, glued next to her head */
   .bubble { position: absolute; z-index: 2; left: 0; top: 0; max-width: min(360px, 30vw); padding: 14px 18px; border-radius: 18px 18px 4px 18px; background: rgba(251,248,241,.95);
     box-shadow: 0 14px 30px -14px rgba(0,0,0,.55); transform: translate(var(--bx, -9999px), var(--by, 0)) translate(-100%, -100%); transition: opacity .3s; }
@@ -53,8 +53,8 @@ const q = (t(locale) as any).quiz;
     mountStop('garden', el, {
       onFrame: (f) => {
         el.style.setProperty('--hh', `${headerHeight()}px`);
-        bubble.style.setProperty('--bx', `${f.left + 1130 * f.k}px`);
-        bubble.style.setProperty('--by', `${f.top + 170 * f.k}px`);
+        bubble.style.setProperty('--bx', `${f.left + 1075 * f.k}px`);
+        bubble.style.setProperty('--by', `${f.top + 330 * f.k}px`);
       },
     });
   }
