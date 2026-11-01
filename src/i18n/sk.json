@@ -285,5 +285,17 @@
     "c9_x": "Moja bonitácia: sedem povahových úloh, plný počet bodov a telo podľa štandardu. Verdikt: chovná. Budem to spomínať.",
     "c10_t": "A dnes moderujem seriál.",
     "c10_x": "Mám devätnásť mesiacov, v duši som stále šteňa a teraz vám vysvetľujem papiere. Ďakujem, že ste si prelistovali môj album."
+  },
+  "music": {
+    "label": "Hudba",
+    "play": "Prehrať",
+    "pause": "Pozastaviť",
+    "volume": "Hlasitosť",
+    "tracks": [
+      "Bežná prechádzka",
+      "Víťazné kolečko",
+      "Niečo chystám",
+      "Rozhodca sa pozerá"
+    ]
   }
 }

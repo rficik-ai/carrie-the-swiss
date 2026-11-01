@@ -285,5 +285,17 @@
     "c9_x": "Mijn fokgeschiktheidskeuring: zeven karaktertesten, volle punten en een lichaam dat bij de standaard past. Oordeel: goedgekeurd voor de fok. Dat ga ik nog vaak vertellen.",
     "c10_t": "En vandaag presenteer ik een serie.",
     "c10_x": "Negentien maanden oud, nog steeds een pup in mijn hart, en nu leg ik jou de papieren uit. Bedankt voor het doorbladeren van mijn album."
+  },
+  "music": {
+    "label": "Muziek",
+    "play": "Afspelen",
+    "pause": "Pauze",
+    "volume": "Volume",
+    "tracks": [
+      "Dagelijks rondje",
+      "Ereronde",
+      "Ik ben iets van plan",
+      "De keurmeester kijkt"
+    ]
   }
 }

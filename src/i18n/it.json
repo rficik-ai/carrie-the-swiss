@@ -285,5 +285,17 @@
     "c9_x": "La mia prova di selezione: sette esercizi di carattere, punteggio pieno e un fisico conforme allo standard. Verdetto: idonea alla riproduzione. Lo ricorderò spesso.",
     "c10_t": "E oggi conduco una serie.",
     "c10_x": "Diciannove mesi, cucciola nel cuore, e ora ti spiego i documenti. Grazie per aver sfogliato il mio album."
+  },
+  "music": {
+    "label": "Musica",
+    "play": "Riproduci",
+    "pause": "Pausa",
+    "volume": "Volume",
+    "tracks": [
+      "Passeggiata quotidiana",
+      "Giro d'onore",
+      "Sto tramando qualcosa",
+      "Il giudice guarda"
+    ]
   }
 }

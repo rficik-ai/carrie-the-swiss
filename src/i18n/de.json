@@ -285,5 +285,17 @@
     "c9_x": "Meine Zuchttauglichkeitsprüfung: sieben Wesensaufgaben, volle Punktzahl, ein Körperbau nach Standard. Urteil: zuchttauglich. Das werde ich noch öfter erwähnen.",
     "c10_t": "Und heute moderiere ich eine Serie.",
     "c10_x": "Neunzehn Monate alt, im Herzen noch ein Welpe, und jetzt erkläre ich dir die Papiere. Danke, dass du in meinem Album geblättert hast."
+  },
+  "music": {
+    "label": "Musik",
+    "play": "Abspielen",
+    "pause": "Pause",
+    "volume": "Lautstärke",
+    "tracks": [
+      "Alltagsrunde",
+      "Ehrenrunde",
+      "Ich hab was vor",
+      "Der Richter schaut zu"
+    ]
   }
 }

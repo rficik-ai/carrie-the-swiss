@@ -285,5 +285,17 @@
     "c9_x": "Ma confirmation : sept épreuves de caractère, la note maximale et un physique conforme au standard. Verdict : apte à la reproduction. Je risque d’en reparler.",
     "c10_t": "Et aujourd’hui, j’anime une série.",
     "c10_x": "Dix-neuf mois, toujours chiot dans l’âme, et maintenant je vous explique les papiers. Merci d’avoir feuilleté mon album."
+  },
+  "music": {
+    "label": "Musique",
+    "play": "Lecture",
+    "pause": "Pause",
+    "volume": "Volume",
+    "tracks": [
+      "Balade du jour",
+      "Tour d'honneur",
+      "Je mijote quelque chose",
+      "Le juge regarde"
+    ]
   }
 }

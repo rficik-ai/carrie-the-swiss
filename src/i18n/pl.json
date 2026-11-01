@@ -285,5 +285,17 @@
     "c9_x": "Mój przegląd hodowlany: siedem zadań charakterowych, komplet punktów i budowa zgodna ze wzorcem. Werdykt: dopuszczona do hodowli. Będę o tym wspominać.",
     "c10_t": "A dziś prowadzę własną serię.",
     "c10_x": "Mam dziewiętnaście miesięcy, w sercu wciąż jestem szczeniakiem, a teraz tłumaczę ci papiery. Dzięki za przejrzenie mojego albumu."
+  },
+  "music": {
+    "label": "Muzyka",
+    "play": "Odtwórz",
+    "pause": "Pauza",
+    "volume": "Głośność",
+    "tracks": [
+      "Codzienny spacer",
+      "Runda zwycięstwa",
+      "Coś knuję",
+      "Sędzia patrzy"
+    ]
   }
 }

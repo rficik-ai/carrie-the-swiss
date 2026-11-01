@@ -285,5 +285,17 @@
     "c9_x": "My breed evaluation: seven character tasks, full points, a body that matches the standard. Verdict: approved for breeding. I will be mentioning this.",
     "c10_t": "And today, I host a series.",
     "c10_x": "Nineteen months old, still a puppy at heart, and now I explain the papers to you. Thanks for reading my album."
+  },
+  "music": {
+    "label": "Music",
+    "play": "Play",
+    "pause": "Pause",
+    "volume": "Volume",
+    "tracks": [
+      "Everyday walk",
+      "Victory lap",
+      "Up to something",
+      "The judge is watching"
+    ]
   }
 }

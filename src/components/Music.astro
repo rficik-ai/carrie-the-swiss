@@ -1,0 +1,99 @@
+---
+// Background music: Carrie's own tracks (the ones from the episodes). Off until the visitor turns it on;
+// remembers the choice; steps aside while a video plays.
+import { type Locale, t } from '../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const m = (t(locale) as any).music;
+const FILES = ['everyday', 'triumph', 'sneaky', 'suspense'];
+---
+<details class="music" data-play={m.play} data-pause={m.pause}>
+  <summary aria-label={m.label}>
+    <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  </summary>
+  <div class="panel">
+    <p class="ttl">{m.label}</p>
+    <ol>
+      {FILES.map((f, i) => (
+        <li><button type="button" data-src={`/assets/music/${f}.mp3`} data-i={i}>
+          <span class="st" aria-hidden="true"></span><span class="nm">{m.tracks[i]}</span>
+        </button></li>
+      ))}
+    </ol>
+    <label class="vol"><span>{m.volume}</span><input type="range" min="0" max="1" step="0.05" value="0.5" /></label>
+  </div>
+</details>
+
+<style>
+  .music { position: relative; }
+  .music summary { list-style: none; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    border: 1px solid rgba(234,211,154,.35); transition: border-color .2s, background .2s; }
+  .music summary::-webkit-details-marker { display: none; }
+  .music summary:hover, .music[open] summary { border-color: var(--gold); background: rgba(234,211,154,.08); }
+  .eq { display: flex; align-items: flex-end; gap: 2.5px; height: 14px; }
+  .eq i { width: 2.5px; height: 4px; border-radius: 2px; background: var(--gold-hi); opacity: .55; transition: height .3s, opacity .3s; }
+  .music.on .eq i { opacity: 1; animation: eq 1s ease-in-out infinite; }
+  .music.on .eq i:nth-child(2) { animation-delay: -.35s; } .music.on .eq i:nth-child(3) { animation-delay: -.7s; } .music.on .eq i:nth-child(4) { animation-delay: -.2s; }
+  @keyframes eq { 0%, 100% { height: 4px; } 50% { height: 14px; } }
+  @media (prefers-reduced-motion: reduce) { .music.on .eq i { animation: none; height: 10px; } }
+  .panel { position: absolute; right: 0; top: calc(100% + 8px); width: 250px; padding: 14px; border-radius: 14px;
+    background: var(--ink-2); border: 1px solid var(--ink-line); box-shadow: 0 20px 40px -10px rgba(0,0,0,.6); }
+  .ttl { margin: 0 0 8px; font: 600 11px var(--f-body); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+  ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  ol button { all: unset; box-sizing: border-box; width: 100%; display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 9px; cursor: pointer; font-size: 15px; color: var(--ivory); }
+  ol button:hover, ol button:focus-visible { background: rgba(234,211,154,.08); }
+  ol button[aria-pressed='true'] { color: var(--gold-hi); }
+  .st { flex: none; width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(234,211,154,.5); position: relative; }
+  .st::after { content: ''; position: absolute; left: 8px; top: 6px; border-left: 7px solid var(--gold-hi); border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+  button[aria-pressed='true'] .st { background: var(--gold); border-color: var(--gold); }
+  button[aria-pressed='true'] .st::after { left: 7px; top: 6px; width: 2px; height: 10px; border: 0; background: #1a1408; box-shadow: 4px 0 0 #1a1408; }
+  .vol { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding: 6px 10px 0; border-top: 1px solid var(--ink-line); font-size: 12px; color: var(--muted-dark); }
+  .vol input { flex: 1; accent-color: var(--gold); }
+</style>
+
+<script>
+  const box = document.querySelector<HTMLDetailsElement>('details.music');
+  if (box) {
+    const KEY = 'carrie-music';
+    const btns = [...box.querySelectorAll<HTMLButtonElement>('ol button')];
+    const vol = box.querySelector<HTMLInputElement>('.vol input')!;
+    const audio = new Audio(); audio.preload = 'none';
+    let cur = -1, wanted = false, held = false;
+    const load = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; } };
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify({ i: cur, on: wanted, v: audio.volume })); } catch {} };
+    const ui = () => {
+      const on = !audio.paused;
+      box.classList.toggle('on', on);
+      btns.forEach((b, i) => { const p = on && i === cur; b.setAttribute('aria-pressed', String(p)); b.setAttribute('aria-label', `${p ? box.dataset.pause : box.dataset.play}: ${b.textContent!.trim()}`); });
+    };
+    const play = (i: number) => {
+      if (i !== cur) { cur = i; audio.src = btns[i].dataset.src!; }
+      wanted = true; save();
+      if (!held) audio.play().catch(() => {});
+    };
+    const pause = () => { wanted = false; audio.pause(); save(); };
+    btns.forEach((b, i) => b.addEventListener('click', () => (i === cur && !audio.paused ? pause() : play(i))));
+    audio.addEventListener('ended', () => play((cur + 1) % btns.length));   // one track after another, no gap loop
+    ['play', 'pause'].forEach((ev) => audio.addEventListener(ev, ui));
+    vol.addEventListener('input', () => { audio.volume = +vol.value; save(); });
+    const s = load();
+    audio.volume = typeof s.v === 'number' ? s.v : 0.5; vol.value = String(audio.volume);
+    if (typeof s.i === 'number' && btns[s.i]) { cur = s.i; audio.src = btns[s.i].dataset.src!; }
+    // it was playing on the previous page: browsers need one tap before sound, so resume on the first interaction
+    if (s.on && cur >= 0) {
+      const resume = (e: Event) => { if (box.contains(e.target as Node)) return; if (!wanted && !held) { wanted = true; audio.play().catch(() => {}); } };
+      const off = () => { removeEventListener('pointerdown', go, true); removeEventListener('keydown', go, true); };
+      const go = (e: Event) => { off(); resume(e); };
+      addEventListener('pointerdown', go, true); addEventListener('keydown', go, true);
+    }
+    // step aside while a YouTube video is open anywhere on the page
+    const hasVideo = () => !!document.querySelector('iframe[src*="youtube"]');
+    new MutationObserver(() => {
+      const v = hasVideo();
+      if (v && !held) { held = true; audio.pause(); }
+      else if (!v && held) { held = false; if (wanted) audio.play().catch(() => {}); }
+    }).observe(document.body, { childList: true, subtree: true });
+    document.addEventListener('click', (e) => { if (!box.contains(e.target as Node)) box.removeAttribute('open'); });
+    ui();
+  }
+</script>

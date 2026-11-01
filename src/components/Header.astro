@@ -1,4 +1,5 @@
 ---
+import Music from './Music.astro';
 import { availableLocales, LOCALE_LABELS, type Locale, t } from '../i18n';
 interface Props { locale: Locale; page?: string }
 const { locale, page = '' } = Astro.props;
@@ -20,6 +21,8 @@ const s = t(locale);
       <a href={`${home}#ask`}>{(s.nav as any).ask ?? 'Ask Carrie'}</a>
       <a href={`${home}#shop`}>{s.nav.shop}</a>
     </nav>
+    <div class="tools">
+    <Music locale={locale} />
     <details class="lang">
       <summary aria-label={s.nav.language}>{locale.toUpperCase()}<span aria-hidden="true">▾</span></summary>
       <ul>
@@ -28,6 +31,7 @@ const s = t(locale);
         ))}
       </ul>
     </details>
+    </div>
   </div>
 </header>
 
@@ -53,6 +57,7 @@ const s = t(locale);
   .links a:hover { color: var(--ivory); }
   @media (min-width: 860px) { .links { display: flex; } }
 
+  .tools { display: flex; align-items: center; gap: 10px; }
   .lang { position: relative; }
   .lang summary {
     list-style: none; cursor: pointer; display: flex; align-items: center; gap: 6px;
@@ -76,6 +81,6 @@ const s = t(locale);
   const onScroll = () => document.body.classList.toggle('scrolled', window.scrollY > 40);
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
   document.addEventListener('click', (e) => {
-    document.querySelectorAll('details.lang[open]').forEach((d) => { if (!d.contains(e.target as Node)) d.removeAttribute('open'); });
+    document.querySelectorAll('details.lang[open], details.music[open]').forEach((d) => { if (!d.contains(e.target as Node)) d.removeAttribute('open'); });
   });
 </script>

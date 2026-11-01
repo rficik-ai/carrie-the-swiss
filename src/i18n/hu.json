@@ -285,5 +285,17 @@
     "c9_x": "A tenyészszemlém: hét jellemfeladat, maximális pontszám és a standardnak megfelelő test. Ítélet: tenyésztésre alkalmas. Ezt még emlegetni fogom.",
     "c10_t": "És ma egy sorozatot vezetek.",
     "c10_x": "Tizenkilenc hónapos vagyok, szívem szerint még kölyök, és most én magyarázom el neked a papírokat. Köszönöm, hogy belelapoztál az albumomba."
+  },
+  "music": {
+    "label": "Zene",
+    "play": "Lejátszás",
+    "pause": "Szünet",
+    "volume": "Hangerő",
+    "tracks": [
+      "Hétköznapi séta",
+      "Győzelmi kör",
+      "Valamire készülök",
+      "A bíró figyel"
+    ]
   }
 }

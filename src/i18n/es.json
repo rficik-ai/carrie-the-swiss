@@ -285,5 +285,17 @@
     "c9_x": "Mi evaluación de cría: siete pruebas de carácter, puntuación máxima y un cuerpo acorde al estándar. Veredicto: apta para la cría. Pienso mencionarlo a menudo.",
     "c10_t": "Y hoy presento una serie.",
     "c10_x": "Diecinueve meses, cachorra de corazón, y ahora te explico los papeles. Gracias por hojear mi álbum."
+  },
+  "music": {
+    "label": "Música",
+    "play": "Reproducir",
+    "pause": "Pausa",
+    "volume": "Volumen",
+    "tracks": [
+      "Paseo de cada día",
+      "Vuelta de honor",
+      "Tramo algo",
+      "El juez está mirando"
+    ]
   }
 }
