@@ -45,7 +45,11 @@ const data = {
     <ul class="bars">{DIMS.map((d) => <li data-dim={d.id}><span class="bl">{d.t[L]}</span><span class="bt"><i></i></span><span class="bv"></span></li>)}</ul>
     <div class="warns" hidden><p class="sub">{u.warn}</p><ul></ul></div>
     <div class="aibox">
-      <button type="button" class="pill-cta ai-go">✦ {u.ai}</button>
+      <button type="button" class="ai-go">
+        <span class="spark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z"/></svg></span>
+        <span class="aw"><b>{u.ai}</b><small>{u.ai_sub}</small></span>
+        <span class="ar" aria-hidden="true">→</span>
+      </button>
       <div class="ai-out" aria-live="polite" hidden></div>
       <p class="ai-note" hidden>{u.ai_note}</p>
     </div>
@@ -107,9 +111,23 @@ const data = {
   .bars li.low .bt i { background: #c0673a; }
   .bv { text-align: right; font-weight: 700; color: #5a4a36; }
   .warns ul { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14.5px; line-height: 1.45; color: #6b2f14; }
-  .aibox { display: grid; gap: 10px; margin-top: 6px; padding: 14px; border-radius: 12px; background: rgba(201,163,91,.12); box-shadow: inset 0 0 0 1px rgba(138,100,36,.2); }
-  .ai-go { justify-self: start; }
-  .ai-go:disabled { opacity: .55; }
+  .aibox { display: grid; gap: 12px; margin-top: 8px; }
+  /* the AI evaluation: a proper call to action, not a link */
+  .ai-go { all: unset; box-sizing: border-box; position: relative; overflow: hidden; cursor: pointer; display: flex; align-items: center; gap: 14px; width: 100%; padding: 16px 18px; border-radius: 14px;
+    background: radial-gradient(120% 140% at 0% 0%, #3a2a14 0%, #17110a 60%); color: var(--ivory); box-shadow: 0 0 0 1px rgba(234,211,154,.45), 0 18px 34px -16px rgba(40,20,0,.8); transition: transform .25s, box-shadow .25s; }
+  .ai-go::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255,236,190,.22) 50%, transparent 65%); transform: translateX(-100%); animation: sheen 3.2s ease-in-out infinite 1s; pointer-events: none; }
+  @keyframes sheen { 0%, 60% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  .ai-go:hover, .ai-go:focus-visible { transform: translateY(-2px); box-shadow: 0 0 0 1px var(--gold-hi), 0 24px 40px -16px rgba(40,20,0,.9); }
+  .ai-go:disabled { opacity: .6; cursor: default; transform: none; }
+  .ai-go:disabled::after { animation: none; }
+  .spark { flex: none; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--grad-gold, var(--gold)); }
+  .spark svg { width: 22px; height: 22px; fill: #1a1408; }
+  .aw { display: grid; gap: 3px; flex: 1; }
+  .aw b { font: 600 clamp(18px, 1.6vw, 21px)/1.15 var(--f-display); color: var(--ivory); }
+  .aw small { font-size: 13px; line-height: 1.35; color: rgba(244,238,226,.75); }
+  .ar { font-size: 22px; color: var(--gold-hi); }
+  .ai-out { padding: 14px 16px; border-radius: 12px; background: rgba(201,163,91,.12); box-shadow: inset 0 0 0 1px rgba(138,100,36,.2); }
+  @media (prefers-reduced-motion: reduce) { .ai-go::after { animation: none; } }
   .ai-out { font-size: 15px; line-height: 1.55; color: #2a2016; }
   .ai-out :global(h4) { margin: 12px 0 4px; font: 700 15px var(--f-display); color: #1c1914; }
   .ai-out :global(h4:first-child) { margin-top: 0; }
@@ -148,6 +166,7 @@ const data = {
     const show = (el: HTMLElement) => {
       [intro, result, ...steps].forEach((s) => (s.hidden = s !== el));
       root.classList.toggle('done', el === result);
+      scroller?.classList.toggle('tall', el === result);
       scroller?.scrollTo({ top: 0 });
       const q = el.querySelector<HTMLElement>('.qt'); if (q) talk(q.textContent!);
       el.querySelector<HTMLElement>('.opt, .start, .ai-go')?.focus({ preventScroll: true });

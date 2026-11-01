@@ -48,6 +48,7 @@ WHAT TO ASK A BREEDER (10 questions)
 LIVING WITH A SWISSY (general breed knowledge)
 - Large, strong working dog (draft and herding heritage); adults roughly 40–60 kg. Slow to mature, puppy at heart for about three years.
 - Needs daily activity (walks, play, mental work), loves its family, can be vocal, sheds especially seasonally.
+- My food: about 600 g of good-quality kibble a day; a 12 kg bag costs around €40, so food alone is roughly €60 a month (before vet, insurance, worming and gear).
 - Large-breed puppy care: controlled growth, quality large-breed puppy food, keep them lean, avoid forced long runs, jumping and lots of stairs while growing. Swissies are prone to bloat (gastric dilatation/volvulus): smaller meals, no hard exercise right after eating, know the warning signs (restless, retching without vomiting, swollen belly) and go to a vet immediately.
 - Training: positive reinforcement, early socialisation, loose-lead walking early because they get strong, consistency. Puppy classes help.
 - Dog shows: dogs are judged against the breed standard (the "blueprint"); grades like Excellent, CAC/CACIB certificates, Best of Breed.

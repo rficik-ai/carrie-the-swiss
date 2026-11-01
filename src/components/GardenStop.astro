@@ -36,8 +36,9 @@ const q = (t(locale) as any).quiz;
   .qcard :global(.qhint) { display: block; }
   @media (max-width: 899px), (hover: none) {
     .bubble { display: none; }
-    .qcard { left: 0; right: 0; top: auto; bottom: 0; transform: none; width: auto; max-height: 70svh; padding: 20px 18px calc(16px + env(safe-area-inset-bottom, 0px)); border-radius: 18px 18px 0 0; }
-    .qcard :global(.intro h2) { font-size: 28px; }
+    .qcard { left: 0; right: 0; top: auto; bottom: 0; transform: none; width: auto; max-height: calc(100% - 430px); min-height: 300px; padding: 18px 16px calc(14px + env(safe-area-inset-bottom, 0px)); border-radius: 18px 18px 0 0; transition: max-height .45s cubic-bezier(.2,.7,.2,1); }
+    .qcard.tall { max-height: calc(100% - var(--hh, 64px) - 12px); }   /* the result needs the room; Carrie has asked her questions */
+    .qcard :global(.intro h2) { font-size: 26px; }
     .qcard :global(.qhint) { font-size: 21px; }
     .qcard :global(.opt) { padding: 12px 14px; font-size: 15px; }
     .qcard :global(.step) { gap: 12px; }
