@@ -21,7 +21,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     <div class="sfill" aria-hidden="true"></div>
     <div class="f1920" style={sceneVars}>
       <img class="sbg" src="/assets/img/shelf-scene-v2.jpg" width="1920" height="1080" alt="" decoding="async" />
-      <p class="wall"><span class="weye">{s.episodes.eyebrow}</span><span class="wpull">{pull}</span></p>
+      <p class="wall"><span class="weye">{s.episodes.eyebrow}</span><span class="wpull">{pull}</span><span class="wmore">{E.more_title ?? ''}</span></p>
       {EPISODES.map((e, i) => {
         const x0 = EDGES[i], w = EDGES[i + 1] - EDGES[i];
         return (
@@ -230,7 +230,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
   /* ---------- Desktop: the shelf scene = last frame of the scroll film, 1:1 ---------- */
   .scene-wrap { display: none; }
   @media (min-width: 900px) and (hover: hover) {
-    .scene-wrap { display: block; position: absolute; left: 0; width: 1px; height: 1px; top: calc(93% - 93vh); pointer-events: none; }
+    .scene-wrap { display: block; position: absolute; left: 0; width: 1px; height: 1px; top: calc(55% - 55vh); pointer-events: none; }
     .scene { position: absolute; inset: 0; z-index: 4; overflow: hidden; background: transparent; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
     .scene.live { opacity: 1; pointer-events: auto; }
     .sfill { display: none; position: absolute; inset: -40px; background: url(/assets/img/shelf-scene-v2.jpg) center / cover; filter: blur(26px) brightness(.42) saturate(1.1); }
@@ -238,6 +238,10 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     .sbg { display: none; } /* the film itself stays underneath: nothing is ever swapped */
     .wall { position: absolute; left: 0; right: 0; top: var(--caption-top); margin: 0; display: flex; justify-content: center; align-items: baseline; gap: 22px; color: #f2d48e; opacity: 0; transform: translateY(8px); transition: opacity .8s ease .3s, transform .8s ease .3s; }
     .scene.live .wall { opacity: 1; transform: none; }
+    .wmore { font: 600 15px var(--f-body); letter-spacing: .04em; color: #d9b46a; opacity: .85; }
+    /* on desktop the shelf scene replaces the flat list; keep the section only as a host for the player dialog */
+    .episodes { padding: 0 !important; background: var(--ink) !important; }
+    .episodes > .wrap, .episodes > .shelf-wrap { display: none !important; }
     .weye { font: 700 16px var(--f-body); letter-spacing: .28em; text-transform: uppercase; color: #d9b46a; }
     .wpull { font: 600 italic 32px var(--f-display); color: #f6e7c4; text-shadow: 0 2px 8px rgba(0,0,0,.7); }
     .sbook { all: unset; position: absolute; cursor: pointer; }
@@ -385,7 +389,8 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
       if (key !== lastKey) { lastKey = key; fit(); }
       const w = window as any, q = w.__filmQ ?? 0, live = scene.classList.contains('live');
       // take over when the film rests on its last frame; let go only after a clear scroll back (no flicker)
-      const on = live ? q > 0.975 : q >= 0.999 && w.__filmAtEnd !== false;
+      const fp = w.__filmP ?? 0;
+      const on = (live ? q > 0.975 : q >= 0.999 && w.__filmAtEnd !== false) && fp < 0.6; // film 2 takes over at 60 %
       if (on !== scene.classList.contains('live')) { scene.classList.toggle('live', on); if (!on) closeAll(); }
       requestAnimationFrame(watch);
     };

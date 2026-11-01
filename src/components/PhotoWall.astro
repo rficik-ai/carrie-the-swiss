@@ -1,0 +1,108 @@
+---
+// Desktop stop at the end of film 2: the floating photos become interactive.
+// Real photos flip to their animated twin. Everything sits on the frozen film frame (nothing is swapped).
+import { type Locale, t } from '../i18n';
+import { PHOTOS } from '../data/photos';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const r = t(locale).real as Record<string, string>;
+---
+<div class="pwall" aria-label={r.title}>
+  <div class="pf">
+    {PHOTOS.map((ph) => (
+      <button type="button" class="pcard" aria-label={r.anim_caption} style={`width:${ph.w}px;height:${ph.h}px;transform:${ph.css}`} data-h={JSON.stringify(ph.H)} data-w={ph.w} data-hh={ph.h}>
+        <span class="flip">
+          <canvas class="front" width={ph.w} height={ph.h}></canvas>
+          <span class="back"><img src={ph.back} alt="" loading="lazy" /></span>
+        </span>
+      </button>
+    ))}
+  </div>
+  <div class="ptext">
+    <p class="eyebrow">{r.eyebrow}</p>
+    <h2>{r.title}</h2>
+    <p class="say">{r.text}</p>
+    <p class="hint">{r.hover ?? 'Hover a real photo to meet my animated twin'}</p>
+    <a class="pill-cta" href={`/${locale}/papers/`}>{r.cta ?? 'See my papers'} <span aria-hidden="true">→</span></a>
+  </div>
+</div>
+
+<style>
+  .pwall { display: none; }
+  @media (min-width: 900px) and (hover: hover) {
+    .pwall { display: block; position: absolute; inset: 0; z-index: 4; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
+    .pwall.live { opacity: 1; pointer-events: auto; }
+    .pf { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+    .pcard { all: unset; position: absolute; left: 0; top: 0; transform-origin: 0 0; transform-style: preserve-3d; perspective: 1000px; cursor: pointer; }
+    .flip { position: absolute; inset: 0; transform-style: preserve-3d; opacity: 0;
+      transition: transform .85s cubic-bezier(.2,.7,.2,1), opacity 0s .85s; }
+    .pcard:hover .flip, .pcard:focus-visible .flip { opacity: 1; transform: translateZ(14px) rotateY(180deg); transition: transform .85s cubic-bezier(.2,.7,.2,1), opacity 0s 0s; }
+    .front, .back { position: absolute; inset: 0; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: block; }
+    .back { transform: rotateY(180deg); padding: 3.5%; background: #f6efe0; box-shadow: 0 20px 40px -12px rgba(0,0,0,.6); box-sizing: border-box; }
+    .back img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .ptext { position: absolute; left: 0; right: 0; bottom: 0; padding: 120px 24px 44px; display: grid; justify-items: center; gap: 10px; text-align: center;
+      background: linear-gradient(0deg, rgba(13,9,4,.9) 0%, rgba(13,9,4,.65) 50%, rgba(13,9,4,0) 100%); pointer-events: none;
+      opacity: 0; transform: translateY(12px); transition: opacity .8s ease .3s, transform .8s ease .3s; }
+    .pwall.live .ptext { opacity: 1; transform: none; }
+    .ptext h2 { font-size: clamp(40px, 5vw, 72px); color: var(--ivory); }
+    .ptext .say { margin: 0; max-width: 40em; font-family: var(--f-display); font-style: italic; font-size: clamp(18px, 1.6vw, 22px); color: rgba(244,238,226,.9); }
+    .ptext .hint { margin: 2px 0 6px; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+    .ptext .pill-cta { pointer-events: auto; }
+  }
+</style>
+
+<script>
+  import { coverFrame } from '../lib/frame';
+  const wide = matchMedia('(min-width: 900px) and (hover: hover)').matches;
+  const wall = document.querySelector<HTMLElement>('.pwall');
+  if (wide && wall) {
+    const stage = document.querySelector<HTMLElement>('.scrub .stage')!;
+    stage.appendChild(wall); // lives on the frozen film frame
+    const pf = wall.querySelector<HTMLElement>('.pf')!;
+    const W_ = window as any;
+    let lastKey = '';
+    const fit = () => {
+      const c = coverFrame(stage.clientWidth, stage.clientHeight);
+      pf.style.transform = `translate(${c.left}px, ${c.top}px) scale(${c.k})`;
+    };
+    // front faces: the photo exactly as it appears in the film, unwarped into the card rectangle
+    const paint = (url: string) => {
+      const img = new Image();
+      img.onload = () => {
+        const cv = document.createElement('canvas'); cv.width = 1920; cv.height = 1080;
+        const cx = cv.getContext('2d')!; cx.drawImage(img, 0, 0);
+        const src = cx.getImageData(0, 0, 1920, 1080).data;
+        wall.querySelectorAll<HTMLElement>('.pcard').forEach((card) => {
+          const [a, b, c, d, e, f, g, h] = JSON.parse(card.dataset.h!);
+          const w = Number(card.dataset.w), hh = Number(card.dataset.hh);
+          const out = card.querySelector('canvas')!.getContext('2d')!;
+          const id = out.createImageData(w, hh); const o = id.data;
+          for (let v = 0; v < hh; v++) for (let u = 0; u < w; u++) {
+            const z = g * (u + .5) + h * (v + .5) + 1;
+            const x = (a * (u + .5) + b * (v + .5) + c) / z - .5, y = (d * (u + .5) + e * (v + .5) + f) / z - .5;
+            const x0 = Math.max(0, Math.min(1918, Math.floor(x))), y0 = Math.max(0, Math.min(1078, Math.floor(y)));
+            const fx = Math.min(1, Math.max(0, x - x0)), fy = Math.min(1, Math.max(0, y - y0));
+            const i00 = (y0 * 1920 + x0) * 4, i10 = i00 + 4, i01 = i00 + 1920 * 4, i11 = i01 + 4, k = (v * w + u) * 4;
+            for (let ch = 0; ch < 3; ch++) {
+              o[k + ch] = (src[i00 + ch] * (1 - fx) + src[i10 + ch] * fx) * (1 - fy) + (src[i01 + ch] * (1 - fx) + src[i11 + ch] * fx) * fy;
+            }
+            o[k + 3] = 255;
+          }
+          out.putImageData(id, 0, 0);
+        });
+      };
+      img.src = url;
+    };
+    if (W_.__photosFrame) paint(W_.__photosFrame);
+    window.addEventListener('photos-frame', (e) => paint((e as CustomEvent).detail));
+    const watch = () => {
+      const key = `${stage.clientWidth}x${stage.clientHeight}`;
+      if (key !== lastKey) { lastKey = key; fit(); }
+      const p = W_.__filmP ?? 0, live = wall.classList.contains('live');
+      const on = live ? p > 0.83 && p < 0.985 : p >= 0.84 && p < 0.97 && W_.__film2AtEnd !== false && W_.__film2Q >= 0.999;
+      if (on !== live) wall.classList.toggle('live', on);
+      requestAnimationFrame(watch);
+    };
+    requestAnimationFrame(watch);
+  }
+</script>

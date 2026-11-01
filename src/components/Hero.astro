@@ -20,6 +20,7 @@ const chapters = [
       data-src-mobile="/assets/film/film-mobile-v3.mp4"
       aria-hidden="true"
     ></video>
+    <video class="film film2" muted playsinline preload="none" disablepictureinpicture data-src="/assets/film/film2-v1.mp4" aria-hidden="true"></video>
     <div class="shade" aria-hidden="true"></div>
     <canvas class="dust" aria-hidden="true"></canvas>
     <div class="toPaper" aria-hidden="true"></div>
@@ -33,6 +34,7 @@ const chapters = [
         </article>
       ))}
     </div>
+    <div class="toInk" aria-hidden="true"></div>
     <div class="progress" aria-hidden="true"><span></span></div>
     <p class="hint" aria-hidden="true">{s.hero.scroll}<i></i></p>
   </div>
@@ -40,6 +42,9 @@ const chapters = [
 
 <style>
   .scrub { position: relative; height: 680vh; background: var(--ink); }
+  @media (min-width: 900px) and (hover: hover) { .scrub { height: 1100vh; } }
+  .film2 { opacity: 0; }
+  .toInk { position: absolute; inset: 0; z-index: 6; pointer-events: none; opacity: 0; background: var(--ink); }
   .stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
   .fill { position: absolute; inset: -40px; background: url(/assets/img/shelf-scene-v2.jpg) center / cover; filter: blur(26px) brightness(.42) saturate(1.1); opacity: 0; }
   .film { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform-origin: 0 0; will-change: transform; background: radial-gradient(120% 80% at 70% 60%, #2a2418 0%, #0d0c0a 70%); }
@@ -77,69 +82,105 @@ const chapters = [
 <script>
   import { coverFrame, fitFrame } from '../lib/frame';
   const section = document.querySelector<HTMLElement>('.scrub')!;
-  const video = section.querySelector<HTMLVideoElement>('.film')!;
+  const stage = section.querySelector<HTMLElement>('.stage')!;
+  const video = section.querySelector<HTMLVideoElement>('.film:not(.film2)')!;
+  const video2 = section.querySelector<HTMLVideoElement>('.film2')!;
   const chapters = [...section.querySelectorAll<HTMLElement>('.chapter')];
   const bar = section.querySelector<HTMLElement>('.progress span')!;
   const hint = section.querySelector<HTMLElement>('.hint')!;
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const split = Number(section.dataset.split || 1); // share of the film that carries the text chapters
   const shade = section.querySelector<HTMLElement>('.shade')!;
   const toPaper = section.querySelector<HTMLElement>('.toPaper')!;
+  const toInk = section.querySelector<HTMLElement>('.toInk')!;
   const fill = section.querySelector<HTMLElement>('.fill')!;
-  const wide = matchMedia('(min-width: 900px) and (hover: hover)').matches; // desktop: the shelf scene takes over 1:1
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const split = Number(section.dataset.split || 1); // share of film 1 that carries the text chapters
+  const wide = matchMedia('(min-width: 900px) and (hover: hover)').matches;
 
-  // desktop: the film reaches its last frame at 86 % of the scroll; the rest is a calm hold where the shelf scene lives
-  const END = wide ? 0.86 : 1;
-  let target = 0, current = 0, ready = false;
+  // Desktop timeline (share of the whole scroll):
+  //  film 1 (intro + dive into the eye)  0 → A1 · shelf stop A1 → H1 · film 2 (fall with the books) H1 → B1
+  //  photo-wall stop B1 → H2 · dissolve into the dark next section H2 → 1
+  const A1 = wide ? 0.5 : 1, H1 = 0.6, B1 = 0.84, H2 = 0.94;
+  const clamp = (x: number) => Math.min(1, Math.max(0, x));
+  const smooth = (x: number) => { x = clamp(x); return x * x * (3 - 2 * x); };
+  let cur1 = 0, cur2 = 0, ready1 = false, ready2 = false, loading2 = false;
+  const W_ = window as any;
 
   function progress() {
     const r = section.getBoundingClientRect();
-    const total = section.offsetHeight - innerHeight;
-    return Math.min(1, Math.max(0, -r.top / total));
+    return clamp(-r.top / (section.offsetHeight - innerHeight));
   }
 
-  function setChapter(pRaw: number) {
-    const p = Math.min(1, pRaw / END);
-    (window as any).__filmQ = p;
-    const pc = p / split;
+  // place a 1920x1080 film box: e = 0 cover … 1 framing that fits the shelf below the menu
+  // corr (0..1) undoes the small scale/offset between film 2's first frame and film 1's last frame
+  const C2 = { s: 1 / 0.9866, x: 3.5728 / 0.9866, y: 4.8793 / 0.9866 };
+  function frameVideo(v: HTMLVideoElement, e: number, corr = 0) {
+    const W = stage.clientWidth, H = stage.clientHeight; // same box as the overlays (excludes the scrollbar)
+    const c = coverFrame(W, H), f = fitFrame(W, H);
+    const k0 = c.k + (f.k - c.k) * e;
+    const sc = 1 + (C2.s - 1) * corr, k = k0 * sc, r = k / c.k;
+    const L = c.left + (f.left - c.left) * e + k0 * C2.x * corr, T = c.top + (f.top - c.top) * e + k0 * C2.y * corr;
+    v.style.cssText += `;object-fit:fill;max-width:none;max-height:none;inset:auto;left:${c.left}px;top:${c.top}px;width:${1920 * c.k}px;height:${1080 * c.k}px`;
+    v.style.transform = e > 0 ? `translate(${L - c.left}px, ${T - c.top}px) scale(${r})` : '';
+  }
+
+  function seek(v: HTMLVideoElement, cur: number, target: number) {
+    cur += (target - cur) * 0.18;
+    if (Math.abs(target - cur) < 0.002) cur = target;
+    if (!v.seeking && Math.abs(v.currentTime - cur) > 0.01) v.currentTime = cur;
+    return cur;
+  }
+
+  function render(p: number) {
+    const q1 = clamp(p / A1);
+    const pc = q1 / split;
     const idx = pc > 1.02 ? -1 : Math.min(chapters.length - 1, Math.floor(Math.min(1, pc) * chapters.length * 0.999));
     chapters.forEach((c, i) => c.classList.toggle('on', reduce || i === idx));
-    shade.style.opacity = String(1 - Math.min(1, Math.max(0, (p - split) / 0.06)));
-    if (wide) {
-      // camera pulls back a little at the very end so the whole shelf sits below the menu (same framing as the shelf scene)
-      const x = Math.min(1, Math.max(0, (p - 0.88) / 0.08)); const e = x * x * (3 - 2 * x);
-      const st = section.querySelector<HTMLElement>('.stage')!; const W = st.clientWidth, H = st.clientHeight; // same box as the shelf scene (excludes the scrollbar)
-      const c = coverFrame(W, H), f = fitFrame(W, H);
-      const k = c.k + (f.k - c.k) * e, r = k / c.k;
-      const L = c.left + (f.left - c.left) * e, T = c.top + (f.top - c.top) * e;
-      // the video box is the full 1920x1080 frame at cover size, so pulling back never reveals cropped edges
-      video.style.cssText += `;object-fit:fill;max-width:none;max-height:none;inset:auto;left:${c.left}px;top:${c.top}px;width:${1920 * c.k}px;height:${1080 * c.k}px`;
-      video.style.transform = e > 0 ? `translate(${L - c.left}px, ${T - c.top}px) scale(${r})` : '';
-      fill.style.opacity = String(e);
-    }
-    if (!wide) toPaper.style.opacity = String(Math.min(1, Math.max(0, (pRaw - 0.95) / 0.05)));
-    bar.style.width = `${p * 100}%`;
-    bar.parentElement!.style.opacity = p > 0.97 ? '0' : '1';
-    hint.style.opacity = p > 0.04 ? '0' : '1';
+    shade.style.opacity = String(1 - clamp((q1 - split) / 0.06));
+    bar.style.width = `${q1 * 100}%`;
+    bar.parentElement!.style.opacity = q1 > 0.97 ? '0' : '1';
+    hint.style.opacity = p > 0.02 ? '0' : '1';
+    W_.__filmQ = q1;
+    if (!wide) { toPaper.style.opacity = String(clamp((p - 0.95) / 0.05)); return { q1, q2: 0 }; }
+
+    // film 1: camera pulls back at the end so the whole shelf sits below the menu
+    const e1 = smooth((q1 - 0.88) / 0.08);
+    const q2 = clamp((p - H1) / (B1 - H1));
+    // the painted Carrie slowly fades from the spines while the real one jumps up: she leaves the painting
+    const x = ready2 ? smooth(q2 / 0.1) : 0;
+    if (x < 1) frameVideo(video, e1);
+    if (ready2) frameVideo(video2, 1 - smooth((q2 - 0.1) / 0.3), 1 - smooth((q2 - 0.1) / 0.3)); // film 2 starts in the shelf framing and eases back to full screen
+    video.style.opacity = String(1 - x);
+    video2.style.opacity = String(x);
+    fill.style.opacity = String(x < 1 ? e1 : 1 - smooth((q2 - 0.1) / 0.3));
+    toInk.style.opacity = String(smooth((p - H2) / 0.06));
+    W_.__filmP = p; W_.__film2Q = q2;
+    if (p > 0.25 && !loading2) loadFilm2();
+    return { q1, q2 };
+  }
+
+  async function blobSrc(url: string) {
+    try { const r = await fetch(url); if (!r.ok) throw 0; return URL.createObjectURL(await r.blob()); } catch { return url; }
   }
 
   async function load() {
     const mobile = matchMedia('(max-width: 700px)').matches;
     if (mobile) video.poster = '/assets/film/poster-mobile.jpg';
-    const src = mobile ? video.dataset.srcMobile! : video.dataset.srcDesktop!;
-    try {
-      const res = await fetch(src);
-      if (!res.ok) throw new Error(String(res.status));
-      video.src = URL.createObjectURL(await res.blob()); // blob = instant, reliable seeking
-    } catch { video.src = src; }
-    video.addEventListener('loadedmetadata', () => { ready = true; }, { once: true });
+    video.src = await blobSrc(mobile ? video.dataset.srcMobile! : video.dataset.srcDesktop!);
+    video.addEventListener('loadedmetadata', () => { ready1 = true; }, { once: true });
     video.load();
-    if (wide) snapshotLastFrame(video.src);
+    if (wide) snapshot(video.src, 'shelf-frame', '__shelfFrame');
   }
 
-  // Render the film's final frame through the same video decoder, so the shelf scene that takes over
-  // shows exactly the same pixels and colours as the film (a separately encoded JPG would shift colours).
-  function snapshotLastFrame(src: string) {
+  async function loadFilm2() {
+    loading2 = true;
+    video2.src = await blobSrc(video2.dataset.src!);
+    video2.addEventListener('loadedmetadata', () => { ready2 = true; }, { once: true });
+    video2.load();
+    snapshot(video2.src, 'photos-frame', '__photosFrame');
+  }
+
+  // Render a film's final frame through the same video decoder, so overlays cut from it match the film exactly.
+  function snapshot(src: string, evt: string, key: string) {
     const v = document.createElement('video');
     v.muted = true; v.playsInline = true; v.preload = 'auto'; v.src = src;
     v.addEventListener('loadedmetadata', () => { v.currentTime = Math.max(0, v.duration - 0.05); }, { once: true });
@@ -149,8 +190,8 @@ const chapters = [
       c.toBlob((b) => {
         if (!b) return;
         const url = URL.createObjectURL(b);
-        (window as any).__shelfFrame = url;
-        window.dispatchEvent(new CustomEvent('shelf-frame', { detail: url }));
+        W_[key] = url;
+        window.dispatchEvent(new CustomEvent(evt, { detail: url }));
         v.removeAttribute('src'); v.load();
       }, 'image/png');
     }, { once: true });
@@ -158,21 +199,21 @@ const chapters = [
 
   function tick() {
     const p = progress();
-    setChapter(p);
-    if (ready && video.duration) {
-      target = Math.min(1, p / END) * (video.duration - 0.05);
-      current += (target - current) * 0.18;
-      if (Math.abs(target - current) < 0.002) current = target;
-      if (!video.seeking && Math.abs(video.currentTime - current) > 0.01) video.currentTime = current;
-      // the shelf scene may take over only once the film really rests on its last frame
-      (window as any).__filmAtEnd = p / END >= 0.999 && !video.seeking && Math.abs(video.currentTime - (video.duration - 0.05)) < 0.02;
+    const { q1, q2 } = render(p);
+    if (ready1 && video.duration) {
+      cur1 = seek(video, cur1, q1 * (video.duration - 0.05));
+      W_.__filmAtEnd = q1 >= 0.999 && !video.seeking && Math.abs(video.currentTime - (video.duration - 0.05)) < 0.02;
+    }
+    if (wide && ready2 && video2.duration) {
+      cur2 = seek(video2, cur2, q2 * (video2.duration - 0.05));
+      W_.__film2AtEnd = q2 >= 0.999 && !video2.seeking && Math.abs(video2.currentTime - (video2.duration - 0.05)) < 0.02;
     }
     requestAnimationFrame(tick);
   }
 
-  if (reduce) { setChapter(0); }
+  if (reduce) { render(0); }
   else {
-    setChapter(0);
+    render(0);
     load();
     // iOS needs a gesture before it will paint seeked frames reliably
     const prime = () => { video.play().then(() => video.pause()).catch(() => {}); removeEventListener('touchstart', prime); };
