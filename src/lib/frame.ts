@@ -1,6 +1,7 @@
 // Shared framing for the scroll film and the interactive stops on top of it (1920x1080 source).
 // The film and every overlay must use exactly the same numbers so hand-overs are pixel-identical.
 import { SHELF } from '../data/shelf';
+import type { HouseStop } from '../data/house';
 
 export type Frame = { k: number; left: number; top: number; maxPan?: number };
 export const WIDE_MQ = '(min-width: 900px) and (hover: hover)';
@@ -92,4 +93,29 @@ export function peek(key: string, getMax: () => number, el: HTMLElement) {
     if (k < keys.length - 1) requestAnimationFrame(step);
   };
   setTimeout(() => requestAnimationFrame(step), 700);
+}
+
+/** house stops (see src/data/house.ts): desktop keeps `region` below the menu, phone centres on the stop's focus.
+ *  A stop component can take over its framing (e.g. the wall zooming to one picture) via window.__stopFrame[id]. */
+export function stopFrame(s: HouseStop, W: number, H: number, hh = headerHeight(), pan = 0): Frame {
+  const o = (window as any).__stopFrame?.[s.id];
+  if (o) { const f = o(W, H, hh); if (f) return f; }
+  const c = coverFrame(W, H);
+  const bound = (k: number, cx: number, cy: number, top0: number, availH: number): Frame => {
+    const iw = 1920 * k, ih = 1080 * k;
+    let left = W / 2 - cx * k + pan, top = top0 + availH / 2 - cy * k;
+    // where the picture is bigger than the screen, never show an edge; where smaller, centre it (the blurred fill shows around)
+    left = iw >= W ? Math.max(W - iw, Math.min(0, left)) : (W - iw) / 2;
+    if (ih >= H) top = Math.max(H - ih, Math.min(0, top));
+    return { k, left: Math.round(left), top: Math.round(top), maxPan: Math.max(0, (iw - W) / 2) };
+  };
+  if (isWide()) {
+    const R = s.region;
+    if (R.w >= 1920 && R.h >= 1080) return bound(c.k, 960, 540, 0, H);   // a full scene: simply fill the screen
+    const k = Math.min(c.k, (W * 0.96) / R.w, (H - hh - 14) / R.h);
+    return bound(k, R.x + R.w / 2, R.y + R.h / 2, hh, H - hh);
+  }
+  const P = s.phone;
+  const k = P.h >= 1080 ? c.k : Math.min(c.k * 1.6, (H - hh - P.ui - 16) / P.h);
+  return bound(k, P.cx, P.cy, P.h >= 1080 ? 0 : hh + 8, P.h >= 1080 ? H : H - hh - P.ui - 16);
 }

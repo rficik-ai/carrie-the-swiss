@@ -5,5 +5,5 @@ export default defineConfig({
   site: 'https://carrietheswiss.com',
   trailingSlash: 'always',
   build: { format: 'directory' },
-  integrations: [sitemap({ filter: (p) => !p.endsWith('/404/') })],
+  integrations: [sitemap({ filter: (p) => !p.endsWith('/404/') && !p.includes('/beta/') })],
 });

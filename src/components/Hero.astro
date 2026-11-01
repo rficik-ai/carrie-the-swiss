@@ -1,7 +1,8 @@
 ---
 import { type Locale, t } from '../i18n';
-interface Props { locale: Locale }
-const { locale } = Astro.props;
+import { HOUSE } from '../data/house';
+interface Props { locale: Locale; house?: boolean }
+const { locale, house = false } = Astro.props;
 const s = t(locale);
 const chapters = [
   { title: s.hero.ch1_title, text: s.hero.ch1_text, eyebrow: s.hero.eyebrow },
@@ -9,7 +10,7 @@ const chapters = [
   { title: s.hero.ch3_title, text: s.hero.ch3_text, cta: true },
 ];
 ---
-<section class="scrub" id="film" aria-label="Carrie" data-split="0.6">
+<section class:list={['scrub', { 'with-house': house }]} id="film" aria-label="Carrie" data-split="0.6" data-house={house ? JSON.stringify(HOUSE.timeline) : undefined}>
   <div class="stage">
     <div class="fill" aria-hidden="true"></div>
     <video
@@ -34,16 +35,31 @@ const chapters = [
         </article>
       ))}
     </div>
+    {house && (
+      <div class="house" aria-hidden="true">
+        <div class="hfill"></div>
+        {HOUSE.stops.map((h) => <img class="still" data-stop={h.id} data-src={h.img} alt="" width="1920" height="1080" decoding="async" />)}
+      </div>
+    )}
+    <slot />
     <div class="toInk" aria-hidden="true"></div>
     <div class="progress" aria-hidden="true"><span></span></div>
     <p class="hint" aria-hidden="true">{s.hero.scroll}<i></i></p>
   </div>
+  {house && <div class="spacer" aria-hidden="true">{HOUSE.anchors.map((a) => <span class="anchor" id={a.id} data-at={a.at}></span>)}</div>}
+  <slot name="after" />
 </section>
 
 <style>
   .scrub { position: relative; height: 680vh; background: var(--ink); }
   .scrub { height: 1100vh; }
   .film2 { opacity: 0; }
+  .scrub.with-house { height: auto; }
+  .spacer { position: relative; height: 1000vh; pointer-events: none; }
+  .anchor { position: absolute; left: 0; width: 1px; height: 1px; }
+  .house { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+  .hfill { position: absolute; inset: -40px; background: #0d0c0a center / cover; filter: blur(26px) brightness(.45) saturate(1.1); opacity: 0; transition: opacity .3s; }
+  .still { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; max-width: none; transform-origin: 0 0; opacity: 0; will-change: transform, opacity; }
   .toInk { position: absolute; inset: 0; z-index: 6; pointer-events: none; opacity: 0; background: var(--ink); }
   .stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
   .fill { position: absolute; inset: -40px; background: url(/assets/img/shelf-scene-v2.jpg) center / cover; filter: blur(26px) brightness(.42) saturate(1.1); opacity: 0; }
@@ -80,7 +96,8 @@ const chapters = [
 </style>
 
 <script>
-  import { coverFrame, fitFrame, wallFrame, lerpFrame, type Frame } from '../lib/frame';
+  import { coverFrame, fitFrame, wallFrame, lerpFrame, stopFrame, type Frame } from '../lib/frame';
+  import { STOPS, type Step } from '../data/house';
   const section = document.querySelector<HTMLElement>('.scrub')!;
   const stage = section.querySelector<HTMLElement>('.stage')!;
   const video = section.querySelector<HTMLVideoElement>('.film:not(.film2)')!;
@@ -105,9 +122,66 @@ const chapters = [
   let cur1 = 0, cur2 = 0, ready1 = false, ready2 = false, loading2 = false;
   const W_ = window as any;
 
+  // ---- the walk through the house (beta page): continues after the photo wall
+  const HT = section.dataset.house ? JSON.parse(section.dataset.house) as { steps: Step[]; total: number; start: number } : null;
+  const spacer = section.querySelector<HTMLElement>('.spacer');
+  const stills = new Map([...section.querySelectorAll<HTMLImageElement>('.house .still')].map((im) => [im.dataset.stop!, im]));
+  const houseEl = section.querySelector<HTMLElement>('.house');
+  const hfill = section.querySelector<HTMLElement>('.house .hfill');
+  function sizeSpacer() {
+    if (!HT || !spacer) return;
+    const vh = stage.clientHeight / 100;
+    spacer.style.height = `${(HT.start * 1000 + HT.total) * vh}px`;
+    spacer.querySelectorAll<HTMLElement>('.anchor').forEach((a) => { a.style.top = `${(HT.start * 1000 + Number(a.dataset.at)) * vh}px`; });
+  }
+  sizeSpacer(); addEventListener('resize', sizeSpacer);
+
   function progress() {
     const r = section.getBoundingClientRect();
+    if (HT) return clamp(-r.top / (10 * stage.clientHeight));   // the old film keeps its 1000vh of scroll
     return clamp(-r.top / (section.offsetHeight - innerHeight));
+  }
+  const houseY = () => -section.getBoundingClientRect().top / stage.clientHeight * 100 - (HT ? HT.start * 1000 : 0);
+
+  function place(im: HTMLImageElement, f: Frame, op: number) {
+    if (op > 0 && !im.src) im.src = im.dataset.src!;
+    im.style.opacity = String(op);
+    im.style.transform = `translate(${f.left}px, ${f.top}px) scale(${f.k})`;
+  }
+  const frameOf = (id: string) => { const [W, H] = dims(); return stopFrame(STOPS.find((s) => s.id === id)!, W, H, undefined, (W_.__pan?.[id]) ?? 0); };
+  const zoom = (f: Frame, z: number, W: number, H: number): Frame => ({ k: f.k * z, left: W / 2 - (W / 2 - f.left) * z, top: H / 2 - (H / 2 - f.top) * z });
+  function renderHouse() {
+    if (!HT || !houseEl) return;
+    const y = houseY();
+    const [W, H] = dims();
+    // preload the stills of the next stops a little ahead
+    let step = HT.steps.find((s) => y >= s.from && y < s.from + s.len) ?? (y >= HT.total ? HT.steps[HT.steps.length - 1] : null);
+    if (y < 0 || !step) { houseEl.style.opacity = '0'; W_.__stop = null; document.body.classList.remove('in-scene'); if (y > -150) { const f = stills.get(STOPS[0].id); if (f && !f.src) f.src = f.dataset.src!; } return; }
+    houseEl.style.opacity = '1';
+    const i = STOPS.findIndex((s) => s.id === step!.stop);
+    [i, i + 1].forEach((j) => { const n = STOPS[j] && stills.get(STOPS[j].id); if (n && !n.src) n.src = n.dataset.src!; });
+    const t = clamp((y - step.from) / step.len);
+    const cur = stills.get(step.stop)!, f = frameOf(step.stop);
+    stills.forEach((im, id) => { if (id !== step!.stop && (i === 0 || id !== STOPS[i - 1].id)) im.style.opacity = '0'; });
+    const needFill = f.k < coverFrame(W, H).k - 1e-3 || 1080 * f.k < H - 1;
+    if (step.kind === 'move') {
+      // stills phase: a slow push into the next room (replaced by the generated video later)
+      const x = smooth(t);
+      if (i > 0) { const pid = STOPS[i - 1].id; place(stills.get(pid)!, zoom(frameOf(pid), 1 + 0.12 * x, W, H), 1); }
+      place(cur, zoom(f, 1.08 - 0.08 * x, W, H), x);
+      W_.__stop = null;
+      if (hfill) hfill.style.opacity = '0';
+    } else {
+      if (i > 0) stills.get(STOPS[i - 1].id)!.style.opacity = '0';
+      place(cur, f, 1);
+      W_.__stop = step.stop; W_.__stopT = t;
+      if (hfill) {
+        if (needFill && hfill.dataset.img !== step.stop) { hfill.dataset.img = step.stop; hfill.style.backgroundImage = `url(${cur.dataset.src})`; }
+        hfill.style.opacity = needFill ? '1' : '0';
+      }
+    }
+    W_.__houseY = y;
+    document.body.classList.toggle('in-scene', step.kind === 'hold');
   }
 
   // place a 1920x1080 film box: e = 0 cover … 1 framing that fits the shelf below the menu
@@ -160,7 +234,7 @@ const chapters = [
     video.style.opacity = String(1 - x);
     video2.style.opacity = String(x);
     fill.style.opacity = String(x < 1 ? e1 : Math.max(1 - smooth((q2 - 0.1) / 0.3), wide ? 0 : smooth((q2 - 0.86) / 0.14)));
-    toInk.style.opacity = String(smooth((p - H2) / 0.06));
+    toInk.style.opacity = HT ? '0' : String(smooth((p - H2) / 0.06));
     W_.__filmP = p; W_.__film2Q = q2;
     if (p > 0.25 && !loading2) loadFilm2();
     return { q1, q2 };
@@ -206,6 +280,9 @@ const chapters = [
   function tick() {
     const p = progress();
     const { q1, q2 } = render(p);
+    renderHouse();
+    // focusing something inside a scene must never scroll the clipped stage sideways
+    if (stage.scrollLeft || stage.scrollTop) { stage.scrollLeft = 0; stage.scrollTop = 0; }
     if (ready1 && video.duration) {
       cur1 = seek(video, cur1, q1 * (video.duration - 0.05));
       W_.__filmAtEnd = q1 >= 0.999 && !video.seeking && Math.abs(video.currentTime - (video.duration - 0.05)) < 0.02;

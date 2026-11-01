@@ -1,0 +1,229 @@
+---
+// House walk, stop 1: the wall of my life. Real photos and papers hang in the frames of the hallway still.
+// Click a frame: the camera moves to it and a story card opens (photos, papers, a few lines in Carrie's voice).
+import { type Locale, t } from '../i18n';
+import { WALL } from '../data/wall';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const h = (t(locale) as any).house;
+const href = (x: string) => (x.startsWith('#') ? `/${locale}/${x}` : `/${locale}/${x}`);
+---
+<div class="hstop wstop" data-stop="wall" aria-label={h.wall_title}>
+  <div class="layer">
+    {WALL.map((w, i) => (
+      <button type="button" class="wf" data-i={i} style={`left:${w.r.x}px;top:${w.r.y}px;width:${w.r.w}px;height:${w.r.h}px`} aria-label={h[`${w.id}_t`]}>
+        <img src={w.cover} alt="" loading="lazy" decoding="async" style={`object-position:${w.pos ?? '50% 50%'}`} />
+      </button>
+    ))}
+  </div>
+  <div class="veil" aria-hidden="true"></div>
+  <div class="cap">
+    <p class="eyebrow">{h.wall_eyebrow}</p>
+    <h2>{h.wall_title}</h2>
+    <p class="say">{h.wall_say}</p>
+    <p class="hint"><span class="h-wide">{h.wall_hint_wide}</span><span class="h-tap">{h.wall_hint_tap}</span></p>
+  </div>
+  <div class="card" role="dialog" aria-modal="false" hidden>
+    {WALL.map((w, i) => (
+      <article class="story" data-i={i} hidden>
+        <div class="media">
+          <button type="button" class:list={['main', w.pics[0].kind]} data-full={w.pics[0].src} aria-label={h.zoom}>
+            <img src={w.pics[0].src} alt="" loading="lazy" decoding="async" />
+          </button>
+          {w.pics.length > 1 && (
+            <div class="thumbs">
+              {w.pics.map((p, j) => (
+                <button type="button" class:list={['th', p.kind, { on: j === 0 }]} data-src={p.src} data-kind={p.kind} aria-label={h.zoom}><img src={p.src} alt="" loading="lazy" decoding="async" /></button>
+              ))}
+            </div>
+          )}
+        </div>
+        <div class="words">
+          {w.date && <p class="date">{w.date}</p>}
+          <h3>{h[`${w.id}_t`]}</h3>
+          <p class="txt">{h[`${w.id}_x`]}</p>
+          {w.link && <a class="lnk" href={href(w.link.href)} data-open-book={w.link.ep}>{h[w.link.key]} →</a>}
+        </div>
+      </article>
+    ))}
+    <div class="nav">
+      <button type="button" class="prev" aria-label={h.prev}>‹</button>
+      <span class="count" aria-hidden="true"></span>
+      <button type="button" class="next" aria-label={h.next}>›</button>
+    </div>
+    <button type="button" class="x" aria-label={h.close}>×</button>
+  </div>
+  <dialog class="wlbx"><button type="button" class="lx" aria-label={h.close}>×</button><img alt="" /></dialog>
+</div>
+
+<style>
+  .hstop { position: absolute; inset: 0; z-index: 6; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
+  .hstop.live { opacity: 1; pointer-events: auto; }
+  .layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+  /* pictures behind glass, lit by the same afternoon sun */
+  .wf { all: unset; position: absolute; cursor: zoom-in; overflow: hidden; background: #e9dcc4; }
+  .wf img { width: 100%; height: 100%; object-fit: cover; display: block; filter: sepia(.18) saturate(.92) contrast(.96) brightness(.98); }
+  .wf::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+    box-shadow: inset 0 0 0 3px #f3ead8, inset 0 2px 10px rgba(60,30,5,.55);
+    background: linear-gradient(115deg, rgba(255,230,190,.28) 0%, rgba(255,230,190,0) 38%, rgba(255,255,255,.08) 52%, rgba(255,240,210,0) 60%); }
+  .wf:focus-visible { outline: 3px solid var(--gold-hi); outline-offset: 6px; }
+  .veil { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .5s ease; background: radial-gradient(120% 90% at 30% 50%, rgba(13,9,4,0) 30%, rgba(13,9,4,.55) 100%); }
+  .wstop.focus .veil { opacity: 1; }
+  .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 120px var(--gutter-r) max(40px, 5vh) var(--gutter); display: grid; gap: 8px; justify-items: start; pointer-events: none;
+    background: linear-gradient(0deg, rgba(20,11,4,.82) 0%, rgba(20,11,4,.5) 55%, rgba(20,11,4,0) 100%); transition: opacity .4s ease; }
+  .cap h2 { font-size: clamp(36px, 4.4vw, 64px); color: var(--ivory); }
+  .cap .say { margin: 0; max-width: 34em; font-family: var(--f-display); font-style: italic; font-size: clamp(16px, 1.4vw, 20px); color: rgba(244,238,226,.9); }
+  .cap .hint { margin: 4px 0 0; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-hi); }
+  .h-tap { display: none; }
+  .wstop.focus .cap { opacity: 0; }
+
+  .card { position: absolute; z-index: 3; right: max(24px, 3vw); top: calc(var(--hh, 68px) + 24px); bottom: 24px; width: min(480px, 40vw); display: flex; flex-direction: column;
+    background: #f7f0e1; color: #2a2016; border-radius: 6px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.7), inset 0 0 0 1px rgba(120,90,40,.15);
+    animation: cardIn .5s cubic-bezier(.2,.7,.2,1); overflow: hidden; }
+  @keyframes cardIn { from { opacity: 0; transform: translateX(30px) rotate(1deg); } }
+  .card[hidden], .story[hidden] { display: none; }
+  .story { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow-y: auto; }
+  .media { padding: 22px 22px 0; display: grid; gap: 10px; }
+  .main { all: unset; cursor: zoom-in; display: block; height: min(38vh, 360px); }
+  .main img { width: 100%; height: 100%; object-fit: contain; display: block; filter: drop-shadow(0 10px 16px rgba(60,35,10,.35)); }
+  .thumbs { display: flex; gap: 8px; justify-content: center; }
+  .th { all: unset; cursor: pointer; width: 52px; height: 52px; border-radius: 4px; overflow: hidden; opacity: .55; box-shadow: 0 0 0 1px rgba(120,90,40,.3); transition: opacity .2s; }
+  .th img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+  .th.on, .th:hover { opacity: 1; box-shadow: 0 0 0 2px var(--gold-deep, #9a7432); }
+  .words { padding: 18px 26px 10px; display: grid; gap: 8px; }
+  .date { margin: 0; font: italic 600 15px var(--f-display); color: #8a6a35; }
+  .words h3 { margin: 0; font-size: clamp(24px, 2.2vw, 32px); line-height: 1.12; color: #1d160e; }
+  .txt { margin: 0; font-size: 16px; line-height: 1.6; color: #3d3226; }
+  .lnk { justify-self: start; margin-top: 4px; font-weight: 700; color: #7a5520; text-decoration: none; border-bottom: 1px solid currentColor; }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px 16px; border-top: 1px solid rgba(120,90,40,.15); }
+  .nav button, .x { all: unset; cursor: pointer; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; line-height: 1; color: #5a4220; box-shadow: inset 0 0 0 1px rgba(120,90,40,.35); }
+  .nav button:hover, .x:hover { background: rgba(160,120,50,.12); }
+  .count { font: 600 13px var(--f-body); letter-spacing: .14em; color: #8a6a35; }
+  .x { position: absolute; top: 10px; right: 10px; width: 38px; height: 38px; font-size: 24px; background: rgba(247,240,225,.9); }
+  .wlbx { border: 0; padding: 0; background: transparent; max-width: 96vw; max-height: 94vh; }
+  .wlbx::backdrop { background: rgba(10,8,5,.88); }
+  .wlbx img { display: block; max-width: 96vw; max-height: 94vh; object-fit: contain; }
+  .lx { all: unset; position: fixed; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 28px; color: var(--ivory); cursor: pointer; border: 1px solid rgba(234,211,154,.5); }
+
+  @media (max-width: 899px), (hover: none) {
+    .h-wide { display: none; } .h-tap { display: inline; }
+    .cap { padding: 70px 18px calc(22px + env(safe-area-inset-bottom, 0px)); gap: 6px; }
+    .cap h2 { font-size: 32px; } .cap .say { font-size: 15px; }
+    .card { left: 0; right: 0; top: auto; bottom: 0; width: auto; height: 58svh; border-radius: 18px 18px 0 0; animation-name: sheetIn; }
+    @keyframes sheetIn { from { transform: translateY(40px); opacity: 0; } }
+    .story { flex-direction: row; flex-wrap: wrap; align-content: flex-start; }
+    .media { padding: 16px 16px 0; width: 100%; box-sizing: border-box; }
+    .main { height: 24svh; }
+    .th { width: 44px; height: 44px; }
+    .words { padding: 12px 18px 8px; }
+    .words h3 { font-size: 23px; } .txt { font-size: 15px; line-height: 1.55; }
+    .nav { padding: 8px 12px calc(10px + env(safe-area-inset-bottom, 0px)); }
+  }
+</style>
+
+<script>
+  import { mountStop } from '../lib/stop';
+  import { stopFrame, headerHeight, isWide, lerpFrame, peek, type Frame } from '../lib/frame';
+  import { STOPS } from '../data/house';
+  import { WALL } from '../data/wall';
+
+  const el = document.querySelector<HTMLElement>('.wstop');
+  if (el) {
+    const W_ = window as any;
+    const card = el.querySelector<HTMLElement>('.card')!;
+    const stories = [...card.querySelectorAll<HTMLElement>('.story')];
+    const count = card.querySelector<HTMLElement>('.count')!;
+    const lbx = el.querySelector<HTMLDialogElement>('.wlbx')!;
+    const stage = () => document.querySelector<HTMLElement>('.scrub .stage')!;
+    const S = STOPS.find((s) => s.id === 'wall')!;
+    let cur = -1, anim = { from: 0, to: 0, t0: 0 }, target: Frame | null = null;
+    const baseFrame = () => {
+      const st = stage(); const keep = W_.__stopFrame?.wall; if (W_.__stopFrame) W_.__stopFrame.wall = null;
+      const f = stopFrame(S, st.clientWidth, st.clientHeight, headerHeight(), W_.__pan?.wall ?? 0);
+      if (W_.__stopFrame) W_.__stopFrame.wall = keep; return f;
+    };
+    const ease = (x: number) => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+
+    // framing while a picture is open: the camera moves toward the frame (the card covers the rest)
+    function focusFrame(i: number, base: Frame, W: number, H: number, hh: number): Frame {
+      const r = WALL[i].r, wide = isWide();
+      const cardW = wide ? Math.min(480, W * 0.4) + Math.max(24, W * 0.03) : 0;
+      const areaW = W - cardW, areaTop = hh, areaH = wide ? H - hh : H * 0.42 - hh;
+      const z = Math.max(1.15, Math.min(wide ? 1.9 : 2.4, (areaH * 0.62) / (r.h * base.k)));
+      const k = base.k * z;
+      let left = areaW / 2 - (r.x + r.w / 2) * k, top = areaTop + Math.max(areaH, 120) / 2 - (r.y + r.h / 2) * k;
+      left = Math.max(W - 1920 * k, Math.min(0, left)); top = Math.max(H - 1080 * k, Math.min(0, top));
+      return { k, left: Math.round(left), top: Math.round(top) };
+    }
+    W_.__stopFrame ??= {};
+    W_.__stopFrame.wall = (W: number, H: number, hh: number) => {
+      const e = ease(Math.min(1, (performance.now() - anim.t0) / 650));
+      const amt = anim.from + (anim.to - anim.from) * e;
+      if (amt <= 0.0001 && !target) return null;
+      const keep = W_.__stopFrame.wall; W_.__stopFrame.wall = null;
+      const base = stopFrame(S, W, H, hh, W_.__pan?.wall ?? 0);
+      W_.__stopFrame.wall = keep;
+      const tg = target ?? base;
+      return lerpFrame(base, tg, amt);
+    };
+
+    const show = (i: number) => {
+      cur = (i + WALL.length) % WALL.length;
+      stories.forEach((s, j) => (s.hidden = j !== cur));
+      count.textContent = `${cur + 1} / ${WALL.length}`;
+      const st = stage(); const W = st.clientWidth, H = st.clientHeight, hh = headerHeight();
+      const base = baseFrame();
+      const now = performance.now(), e = ease(Math.min(1, (now - anim.t0) / 650));
+      const amt = anim.from + (anim.to - anim.from) * e;
+      target = focusFrame(cur, base, W, H, hh);
+      anim = { from: card.hidden ? 0 : amt, to: 1, t0: now };
+      el.style.setProperty('--hh', `${hh}px`);
+      card.hidden = false; el.classList.add('focus');
+    };
+    const close = () => {
+      if (card.hidden) return;
+      const now = performance.now(), e = ease(Math.min(1, (now - anim.t0) / 650));
+      anim = { from: anim.from + (anim.to - anim.from) * e, to: 0, t0: now };
+      card.hidden = true; el.classList.remove('focus');
+      setTimeout(() => { if (card.hidden) target = null; }, 700);
+    };
+
+    el.querySelectorAll<HTMLButtonElement>('.wf').forEach((b) => b.addEventListener('click', () => show(Number(b.dataset.i))));
+    card.querySelector('.prev')!.addEventListener('click', () => show(cur - 1));
+    card.querySelector('.next')!.addEventListener('click', () => show(cur + 1));
+    card.querySelector('.x')!.addEventListener('click', close);
+    // thumbnails switch the main picture; the main picture opens full screen
+    card.querySelectorAll<HTMLElement>('.story').forEach((s) => {
+      const main = s.querySelector<HTMLButtonElement>('.main')!;
+      s.querySelectorAll<HTMLButtonElement>('.th').forEach((th) => th.addEventListener('click', () => {
+        s.querySelectorAll('.th').forEach((x) => x.classList.toggle('on', x === th));
+        main.dataset.full = th.dataset.src!; main.className = `main ${th.dataset.kind}`;
+        main.querySelector('img')!.src = th.dataset.src!;
+      }));
+      main.addEventListener('click', () => { lbx.querySelector('img')!.src = main.dataset.full!; lbx.showModal(); });
+    });
+    lbx.addEventListener('click', () => lbx.close());
+    addEventListener('keydown', (e) => {
+      if (card.hidden || lbx.open) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowRight') show(cur + 1);
+      else if (e.key === 'ArrowLeft') show(cur - 1);
+    });
+    // swipe between stories on the card (phones)
+    let sx = 0, sy = 0;
+    card.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+    card.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4) show(cur + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+
+    let peeked = false;
+    mountStop('wall', el, {
+      pan: true,
+      onLive: (on) => {
+        if (!on) { card.hidden = true; el.classList.remove('focus'); target = null; anim = { from: 0, to: 0, t0: 0 }; }
+        else if (!isWide() && !peeked) { peeked = true; peek('__panTmp_wall', () => (baseFrame().maxPan ?? 0), el); }
+      },
+    });
+  }
+</script>

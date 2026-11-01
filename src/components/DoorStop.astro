@@ -1,0 +1,75 @@
+---
+// House walk, last stop: the front door at night. The collar on the hook is the (future) shop;
+// the newsletter, the latest episodes and the footer then scroll up over the same scene.
+import { type Locale, t } from '../i18n';
+import { INSTAGRAM } from '../data/episodes';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const s = t(locale) as any, h = s.house;
+---
+<div class="hstop dostop" data-stop="door" aria-label={h.door_title}>
+  <div class="layer">
+    <button type="button" class="hook" style="left:840px;top:150px;width:330px;height:430px" aria-label={s.shop.title}></button>
+  </div>
+  <div class="cap">
+    <p class="eyebrow">{h.door_eyebrow}</p>
+    <h2>{h.door_title}</h2>
+    <p class="say">{h.door_say}</p>
+    <p class="hint"><span class="h-wide">{h.door_hint_wide}</span><span class="h-tap">{h.door_hint_tap}</span></p>
+  </div>
+  <div class="tag" hidden>
+    <button type="button" class="x" aria-label={h.close}>×</button>
+    <p class="eyebrow">{s.shop.eyebrow}</p>
+    <p class="tt">{s.shop.title}</p>
+    <p class="tx">{s.shop.text}</p>
+    <a class="pill-cta" href={INSTAGRAM} target="_blank" rel="noopener">{s.shop.cta}</a>
+  </div>
+</div>
+
+<style>
+  .hstop { position: absolute; inset: 0; z-index: 6; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
+  .hstop.live { opacity: 1; pointer-events: auto; }
+  .layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+  .hook { all: unset; position: absolute; cursor: pointer; border-radius: 30px; }
+  .hook:focus-visible { outline: 3px solid var(--gold-hi); }
+  .cap { position: absolute; left: var(--gutter); top: 50%; transform: translateY(-40%); max-width: min(520px, 40vw); display: grid; gap: 10px; justify-items: start; pointer-events: none; transition: opacity .4s; }
+  .cap h2 { font-size: clamp(38px, 4.6vw, 68px); color: var(--ivory); }
+  .cap .say { margin: 0; font-family: var(--f-display); font-style: italic; font-size: clamp(17px, 1.5vw, 21px); color: rgba(244,238,226,.9); }
+  .cap .hint { margin: 6px 0 0; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-hi); }
+  .h-tap { display: none; }
+  .dostop.tagged .cap { opacity: 0; }
+  .tag { position: absolute; z-index: 3; left: var(--tx, 50%); top: var(--ty, 50%); width: min(340px, 80vw); padding: 22px 22px 20px; box-sizing: border-box; display: grid; gap: 8px; justify-items: start;
+    background: #f7f0e1; color: #2a2016; border-radius: 6px; box-shadow: 0 30px 60px -20px rgba(0,0,0,.8); animation: tagIn .45s cubic-bezier(.2,.7,.2,1); }
+  .tag[hidden] { display: none; }
+  @keyframes tagIn { from { opacity: 0; transform: translateY(14px) rotate(-1.5deg); } }
+  .tag .eyebrow { color: #8a6a35; }
+  .tt { margin: 0; font: 600 28px/1.1 var(--f-display); color: #1d160e; }
+  .tx { margin: 0; font-size: 15px; line-height: 1.55; color: #3d3226; }
+  .x { all: unset; position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; font-size: 22px; color: #5a4220; }
+  @media (max-width: 899px), (hover: none) {
+    .h-wide { display: none; } .h-tap { display: inline; }
+    .cap { left: 0; right: 0; top: auto; bottom: 0; transform: none; max-width: none; padding: 80px 18px calc(24px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(0deg, rgba(13,9,4,.9) 0%, rgba(13,9,4,.6) 60%, rgba(13,9,4,0) 100%); }
+    .cap h2 { font-size: 34px; } .cap .say { font-size: 15.5px; }
+    .tag { left: 50% !important; top: auto !important; bottom: 20px; transform: translateX(-50%); }
+  }
+</style>
+
+<script>
+  import { mountStop } from '../lib/stop';
+  import { isWide } from '../lib/frame';
+  const el = document.querySelector<HTMLElement>('.dostop');
+  if (el) {
+    const tag = el.querySelector<HTMLElement>('.tag')!;
+    let fr = { k: 1, left: 0, top: 0 };
+    const place = () => {
+      // the shop tag hangs to the left of the hooks
+      if (!isWide()) return;
+      const x = fr.left + 840 * fr.k - Math.min(340, innerWidth * 0.8) - 24, y = fr.top + 200 * fr.k;
+      tag.style.setProperty('--tx', `${Math.max(16, x)}px`); tag.style.setProperty('--ty', `${Math.max(80, y)}px`);
+    };
+    const set = (open: boolean) => { tag.hidden = !open; el.classList.toggle('tagged', open); if (open) place(); };
+    el.querySelector('.hook')!.addEventListener('click', () => set(tag.hidden));
+    tag.querySelector('.x')!.addEventListener('click', () => set(false));
+    mountStop('door', el, { onFrame: (f) => { fr = f; place(); }, onLive: (on) => { if (!on) set(false); } });
+  }
+</script>

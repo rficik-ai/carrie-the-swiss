@@ -7,8 +7,8 @@ import '@fontsource-variable/manrope';
 import '../styles/global.css';
 import { availableLocales, HTML_LANG, type Locale } from '../i18n';
 
-interface Props { locale: Locale; title: string; description: string; path?: string }
-const { locale, title, description, path = '' } = Astro.props;
+interface Props { locale: Locale; title: string; description: string; path?: string; noindex?: boolean }
+const { locale, title, description, path = '', noindex = false } = Astro.props;
 const site = Astro.site!.toString().replace(/\/$/, '');
 const canonical = `${site}/${locale}/${path}`;
 const ogImage = `${site}/assets/img/og.jpg`;
@@ -23,6 +23,7 @@ const ogImage = `${site}/assets/img/og.jpg`;
     <link rel="canonical" href={canonical} />
     {availableLocales().map((l) => <link rel="alternate" hreflang={HTML_LANG[l]} href={`${site}/${l}/${path}`} />)}
     <link rel="alternate" hreflang="x-default" href={`${site}/`} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="theme-color" content="#0d0c0a" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />

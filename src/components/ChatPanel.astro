@@ -1,0 +1,74 @@
+---
+import { type Locale, t } from '../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const a = (t(locale) as any).ask;
+const chips = [a.c1, a.c2, a.c3, a.c4].filter(Boolean);
+---
+<div class="chat" data-reveal data-lang={locale} data-err={JSON.stringify({ rate: a.err_rate, gen: a.err_gen, off: a.err_off })}>
+  <ol class="log" aria-live="polite">
+    <li class="msg carrie"><p>{a.hello}</p></li>
+  </ol>
+  <div class="chips">{chips.map((c) => <button type="button" class="chip">{c}</button>)}</div>
+  <form class="send" autocomplete="off">
+    <label class="sr-only" for="ask-input">{a.placeholder}</label>
+    <input id="ask-input" name="q" maxlength="600" placeholder={a.placeholder} required />
+    <button type="submit" aria-label={a.send}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 21 3l-8.5 18-2.2-7.3z"/></svg></button>
+  </form>
+</div>
+
+<style>
+  .chat { display: grid; gap: 14px; padding: 18px; border-radius: 22px; background: rgba(251,248,241,.04); box-shadow: 0 0 0 1px rgba(234,211,154,.2), 0 40px 80px -40px rgba(0,0,0,.8); }
+  .log { list-style: none; margin: 0; padding: 4px; display: flex; flex-direction: column; gap: 10px; height: min(440px, 56vh); overflow-y: auto; scroll-behavior: smooth; }
+  :global(.msg) { max-width: 86%; padding: 12px 16px; border-radius: 18px; font-size: 16px; line-height: 1.5; animation: pop .35s cubic-bezier(.2,.7,.2,1); }
+  :global(.msg p) { margin: 0; white-space: pre-wrap; }
+  :global(.msg.carrie) { align-self: flex-start; background: #f8f2e4; color: #1c1914; border-bottom-left-radius: 4px; }
+  :global(.msg.me) { align-self: flex-end; background: var(--gold); color: #1a1408; border-bottom-right-radius: 4px; }
+  :global(.msg.typing p)::after { content: '•••'; letter-spacing: 3px; animation: blink 1.2s infinite; }
+  :global(.msg.err) { background: rgba(180,97,42,.18); color: var(--ivory); }
+  @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+  @keyframes blink { 50% { opacity: .3; } }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { border: 1px solid rgba(234,211,154,.4); background: none; color: var(--ivory); border-radius: 999px; padding: 8px 14px; font: 600 13px var(--f-body); cursor: pointer; transition: background .25s, color .25s; }
+  .chip:hover { background: var(--gold); color: #1a1408; }
+  .send { display: flex; gap: 10px; }
+  .send input { flex: 1; min-width: 0; height: 52px; border-radius: 999px; border: 1px solid rgba(234,211,154,.35); background: rgba(13,12,10,.6); color: var(--ivory); padding: 0 20px; font: 500 16px var(--f-body); }
+  .send input:focus { outline: none; border-color: var(--gold); }
+  .send button { flex: none; width: 52px; height: 52px; border-radius: 50%; border: 0; background: var(--grad-gold, var(--gold)); cursor: pointer; display: grid; place-items: center; }
+  .send button svg { width: 22px; height: 22px; fill: #1a1408; }
+  .send button:disabled { opacity: .5; cursor: default; }
+</style>
+
+<script>
+  const chat = document.querySelector<HTMLElement>('.ask .chat');
+  if (chat) {
+    const log = chat.querySelector<HTMLOListElement>('.log')!;
+    const form = chat.querySelector<HTMLFormElement>('.send')!;
+    const input = form.querySelector<HTMLInputElement>('input')!;
+    const btn = form.querySelector<HTMLButtonElement>('button')!;
+    const lang = chat.dataset.lang!;
+    const ERR = JSON.parse(chat.dataset.err!);
+    const history: { role: 'user' | 'assistant'; content: string }[] = [];
+    const add = (cls: string, text: string) => {
+      const li = document.createElement('li'); li.className = `msg ${cls}`;
+      const p = document.createElement('p'); p.textContent = text; li.appendChild(p);
+      log.appendChild(li); log.scrollTop = log.scrollHeight; return li;
+    };
+    const ask = async (q: string) => {
+      q = q.trim(); if (!q || btn.disabled) return;
+      add('me', q); history.push({ role: 'user', content: q });
+      input.value = ''; btn.disabled = true;
+      const wait = add('carrie typing', '');
+      try {
+        const r = await fetch('/api/ask', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ lang, messages: history }) });
+        const d = await r.json().catch(() => ({}));
+        wait.remove();
+        if (r.ok && d.reply) { add('carrie', d.reply); history.push({ role: 'assistant', content: d.reply }); }
+        else { history.pop(); add('carrie err', r.status === 429 ? ERR.rate : r.status === 503 ? ERR.off : ERR.gen); }
+      } catch { wait.remove(); history.pop(); add('carrie err', ERR.gen); }
+      btn.disabled = false; input.focus({ preventScroll: true });
+    };
+    form.addEventListener('submit', (e) => { e.preventDefault(); ask(input.value); });
+    chat.querySelectorAll<HTMLButtonElement>('.chip').forEach((c) => c.addEventListener('click', () => ask(c.textContent || '')));
+  }
+</script>

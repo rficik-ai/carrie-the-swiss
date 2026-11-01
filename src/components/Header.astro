@@ -43,6 +43,8 @@ const s = t(locale);
     transition: background .3s;
   }
   :global(body.scrolled) .top { background: rgba(13,12,10,.86); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  /* standing inside a scene of the film: the menu floats over the picture */
+  :global(body.in-scene) .top { background: linear-gradient(180deg, rgba(13,12,10,.62), rgba(13,12,10,0)); backdrop-filter: none; -webkit-backdrop-filter: none; }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-block: 14px; }
   .mark { display: flex; align-items: center; gap: 10px; text-decoration: none; }
   .crest img { width: 34px; height: auto; }

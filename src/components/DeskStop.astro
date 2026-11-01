@@ -1,0 +1,166 @@
+---
+// House walk, stop 2: three papers on the desk (pedigree, x-rays, judge's report). Each one says one thing.
+// Click a paper: it lifts off the desk toward you and tells you what it really means.
+import { type Locale, t } from '../i18n';
+import { rectToQuad, type Pt } from '../lib/persp';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const all = t(locale) as any;
+const c = all.cards, h = all.house;
+const PW = 300, PH = 400; // the paper plane every quad is warped from
+const papers: { q: Pt[]; img: string; name: string; big: string; text: string; ep: string }[] = [
+  { q: [[345, 283], [697, 226], [750, 592], [371, 648]], img: '/assets/img/doc-pedigree.jpg', name: c.c1_name, big: c.c1_big, text: c.c1_text, ep: '03' },
+  { q: [[737, 215], [1060, 174], [1138, 500], [790, 553]], img: '/assets/img/doc-xray.jpg', name: c.c2_name, big: c.c2_big, text: c.c2_text, ep: '04' },
+  { q: [[1102, 213], [1410, 163], [1478, 521], [1190, 577]], img: '/assets/img/doc-critique.jpg', name: c.c3_name, big: c.c3_big, text: c.c3_text, ep: '05' },
+];
+---
+<div class="hstop dstop" data-stop="desk" aria-label={c.title}>
+  <div class="layer">
+    {papers.map((p, i) => (
+      <button type="button" class="paper" data-i={i} data-q={JSON.stringify(p.q)} style={`width:${PW}px;height:${PH}px;transform:${rectToQuad(PW, PH, p.q)}`} aria-label={p.name}>
+        <span class="ink">{p.name}</span>
+        <span class="tick" aria-hidden="true">✓</span>
+      </button>
+    ))}
+  </div>
+  <div class="veil" aria-hidden="true"></div>
+  <div class="cap">
+    <p class="eyebrow">{c.eyebrow}</p>
+    <h2>{c.title}</h2>
+    <p class="say"><span class="intro">{c.intro}</span></p>
+    <p class="hint"><span class="h-wide">{h.desk_hint_wide}</span><span class="h-tap">{h.desk_hint_tap}</span> · <span class="count">0</span> {c.progress}</p>
+    <div class="done" hidden>
+      <p class="done-title">{c.done_title}</p>
+      <a class="pill-cta" href={`/${locale}/papers/`}>{c.done_cta} <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+  <div class="read" hidden>
+    {papers.map((p, i) => (
+      <article class="sheet" data-i={i} hidden>
+        <div class="doc"><img src={p.img} alt="" loading="lazy" decoding="async" /></div>
+        <div class="words">
+          <p class="nm">0{i + 1} · {p.name}</p>
+          <p class="bigw">{p.big}</p>
+          <p class="txt">{p.text}</p>
+          <a class="ep" href={`/${locale}/#episodes`} data-open-book={p.ep}>▶ {c.watch} {p.ep}</a>
+        </div>
+      </article>
+    ))}
+    <div class="rnav">
+      <button type="button" class="nextp">{h.next_paper} →</button>
+    </div>
+    <button type="button" class="x" aria-label={h.close}>×</button>
+  </div>
+</div>
+
+<style>
+  .hstop { position: absolute; inset: 0; z-index: 6; opacity: 0; pointer-events: none; transition: opacity .35s ease; }
+  .hstop.live { opacity: 1; pointer-events: auto; }
+  .layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+  .paper { all: unset; position: absolute; left: 0; top: 0; transform-origin: 0 0; cursor: pointer; }
+  /* the paper's title written in ink, in the paper's own perspective */
+  .ink { position: absolute; left: 0; right: 0; top: 46px; text-align: center; font: italic 600 34px/1.1 var(--f-display); color: #3b2610; opacity: .78; mix-blend-mode: multiply; transition: opacity .3s; }
+  .paper:nth-child(2) .ink { color: #dfe9f2; mix-blend-mode: normal; opacity: .7; }
+  .tick { position: absolute; right: 30px; bottom: 30px; font: 700 54px/1 var(--f-display); color: #8a2a18; opacity: 0; transform: scale(1.6) rotate(-12deg); transition: opacity .3s, transform .4s cubic-bezier(.2,.7,.2,1); mix-blend-mode: multiply; }
+  .paper:nth-child(2) .tick { color: #e7f0f7; mix-blend-mode: normal; }
+  .paper.seen .tick { opacity: .85; transform: rotate(-12deg); }
+  .paper:hover .ink, .paper:focus-visible .ink { opacity: 1; }
+  .paper:focus-visible { outline: 3px solid var(--gold-hi); }
+  .veil { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .45s ease; background: rgba(13,9,4,.62); }
+  .dstop.reading .veil { opacity: 1; pointer-events: auto; }
+  .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 120px var(--gutter-r) max(36px, 4.5vh) var(--gutter); display: grid; gap: 8px; justify-items: start; pointer-events: none;
+    background: linear-gradient(0deg, rgba(20,11,4,.86) 0%, rgba(20,11,4,.55) 55%, rgba(20,11,4,0) 100%); transition: opacity .4s; }
+  .cap h2 { font-size: clamp(32px, 3.8vw, 56px); color: var(--ivory); max-width: 16em; }
+  .cap .say { margin: 0; max-width: 34em; font-family: var(--f-display); font-style: italic; font-size: clamp(16px, 1.4vw, 20px); color: rgba(244,238,226,.9); }
+  .cap .hint { margin: 4px 0 0; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-hi); }
+  .done { display: grid; gap: 10px; justify-items: start; pointer-events: auto; }
+  .done[hidden] { display: none; }
+  .done-title { margin: 6px 0 0; font: 600 clamp(20px, 2vw, 26px) var(--f-display); color: var(--ivory); }
+  .h-tap { display: none; }
+  .dstop.reading .cap { opacity: 0; }
+
+  .read { position: absolute; z-index: 3; left: 50%; top: calc(50% + var(--hh, 68px) / 2); width: min(880px, 92vw); max-height: calc(100% - var(--hh, 68px) - 40px); transform: translate(-50%, -50%);
+    display: flex; flex-direction: column; background: #f7f0e1; color: #2a2016; border-radius: 6px; box-shadow: 0 40px 80px -24px rgba(0,0,0,.75); transform-origin: 0 0; }
+  .read[hidden], .sheet[hidden] { display: none; }
+  .sheet { display: grid; grid-template-columns: 42% 1fr; gap: 0; min-height: 0; overflow: auto; }
+  .doc { padding: 26px; background: #efe5d0; display: grid; place-items: center; }
+  .doc img { width: 100%; max-height: 52vh; object-fit: contain; filter: drop-shadow(0 10px 16px rgba(60,35,10,.35)); }
+  .words { padding: 34px 34px 20px; display: grid; gap: 12px; align-content: center; }
+  .nm { margin: 0; font: 700 12px var(--f-body); letter-spacing: .18em; text-transform: uppercase; color: #8a6a35; }
+  .bigw { margin: 0; font: 600 clamp(38px, 4.4vw, 60px)/1 var(--f-display); color: #1d160e; }
+  .txt { margin: 0; font-size: 17px; line-height: 1.6; color: #3d3226; }
+  .ep { justify-self: start; margin-top: 6px; font-weight: 700; color: #7a5520; text-decoration: none; border-bottom: 1px solid currentColor; }
+  .rnav { display: flex; justify-content: flex-end; padding: 12px 18px 16px; border-top: 1px solid rgba(120,90,40,.15); }
+  .nextp { all: unset; cursor: pointer; padding: 10px 18px; border-radius: 999px; font-weight: 700; color: #1a1408; background: var(--grad-gold, var(--gold)); }
+  .x { all: unset; position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; font-size: 24px; color: #5a4220; background: rgba(247,240,225,.92); box-shadow: inset 0 0 0 1px rgba(120,90,40,.35); }
+
+  @media (max-width: 899px), (hover: none) {
+    .h-wide { display: none; } .h-tap { display: inline; }
+    .cap { padding: 60px 18px calc(20px + env(safe-area-inset-bottom, 0px)); gap: 6px; }
+    .cap h2 { font-size: 26px; } .cap .say { font-size: 15px; }
+    .read { left: 0; right: 0; top: auto; bottom: 0; width: auto; max-height: 84svh; transform: none; border-radius: 18px 18px 0 0; }
+    .sheet { grid-template-columns: 1fr; }
+    .doc { padding: 16px; } .doc img { max-height: 30svh; }
+    .words { padding: 18px 20px 10px; gap: 8px; }
+    .bigw { font-size: 36px; } .txt { font-size: 15.5px; }
+    .rnav { padding: 10px 14px calc(12px + env(safe-area-inset-bottom, 0px)); }
+  }
+</style>
+
+<script>
+  import { mountStop } from '../lib/stop';
+  import { isWide, peek, headerHeight, stopFrame } from '../lib/frame';
+  import { STOPS } from '../data/house';
+
+  const el = document.querySelector<HTMLElement>('.dstop');
+  if (el) {
+    const W_ = window as any;
+    const read = el.querySelector<HTMLElement>('.read')!;
+    const sheets = [...read.querySelectorAll<HTMLElement>('.sheet')];
+    const papers = [...el.querySelectorAll<HTMLButtonElement>('.paper')];
+    const count = el.querySelector<HTMLElement>('.count')!;
+    const done = el.querySelector<HTMLElement>('.done')!;
+    const intro = el.querySelector<HTMLElement>('.cap .say')!;
+    const seen = new Set<number>();
+    let cur = -1;
+
+    // the reading card flies out of the paper on the desk (FLIP: start warped onto the paper, end flat in the middle)
+    const open = (i: number) => {
+      cur = i;
+      sheets.forEach((s, j) => (s.hidden = j !== i));
+      el.style.setProperty('--hh', `${headerHeight()}px`);
+      read.hidden = false; el.classList.add('reading');
+      const pr = papers[i].getBoundingClientRect(), rr = read.getBoundingClientRect();
+      const sx = pr.width / rr.width, sy = pr.height / rr.height;
+      const base = getComputedStyle(read).transform;
+      read.animate([
+        { transform: `translate(${pr.left - rr.left}px, ${pr.top - rr.top}px) scale(${sx}, ${sy}) ${base === 'none' ? '' : base}`, opacity: .4 },
+        { transform: base === 'none' ? 'none' : base, opacity: 1 },
+      ], { duration: 520, easing: 'cubic-bezier(.2,.7,.2,1)' });
+      if (!seen.has(i)) {
+        seen.add(i); papers[i].classList.add('seen'); count.textContent = String(seen.size);
+        if (seen.size === 3) { done.hidden = false; intro.hidden = true; }
+      }
+      read.querySelector<HTMLElement>('.nextp')!.focus({ preventScroll: true });
+    };
+    const close = () => { if (read.hidden) return; read.hidden = true; el.classList.remove('reading'); papers[cur]?.focus({ preventScroll: true }); };
+    papers.forEach((p, i) => p.addEventListener('click', () => open(i)));
+    read.querySelector('.x')!.addEventListener('click', close);
+    el.querySelector('.veil')!.addEventListener('click', close);
+    read.querySelector('.nextp')!.addEventListener('click', () => {
+      const next = [0, 1, 2].map((k) => (cur + 1 + k) % 3).find((k) => !seen.has(k));
+      if (next === undefined) close(); else open(next);
+    });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && !read.hidden) close(); });
+
+    let peeked = false;
+    const S = STOPS.find((s) => s.id === 'desk')!;
+    mountStop('desk', el, {
+      pan: true,
+      onLive: (on) => {
+        if (!on) close();
+        else if (!isWide() && !peeked) { peeked = true; peek('__panTmp_desk', () => { const st = document.querySelector<HTMLElement>('.scrub .stage')!; return stopFrame(S, st.clientWidth, st.clientHeight, headerHeight(), 0).maxPan ?? 0; }, el); }
+      },
+    });
+  }
+</script>
