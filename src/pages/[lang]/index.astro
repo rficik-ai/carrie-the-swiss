@@ -1,17 +1,23 @@
 ---
+// Homepage: one continuous film. Intro → library of episodes → the fall with the books → a walk through
+// Carrie's house (wall of my life, desk papers, garden quiz, fireplace chat, front door), then episodes,
+// e-mail and footer slide up over the night scene. With reduced motion the classic sections are shown instead.
 import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
 import Hero from '../../components/Hero.astro';
 import Episodes from '../../components/Episodes.astro';
-import Cards from '../../components/Cards.astro';
 import PhotoWall from '../../components/PhotoWall.astro';
-import AskCarrie from '../../components/AskCarrie.astro';
+import WallStop from '../../components/WallStop.astro';
+import DeskStop from '../../components/DeskStop.astro';
+import GardenStop from '../../components/GardenStop.astro';
+import FireStop from '../../components/FireStop.astro';
+import DoorStop from '../../components/DoorStop.astro';
 import Follow from '../../components/Follow.astro';
-import Album from '../../components/Album.astro';
-import Quiz from '../../components/Quiz.astro';
 import Footer from '../../components/Footer.astro';
+import Progress from '../../components/Progress.astro';
+import Cards from '../../components/Cards.astro';
 import RealCarrie from '../../components/RealCarrie.astro';
-import Closing from '../../components/Closing.astro';
+import Quiz from '../../components/Quiz.astro';
 import { availableLocales, t, type Locale } from '../../i18n';
 
 export function getStaticPaths() {
@@ -23,16 +29,37 @@ const s = t(locale);
 <Base locale={locale} title={s.meta.title} description={s.meta.description}>
   <Header locale={locale} />
   <main>
-    <Hero locale={locale} />
+    <Hero locale={locale} house>
+      <div class="after" slot="after">
+        <div class="classic">
+          <RealCarrie locale={locale} />
+          <Cards locale={locale} />
+          <Quiz locale={locale} />
+        </div>
+        <Follow locale={locale} />
+        <Footer locale={locale} />
+      </div>
+    </Hero>
     <Episodes locale={locale} />
     <PhotoWall locale={locale} />
-    <Album locale={locale} />
-    <Cards locale={locale} />
-    <AskCarrie locale={locale} />
-    <RealCarrie locale={locale} />
-    <Quiz locale={locale} />
-    <Follow locale={locale} />
-    <Closing locale={locale} />
+    <WallStop locale={locale} />
+    <DeskStop locale={locale} />
+    <GardenStop locale={locale} />
+    <FireStop locale={locale} />
+    <DoorStop locale={locale} />
   </main>
-  <Footer locale={locale} />
+  <Progress locale={locale} />
+  <script>
+    // reduced motion: the classic sections carry the menu anchors (#carrie, #papers-game, #quiz), not the film's
+    if (document.documentElement.classList.contains('nofilm')) document.querySelectorAll('.spacer .anchor').forEach((a) => a.removeAttribute('id'));
+    else document.querySelectorAll('.classic [id]').forEach((el) => el.removeAttribute('id'));
+  </script>
+  <style>
+    /* the last part of the page scrolls up over the night scene at the front door */
+    .after { position: relative; z-index: 8; background: linear-gradient(180deg, rgba(13,12,10,0) 0, rgba(13,12,10,.82) 38vh, #0d0c0a 70vh); padding-top: 45vh; }
+    .after :global(.follow) { background: none; }
+    .classic { display: none; }
+    :global(.nofilm) .classic { display: block; }
+    :global(.nofilm) .after { padding-top: 0; background: var(--ink); }
+  </style>
 </Base>

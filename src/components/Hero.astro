@@ -56,7 +56,8 @@ const chapters = [
   .scrub { height: 1100vh; }
   .film2 { opacity: 0; }
   .scrub.with-house { height: auto; }
-  .with-house .progress, .with-house .hint { display: none; }   /* the page-wide guide (Progress) takes over */
+  .with-house .progress, .with-house .hint { display: none; }
+  :global(.nofilm) .spacer, :global(.nofilm) .house { display: none; }   /* reduced motion: no walk, the classic sections follow */   /* the page-wide guide (Progress) takes over */
   .spacer { position: relative; height: 1000vh; pointer-events: none; }
   .anchor { position: absolute; left: 0; width: 1px; height: 1px; }
   .house { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
