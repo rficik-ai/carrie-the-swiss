@@ -130,6 +130,26 @@ const chapters = [
     } catch { video.src = src; }
     video.addEventListener('loadedmetadata', () => { ready = true; }, { once: true });
     video.load();
+    if (wide) snapshotLastFrame(video.src);
+  }
+
+  // Render the film's final frame through the same video decoder, so the shelf scene that takes over
+  // shows exactly the same pixels and colours as the film (a separately encoded JPG would shift colours).
+  function snapshotLastFrame(src: string) {
+    const v = document.createElement('video');
+    v.muted = true; v.playsInline = true; v.preload = 'auto'; v.src = src;
+    v.addEventListener('loadedmetadata', () => { v.currentTime = Math.max(0, v.duration - 0.05); }, { once: true });
+    v.addEventListener('seeked', () => {
+      const c = document.createElement('canvas'); c.width = 1920; c.height = 1080;
+      c.getContext('2d')!.drawImage(v, 0, 0, 1920, 1080);
+      c.toBlob((b) => {
+        if (!b) return;
+        const url = URL.createObjectURL(b);
+        (window as any).__shelfFrame = url;
+        window.dispatchEvent(new CustomEvent('shelf-frame', { detail: url }));
+        v.removeAttribute('src'); v.load();
+      }, 'image/png');
+    }, { once: true });
   }
 
   function tick() {
@@ -140,6 +160,8 @@ const chapters = [
       current += (target - current) * 0.18;
       if (Math.abs(target - current) < 0.002) current = target;
       if (!video.seeking && Math.abs(video.currentTime - current) > 0.01) video.currentTime = current;
+      // the shelf scene may take over only once the film really rests on its last frame
+      (window as any).__filmAtEnd = p >= 0.999 && !video.seeking && Math.abs(video.currentTime - (video.duration - 0.05)) < 0.02;
     }
     requestAnimationFrame(tick);
   }
