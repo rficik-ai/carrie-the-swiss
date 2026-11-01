@@ -58,6 +58,49 @@ async function chat(request, env) {
   return json({ reply: text });
 }
 
+// ---- "Is a Swissy right for you?": Carrie's detailed evaluation of the visitor's quiz answers
+const LANG_NAMES = { en: 'English', sk: 'Slovak', cs: 'Czech', de: 'German', pl: 'Polish', fr: 'French', it: 'Italian', es: 'Spanish', uk: 'Ukrainian', hu: 'Hungarian', nl: 'Dutch' };
+const HEADS = {
+  sk: ['Prečo áno', 'Prečo nie', 'Čo by som zmenila'], en: ['Why yes', 'Why not', 'What I would change'],
+};
+async function quiz(request, env) {
+  if (request.method !== 'POST') return json({ error: 'method' }, 405);
+  const origin = request.headers.get('origin') || '';
+  if (origin && new URL(origin).host !== new URL(request.url).host) return json({ error: 'origin' }, 403);
+  if (!env.ANTHROPIC_API_KEY) return json({ error: 'not_configured' }, 503);
+  if (env.CHAT_LIMIT) {
+    const { success } = await env.CHAT_LIMIT.limit({ key: 'quiz:' + (request.headers.get('cf-connecting-ip') || 'anon') });
+    if (!success) return json({ error: 'rate' }, 429);
+  }
+  let b; try { b = await request.json(); } catch { return json({ error: 'bad_json' }, 400); }
+  const lang = LANGS.has(b?.lang) ? b.lang : 'en';
+  const str = (x, n) => String(x ?? '').slice(0, n);
+  const answers = (Array.isArray(b?.answers) ? b.answers : []).slice(0, 12).map((a) => `- ${str(a?.q, 200)} → ${str(a?.a, 160)}`).join('\n');
+  const scores = Object.entries(b?.scores && typeof b.scores === 'object' ? b.scores : {}).slice(0, 8).map(([k, v]) => `${str(k, 40)}: ${Math.max(0, Math.min(100, Number(v) || 0))} %`).join(', ');
+  const flags = (Array.isArray(b?.flags) ? b.flags : []).slice(0, 10).map((f) => `- ${str(f, 200)}`).join('\n') || '- none';
+  if (!answers) return json({ error: 'empty' }, 400);
+  const h = HEADS[lang] || null;
+  const task = `A visitor filled in the quiz "Is a Greater Swiss Mountain Dog (Swissy) right for you?". Evaluate honestly, as Carrie, whether a Swissy fits this person.
+
+Their answers:
+${answers}
+
+Score by area: ${scores}. Overall: ${Math.max(0, Math.min(100, Number(b?.total) || 0))} %.
+Warnings raised by the quiz:
+${flags}
+
+Write in ${LANG_NAMES[lang]}. Use exactly three sections, each starting with a markdown heading (###) ${h ? `named "${h[0]}", "${h[1]}" and "${h[2]}"` : 'meaning "Why yes", "Why not" and "What I would change", translated'}. Under each heading 2 to 4 short bullet points (- ). Refer to their actual answers. Be kind but honest: if a Swissy is a bad fit, say so clearly and, in the last section, you may suggest considering a smaller or calmer breed or an adult dog. In "What I would change" give concrete, practical steps (e.g. meet adult Swissies, puppy classes, a dog walker, savings for the vet). No intro, no outro, no invented numbers or studies, under 220 words.`;
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+    body: JSON.stringify({ model: MODEL, max_tokens: 900, thinking: { type: 'disabled' }, system: systemPrompt(lang), messages: [{ role: 'user', content: task }] }),
+  });
+  if (!res.ok) { console.log('anthropic quiz error', res.status, (await res.text()).slice(0, 300)); return json({ error: 'upstream' }, 502); }
+  const data = await res.json();
+  const text = (data.content || []).filter((c) => c.type === 'text').map((c) => c.text).join('\n').trim();
+  return text ? json({ reply: text }) : json({ error: 'empty_reply' }, 502);
+}
+
 // ---- latest YouTube videos (public RSS, no key), cached for an hour at the edge
 const CHANNEL = 'UCDXuilIy2fdJZ6wRTh1yDgA';
 const unescape = (t) => t.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
@@ -141,6 +184,7 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === '/api/ask') return chat(request, env);
+    if (url.pathname === '/api/quiz') return quiz(request, env);
     if (url.pathname === '/api/latest') return latest(request, ctx);
     if (url.pathname === '/api/subscribe') return subscribe(request, env);
     const t = url.pathname.match(/^\/api\/thumb\/([\w-]+)\.jpg$/);
