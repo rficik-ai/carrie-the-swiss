@@ -28,7 +28,8 @@
   .hud { position: absolute; left: 0; right: 0; top: 0; display: flex; justify-content: space-between; align-items: center; pointer-events: none;
     padding-top: calc(12px + env(safe-area-inset-top, 0px));
     padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-  .btns { display: flex; gap: 8px; }
+  .btns { display: flex; gap: 8px; align-items: center; }
+  a.ico { text-decoration: none; }
   .ico { all: unset; pointer-events: auto; box-sizing: border-box; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center;
     background: rgba(23,15,8,.5); color: var(--ivory); cursor: pointer; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
   .ico svg { width: 20px; height: 20px; }
@@ -88,7 +89,12 @@
   <div class="score" id="score" hidden>0</div>
   <div class="toast" id="toast" hidden aria-live="polite"><span>Nový posudok</span><b id="toastTxt"></b></div>
   <div class="hud">
-    <span class="best">Rekord <b id="bestHud">0</b></span>
+    <div class="btns">
+      <a class="ico" id="home" href="/" aria-label="Späť na web Carrie the Swiss">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      </a>
+      <span class="best">Rekord <b id="bestHud">0</b></span>
+    </div>
     <div class="btns">
       <button class="ico" id="pauseBtn" type="button" aria-label="Pauza" hidden>
         <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg>
@@ -751,6 +757,7 @@
     last = 0;
   });
 
+  try { const r = document.referrer && new URL(document.referrer); if (r && r.origin === location.origin && !r.pathname.startsWith('/herna/')) $('home').href = r.pathname; } catch {}
   resize(); unitGradients(); toTitlePose(); requestAnimationFrame(frame);
   window.__carrie = () => ({ state, dog, stacks, items, score, passed });
 })();
