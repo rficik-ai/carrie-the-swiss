@@ -11,6 +11,8 @@ nothing here is copied to `dist/`, so pushing does not publish them.
 | 04 | Carrie – pexeso (memory, real photos of Carrie) | live at /herna/pexeso/ |
 | 05 | Super Carrie (8-bit platformer, own world and levels; world 1 = 1-1 to 1-4) | live at /herna/super-carrie/ |
 | 06 | Carrie Invaders (space-shooter style: robot vacuums from space, haystack shields, bath-tub drone) | live at /herna/carrie-invaders/ |
+| 07 | Carrie Bounce (brick breaker: Carrie with a cushion, hay bales, 8 picture levels) | live at /herna/carrie-bounce/ |
+| 08 | Carrie Jump (endless jumper: clouds up to the stars) | live at /herna/carrie-jump/ |
 
 Each game is one self-contained HTML file (`build.py` embeds the art as data URIs).
 Later: an arcade page that lists the games and a shared high-score table.

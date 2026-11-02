@@ -7,6 +7,8 @@ GAMES = {
     'pexeso': ('04-carriino-pexeso/carriino-pexeso.html', 'Carrie – pexeso. Nájdite dvojice skutočných fotiek Carrie.'),
     'super-carrie': ('05-super-carrie/super-carrie.html', 'Super Carrie – retro plošinovka s Carrie. Prebehni záhradou, pivnicou, korunami stromov a kúpeľňou až ku Kráľovi Vysávačovi.'),
     'carrie-invaders': ('06-carrie-invaders/carrie-invaders.html', 'Carrie Invaders – vysávače z vesmíru útočia na záhradu. Carrie ich odháňa tenisovými loptičkami a kryje sa za kopkami sena.'),
+    'carrie-bounce': ('07-carrie-bounce/carrie-bounce.html', 'Carrie Bounce – Carrie odráža vankúšom tenisovú loptičku do stien z balíkov sena. Osem obrázkových levelov a dobroty z krabíc.'),
+    'carrie-jump': ('08-carrie-jump/carrie-jump.html', 'Carrie Jump – Carrie skáče z obláčika na obláčik až ku hviezdam. Pružinky, balóniky a lietajúce vysávače.'),
 }
 root = pathlib.Path(__file__).resolve().parent
 for slug in (sys.argv[1:] or GAMES):
