@@ -757,7 +757,7 @@
     last = 0;
   });
 
-  try { const r = document.referrer && new URL(document.referrer); if (r && r.origin === location.origin && !r.pathname.startsWith('/herna/')) $('home').href = r.pathname; } catch {}
+  try { const r = document.referrer && new URL(document.referrer); if (r && r.origin === location.origin && r.pathname !== location.pathname) $('home').href = r.pathname; } catch {}
   resize(); unitGradients(); toTitlePose(); requestAnimationFrame(frame);
   window.__carrie = () => ({ state, dog, stacks, items, score, passed });
 })();

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Carriina herňa</title>
+<meta name="description" content="Hry s Carrie z Carrie the Swiss: Lietajúca Carrie a Carrie uteká. Zahrajte si a prekonajte svoj rekord.">
+<meta name="theme-color" content="#0d0c0a">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=Manrope:wght@500;700;800&display=swap">
+<style>
+  :root {
+    --ink: #0d0c0a; --card: #17140f; --ivory: #f6efe1; --muted: #b9ab92; --gold: #e2b65c; --gold-hi: #f2cf80; --line: rgba(234,211,154,.22);
+    --f-display: "Playfair Display", Georgia, "Times New Roman", serif;
+    --f-body: Manrope, system-ui, -apple-system, "Segoe UI", sans-serif;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--ink); }
+  body { margin: 0; min-height: 100vh; color: var(--ivory); font: 500 16px/1.55 var(--f-body);
+    background: radial-gradient(1200px 600px at 50% -10%, rgba(226,182,92,.16), transparent 60%), var(--ink);
+    padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+  header { display: flex; align-items: center; justify-content: space-between; padding-block: 18px; }
+  .back { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); text-decoration: none; font-weight: 700; font-size: 14px; }
+  .back:hover { color: var(--ivory); }
+  .back svg { width: 18px; height: 18px; }
+  .mark { font: 700 16px var(--f-display); letter-spacing: .18em; color: var(--gold); text-decoration: none; }
+  .hero { padding-block: 28px 18px; text-align: center; }
+  .eyebrow { margin: 0; font-size: 12px; font-weight: 800; letter-spacing: .24em; text-transform: uppercase; color: var(--gold); }
+  h1 { margin: 10px 0 8px; font: 800 clamp(40px, 7vw, 64px)/1.02 var(--f-display); text-wrap: balance; }
+  .lead { margin: 0 auto; max-width: 52ch; color: var(--muted); }
+  .games { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 22px; padding-block: 26px 60px; }
+  .game { display: grid; grid-template-rows: auto 1fr; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; text-decoration: none; color: inherit;
+    transition: transform .25s, border-color .25s, box-shadow .25s; min-width: 0; }
+  .game:hover, .game:focus-visible { transform: translateY(-4px); border-color: rgba(226,182,92,.6); box-shadow: 0 24px 50px -24px rgba(0,0,0,.8); outline: none; }
+  .game img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; max-width: 100%; }
+  .body { padding: 20px 22px 22px; display: grid; gap: 10px; align-content: start; }
+  .num { font-size: 11px; font-weight: 800; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); }
+  h2 { margin: 0; font: 800 28px/1.1 var(--f-display); }
+  .body p { margin: 0; color: var(--muted); font-size: 15px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+  .meta span { font-size: 12px; font-weight: 700; color: var(--ivory); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
+  .play { justify-self: start; margin-top: 6px; display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 999px; font-weight: 800; font-size: 15px; color: #1a1408;
+    background: linear-gradient(180deg, var(--gold-hi), var(--gold)); }
+  .best { font-size: 13px; color: var(--muted); }
+  .best b { color: var(--gold); }
+  footer { padding-block: 0 40px; text-align: center; color: var(--muted); font-size: 13px; }
+  @media (prefers-reduced-motion: reduce) { .game { transition: none; } .game:hover { transform: none; } }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="back" id="back" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Späť na web</a>
+      <a class="mark" href="/">CARRIE</a>
+    </header>
+    <section class="hero">
+      <p class="eyebrow">Carriina herňa</p>
+      <h1>Zahrajte si s Carrie</h1>
+      <p class="lead">Dve hry na mobil aj počítač. Rekord si pamätá váš prehliadač, tak skúste prekonať sami seba.</p>
+    </section>
+    <main class="games">
+      <a class="game" href="/herna/lietajuca-carrie/">
+        <img src="/herna/img/lietajuca-carrie.webp" alt="Carrie letí s roztiahnutými ušami pomedzi stohy kníh" width="720" height="405">
+        <div class="body">
+          <span class="num">Hra 1</span>
+          <h2>Lietajúca Carrie</h2>
+          <p>Swissy uši sú vlastne krídla. Ťukajte a preleťte pomedzi stohy kníh od západu slnka až do rána. Na konci vás posúdi výstavný rozhodca.</p>
+          <div class="meta"><span>ťuk alebo medzerník</span><span>posudky až po BIS</span></div>
+          <span class="best" data-key="carrie-flappy-best">Váš rekord: <b>–</b></span>
+          <span class="play">Hrať</span>
+        </div>
+      </a>
+      <a class="game" href="/herna/carrie-utekaj/">
+        <img src="/herna/img/carrie-utekaj.webp" alt="Carrie beží po dedinskej ceste a vybehla na voz so senom" width="720" height="405">
+        <div class="body">
+          <span class="num">Hra 2</span>
+          <h2>Carrie uteká</h2>
+          <p>Niekto napustil vaňu. Utekajte cez dedinu a tunel, vybehnite na vozy so senom, vyhnite sa husiam a zbierajte balóniky, pružinky a kostičky.</p>
+          <div class="meta"><span>potiahnutie prstom alebo šípky</span><span>čím ďalej, tým rýchlejšie</span></div>
+          <span class="best" data-key="carrie-runner-best">Váš rekord: <b>–</b></span>
+          <span class="play">Hrať</span>
+        </div>
+      </a>
+    </main>
+    <footer>Ďalšie hry pribudnú. Carrie už trénuje.</footer>
+  </div>
+  <script>
+    document.querySelectorAll('.best').forEach((el) => {
+      try { const v = localStorage.getItem(el.dataset.key); if (v && Number(v) > 0) el.querySelector('b').textContent = Number(v); else el.hidden = true; } catch { el.hidden = true; }
+    });
+    try { const r = document.referrer && new URL(document.referrer); if (r && r.origin === location.origin && !r.pathname.startsWith('/herna/')) { document.getElementById('back').href = r.pathname; try { sessionStorage.setItem('carrie-from', r.pathname); } catch {} } else { const f = sessionStorage.getItem('carrie-from'); if (f) document.getElementById('back').href = f; } } catch {}
+  </script>
+</body>
+</html>
