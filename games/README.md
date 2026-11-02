@@ -10,6 +10,7 @@ nothing here is copied to `dist/`, so pushing does not publish them.
 | 03 | Carrieman (Pac-Man style, garden maze, robot vacuums) | live at /herna/carrieman/ (was „Carrie a vysávače“) |
 | 04 | Carrie – pexeso (memory, real photos of Carrie) | live at /herna/pexeso/ |
 | 05 | Super Carrie (8-bit platformer, own world and levels; world 1 = 1-1 to 1-4) | live at /herna/super-carrie/ |
+| 06 | Carrie Invaders (space-shooter style: robot vacuums from space, haystack shields, bath-tub drone) | live at /herna/carrie-invaders/ |
 
 Each game is one self-contained HTML file (`build.py` embeds the art as data URIs).
 Later: an arcade page that lists the games and a shared high-score table.
