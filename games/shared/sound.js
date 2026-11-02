@@ -16,6 +16,7 @@
         } catch { ok = false; }
       },
       stop() { if (el) el.pause(); },
+      _el() { return el; },
     };
   };
   const soundWanted = () => { try { return localStorage.getItem(SOUND_KEY) === '1'; } catch { return false; } };
