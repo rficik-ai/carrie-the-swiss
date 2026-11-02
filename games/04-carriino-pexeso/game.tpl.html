@@ -1,0 +1,226 @@
+<title>Carriino pexeso</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=Manrope:wght@500;700;800&display=swap">
+<style>
+  /* Carrie's fourth game: a memory game with real photos of her. Same warm arcade look, one committed dark theme. */
+  :root {
+    --ink: #13100b; --card: #1d1810; --ivory: #fbf3e4; --gold: #e2b65c; --gold-hi: #f2cf80; --gold-deep: #9a6a22; --paper: #f7efdf; --paper-ink: #2a1d10; --paper-soft: #5a4630; --muted: #8a7357;
+    --f-display: "Playfair Display", Georgia, "Times New Roman", serif;
+    --f-body: Manrope, system-ui, -apple-system, "Segoe UI", sans-serif;
+    color-scheme: dark;
+  }
+  [hidden] { display: none !important; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; background: radial-gradient(900px 600px at 50% 0%, #2c2415, var(--ink)); color: var(--ivory); font-family: var(--f-body); overflow: hidden;
+    -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+  .app { position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr; }
+  .hud { display: flex; justify-content: space-between; align-items: center; gap: 8px;
+    padding-top: calc(12px + env(safe-area-inset-top, 0px)); padding-bottom: 8px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .btns { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .ico { all: unset; box-sizing: border-box; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.08); color: var(--ivory); cursor: pointer; text-decoration: none; }
+  .ico svg { width: 20px; height: 20px; }
+  .ico:focus-visible, .cta:focus-visible, .ghost:focus-visible, .lvl:focus-visible, .tile:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+  .pill { font: 700 12px var(--f-body); letter-spacing: .12em; text-transform: uppercase; color: rgba(251,243,228,.9); background: rgba(255,255,255,.08); padding: 8px 12px; border-radius: 999px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pill b { color: var(--gold); font-weight: 800; }
+  .stage { position: relative; display: grid; place-items: center; padding: 6px max(12px, env(safe-area-inset-right, 0px)) calc(14px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px)); min-height: 0; }
+  .board { display: grid; gap: var(--gap, 10px); grid-template-columns: repeat(var(--cols), var(--size)); grid-auto-rows: var(--size); perspective: 1200px; }
+  .tile { all: unset; position: relative; width: var(--size); height: var(--size); cursor: pointer; transform-style: preserve-3d; transition: transform .45s cubic-bezier(.3,.7,.3,1.2); border-radius: 12px; }
+  .tile.up, .tile.done { transform: rotateY(180deg); }
+  .face { position: absolute; inset: 0; border-radius: 12px; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; }
+  .back { background: radial-gradient(circle at 30% 20%, rgba(242,207,128,.18), transparent 55%), repeating-linear-gradient(45deg, #241c11 0 8px, #1f180e 8px 16px);
+    box-shadow: inset 0 0 0 2px rgba(226,182,92,.55), inset 0 0 0 6px #1a140c, inset 0 0 0 7px rgba(226,182,92,.25), 0 10px 20px -12px rgba(0,0,0,.8); display: grid; place-items: center; }
+  .back img { width: 62%; height: auto; filter: drop-shadow(0 6px 10px rgba(0,0,0,.5)); opacity: .95; }
+  .front { transform: rotateY(180deg); background: #2a2216; box-shadow: inset 0 0 0 2px rgba(255,255,255,.12), 0 10px 20px -12px rgba(0,0,0,.8); }
+  .front img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .front span { position: absolute; left: 6px; right: 6px; bottom: 6px; padding: 4px 6px; border-radius: 8px; background: rgba(19,16,11,.72); color: var(--ivory);
+    font: 700 clamp(9px, calc(var(--size) / 12), 13px)/1.2 var(--f-body); text-align: center; opacity: 0; transform: translateY(6px); transition: opacity .3s .25s, transform .3s .25s; }
+  .tile.done .front span { opacity: 1; transform: none; }
+  .tile.done .front { box-shadow: inset 0 0 0 3px var(--gold), 0 0 24px -4px rgba(226,182,92,.65); }
+  .tile.miss { animation: shake .35s; }
+  @keyframes shake { 0%,100% { translate: 0 } 25% { translate: -5px 0 } 75% { translate: 5px 0 } }
+  .tile.pop { animation: pop .45s; }
+  @keyframes pop { 50% { scale: 1.08 } }
+  .card { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(400px, calc(100% - 32px)); max-height: calc(100% - 24px); overflow: auto;
+    padding: 22px 22px 18px; border-radius: 8px; text-align: center; display: grid; gap: 11px; justify-items: center; background: var(--paper); color: var(--paper-ink); z-index: 5;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,.7), inset 0 0 0 1px rgba(120,80,30,.18); }
+  .eyebrow { margin: 0; font: 800 11px var(--f-body); letter-spacing: .22em; text-transform: uppercase; color: var(--gold-deep); }
+  .card h1, .card h2 { margin: 0; font: 800 clamp(28px, 6vw, 38px)/1.05 var(--f-display); color: #1d1309; text-wrap: balance; }
+  .card p { margin: 0; font-size: 15px; line-height: 1.5; color: var(--paper-soft); max-width: 34ch; }
+  .lvls { display: grid; gap: 8px; width: 100%; }
+  .lvl { all: unset; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 10px; background: #efe3cb; color: #2a1d10; font: 800 15px var(--f-body);
+    box-shadow: inset 0 -2px 0 rgba(120,80,30,.2); }
+  .lvl small { font: 700 12px var(--f-body); color: var(--paper-soft); }
+  .lvl:hover { background: #f4dfb2; }
+  .lvl b { font: 700 12px var(--f-body); color: var(--gold-deep); }
+  .cta { all: unset; cursor: pointer; padding: 13px 28px; border-radius: 999px; font: 800 15px var(--f-body); color: #1d1309; background: linear-gradient(180deg, var(--gold-hi), var(--gold)); box-shadow: 0 10px 22px -10px rgba(120,70,0,.8); }
+  .ghost { all: unset; cursor: pointer; padding: 12px 16px; border-radius: 999px; font: 700 13px var(--f-body); color: var(--paper-soft); box-shadow: inset 0 0 0 1.5px rgba(120,80,30,.35); }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .stars { font-size: 34px; letter-spacing: 6px; color: #d9a72c; }
+  .stars .off { color: #d9ccb2; }
+  .nums { display: flex; gap: 26px; justify-content: center; }
+  .nums div { display: grid; gap: 2px; }
+  .nums b { font: 800 30px/1 var(--f-display); color: #1d1309; font-variant-numeric: tabular-nums; }
+  .nums span { font: 700 11px var(--f-body); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  .new { font: 800 11px var(--f-body); letter-spacing: .2em; text-transform: uppercase; color: #fff; background: #b8452b; padding: 5px 10px; border-radius: 999px; }
+  .toast { position: absolute; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); padding: 10px 18px; border-radius: 999px; background: rgba(19,16,11,.85); border: 1px solid rgba(226,182,92,.6);
+    font: italic 600 18px var(--f-display); color: var(--gold); white-space: nowrap; pointer-events: none; z-index: 4; }
+  @media (prefers-reduced-motion: reduce) { .tile { transition: none; } .tile.miss, .tile.pop { animation: none; } }
+</style>
+
+<div class="app">
+  <div class="hud">
+    <div class="btns">
+      <a class="ico" id="home" href="/" aria-label="Späť na web Carrie the Swiss"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></a>
+      <span class="pill">Ťahy <b id="moves">0</b></span>
+      <span class="pill">Čas <b id="time">0:00</b></span>
+    </div>
+    <div class="btns">
+      <button class="ico" id="menuBtn" type="button" aria-label="Zmeniť úroveň" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button>
+      <button class="ico" id="mute" type="button" aria-label="Zapnúť zvuk a hudbu">
+        <svg id="icoOff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M17 9l4 6M21 9l-4 6"/></svg>
+        <svg id="icoOn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="stage" id="stage">
+    <div class="board" id="board" role="grid" aria-label="Kartičky pexesa"></div>
+    <div class="toast" id="toast" hidden aria-live="polite"></div>
+
+    <div class="card" id="start">
+      <p class="eyebrow">Carriina herňa · hra 4</p>
+      <h1>Carriino pexeso</h1>
+      <p>Nájdite dvojice mojich skutočných fotiek. Pod každou nájdenou dvojicou sa dozviete, čo na nej robím.</p>
+      <div class="lvls" id="lvls">
+        <button class="lvl" type="button" data-pairs="6">Šteniatko <small>6 dvojíc</small><b data-best="6"></b></button>
+        <button class="lvl" type="button" data-pairs="8">Junior <small>8 dvojíc</small><b data-best="8"></b></button>
+        <button class="lvl" type="button" data-pairs="10">Šampiónka <small>10 dvojíc</small><b data-best="10"></b></button>
+      </div>
+    </div>
+    <div class="card" id="over" hidden>
+      <p class="eyebrow">Všetky dvojice nájdené</p>
+      <h2 id="overTitle">Výborne!</h2>
+      <div class="stars" id="stars" aria-label="Hodnotenie"></div>
+      <span class="new" id="newBest" hidden>Nový rekord</span>
+      <div class="nums"><div><b id="fMoves">0</b><span>Ťahov</span></div><div><b id="fTime">0:00</b><span>Čas</span></div></div>
+      <p id="overNote"></p>
+      <div class="row"><button class="cta" id="again" type="button">Ešte raz</button><button class="ghost" id="other" type="button">Iná úroveň</button></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  'use strict';
+  const PHOTOS = [
+    ["__PH0__", 'Pózujem na prechádzke'], ["__PH1__", 'Ešte ako šteniatko'], ["__PH2__", 'Na výstave'], ["__PH3__", 'Nos v snehu'], ["__PH4__", 'Beh po zasneženom poli'],
+    ["__PH5__", 'Detail na moje oko'], ["__PH6__", 'Stojím ako modelka'], ["__PH7__", 'Môj profil zboku'], ["__PH8__", 'Oddych na vankúši'], ["__PH9__", 'Prechádzka po poli'],
+  ];
+  const FLYER = "__FLYER__";
+  const $ = (id) => document.getElementById(id);
+  const board = $('board'), stage = $('stage');
+
+/*__SOUND__*/
+  const TRACK = makeTrack('everyday');
+  const audio = (() => {
+    let curLevel = 0, ac = null, on = false;
+    function ensure() { if (ac) return true; const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return false; ac = new AC(); return true; }
+    function tone(f0, f1, dur, type = 'sine', vol = 0.08, when = 0) {
+      if (!on || !ac) return; const t = ac.currentTime + when, o = ac.createOscillator(), g = ac.createGain();
+      o.type = type; o.frequency.setValueAtTime(f0, t); if (f1 !== f0) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g).connect(ac.destination); o.start(t); o.stop(t + dur + 0.05);
+    }
+    return {
+      get isOn() { return on; },
+      toggle() { unlockSession(); if (!ensure()) return false; on = !on; saveSound(on); if (on) { ac.resume(); TRACK.play(curLevel); } else TRACK.stop(); return on; },
+      music(level) { curLevel = level; if (on) TRACK.play(level); },
+      suspend() { TRACK.stop(); if (ac && ac.state === 'running') ac.suspend(); },
+      wake() { if (ac && on) { ac.resume(); TRACK.play(curLevel); } },
+      flip() { tone(900, 1300, 0.06, 'triangle', 0.04); },
+      match() { [784, 988, 1319].forEach((f, i) => tone(f, f, 0.16, 'triangle', 0.06, i * 0.07)); },
+      miss() { tone(300, 200, 0.18, 'sine', 0.06); },
+      win() { [523, 659, 784, 1047, 1319, 1568].forEach((f, i) => tone(f, f, 0.22, 'triangle', 0.06, i * 0.09)); },
+    };
+  })();
+  function toggleSound() { const on = audio.toggle(); $('icoOn').hidden = !on; $('icoOff').hidden = on; $('mute').setAttribute('aria-label', on ? 'Vypnúť zvuk a hudbu' : 'Zapnúť zvuk a hudbu'); audio.music(0.035); }
+  $('mute').addEventListener('click', toggleSound);
+
+  const store = { get(k, d) { try { const v = localStorage.getItem('carrie-memo-' + k); return v == null ? d : JSON.parse(v); } catch { return d; } }, set(k, v) { try { localStorage.setItem('carrie-memo-' + k, JSON.stringify(v)); } catch {} } };
+  function showBests() { document.querySelectorAll('[data-best]').forEach((b) => { const v = store.get('best' + b.dataset.best, 0); b.textContent = v ? `rekord ${v} ťahov` : ''; }); }
+  showBests();
+
+  let pairs = 8, cards = [], open = [], moves = 0, found = 0, t0 = 0, timer = 0, lock = false, started = false;
+  const fmt = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  function layout() {
+    const n = pairs * 2, r = stage.getBoundingClientRect(), wide = r.width > r.height * 1.05;
+    const shapes = { 12: [[3, 4], [4, 3]], 16: [[4, 4], [4, 4]], 20: [[4, 5], [5, 4]] }[n];
+    const [cols, rows] = wide ? shapes[1] : shapes[0];
+    const gap = Math.max(6, Math.min(12, r.width / 60));
+    const size = Math.floor(Math.min((r.width - 24 - gap * (cols - 1)) / cols, (r.height - 24 - gap * (rows - 1)) / rows, 190));
+    board.style.setProperty('--cols', cols); board.style.setProperty('--size', size + 'px'); board.style.setProperty('--gap', gap + 'px');
+  }
+  addEventListener('resize', () => { if (cards.length) layout(); });
+  function deal(n) {
+    if (soundWanted() && !audio.isOn) toggleSound();
+    pairs = n; moves = 0; found = 0; open = []; lock = false; started = false; clearInterval(timer);
+    $('moves').textContent = '0'; $('time').textContent = '0:00';
+    const pick = shuffle([...PHOTOS.keys()]).slice(0, pairs);
+    cards = shuffle([...pick, ...pick]);
+    board.innerHTML = '';
+    cards.forEach((p, i) => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'tile'; b.dataset.i = i; b.dataset.p = p; b.setAttribute('aria-label', 'Kartička ' + (i + 1));
+      b.innerHTML = `<div class="face back"><img alt="" src="${FLYER}"></div><div class="face front"><img alt="" src="${PHOTOS[p][0]}"><span>${PHOTOS[p][1]}</span></div>`;
+      b.addEventListener('click', () => flip(b));
+      board.appendChild(b);
+    });
+    $('start').hidden = true; $('over').hidden = true; $('menuBtn').hidden = false;
+    layout(); audio.music(0.035);
+  }
+  function flip(b) {
+    if (lock || b.classList.contains('up') || b.classList.contains('done')) return;
+    if (!started) { started = true; t0 = Date.now(); timer = setInterval(() => { $('time').textContent = fmt(Math.round((Date.now() - t0) / 1000)); }, 500); }
+    b.classList.add('up'); audio.flip(); open.push(b);
+    if (open.length < 2) return;
+    moves++; $('moves').textContent = moves;
+    const [a, c] = open; open = [];
+    if (a.dataset.p === c.dataset.p) {
+      lock = true;
+      setTimeout(() => {
+        a.classList.add('done', 'pop'); c.classList.add('done', 'pop'); a.classList.remove('up'); c.classList.remove('up');
+        a.setAttribute('aria-label', PHOTOS[a.dataset.p][1]); c.setAttribute('aria-label', PHOTOS[c.dataset.p][1]);
+        audio.match(); toast(PHOTOS[a.dataset.p][1]); found++; lock = false;
+        if (found === pairs) setTimeout(win, 700);
+      }, 350);
+    } else {
+      lock = true;
+      setTimeout(() => { a.classList.add('miss'); c.classList.add('miss'); audio.miss(); }, 450);
+      setTimeout(() => { a.classList.remove('up', 'miss'); c.classList.remove('up', 'miss'); lock = false; }, 1000);
+    }
+  }
+  let toastT = 0;
+  function toast(txt) { const el = $('toast'); el.textContent = txt; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => (el.hidden = true), 1600); }
+  function win() {
+    clearInterval(timer); audio.win();
+    const secs = Math.round((Date.now() - t0) / 1000), stars = moves <= pairs * 1.5 ? 3 : moves <= pairs * 2.2 ? 2 : 1;
+    const prev = store.get('best' + pairs, 0), isNew = !prev || moves < prev; if (isNew) store.set('best' + pairs, moves);
+    $('stars').innerHTML = [1, 2, 3].map((i) => `<span class="${i <= stars ? '' : 'off'}">★</span>`).join('');
+    $('stars').setAttribute('aria-label', `${stars} z 3 hviezdičiek`);
+    $('overTitle').textContent = ['', 'Dobrá práca', 'Výborne!', 'Pamäť ako slon!'][stars];
+    $('overNote').textContent = ['', 'Skúste to ešte raz s menej ťahmi.', 'Takmer dokonalé. Ešte o pár ťahov menej a sú tri hviezdičky.', 'Rozhodca by dal výbornú 1 a titul šampióna pamäte.'][stars];
+    $('fMoves').textContent = moves; $('fTime').textContent = fmt(secs); $('newBest').hidden = !isNew;
+    $('over').hidden = false; showBests(); $('again').focus({ preventScroll: true });
+  }
+  document.querySelectorAll('.lvl').forEach((b) => b.addEventListener('click', () => deal(+b.dataset.pairs)));
+  $('again').addEventListener('click', () => deal(pairs));
+  $('other').addEventListener('click', () => { $('over').hidden = true; $('start').hidden = false; board.innerHTML = ''; cards = []; $('menuBtn').hidden = true; });
+  $('menuBtn').addEventListener('click', () => { clearInterval(timer); $('over').hidden = true; $('start').hidden = false; board.innerHTML = ''; cards = []; $('menuBtn').hidden = true; });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) audio.suspend(); else audio.wake(); });
+  try { const r = document.referrer && new URL(document.referrer); if (r && r.origin === location.origin && r.pathname !== location.pathname) $('home').href = r.pathname; } catch {}
+  // a few face-down cards behind the start card, so the screen is not empty
+  pairs = 8; cards = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; board.innerHTML = cards.map(() => `<div class="tile" aria-hidden="true"><div class="face back"><img alt="" src="${FLYER}"></div></div>`).join(''); layout();
+  window.__memo = () => ({ cards: [...board.querySelectorAll('.tile')].map((b) => b.dataset.p), moves, found });
+})();
+</script>

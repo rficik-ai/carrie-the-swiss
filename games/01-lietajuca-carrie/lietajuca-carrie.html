@@ -186,9 +186,33 @@
   let best = Number(store.get('best', 0)) || 0;
   bestHud.textContent = best;
 
+  // ---------- Carrie's own songs (the same files as the music player on the website, same track the visitor picked there);
+  // in a preview without the website files it falls back to the little synth tune. Sound on/off is shared by all games.
+  const SOUND_KEY = 'carrie-game-sound';
+  const makeTrack = (fallback) => {
+    const FILES = ['everyday', 'triumph', 'sneaky', 'suspense'];
+    let el = null, ok = /^https?:$/.test(location.protocol) && !/claude/.test(location.hostname), vol = 0.5, idx = Math.max(0, FILES.indexOf(fallback));
+    try { const s = JSON.parse(localStorage.getItem('carrie-music') || '{}'); if (typeof s.i === 'number' && FILES[s.i]) idx = s.i; if (typeof s.v === 'number') vol = s.v; } catch {}
+    return {
+      get ok() { return ok; },
+      play(level) {
+        if (!ok) return;
+        try {
+          if (!el) { el = new Audio('/assets/music/' + FILES[idx] + '.mp3'); el.loop = true; el.preload = 'auto'; el.addEventListener('error', () => { ok = false; }); }
+          el.volume = Math.max(0, Math.min(1, vol * 0.85 * Math.min(1, level / 0.045)));
+          if (level > 0) { const p = el.play(); if (p) p.catch(() => {}); } else el.pause();
+        } catch { ok = false; }
+      },
+      stop() { if (el) el.pause(); },
+    };
+  };
+  const soundWanted = () => { try { return localStorage.getItem(SOUND_KEY) === '1'; } catch { return false; } };
+  const saveSound = (on) => { try { localStorage.setItem(SOUND_KEY, on ? '1' : '0'); } catch {} };
+  const unlockSession = () => { try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch {} };
+  const TRACK = makeTrack('everyday');
   // ---------- sound: synthesized, off until the visitor turns it on
   const audio = (() => {
-    let ac = null, on = false, master, musicBus, noise, timer = 0, step = 0, nextT = 0;
+    let curLevel = 0, busLevel = 0, ac = null, on = false, master, musicBus, noise, timer = 0, step = 0, nextT = 0;
     const N = (n) => 440 * Math.pow(2, (n - 69) / 12);
     function ensure() {
       if (ac) return true;
@@ -216,6 +240,7 @@
     const ARP = [0, 1, 2, 3, 2, 1, 2, 1];
     function schedule() {
       if (!on || ac.state !== 'running') return;
+      const want = TRACK.ok ? 0 : curLevel; if (Math.abs(want - busLevel) > 1e-4) { musicBus.gain.setTargetAtTime(want, ac.currentTime, 0.25); busLevel = want; }
       const spb = 60 / 112 / 2;
       if (nextT < ac.currentTime) nextT = ac.currentTime + 0.05;
       while (nextT < ac.currentTime + 0.2) {
@@ -227,14 +252,16 @@
     }
     return {
       get on() { return on; },
+      get isOn() { return on; },
       toggle() {
-        if (!ensure()) return false; on = !on;
-        if (on) { ac.resume(); clearInterval(timer); timer = setInterval(schedule, 40); } else { clearInterval(timer); }
+        unlockSession();
+        if (!ensure()) return false; on = !on; saveSound(on);
+        if (on) { ac.resume(); clearInterval(timer); timer = setInterval(schedule, 40); TRACK.play(curLevel); } else { clearInterval(timer); TRACK.stop(); }
         return on;
       },
-      music(level) { if (!ac) return; musicBus.gain.setTargetAtTime(level, ac.currentTime, 0.25); },
-      suspend() { if (ac && ac.state === 'running') ac.suspend(); },
-      wake() { if (ac && on) ac.resume(); },
+      music(level) { curLevel = level; if (on) TRACK.play(level); },
+      suspend() { TRACK.stop(); if (ac && ac.state === 'running') ac.suspend(); },
+      wake() { if (ac && on) { ac.resume(); TRACK.play(curLevel); } },
       flap() { hiss(1500, 1.1, 0.13, 0.16); tone(320, 560, 0.08, 'triangle', 0.025); },
       point() { tone(1319, 1319, 0.1, 'sine', 0.06); tone(1976, 1976, 0.16, 'sine', 0.05, 0.07); },
       bone() { [880, 1109, 1319].forEach((f, i) => tone(f, f, 0.11, 'triangle', 0.05, i * 0.05)); },
@@ -337,6 +364,7 @@
   // ---------- flow
   function toTitlePose() { dog.x = W * 0.5; dog.y = H * 0.3; dog.rot = 0; dog.vy = 0; }
   function start() {
+    if (soundWanted() && !audio.isOn) toggleSound();
     state = 'play'; score = 0; passed = 0; bones = 0; runTime = 0; nextRank = 1;
     stacks = []; items = []; pops = []; parts = parts.filter((p) => p.kind === 'puff');
     dog.vy = 0; dog.shield = false; dog.inv = 0; dog.flaps = 0; dog.tx = clamp(W * 0.28, 92, 210);
