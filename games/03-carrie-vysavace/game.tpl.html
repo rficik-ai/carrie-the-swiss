@@ -83,7 +83,7 @@
     <p>V záhrade sa rozsypali granule a robotické vysávače ich chcú všetky vysať. Zjedzte ich skôr. Po kostičke sa vysávače boja vás.</p>
     <ul class="legend">
       <li><i style="color:#e8b878">●</i>granula 10</li>
-      <li><img alt="" src="__HEADC__">ja, Carrie</li>
+      <li><img alt="" src="__SIDE0__">ja, Carrie</li>
       <li><i>🦴</i>kostička: vysávače utekajú</li>
       <li><img alt="" src="__VACR__">vysávač 200 až 1600</li>
     </ul>
@@ -112,7 +112,7 @@
 <script>
 (() => {
   'use strict';
-  const ART = { open: "__HEADO__", closed: "__HEADC__", red: "__VACR__", pink: "__VACP__", cyan: "__VACC__", orange: "__VACO__", hedge: "__HEDGE__" };
+  const ART = { s0: "__SIDE0__", s1: "__SIDE1__", s2: "__SIDE2__", red: "__VACR__", pink: "__VACP__", cyan: "__VACC__", orange: "__VACO__", hedge: "__HEDGE__" };
   const IMG = {}; for (const k in ART) { const i = new Image(); i.src = ART[k]; IMG[k] = i; }
   const ready = (i) => i && i.complete && i.naturalWidth > 0;
   const $ = (id) => document.getElementById(id);
@@ -210,39 +210,57 @@
     mazeCv = null;
   }
   addEventListener('resize', resize);
-  // hedges drawn slimmer than their tiles (like the arcade's outlines), so the paths read wide and the characters fit
+  // hedges drawn slimmer than their tiles (like the arcade's outlines), so the paths read wide and the characters fit.
+  // Everything you cannot walk on (hedges and the closed-off areas at the sides) is one hedge mass with one glowing rim.
   function buildMaze(flash) {
     if (!ready(IMG.hedge)) return null;
-    const c = document.createElement('canvas'); c.width = Math.round(T * COLS * dpr); c.height = Math.round(T * ROWS * dpr);
-    const g = c.getContext('2d'); g.scale(dpr, dpr);
-    const inset = T * 0.3, R = T * 0.45, path = new Path2D();
+    const CW = T * COLS, CH = T * ROWS;
+    const layer = () => { const c = document.createElement('canvas'); c.width = Math.round(CW * dpr); c.height = Math.round(CH * dpr); const g = c.getContext('2d'); g.scale(dpr, dpr); return [c, g]; };
+    const [mc, m] = layer();
+    const inset = T * 0.3, R = T * 0.45, F = T * 0.28;
+    const w = (a, b) => (b >= 0 && b < ROWS && a >= 0 && a < COLS ? wallish(a, b) : true);
+    m.fillStyle = '#fff';
+    const concave = [];
     for (let r = 0; r < ROWS; r++) for (let cc = 0; cc < COLS; cc++) {
-      if (ch(cc, r) !== '#') continue;
-      const w = (a, b) => b >= 0 && b < ROWS && a >= 0 && a < COLS ? wallish(a, b) : true;
+      if (!wallish(cc, r)) continue;
       const L = w(cc - 1, r) ? 0 : inset, Rr = w(cc + 1, r) ? 0 : inset, U = w(cc, r - 1) ? 0 : inset, D = w(cc, r + 1) ? 0 : inset;
       const x = cc * T + L, y = r * T + U, ww = T - L - Rr, hh = T - U - D;
       const tl = L && U ? R : 0, tr = Rr && U ? R : 0, br = Rr && D ? R : 0, bl = L && D ? R : 0;
-      path.roundRect(x - 0.4, y - 0.4, ww + 0.8, hh + 0.8, [tl, tr, br, bl]);
-      // concave corners: fill the little gap between two hedges meeting at a corner
-      for (const [dx, dy] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) if (w(cc + dx, r) && w(cc, r + dy) && !w(cc + dx, r + dy)) path.rect(cc * T + (dx > 0 ? T - inset - 0.4 : 0), r * T + (dy > 0 ? T - inset - 0.4 : 0), inset + 0.8, inset + 0.8);
+      m.beginPath(); m.roundRect(x - 0.3, y - 0.3, ww + 0.6, hh + 0.6, [tl, tr, br, bl]); m.fill();
+      for (const [dx, dy] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) if (w(cc + dx, r) && w(cc, r + dy) && !w(cc + dx, r + dy)) concave.push([cc, r, dx, dy]);
     }
-    // bright rim first (its inner half and the seams between tiles get covered by the leaves), then the hedge itself
-    g.save(); g.shadowColor = flash ? 'rgba(255,255,255,.7)' : 'rgba(120,230,90,.7)'; g.shadowBlur = T * 0.5;
-    g.strokeStyle = flash ? '#ffffff' : '#9fe07a'; g.lineWidth = Math.max(2, T * 0.2); g.lineJoin = 'round'; g.stroke(path); g.restore();
-    if (flash) { g.fillStyle = '#e9f5e0'; g.fill(path); }
+    // inside corners: trim the tile corner that pokes into the path, then round the corner softly
+    m.globalCompositeOperation = 'destination-out';
+    for (const [cc, r, dx, dy] of concave) m.fillRect(cc * T + (dx > 0 ? T - inset : -1), r * T + (dy > 0 ? T - inset : -1), inset + 1, inset + 1);
+    m.globalCompositeOperation = 'source-over';
+    for (const [cc, r, dx, dy] of concave) {
+      const qx = cc * T + (dx > 0 ? T - inset : inset), qy = r * T + (dy > 0 ? T - inset : inset);
+      m.beginPath(); m.moveTo(qx - dx * 0.5, qy - dy * 0.5); m.lineTo(qx + dx * F, qy - dy * 0.5); m.lineTo(qx + dx * F, qy); m.quadraticCurveTo(qx, qy, qx, qy + dy * F); m.lineTo(qx - dx * 0.5, qy + dy * F); m.closePath(); m.fill();
+    }
+    // glowing rim: the mask grown by a few pixels in the rim colour
+    const [tc, t] = layer(); t.drawImage(mc, 0, 0, CW, CH); t.globalCompositeOperation = 'source-in'; t.fillStyle = flash ? '#ffffff' : '#9fe07a'; t.fillRect(0, 0, CW, CH);
+    const [rc, rg] = layer(), rw = Math.max(1.6, T * 0.11);
+    for (const k of [0.5, 1]) for (let i = 0; i < 16; i++) { const a = (i / 16) * Math.PI * 2; rg.drawImage(tc, Math.cos(a) * rw * k, Math.sin(a) * rw * k, CW, CH); }
+    const [c, g] = layer();
+    g.save(); g.shadowColor = flash ? 'rgba(255,255,255,.7)' : 'rgba(120,230,90,.7)'; g.shadowBlur = T * 0.5; g.drawImage(rc, 0, 0, CW, CH); g.restore();
+    const [hc, h] = layer();
+    if (flash) { h.fillStyle = '#e9f5e0'; h.fillRect(0, 0, CW, CH); }
     else {
-      const hp = g.createPattern(IMG.hedge, 'repeat'); hp.setTransform(new DOMMatrix([T * 2 / IMG.hedge.naturalWidth, 0, 0, T * 2 / IMG.hedge.naturalWidth, 0, 0]));
-      g.save(); g.clip(path); g.fillStyle = hp; g.fillRect(0, 0, T * COLS, T * ROWS); g.fillStyle = 'rgba(10,30,5,.12)'; g.fillRect(0, 0, T * COLS, T * ROWS); g.restore();
+      const hp = h.createPattern(IMG.hedge, 'repeat'); hp.setTransform(new DOMMatrix([T * 2 / IMG.hedge.naturalWidth, 0, 0, T * 2 / IMG.hedge.naturalWidth, 0, 0]));
+      h.fillStyle = hp; h.fillRect(0, 0, CW, CH); h.fillStyle = 'rgba(10,30,5,.12)'; h.fillRect(0, 0, CW, CH);
     }
-    // gate
-    g.fillStyle = '#f0c8d8'; g.fillRect(13 * T, 9 * T + T * 0.38, T * 2, T * 0.24);
+    h.globalCompositeOperation = 'destination-in'; h.drawImage(mc, 0, 0, CW, CH);
+    g.drawImage(hc, 0, 0, CW, CH);
+    // the vacuums' charging garage: a warm floor and the gate
+    g.fillStyle = flash ? 'rgba(255,255,255,.06)' : 'rgba(240,200,216,.05)'; g.fillRect(11 * T - inset, 10 * T - inset, 6 * T + inset * 2, 3 * T + inset * 2);
+    g.fillStyle = '#f0c8d8'; g.fillRect(13 * T - inset, 9 * T + T * 0.38, T * 2 + inset * 2, T * 0.24);
     return c;
   }
 
   // ---------- state
   let state = 'title', level = 1, score = 0, lives = 3, extraGiven = false, dots = new Set(), dotsLeft = 0, eaten = 0, vacEaten = 0, clock = 0;
   let modeIdx = 0, modeT = 0, fright = 0, frightMax = 6, chain = 0, fruit = null, fruitShown = 0, pops = [], timerT = 0, freezeT = 0, lastDotT = 0, banner = '';
-  const me = { x: START.x, y: START.y, dir: 'left', want: 'left', mouth: 0, slow: 0 };
+  const me = { x: START.x, y: START.y, dir: 'left', want: 'left', face: -1, chomp: 0, stuck: false, slow: 0 };
   const VAC = [
     { name: 'red', start: { x: 13.5, y: 8 }, corner: { c: 25, r: -3 }, limit: [0, 0, 0] },
     { name: 'pink', start: { x: 13.5, y: 11 }, corner: { c: 2, r: -3 }, limit: [0, 0, 0] },
@@ -255,8 +273,8 @@
 
   function resetDots() { dots = new Set(); for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) if (MAP[r][c] === '.' || MAP[r][c] === 'o') dots.add(r * COLS + c); dotsLeft = dots.size; eaten = 0; fruitShown = 0; }
   function resetActors(afterDeath) {
-    Object.assign(me, { x: START.x, y: START.y, dir: 'left', want: 'left', mouth: 0, slow: 0 });
-    VAC.forEach((v, i) => { v.x = v.start.x; v.y = v.start.y; v.dir = i === 0 ? 'left' : i === 1 ? 'down' : 'up'; v.st = i === 0 ? 'out' : 'home'; if (!afterDeath) v.dots = 0; v.flash = 0; });
+    Object.assign(me, { x: START.x, y: START.y, dir: 'left', want: 'left', face: -1, chomp: 0, stuck: false, slow: 0 });
+    VAC.forEach((v, i) => { v.x = v.start.x; v.y = v.start.y; v.dir = i === 0 ? 'left' : i === 1 ? 'down' : 'up'; v.st = i === 0 ? 'out' : 'home'; if (!afterDeath) v.dots = 0; v.flash = 0; v.charge = 0; });
     modeIdx = 0; modeT = 0; fright = 0; fruit = null; freezeT = 0; lastDotT = 0;
   }
   function startGame() {
@@ -288,7 +306,7 @@
 
   // ---------- Carrie: arcade-style cornering (turn a little before or after the centre of a crossing)
   function movePac(dt) {
-    let dist = pacSpeed() * dt;
+    let dist = pacSpeed() * dt, moved = 0;
     const horiz = me.dir === 'left' || me.dir === 'right';
     if (me.want !== me.dir) {
       if (me.want === OPP[me.dir]) me.dir = me.want;
@@ -302,16 +320,17 @@
     while (dist > 1e-6 && guard++ < 6) {
       const [dx, dy] = DIRS[me.dir], c = Math.round(me.x), r = Math.round(me.y);
       if (atCentre(me) && !open(c + dx, r + dy)) { // blocked: try the wished direction, otherwise stop
-        const [wx, wy] = DIRS[me.want]; if (open(c + wx, r + wy)) { me.dir = me.want; continue; } return;
+        const [wx, wy] = DIRS[me.want]; if (open(c + wx, r + wy)) { me.dir = me.want; continue; } return moved;
       }
       const toC = dx ? ((dx > 0 ? Math.floor(me.x + 1e-6) + 1 : Math.ceil(me.x - 1e-6) - 1) - me.x) * dx : ((dy > 0 ? Math.floor(me.y + 1e-6) + 1 : Math.ceil(me.y - 1e-6) - 1) - me.y) * dy;
       const s = Math.min(dist, toC > 1e-6 ? toC : 1);
-      me.x += dx * s; me.y += dy * s; dist -= s;
+      me.x += dx * s; me.y += dy * s; dist -= s; moved += s;
       if (Math.abs(me.x - Math.round(me.x)) < 1e-6) me.x = Math.round(me.x);
       if (Math.abs(me.y - Math.round(me.y)) < 1e-6) me.y = Math.round(me.y);
       wrap(me);
       if (atCentre(me)) { const [wx, wy] = DIRS[me.want]; if (me.want !== me.dir && open(Math.round(me.x) + wx, Math.round(me.y) + wy)) me.dir = me.want; }
     }
+    return moved;
   }
 
   // ---------- vacuums: the classic chase / scatter / frightened rules
@@ -327,13 +346,14 @@
   function moveVac(v, dt) {
     let dist = vacSpeed(v) * dt, guard = 0;
     if (v.st === 'home') { v.y = HOUSE_Y + Math.sin(clock * 6 + v.x) * 0.25; return; }
+    if (v.st === 'charging') { v.charge -= dt; if (v.charge <= 0) { v.y = HOUSE_Y; v.st = 'leaving'; v.flash = 1; } return; }
     if (v.st === 'leaving' || v.st === 'entering') {
       // straight lines inside the house: to the middle, then up and out (or down and in)
       const tx = 13.5, ty = v.st === 'leaving' ? OUT.y : HOUSE_Y;
       while (dist > 1e-6 && guard++ < 6) {
         if (Math.abs(v.x - tx) > 1e-3 && (v.st === 'leaving' || Math.abs(v.y - ty) < 1e-3)) { const s = Math.min(dist, Math.abs(tx - v.x)); v.x += Math.sign(tx - v.x) * s; dist -= s; v.dir = tx > v.x ? 'right' : 'left'; continue; }
         if (Math.abs(v.y - ty) > 1e-3) { const s = Math.min(dist, Math.abs(ty - v.y)); v.y += Math.sign(ty - v.y) * s; dist -= s; v.dir = ty < v.y ? 'up' : 'down'; continue; }
-        if (v.st === 'leaving') { v.st = fright > 0 && !v.flash ? 'fright' : 'out'; v.dir = 'left'; } else { v.st = 'leaving'; v.flash = 1; }
+        if (v.st === 'leaving') { v.st = fright > 0 && !v.flash ? 'fright' : 'out'; v.dir = 'left'; } else { v.st = 'charging'; v.charge = v.chargeMax = level === 1 ? 3 : level < 5 ? 2 : 1.2; }
         break;
       }
       return;
@@ -381,7 +401,7 @@
   function update(dt) {
     clock += dt;
     for (const p of pops) p.life -= dt; pops = pops.filter((p) => p.life > 0);
-    if (state === 'title' || state === 'paused' || state === 'over') { me.mouth += dt * 8; return; }
+    if (state === 'title' || state === 'paused' || state === 'over') return;
     if (state === 'ready') { timerT -= dt; if (timerT <= 0) { state = 'play'; banner = ''; } return; }
     if (state === 'dying') { timerT -= dt; if (timerT <= 0) { if (lives > 0) { resetActors(true); state = 'ready'; timerT = 1.8; banner = 'PRIPRAVENÁ!'; } else gameOver(); } return; }
     if (state === 'clear') { timerT -= dt; if (timerT <= 0) { level++; resetDots(); resetActors(false); state = 'ready'; timerT = 2; banner = `ZÁHRADA ${level}`; mazeCv = null; } return; }
@@ -391,11 +411,11 @@
     if (fruit) { fruit.t -= dt; if (fruit.t <= 0) fruit = null; }
     lastDotT += dt; if (lastDotT > (level < 5 ? 4 : 3)) releaseNext(true); else releaseNext(false);
     me.slow = Math.max(0, me.slow - dt);
-    movePac(dt); me.mouth += dt * 14; eat();
+    const moved = movePac(dt); me.chomp += moved / 1.6; me.stuck = moved < 1e-4; if (me.dir === 'left') me.face = -1; else if (me.dir === 'right') me.face = 1; eat();
     if (state !== 'play') return;
     for (const v of VAC) {
       moveVac(v, dt);
-      if (v.st === 'home' || v.st === 'leaving' || v.st === 'entering') continue;
+      if (v.st === 'home' || v.st === 'leaving' || v.st === 'entering' || v.st === 'charging') continue;
       if (Math.abs(v.x - me.x) < 0.55 && Math.abs(v.y - me.y) < 0.55) {
         if (v.st === 'fright') { chain++; const pts = 200 * 2 ** (chain - 1); score += pts; vacEaten++; v.st = 'eyes'; freezeT = 0.6; pops.push({ x: v.x, y: v.y, text: String(pts), life: 1 }); audio.eat(chain); }
         else if (v.st === 'out') { lives--; state = 'dying'; timerT = 2.2; audio.die(); try { navigator.vibrate && navigator.vibrate(80); } catch {} return; }
@@ -433,7 +453,18 @@
     const x = px(v.x), y = py(v.y), s = T * 1.55;
     if (v.st === 'eyes' || v.st === 'entering') {
       const [dx, dy] = DIRS[v.dir];
-      for (const sx of [-1, 1]) { ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.ellipse(x + sx * s * 0.15, y, s * 0.12, s * 0.15, 0, 0, 7); ctx.fill(); ctx.fillStyle = '#2348c8'; ctx.beginPath(); ctx.arc(x + sx * s * 0.15 + dx * s * 0.05, y + dy * s * 0.06, s * 0.065, 0, 7); ctx.fill(); }
+      ctx.lineWidth = Math.max(1, s * 0.03); ctx.strokeStyle = 'rgba(0,0,0,.55)';
+      for (const sx of [-1, 1]) { ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.ellipse(x + sx * s * 0.16, y, s * 0.14, s * 0.18, 0, 0, 7); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#2348c8'; ctx.beginPath(); ctx.arc(x + sx * s * 0.16 + dx * s * 0.06, y + dy * s * 0.07, s * 0.075, 0, 7); ctx.fill(); }
+      return;
+    }
+    if (v.st === 'charging') {
+      const im = IMG[v.name], k = 1 - v.charge / v.chargeMax;
+      if (ready(im)) { ctx.save(); ctx.globalAlpha = 0.45 + 0.35 * k; ctx.drawImage(im, x - s / 2, y - s / 2, s, s * im.naturalHeight / im.naturalWidth); ctx.restore(); }
+      // battery filling up above the vacuum
+      const bw = s * 0.5, bh = s * 0.22, bx = x - bw / 2, by = y - s * 0.62;
+      ctx.fillStyle = 'rgba(0,0,0,.6)'; ctx.beginPath(); ctx.roundRect(bx - 2, by - 2, bw + 4, bh + 4, 3); ctx.fill();
+      ctx.fillStyle = '#fbf3e4'; ctx.fillRect(bx + bw + 2, by + bh * 0.3, 2.5, bh * 0.4);
+      ctx.fillStyle = k < 0.5 ? '#f2a33a' : '#7fe05a'; ctx.fillRect(bx, by, bw * k, bh);
       return;
     }
     const im = IMG[v.name]; if (!ready(im)) return;
@@ -448,19 +479,28 @@
     }
     ctx.restore();
   }
+  const CHOMP = ['s0', 's1', 's2', 's1'];
+  function headImg() {
+    if (state !== 'play') return IMG.s0;
+    if (freezeT > 0 || me.stuck) return IMG.s1;
+    return IMG[CHOMP[Math.floor(me.chomp * 4) % 4]];
+  }
+  function drawHead(im, x, y, s, face, ang) {
+    if (!ready(im)) return;
+    const h = s * im.naturalHeight / im.naturalWidth;
+    ctx.save(); ctx.translate(x, y); ctx.scale(face, 1); ctx.rotate(ang);
+    ctx.drawImage(im, -s * 0.52, -h * 0.47, s, h);
+    ctx.restore();
+  }
   function drawCarrie() {
-    const x = px(me.x), y = py(me.y), s = T * 1.7;
+    const x = px(me.x), y = py(me.y), s = T * 1.8;
     if (state === 'dying') {
       const t = Math.min(1, (2.2 - timerT) / 1.6);
-      ctx.save(); ctx.translate(x, y); ctx.rotate(t * Math.PI * 3); ctx.scale(1 - t, 1 - t);
-      if (ready(IMG.closed)) ctx.drawImage(IMG.closed, -s / 2, -s / 2, s, s * IMG.closed.naturalHeight / IMG.closed.naturalWidth);
-      ctx.restore(); return;
+      ctx.save(); ctx.translate(x, y); ctx.rotate(t * Math.PI * 3); ctx.scale(1 - t, 1 - t); drawHead(IMG.s2, 0, 0, s, me.face, 0); ctx.restore(); return;
     }
-    const moving = state === 'play' && freezeT <= 0, open = moving && Math.sin(me.mouth) > 0, im = open ? IMG.open : IMG.closed; if (!ready(im)) return;
-    const tilt = { left: -0.2, right: 0.2, up: 0, down: 0 }[me.dir];
-    ctx.save(); ctx.translate(x, y); ctx.rotate(tilt);
-    ctx.drawImage(im, -s / 2, -s / 2, s, s * im.naturalHeight / im.naturalWidth);
-    ctx.restore();
+    // up / down: nose points the way she runs
+    const ang = me.dir === 'up' ? -1.1 : me.dir === 'down' ? 1.1 : 0;
+    drawHead(headImg(), x, y, s, me.face, ang);
   }
   function text(t, x, y, size, col, align = 'center') { ctx.font = `800 ${size}px Manrope, system-ui, sans-serif`; ctx.textAlign = align; ctx.fillStyle = col; ctx.fillText(t, x, y); }
   function render() {
@@ -485,7 +525,7 @@
     text('SKÓRE', ox + 4, oy - 26, 11, 'rgba(251,243,228,.6)', 'left'); text(String(score), ox + 4, oy - 8, Math.max(16, Math.round(T * 1.05)), '#fbf3e4', 'left');
     text('ZÁHRADA ' + level, ox + T * COLS - 4, oy - 8, 12, 'rgba(251,243,228,.7)', 'right');
     const by = oy + T * ROWS + 8, li = Math.max(18, T * 1.3);
-    if (ready(IMG.closed)) for (let i = 0; i < Math.max(0, lives - (state === 'play' || state === 'clear' ? 1 : 0)); i++) ctx.drawImage(IMG.closed, ox + i * (li + 4), by, li, li * IMG.closed.naturalHeight / IMG.closed.naturalWidth);
+    for (let i = 0; i < Math.max(0, lives - (state === 'play' || state === 'clear' ? 1 : 0)); i++) drawHead(IMG.s0, ox + i * (li + 6) + li / 2, by + li * 0.5, li * 1.1, 1, 0);
     for (let i = 0; i < Math.min(level, 7); i++) drawFruit(ox + T * COLS - li * 0.6 - i * (li + 4), by + li * 0.5, FRUITS[Math.min(FRUITS.length - 1, level - 1 - i < 0 ? 0 : level - 1 - i)][0], li * 0.38);
   }
 
@@ -526,6 +566,6 @@
   try { const r = document.referrer && new URL(document.referrer); if (r && r.origin === location.origin && r.pathname !== location.pathname) $('home').href = r.pathname; } catch {}
 
   resize(); resetDots(); resetActors(false); requestAnimationFrame(frame);
-  window.__pac = () => ({ state, score, lives, level, me, vacs: VAC, dots: dotsLeft, fright });
+  window.__pac = () => ({ state, score, lives, level, me, vacs: VAC, dots: dotsLeft, fright, T, ox, oy, set: (o) => { if (o.fright) { fright = o.fright; VAC.forEach((v) => { if (v.st === "out") v.st = "fright"; }); } } });
 })();
 </script>
