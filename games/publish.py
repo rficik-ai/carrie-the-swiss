@@ -1,10 +1,10 @@
 """Wrap a built single-file game into a full page under public/herna/<slug>/index.html."""
 import pathlib, sys
 GAMES = {
-    'lietajuca-carrie': ('01-lietajuca-carrie/lietajuca-carrie.html', 'Lietajúca Carrie – hra s Carrie z Carrie the Swiss. Prelietajte cez stohy kníh a zbierajte výstavné posudky.'),
-    'carrie-utekaj': ('02-carrie-utekaj/carrie-utekaj.html', 'Carrie uteká – utečte s Carrie pred kúpaním cez dedinu a tunel, vybehnite na vozy so senom a zbierajte kostičky.'),
-    'carrie-a-vysavace': ('03-carrie-vysavace/carrie-vysavace.html', 'Carrie a vysávače – zjedzte všetky granule v záhradnom bludisku skôr, než ich vysajú robotické vysávače.'),
-    'pexeso': ('04-carriino-pexeso/carriino-pexeso.html', 'Carriino pexeso – nájdite dvojice skutočných fotiek Carrie.'),
+    'flappy-carrie': ('01-lietajuca-carrie/lietajuca-carrie.html', 'Flappy Carrie – hra s Carrie z Carrie the Swiss. Prelietajte cez stohy kníh a zbierajte výstavné posudky.'),
+    'carrie-surfer': ('02-carrie-utekaj/carrie-utekaj.html', 'Carrie Surfer – utečte s Carrie pred kúpaním cez dedinu a tunel, vybehnite na vozy so senom a zbierajte kostičky.'),
+    'carrieman': ('03-carrie-vysavace/carrie-vysavace.html', 'Carrieman – zjedzte všetky granule v záhradnom bludisku skôr, než ich vysajú robotické vysávače.'),
+    'pexeso': ('04-carriino-pexeso/carriino-pexeso.html', 'Carrie – pexeso. Nájdite dvojice skutočných fotiek Carrie.'),
 }
 root = pathlib.Path(__file__).resolve().parent
 for slug in (sys.argv[1:] or GAMES):

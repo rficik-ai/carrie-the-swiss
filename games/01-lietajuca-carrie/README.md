@@ -1,4 +1,4 @@
-# 01 · Lietajúca Carrie
+# 01 · Flappy Carrie (formerly Lietajúca Carrie)
 
 Flappy-style game. Tap / click / Space flaps Carrie's ears; fly through gaps in stacks of books.
 

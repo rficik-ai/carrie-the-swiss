@@ -1,4 +1,4 @@
-# 02 · Carrie uteká (Subway Surfers style)
+# 02 · Carrie Surfer (Subway Surfers style, formerly Carrie uteká)
 
 Carrie runs down a Slovak village road at golden hour, away from bath time. Three lanes.
 

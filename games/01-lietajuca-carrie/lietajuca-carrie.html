@@ -1,4 +1,4 @@
-<title>Lietajúca Carrie</title>
+<title>Flappy Carrie</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,600&family=Manrope:wght@500;700;800&display=swap">
@@ -85,7 +85,7 @@
 </style>
 
 <div class="app">
-  <canvas id="game" tabindex="0" aria-label="Hra Lietajúca Carrie. Ťuknite, kliknite alebo stlačte medzerník a Carrie mávne ušami."></canvas>
+  <canvas id="game" tabindex="0" aria-label="Hra Flappy Carrie. Ťuknite, kliknite alebo stlačte medzerník a Carrie mávne ušami."></canvas>
   <div class="score" id="score" hidden>0</div>
   <div class="toast" id="toast" hidden aria-live="polite"><span>Nový posudok</span><b id="toastTxt"></b></div>
   <div class="hud">
@@ -107,8 +107,8 @@
   </div>
 
   <div class="card start" id="start">
-    <p class="eyebrow">Carriina herňa</p>
-    <h1>Lietajúca Carrie</h1>
+    <p class="eyebrow">Carriina herňa · hra 1</p>
+    <h1>Flappy Carrie</h1>
     <p>Swissy uši sú vlastne krídla. Preleťte so mnou cez stohy kníh z mojej knižnice a zbierajte posudky ako na výstave.</p>
     <ul class="legend">
       <li><svg viewBox="0 0 40 40"><g transform="rotate(-20 20 20)" fill="#f3dfb5" stroke="#8a5a1c" stroke-width="2"><rect x="11" y="16" width="18" height="8" rx="4"/><circle cx="10" cy="16" r="4.5"/><circle cx="10" cy="24" r="4.5"/><circle cx="30" cy="16" r="4.5"/><circle cx="30" cy="24" r="4.5"/></g></svg>kostička +1</li>
@@ -773,7 +773,7 @@
   $('mute').addEventListener('click', toggleSound);
   $('copy').addEventListener('click', async () => {
     const r = RANKS[rankIndex(score)];
-    const text = `Lietajúca Carrie: ${score} ${plural(score, ['bod', 'body', 'bodov'])}, posudok ${r[1]}. Prekonáte ma?`;
+    const text = `Flappy Carrie: ${score} ${plural(score, ['bod', 'body', 'bodov'])}, posudok ${r[1]}. Prekonáte ma?`;
     let ok = false;
     try { await navigator.clipboard.writeText(text); ok = true; } catch {
       try { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); ok = document.execCommand('copy'); ta.remove(); } catch {}

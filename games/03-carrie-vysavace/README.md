@@ -1,4 +1,4 @@
-# 03 · Carrie a vysávače (Pac-Man style)
+# 03 · Carrieman (Pac-Man style, formerly Carrie a vysávače)
 
 Garden maze, 28 × 24 tiles in the proportions of the arcade classic (own layout, `maze2.py` checks symmetry, no dead ends, all granules reachable).
 
