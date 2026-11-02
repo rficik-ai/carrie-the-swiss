@@ -12,3 +12,5 @@ Carrie runs down a Slovak village road at golden hour, away from bath time. Thre
 - Titles by distance: 0 Okúpaná hneď pri dverách · 300 Utiekla za roh · 800 Sused ju videl utekať · 1600 Hrdinka dediny · 3000 Kúpanie odložené · 5000 Legenda bez kúpeľa.
 - Sprites: Higgsfield GPT Image 2.5 job bed21645-2378-4f62-9a75-4b8b03459ff6 (rear view sheet, refs 642c794e back 3/4, 831b5cd4 side, cf4ba6f4 standing) → `extract_sprites.py` → `assets/*.webp`.
 - `python3 build.py` → `carrie-utekaj.html` (single file).
+
+- v3 (2026-11-02, Rob's notes): tunnel drawn as one smooth piece (no flickering colour bands) with ribs and lamps that stream past; tunnel portal set into a green hill; long objects passing the camera are drawn by their nearest point (fence no longer shows through the hay); ramp drawn after its wagon (no longer vanishes while climbing); geese are painted sprites (GPT Image 2.5 jobs c9d6e633 / c2f94b97 on chroma green → `assets/goose*.webp`).
