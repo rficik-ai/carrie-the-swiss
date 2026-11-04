@@ -178,10 +178,21 @@ section.block { padding-block: clamp(72px, 10vw, 140px); }
 /* wipe (the follow section): a sweep uncovers the title */
 .js [data-reveal] .fx-wipe { clip-path: inset(-.4em 100% -.4em 0); }
 .js [data-reveal].in .fx-wipe { clip-path: inset(-.4em 0 -.4em 0); transition: clip-path 1.2s cubic-bezier(.65,0,.35,1) .25s; }
+/* ...and the painted shelf drifts slowly inside its letters ("fresh from the shelf") */
+/* (the box hugs the text, so the picture is measured on the letters: the Alps' bright sky and peaks, never the dark porch) */
+.fx-fill { width: fit-content; background-image: url(/assets/img/pano.jpg); background-size: auto 900%; background-position: 66% 5%;
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; text-shadow: none;
+  filter: saturate(1.15) brightness(1.08); animation: drift 24s ease-in-out infinite alternate; }
+@keyframes drift { to { background-position: 80% 9%; } }
+
+/* ink (the film's chapters): the lead fills in word by word as you scroll through the chapter (Hero sets --ink 0…1) */
+.ink .sp .w { opacity: clamp(.26, calc((var(--ink, 1) * (var(--n) + 4) - var(--wi)) / 4), 1); transition: opacity .25s linear; }
 
 @media (prefers-reduced-motion: reduce) {
   .js .rv .rf, .js .rv .kicker::before, .js .rv .sp .w, .js .rv .sp .c, .js .fx-flap .c, .js [data-reveal] .fx-wipe {
     opacity: 1 !important; translate: none !important; scale: none !important; rotate: none !important; filter: none !important; clip-path: none !important; animation: none !important; transition: none !important; }
   .js .rv .fx-ember .c { color: inherit !important; text-shadow: none !important; }
+  .fx-fill { animation: none; }
+  .ink .sp .w { opacity: 1; }
 }
 canvas.dust { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }

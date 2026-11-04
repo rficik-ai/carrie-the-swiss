@@ -32,7 +32,7 @@ const chapters = [
           {c.eyebrow && <p class="eyebrow kicker rf">{c.eyebrow}</p>}
           {/* the first title rises like the sun over the hills; the next ones come into focus */}
           <h1 class={i === 0 ? 'big fx-rise' : 'fx-focus'} aria-label={c.title}><Split text={c.title} by={i === 0 ? 'char' : 'word'} /></h1>
-          <p class="lead rf">{c.text}</p>
+          <p class="lead rf ink"><span class="sr-only">{c.text}</span><Split text={c.text} by="word" /></p>
           {c.cta && <a class="pill-cta rf" style="--fd:.75s" href="#episodes">{s.hero.cta} <span aria-hidden="true">→</span></a>}
         </article>
       ))}
@@ -133,9 +133,9 @@ const chapters = [
   let cur1 = 0, cur2 = 0, ready1 = false, ready2 = false, loading2 = false;
   const W_ = window as any;
   // the first title rises only once the page has painted with its fonts: switched on at once it would land unseen
-  let painted = false;
+  let painted = false, paintedAt = 0;
   Promise.race([document.fonts?.ready, new Promise((r) => setTimeout(r, 1500))])
-    .then(() => requestAnimationFrame(() => requestAnimationFrame(() => { painted = true; })));
+    .then(() => requestAnimationFrame(() => requestAnimationFrame(() => { painted = true; paintedAt = performance.now(); })));
 
   // ---- the walk through the house (beta page): continues after the photo wall
   const HT = section.dataset.house ? JSON.parse(section.dataset.house) as { steps: Step[]; total: number; start: number } : null;
@@ -305,6 +305,13 @@ const chapters = [
     const pc = q1 / split;
     const idx = pc > 1.02 ? -1 : Math.min(chapters.length - 1, Math.floor(Math.min(1, pc) * chapters.length * 0.999));
     chapters.forEach((c, i) => { const on = reduce || i === idx; c.classList.toggle('on', on); c.classList.toggle('rv-in', on && (painted || reduce)); });
+    // the lead inks in word by word while you scroll through its chapter (full by a little under half of it)
+    // (the very first one also fills by itself shortly after its title has risen: nobody has scrolled yet)
+    if (idx >= 0 && !reduce) {
+      let ink = clamp((Math.min(1, pc) * chapters.length - idx) / 0.45);
+      if (idx === 0 && paintedAt) ink = Math.max(ink, clamp((performance.now() - paintedAt - 1100) / 1900));
+      chapters[idx].style.setProperty('--ink', String(ink));
+    }
     shade.style.opacity = String(1 - clamp((q1 - split) / 0.06));
     bar.style.width = `${q1 * 100}%`;
     bar.parentElement!.style.opacity = q1 > 0.97 ? '0' : '1';

@@ -12,7 +12,11 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
   <ol class="rail">
     {CH.map((c) => <li data-c={c}><button type="button"><span class="lb">{h[`nav_${c}`]}</span><i aria-hidden="true"></i></button></li>)}
   </ol>
-  <button type="button" class="more" aria-label={h.more}><span>{s.hero.scroll}</span><i aria-hidden="true"></i></button>
+  <button type="button" class="more" aria-label={h.more}>
+    <svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="ringp" d="M60,60 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0" /></defs>
+      <text><textPath href="#ringp" textLength="282" lengthAdjust="spacing">{`${s.hero.scroll} ✦ Carrie the Swiss ✦ `.toUpperCase()}</textPath></text></svg>
+    <i aria-hidden="true"></i>
+  </button>
 </nav>
 
 <style>
@@ -28,18 +32,22 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
   .rail li.on i { background: var(--gold-hi); border-color: var(--gold-hi); transform: scale(1.35); box-shadow: 0 0 0 5px rgba(234,211,154,.2); }
   .lb { font: 600 12px var(--f-body); letter-spacing: .08em; color: var(--ivory); padding: 4px 10px; border-radius: 999px; background: rgba(13,12,10,.72); opacity: 0; transform: translateX(6px); transition: opacity .25s, transform .25s; white-space: nowrap; }
   .rail li.on .lb, .rail button:hover .lb, .rail button:focus-visible .lb { opacity: 1; transform: none; }
-  /* the one scroll cue: a word and a falling line, only on the first screen */
-  .more { all: unset; position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 8px); display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 8px 16px; cursor: pointer;
-    color: rgba(255,255,255,.88); font: 700 10px/1 var(--f-body); letter-spacing: .32em; text-indent: .32em; text-transform: uppercase; text-shadow: 0 1px 8px rgba(0,0,0,.5);
-    opacity: 0; pointer-events: none; transition: opacity .6s, transform .6s; }
+  /* the one scroll cue, only on the first screen: the word runs round a slowly turning ring, a line falls through the middle */
+  .more { all: unset; position: fixed; left: 50%; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); width: 104px; height: 104px; transform: translate(-50%, 8px);
+    display: grid; place-items: center; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .6s, transform .6s; filter: drop-shadow(0 1px 6px rgba(0,0,0,.55)); }
+  .more .ring { position: absolute; inset: 0; width: 100%; height: 100%; animation: spin 18s linear infinite; }
+  .more text { font: 700 10.5px var(--f-body); letter-spacing: .14em; fill: rgba(255,255,255,.9); }
   .more i { display: block; width: 1px; height: 30px; background: linear-gradient(#fff, rgba(255,255,255,0)); animation: drip 1.8s ease-in-out infinite; }
+  @keyframes spin { to { rotate: 360deg; } }
   @keyframes drip { 0% { transform: scaleY(0); transform-origin: top } 50% { transform: scaleY(1); transform-origin: top } 51% { transform-origin: bottom } 100% { transform: scaleY(0); transform-origin: bottom } }
   .prog.cue .more { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
   @media (max-width: 899px), (hover: none) {
     .rail { display: none; }
     .bar { top: var(--hh, 64px); height: 2px; }
   }
-  @media (prefers-reduced-motion: reduce) { .more i { animation: none; } }
+  /* phones: the chapter text is centred at the bottom, so the ring keeps to the corner */
+  @media (max-width: 899px), (hover: none) { .more { width: 74px; height: 74px; left: auto; right: 10px; transform: translateY(8px); } .prog.cue .more { transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .more i, .more .ring { animation: none; } }
 </style>
 
 <script>

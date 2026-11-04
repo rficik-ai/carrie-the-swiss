@@ -5,14 +5,18 @@ import { EPISODES, INSTAGRAM, YOUTUBE } from '../data/episodes';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const f = (t(locale) as any).follow;
+const topics = Object.entries((t(locale) as any).topics as Record<string, string>).filter(([k]) => k !== 'intro').map(([, v]) => v);
 // fallback while the feed loads (or if it fails): the published season-one episodes
 const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ id: e.yt![0], title: `${e.n} · ${e.title}` }));
 ---
 <section class="block follow" id="follow">
+  <div class="marq" aria-hidden="true"><div class="mq-track">{[0, 1].map(() => (
+    <span class="mq-run">{topics.map((w) => <Fragment><span class="mq-w">{w}</span><span class="mq-s">✦</span></Fragment>)}</span>
+  ))}</div></div>
   <div class="wrap">
     <div class="head" data-reveal>
       <p class="eyebrow kicker">{f.eyebrow}</p>
-      <h2 class="fx-wipe">{f.title}</h2>
+      <h2 class="fx-wipe fx-fill">{f.title}</h2>
       <p class="muted">{f.intro}</p>
       <form class="notify" novalidate data-lang={locale} data-msg={JSON.stringify({ ok: f.ok, err: f.err, invalid: f.invalid, off: f.off, done: f.done })}>
         <p class="nl-title">{f.nl_title}</p>
@@ -44,6 +48,13 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
 
 <style>
   .follow { background: radial-gradient(60% 50% at 10% 0%, rgba(201,163,91,.12), transparent 70%), var(--ink); overflow: hidden; }
+  /* the series' topics run past in big caps, every other one filled; scrolling pushes them faster, up turns them round */
+  .marq { overflow: hidden; margin: 0 0 clamp(28px, 4vw, 56px); padding-block: 4px; }
+  .mq-track { display: flex; width: max-content; will-change: transform; }
+  .mq-run { display: flex; align-items: center; gap: .42em; padding-right: .42em; font: 800 clamp(46px, 8.4vw, 128px)/1.08 var(--f-head); text-transform: uppercase; letter-spacing: -.012em; white-space: nowrap; }
+  .mq-w { color: transparent; -webkit-text-stroke: 1.4px rgba(234,211,154,.5); }
+  .mq-w:nth-child(4n+1) { color: rgba(234,211,154,.92); -webkit-text-stroke: 0; }
+  .mq-s { font-size: .34em; color: var(--gold); opacity: .8; }
   .head { display: grid; gap: 14px; max-width: 46em; margin-bottom: 34px; }
   .head h2 { font-size: clamp(28px, 3.9vw, 50px); color: #fff; }
   .notify { display: grid; gap: 10px; margin-top: 8px; padding: 18px; border-radius: 18px; background: rgba(251,248,241,.04); box-shadow: 0 0 0 1px rgba(234,211,154,.2); max-width: 560px; }
@@ -77,6 +88,23 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
 </style>
 
 <script>
+  // the marquee: always drifting left, faster while the page scrolls, and the other way round when you scroll up
+  const track = document.querySelector<HTMLElement>('.follow .mq-track');
+  if (track && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const run = track.firstElementChild as HTMLElement;
+    let x = 0, v = 0, dir = 1, last = scrollY, on = false;
+    const tick = () => {
+      const dy = scrollY - last; last = scrollY;
+      if (dy) dir = dy > 0 ? 1 : -1;
+      v += (Math.min(40, Math.abs(dy)) * 0.35 - v) * 0.08;
+      x -= dir * (0.55 + v);
+      const w = run.offsetWidth;
+      if (x <= -w) x += w; else if (x > 0) x -= w;
+      track.style.transform = `translate3d(${x.toFixed(1)}px, 0, 0)`;
+      if (on) requestAnimationFrame(tick);
+    };
+    new IntersectionObserver(([e]) => { const was = on; on = e.isIntersecting; if (on && !was) { last = scrollY; requestAnimationFrame(tick); } }).observe(track);
+  }
   const form = document.querySelector<HTMLFormElement>('.follow .notify');
   if (form) {
     const M = JSON.parse(form.dataset.msg!);
