@@ -111,6 +111,9 @@ section.block { padding-block: clamp(72px, 10vw, 140px); }
 .rv.rv-in .kicker::before { scale: 1 1; transition: scale .9s cubic-bezier(.2,.7,.2,1) .05s; }
 .rv .kicker { --fd: 0s; }
 
+/* a title of two sentences: the second answers in gold (Split two) */
+.sp .w2 { color: var(--gold-hi); }
+
 /* sunrise (first chapter): the letters rise over the horizon in a warm glow */
 .fx-rise .w { clip-path: inset(-.6em -.3em 0 -.3em); }
 .js .rv .fx-rise .c { translate: 0 108%; text-shadow: 0 0 22px rgba(255,176,86,.95); transition: translate .35s cubic-bezier(.5,0,.75,0); }

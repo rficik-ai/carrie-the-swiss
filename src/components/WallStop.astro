@@ -119,6 +119,7 @@ const href = (x: string) => `/${locale}/${x}`;
 </style>
 
 <script>
+  import { track } from '../lib/ev';
   import { mountStop } from '../lib/stop';
   import { stopFrame, isWide, lerpFrame, damp, type Frame } from '../lib/frame';
   import { STOPS, HOUSE } from '../data/house';
@@ -318,7 +319,7 @@ import Split from './Split.astro';
     // click a frame: walk straight there
     const scrollToFrame = (i: number) => { T = i; scrollTo({ top: topFor(Q(i)), behavior: 'smooth' }); };
     frames.forEach((b) => b.addEventListener('click', () => scrollToFrame(Number(b.dataset.i))));
-    el.querySelectorAll<HTMLButtonElement>('.th').forEach((th) => th.addEventListener('click', () => { lbx.querySelector('img')!.src = th.dataset.full!; lbx.showModal(); }));
+    el.querySelectorAll<HTMLButtonElement>('.th').forEach((th) => th.addEventListener('click', () => { lbx.querySelector('img')!.src = th.dataset.full!; lbx.showModal(); track('wall', 'zoom'); }));
     lbx.addEventListener('click', () => lbx.close());
 
     // the film waits at the wall's edge while the camera is still zooming back out to the whole wall (after a fast fling)

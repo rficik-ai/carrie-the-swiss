@@ -40,6 +40,7 @@ const chips = [a.c1, a.c2, a.c3, a.c4].filter(Boolean);
 </style>
 
 <script>
+  import { track } from '../lib/ev';
   const chat = document.querySelector<HTMLElement>('.ask .chat');
   if (chat) {
     const log = chat.querySelector<HTMLOListElement>('.log')!;
@@ -57,6 +58,7 @@ const chips = [a.c1, a.c2, a.c3, a.c4].filter(Boolean);
     const ask = async (q: string) => {
       q = q.trim(); if (!q || btn.disabled) return;
       add('me', q); history.push({ role: 'user', content: q });
+      track('ask', 'q');
       input.value = ''; btn.disabled = true;
       const wait = add('carrie typing', '');
       try {

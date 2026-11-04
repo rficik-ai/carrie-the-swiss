@@ -64,6 +64,7 @@ const cur = (t(locale) as any).cursor;
 </style>
 
 <script>
+  import { track } from '../lib/ev';
   import { wallFrame, isWide } from '../lib/frame';
   const wide = isWide();
   const wall = document.querySelector<HTMLElement>('.pwall');
@@ -78,11 +79,13 @@ const cur = (t(locale) as any).cursor;
       const c = wallFrame(stage.clientWidth, stage.clientHeight);
       pf.style.transform = `translate(${c.left}px, ${c.top}px) scale(${c.k})`;
     };
+    // desktop flips a photo on hover: count each one once
+    if (wide) wall.querySelectorAll<HTMLElement>('.pcard').forEach((card, i) => card.addEventListener('mouseenter', () => track('flip', String(i + 1), true)));
     wall.querySelectorAll<HTMLElement>('.pcard').forEach((card) => card.addEventListener('click', () => {
       if (wide) return;
       const was = card.classList.contains('flipped');
       wall.querySelectorAll('.pcard').forEach((c) => c.classList.remove('flipped'));
-      if (!was) card.classList.add('flipped');
+      if (!was) { card.classList.add('flipped'); track('flip', String([...wall.querySelectorAll('.pcard')].indexOf(card) + 1), true); }
     }));
     // front faces: the photo exactly as it appears in the film, unwarped into the card rectangle
     const paint = (url: string) => {

@@ -88,10 +88,13 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
 </style>
 
 <script>
+  import { track } from '../lib/ev';
+  const fol = document.querySelector<HTMLElement>('#follow');
+  if (fol) new IntersectionObserver(([e], o) => { if (e.isIntersecting) { track('scene', 'follow', true); o.disconnect(); } }, { threshold: 0.25 }).observe(fol);
   // the marquee: always drifting left, faster while the page scrolls, and the other way round when you scroll up
-  const track = document.querySelector<HTMLElement>('.follow .mq-track');
-  if (track && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const run = track.firstElementChild as HTMLElement;
+  const mqTrack = document.querySelector<HTMLElement>('.follow .mq-track');
+  if (mqTrack && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const run = mqTrack.firstElementChild as HTMLElement;
     let x = 0, v = 0, dir = 1, last = scrollY, on = false;
     const tick = () => {
       const dy = scrollY - last; last = scrollY;
@@ -100,10 +103,10 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
       x -= dir * (0.55 + v);
       const w = run.offsetWidth;
       if (x <= -w) x += w; else if (x > 0) x -= w;
-      track.style.transform = `translate3d(${x.toFixed(1)}px, 0, 0)`;
+      mqTrack.style.transform = `translate3d(${x.toFixed(1)}px, 0, 0)`;
       if (on) requestAnimationFrame(tick);
     };
-    new IntersectionObserver(([e]) => { const was = on; on = e.isIntersecting; if (on && !was) { last = scrollY; requestAnimationFrame(tick); } }).observe(track);
+    new IntersectionObserver(([e]) => { const was = on; on = e.isIntersecting; if (on && !was) { last = scrollY; requestAnimationFrame(tick); } }).observe(mqTrack);
   }
   const form = document.querySelector<HTMLFormElement>('.follow .notify');
   if (form) {
@@ -117,11 +120,11 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
       const email = (form.elements.namedItem('email') as HTMLInputElement).value.trim();
       const consent = (form.elements.namedItem('consent') as HTMLInputElement).checked;
       if (!/^\S+@\S+\.\S+$/.test(email) || !consent) return say(M.invalid, true);
-      btn.disabled = true;
+      btn.disabled = true; track('signup', 'try');
       try {
         const r = await fetch('/api/subscribe', { method: 'POST', headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ email, consent, lang: form.dataset.lang, website: (form.elements.namedItem('website') as HTMLInputElement).value }) });
-        if (r.ok) { say(M.ok); form.reset(); } else say(r.status === 503 ? M.off : r.status === 400 ? M.invalid : M.err, true);
+        if (r.ok) { say(M.ok); form.reset(); track('signup', 'ok'); } else say(r.status === 503 ? M.off : r.status === 400 ? M.invalid : M.err, true);
       } catch { say(M.err, true); }
       btn.disabled = false;
     });
@@ -148,6 +151,7 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
       const dlg = document.querySelector<HTMLDialogElement>('dialog.player');
       if (!a || !dlg || typeof dlg.showModal !== 'function') return;
       e.preventDefault();
+      track('ep_play', (a.dataset.title || '').match(/^\d+/)?.[0] ?? 'feed');
       dlg.querySelector('.ptitle')!.textContent = a.dataset.title || '';
       dlg.querySelector('.pparts')!.innerHTML = '';
       dlg.querySelector('.frame')!.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${a.dataset.yt}?autoplay=1&rel=0&playsinline=1" title="Carrie the Swiss" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;

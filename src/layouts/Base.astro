@@ -43,6 +43,7 @@ const ogImage = `${site}/assets/img/og.jpg`;
     <Cursor />
   
 <script>
+  import { track, referrerHost } from '../lib/ev';
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;   // js / nofilm classes: inline script in <head>
   // reveal on scroll
   const rio = new IntersectionObserver((ents) => ents.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } }), { threshold: 0.15 });
@@ -95,6 +96,16 @@ const ogImage = `${site}/assets/img/og.jpg`;
     };
     new ResizeObserver(size).observe(cv); size();
     new IntersectionObserver(([e]) => { on = e.isIntersecting; cancelAnimationFrame(raf); last = 0; if (on) raf = requestAnimationFrame(tick); }).observe(cv);
+  });
+  // measurement (no cookies): this visit, where it came from (?utm_source=… wins over the referrer), clicks out
+  const qs = new URLSearchParams(location.search);
+  const pageKey = location.pathname.replace(/^\/(en|sk|cs|de|pl|fr|it|es|uk|hu|nl)\//, '/').replace(/\/+$/, '') || '/';
+  track('visit', pageKey === '/' ? 'home' : pageKey.slice(1).split('/')[0], true, (qs.get('utm_source') || qs.get('src') || referrerHost()).slice(0, 60));
+  if (qs.has('subscribed')) track('signup', 'confirmed', true);
+  document.addEventListener('click', (e) => {
+    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href]');
+    if (!a || a.dataset.yt) return;   // a video played in the site's own player is counted there
+    if (/youtube\.com|youtu\.be/.test(a.href)) track('out', 'yt'); else if (/instagram\.com/.test(a.href)) track('out', 'ig');
   });
   // links that open a specific book on the shelf
   document.addEventListener('click', (e) => {

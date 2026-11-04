@@ -6,7 +6,7 @@ interface Props { locale: Locale; house?: boolean }
 const { locale, house = false } = Astro.props;
 const s = t(locale);
 const chapters = [
-  { title: s.hero.ch1_title, text: s.hero.ch1_text, eyebrow: s.hero.eyebrow },
+  { title: s.hero.ch1_title, text: s.hero.ch1_text, eyebrow: s.hero.eyebrow, cta: true },   // the promise and the way in, on the very first screen
   { title: s.hero.ch2_title, text: s.hero.ch2_text },
   { title: s.hero.ch3_title, text: s.hero.ch3_text, cta: true },
 ];
@@ -33,7 +33,7 @@ const chapters = [
           {/* the first title rises like the sun over the hills; the next ones come into focus */}
           <h1 class={i === 0 ? 'big fx-rise' : 'fx-focus'} aria-label={c.title}><Split text={c.title} by={i === 0 ? 'char' : 'word'} /></h1>
           <p class="lead rf ink"><span class="sr-only">{c.text}</span><Split text={c.text} by="word" /></p>
-          {c.cta && <a class="pill-cta rf" style="--fd:.75s" href="#episodes">{s.hero.cta} <span aria-hidden="true">→</span></a>}
+          {c.cta && <a class="pill-cta rf" style="--fd:.75s" href="#episodes" data-ch={i + 1}>{s.hero.cta} <span aria-hidden="true">→</span></a>}
         </article>
       ))}
     </div>
@@ -107,6 +107,8 @@ const chapters = [
 </style>
 
 <script>
+  import { track } from '../lib/ev';
+  document.querySelectorAll<HTMLAnchorElement>('.chapter .pill-cta').forEach((a) => a.addEventListener('click', () => track('cta', `ch${a.dataset.ch}`)));
   import { coverFrame, fitFrame, wallFrame, lerpFrame, stopFrame, damp, type Frame } from '../lib/frame';
   import { STOPS, type Step } from '../data/house';
   const section = document.querySelector<HTMLElement>('.scrub')!;

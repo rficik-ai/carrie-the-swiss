@@ -155,6 +155,7 @@ const data = {
 </style>
 
 <script>
+  import { track } from '../lib/ev';
   const root = document.querySelector<HTMLElement>('.gq');
   if (root) {
     const D = JSON.parse(root.dataset.q!);
@@ -191,6 +192,7 @@ const data = {
     let last: ReturnType<typeof compute> | null = null;
     const finish = () => {
       const r = last = compute();
+      track('quiz', 'done');
       result.querySelector('.rtitle')!.textContent = D.r[r.tier];
       const pctEl = result.querySelector<HTMLElement>('.pct')!; pctEl.textContent = `${r.pct} %`; pctEl.style.setProperty('--v', String(r.pct));
       result.querySelectorAll<HTMLElement>('.bars li').forEach((li) => {
@@ -207,7 +209,7 @@ const data = {
       result.querySelector<HTMLButtonElement>('.ai-go')!.disabled = false;
       show(result); talk(D.r[r.tier]);
     };
-    root.querySelector('.start')!.addEventListener('click', () => show(steps[0]));
+    root.querySelector('.start')!.addEventListener('click', () => { track('quiz', 'start'); show(steps[0]); });
     steps.forEach((st, i) => {
       st.querySelectorAll<HTMLButtonElement>('.opt').forEach((b) => b.addEventListener('click', () => {
         st.querySelectorAll('.opt').forEach((o) => o.classList.remove('picked'));

@@ -52,6 +52,7 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
 
 <script>
   import { HOUSE } from '../data/house';
+  import { track } from '../lib/ev';
   const nav = document.querySelector<HTMLElement>('.prog');
   const sec = document.querySelector<HTMLElement>('.scrub.with-house');
   if (nav && sec) {
@@ -75,6 +76,7 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
       let c = 0; starts.forEach((s, i) => { if (y >= s) c = i; });
       if (c !== cur) {
         cur = c;
+        const id = items[c]?.dataset.c; if (id) track('scene', id, true);
         items.forEach((li, i) => { li.classList.toggle('on', i === c); li.classList.toggle('past', i < c); });
       }
     };

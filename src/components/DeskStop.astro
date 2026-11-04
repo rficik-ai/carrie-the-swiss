@@ -28,7 +28,7 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
   <div class="veil" aria-hidden="true"></div>
   <div class="cap rv" style={`--n:${c.title.replace(/\s+/g, '').length}`}>
     <p class="eyebrow kicker rf"><span class="no">05</span>{c.eyebrow}</p>
-    <h2 class="fx-type" aria-label={c.title}><Split text={c.title} /></h2>
+    <h2 class="fx-type" aria-label={c.title}><Split two text={c.title} /></h2>
     <p class="say rf" style="--fd: calc(.35s + var(--n) * 30ms)"><span class="intro">{c.intro}</span></p>
     <p class="hint tapchip rf" style="--fd: calc(.5s + var(--n) * 30ms)"><TapIcon /><span><span class="h-wide">{h.desk_hint_wide}</span><span class="h-tap">{h.desk_hint_tap.split(' · ')[0]}</span> · <span class="count">0</span> / {papers.length}</span></p>
     <div class="done" hidden>
@@ -112,6 +112,7 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
 </style>
 
 <script>
+  import { track } from '../lib/ev';
   import { mountStop } from '../lib/stop';
   import { headerHeight } from '../lib/frame';
 
@@ -130,6 +131,7 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
     // the reading card flies out of the paper on the desk (FLIP: start warped onto the paper, end flat in the middle)
     const open = (i: number) => {
       cur = i;
+      track('paper', String(i + 1), true);
       sheets.forEach((s, j) => (s.hidden = j !== i));
       el.style.setProperty('--hh', `${headerHeight()}px`);
       read.hidden = false; el.classList.add('reading');

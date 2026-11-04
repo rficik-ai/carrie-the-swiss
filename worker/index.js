@@ -1,6 +1,7 @@
 // Cloudflare Worker: serves the static site and the "Ask Carrie" chat endpoint.
 // The Anthropic API key lives only in the Worker secret ANTHROPIC_API_KEY (never in the code or the browser).
 import { systemPrompt } from './knowledge.js';
+import { event, stats } from './stats.js';
 
 const MODEL = 'claude-haiku-5-5';
 const LANGS = new Set(['en', 'sk', 'cs', 'de', 'pl', 'fr', 'it', 'es', 'uk', 'hu', 'nl']);
@@ -187,6 +188,8 @@ export default {
     if (url.pathname === '/api/quiz') return quiz(request, env);
     if (url.pathname === '/api/latest') return latest(request, ctx);
     if (url.pathname === '/api/subscribe') return subscribe(request, env);
+    if (url.pathname === '/api/ev') return event(request, env);
+    if (url.pathname === '/api/stats') return stats(request, env);
     const t = url.pathname.match(/^\/api\/thumb\/([\w-]+)\.jpg$/);
     if (t) return thumb(request, ctx, t[1]);
     return env.ASSETS.fetch(request);

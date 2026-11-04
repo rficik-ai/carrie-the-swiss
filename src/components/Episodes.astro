@@ -61,7 +61,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
             <span class="plate"><span class="stitle">{e.title}</span><span class="dot"></span></span>
           </button></div>
           <div class="pages">
-            <a href={e.yt ? `https://www.youtube.com/shorts/${e.yt[0]}` : INSTAGRAM} target="_blank" rel="noopener" class="page cover" data-yt={e.yt ? e.yt.join(',') : undefined} data-title={e.title} aria-label={e.yt ? `${play}: ${e.title}` : s.episodes.watch}>
+            <a href={e.yt ? `https://www.youtube.com/shorts/${e.yt[0]}` : INSTAGRAM} target="_blank" rel="noopener" class="page cover" data-n={e.n} data-yt={e.yt ? e.yt.join(',') : undefined} data-title={e.title} aria-label={e.yt ? `${play}: ${e.title}` : s.episodes.watch}>
               <span class="bg" style={e.image ? `background-image:url(${e.image})` : undefined}></span>
               {e.image && <video class="clip" muted loop playsinline preload="none" aria-hidden="true" data-src={e.image.replace('.jpg', '.mp4')}></video>}
               {e.yt && <span class="playbtn" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span>}
@@ -75,7 +75,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
               <p class="line">{lines[e.n]?.line}</p>
               {e.parts && <p class="parts">{s.episodes.parts}: {e.parts.join(' · ')}</p>}
               {e.yt
-                ? <a class="go play" href={`https://www.youtube.com/shorts/${e.yt[0]}`} data-yt={e.yt.join(',')} data-title={e.title}><span class="pi" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span><span>{play}</span></a>
+                ? <a class="go play" href={`https://www.youtube.com/shorts/${e.yt[0]}`} data-n={e.n} data-yt={e.yt.join(',')} data-title={e.title}><span class="pi" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span><span>{play}</span></a>
                 : <a class="go link" href={INSTAGRAM} target="_blank" rel="noopener">{s.episodes.watch} →</a>}
             </div>
           </div>
@@ -318,6 +318,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
 </style>
 
 <script>
+  import { track } from '../lib/ev';
   import { fitFrame, isWide } from '../lib/frame';
   const shelf = document.querySelector<HTMLElement>('.shelf')!;
   const L = JSON.parse(shelf.dataset.labels!);
@@ -359,6 +360,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     a.addEventListener('click', (ev) => {
       if (typeof dlg.showModal !== 'function') return;
       ev.preventDefault();
+      track('ep_play', a.dataset.n ?? '');
       const ids = a.dataset.yt!.split(',');
       dlg.querySelector('.ptitle')!.textContent = a.dataset.title!;
       partsBox.innerHTML = ids.length > 1 ? ids.map((id, i) => `<button type="button" data-id="${id}">${i + 1}/${ids.length}</button>`).join('') : '';
@@ -438,6 +440,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     }
     openBook = (li: HTMLElement) => {
       const pg = pagesOf.get(li.dataset.n!)!;
+      track('ep_open', li.dataset.n ?? '');
       closeAll();
       reader.hidden = false;
       pg.classList.add('on');
