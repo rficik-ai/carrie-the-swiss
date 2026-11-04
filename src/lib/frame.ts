@@ -54,6 +54,18 @@ export const lerpFrame = (a: Frame, b: Frame, e: number): Frame => ({
   k: a.k + (b.k - a.k) * e, left: a.left + (b.left - a.left) * e, top: a.top + (b.top - a.top) * e,
 });
 
+/** critically damped follow (the classic SmoothDamp): x glides to `to` in about `time` seconds and never overshoots;
+ *  v is the velocity, carried from frame to frame; maxSpeed caps how fast it may go. Returns [x, v]. */
+export function damp(x: number, to: number, v: number, time: number, dt: number, maxSpeed = Infinity): [number, number] {
+  if (dt <= 0) return [x, v];
+  time = Math.max(1e-4, time);
+  const w = 2 / time, a = w * dt, e = 1 / (1 + a + 0.48 * a * a + 0.235 * a * a * a);
+  const lim = maxSpeed * time, ch = Math.max(-lim, Math.min(lim, x - to)), goal = x - ch, tmp = (v + w * ch) * dt;
+  let nv = (v - w * tmp) * e, nx = goal + (ch + tmp) * e;
+  if ((to - x > 0) === (nx > to)) { nx = to; nv = 0; }
+  return [nx, nv];
+}
+
 /** horizontal drag on an element → pan value in window[key]; vertical scrolling stays native */
 export function attachPan(el: HTMLElement, key: string, getMax: () => number) {
   const W_ = window as any;

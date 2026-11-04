@@ -100,7 +100,7 @@ const chapters = [
 </style>
 
 <script>
-  import { coverFrame, fitFrame, wallFrame, lerpFrame, stopFrame, type Frame } from '../lib/frame';
+  import { coverFrame, fitFrame, wallFrame, lerpFrame, stopFrame, damp, type Frame } from '../lib/frame';
   import { STOPS, type Step } from '../data/house';
   const section = document.querySelector<HTMLElement>('.scrub')!;
   const stage = section.querySelector<HTMLElement>('.stage')!;
@@ -146,6 +146,32 @@ const chapters = [
     return clamp(-r.top / (section.offsetHeight - innerHeight));
   }
   const houseY = () => -section.getBoundingClientRect().top / stage.clientHeight * 100 - (HT ? HT.start * 1000 : 0);
+  // The walk follows the scroll with a little inertia: a mouse wheel moves the page in jumps of ~100 px,
+  // the camera should glide, not jerk. ys = the smoothed position (vh) the house is drawn at, once per frame.
+  let ys = NaN, yv = 0, yClock = -1, catching = false;
+  function houseYs(now: number) {
+    const raw = houseY();
+    if (now === yClock) return { y: ys, raw };
+    const dt = yClock < 0 ? 0 : (now - yClock) / 1000;
+    yClock = now;
+    if (!Number.isFinite(ys) || dt > 0.25 || raw < -60) { ys = raw; yv = 0; catching = false; }   // first frame, back from a hidden tab, or far from the house
+    else {
+      const prev = ys;
+      [ys, yv] = damp(ys, raw, yv, 0.12, Math.min(dt, 0.05));
+      if (!catching && Math.abs(raw - ys) > 45) ys = raw - Math.sign(raw - ys) * 45;   // never trails far behind a fast fling
+      // a stop whose own camera is still on its way back to where the next move starts (the wall's walk after a fling)
+      // keeps us just inside its edge for a moment, then we glide on: no cut between the stop and the move
+      const busy = W_.__holdBusy;
+      if (busy && HT) for (const s of HT.steps) {
+        if (s.kind !== 'hold' || !busy[s.stop]) continue;
+        const lo = s.from + 10, hi = s.from + s.len - 10;
+        if (prev >= lo && prev <= hi && (ys > hi || ys < lo) && busy[s.stop](ys > hi ? 1 : -1)) { ys = ys > hi ? hi : lo; yv = 0; catching = true; }
+      }
+      if (catching && Math.abs(raw - ys) <= 45) catching = false;
+      if (Math.abs(raw - ys) < 0.005 && Math.abs(yv) < 0.05) { ys = raw; yv = 0; }
+    }
+    return { y: ys, raw };
+  }
 
   function place(im: HTMLImageElement, f: Frame, op: number) {
     if (op > 0 && !im.src && im.tagName === 'IMG') im.src = im.dataset.src!;
@@ -173,9 +199,10 @@ const chapters = [
     const v = vids.get(id)!, st = vst.get(id)!;
     st.cur = seek(v, st.cur, t * (v.duration - 0.05));
   }
-  function renderHouse() {
+  function renderHouse(now: number) {
     if (!HT || !houseEl) return;
-    const y = houseY();
+    const { y, raw } = houseYs(now);
+    W_.__houseY = raw;   // the page itself (the door's caption makes way for the content sliding over it)
     const [W, H] = dims();
     // preload the stills of the next stops a little ahead
     let step = HT.steps.find((s) => y >= s.from && y < s.from + s.len) ?? (y >= HT.total ? HT.steps[HT.steps.length - 1] : null);
@@ -187,6 +214,8 @@ const chapters = [
     vids.forEach((v, id) => { if (id !== step!.stop) v.style.opacity = '0'; });
     const vid = vids.get(step.stop), vs = vst.get(step.stop), vReady = !!(vid && vs?.ready && vid.duration);
     const t = clamp((y - step.from) / step.len);
+    // tell the stops where we are BEFORE asking for frames, so the picture and the layer on top of it agree in this frame
+    if (step.kind === 'hold') { W_.__stop = step.stop; W_.__stopT = t; } else W_.__stop = null;
     const cur = stills.get(step.stop)!, f = frameOf(step.stop);
     stills.forEach((im, id) => { if (id !== step!.stop && (i === 0 || id !== STOPS[i - 1].id)) im.style.opacity = '0'; });
     const needFill = f.k < coverFrame(W, H).k - 1e-3 || 1080 * f.k < H - 1;
@@ -200,26 +229,22 @@ const chapters = [
       place(cur, f, smooth((t - 0.92) / 0.08));
       place(vid as unknown as HTMLImageElement, fr, 1);
       scrubVid(step.stop, t);
-      W_.__stop = null;
       if (hfill) hfill.style.opacity = '0';
     } else if (step.kind === 'move') {
       // stills phase: a slow push into the next room (replaced by the generated video later)
       const x = smooth(t);
       if (i > 0) { const pid = STOPS[i - 1].id; place(stills.get(pid)!, zoom(frameOf(pid), 1 + 0.12 * x, W, H), 1); }
       place(cur, zoom(f, 1.08 - 0.08 * x, W, H), x);
-      W_.__stop = null;
       if (hfill) hfill.style.opacity = '0';
     } else {
       if (i > 0) stills.get(STOPS[i - 1].id)!.style.opacity = '0';
       place(cur, f, 1);   // the stops sit on the sharp stills (the overlays are measured on them)
       if (vid) vid.style.opacity = '0';
-      W_.__stop = step.stop; W_.__stopT = t;
       if (hfill) {
         if (needFill && hfill.dataset.img !== step.stop) { hfill.dataset.img = step.stop; hfill.style.backgroundImage = `url(${cur.dataset.src})`; }
         hfill.style.opacity = needFill ? '1' : '0';
       }
     }
-    W_.__houseY = y;
     document.body.classList.toggle('in-scene', step.kind === 'hold');
   }
 
@@ -316,10 +341,10 @@ const chapters = [
     }, { once: true });
   }
 
-  function tick() {
+  function tick(now: number) {
     const p = progress();
     const { q1, q2 } = render(p);
-    renderHouse();
+    renderHouse(now);
     // focusing something inside a scene must never scroll the clipped stage sideways
     if (stage.scrollLeft || stage.scrollTop) { stage.scrollLeft = 0; stage.scrollTop = 0; }
     if (ready1 && video.duration) {

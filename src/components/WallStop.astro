@@ -72,7 +72,7 @@ const href = (x: string) => `/${locale}/${x}`;
     background: rgba(247,240,225,.96); color: #2a2016; border-radius: 4px; box-shadow: 0 26px 50px -18px rgba(40,20,0,.6), inset 0 0 0 1px rgba(120,90,40,.15);
     opacity: 0; transform: translate(16px, -50%); pointer-events: none; transition: opacity .35s ease, transform .5s cubic-bezier(.2,.7,.2,1); }
   .plaque.on { opacity: 1; transform: translate(0, -50%); pointer-events: auto; }
-  .wstop.flip .plaque { left: var(--gutter); }   /* the picture is on the right half: the plaque moves to the left */
+  .plaque.pl { left: var(--gutter); }   /* this picture ends up on the right half: its plaque hangs on the left */
   .plaque .row .ths { display: flex; gap: 8px; flex-wrap: wrap; }
   .date { margin: 0; font: italic 600 15px var(--f-display); color: #8a6a35; }
   .plaque h3 { margin: 0; font-size: clamp(24px, 2.2vw, 32px); line-height: 1.12; color: #1d160e; }
@@ -113,89 +113,212 @@ const href = (x: string) => `/${locale}/${x}`;
 
 <script>
   import { mountStop } from '../lib/stop';
-  import { stopFrame, headerHeight, isWide, lerpFrame, type Frame } from '../lib/frame';
+  import { stopFrame, isWide, lerpFrame, damp, type Frame } from '../lib/frame';
   import { STOPS, HOUSE } from '../data/house';
   import { WALL } from '../data/wall';
 
   const el = document.querySelector<HTMLElement>('.wstop');
-  if (el) {
+  const sec = document.querySelector<HTMLElement>('.scrub');
+  if (el && sec) {
     const W_ = window as any;
     const S = STOPS.find((s) => s.id === 'wall')!;
     const plaques = [...el.querySelectorAll<HTMLElement>('.plaque')];
     const frames = [...el.querySelectorAll<HTMLElement>('.wf')];
     const lbx = el.querySelector<HTMLDialogElement>('.wlbx')!;
-    const stage = () => document.querySelector<HTMLElement>('.scrub .stage')!;
-    const N = WALL.length, IN = 0.07, OUT = 0.07, SPAN = (1 - IN - OUT) / N;
+    const stage = sec.querySelector<HTMLElement>('.stage')!;
+    const hold = HOUSE.timeline.steps.find((s) => s.kind === 'hold' && s.stop === 'wall')!;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const N = WALL.length;
     const smooth = (x: number) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
 
-    // the camera at frame i: one steady zoom for the whole walk (so the wall glides, it doesn't pump),
-    // the current picture big on the left and its plaque right next to it (phone: picture on top, plaque below)
+    // ---- the walk is paged: every scroll gesture takes the camera one picture further, in one smooth glide.
+    // Where things sit in the hold (t = 0..1 of its scroll length): the whole wall (intro band) · ten pictures,
+    // each with a small rest band, evenly spaced · the whole wall again (outro band).
+    const E0 = 0.024, E1 = 1 - E0, R = 0.0105;
+    const L = (E1 - E0 - 2 * R * N) / (N + 1);
+    const Q = (i: number) => E0 + L + R + i * (2 * R + L);
+    const knots: [number, number][] = [[0, -1], [E0, -1]];
+    for (let i = 0; i < N; i++) knots.push([Q(i) - R, i], [Q(i) + R, i]);
+    knots.push([E1, N], [1, N]);
+    // which picture the scroll position is at: whole numbers on the rest bands, fractions in between, -1 / N = the whole wall
+    const cAt = (t: number) => {
+      if (t <= 0) return -1;
+      for (let j = 1; j < knots.length; j++) {
+        const [t1, c1] = knots[j];
+        if (t <= t1) { const [t0, c0] = knots[j - 1]; return t1 > t0 ? c0 + (c1 - c0) * (t - t0) / (t1 - t0) : c1; }
+      }
+      return N;
+    };
+    const tOf = (c: number) => (c <= -1 ? E0 * 0.6 : c >= N ? (E1 + 1) / 2 : Q(c));
+    const vh = () => stage.clientHeight / 100;
+    const from = () => HOUSE.timeline.start * 1000 + hold.from;
+    const tAtY = (y: number) => ((y - (sec.getBoundingClientRect().top + scrollY)) / vh() - from()) / hold.len;   // hold progress at page offset y
+    const rawT = () => tAtY(scrollY);
+    const topFor = (t: number) => sec.getBoundingClientRect().top + scrollY + (from() + t * hold.len) * vh();
+
+    // ---- the camera: T = the picture it is heading to; c glides after it (two soft springs = gentle start, gentle stop)
+    let T = -1, c = -1, cv = 0, m = -1, mv = 0, clock = -1, ready = false, outside = true;
+    const clampT = (x: number) => Math.max(-1, Math.min(N, x));
+    const advance = () => {
+      const now = Number(document.timeline?.currentTime ?? performance.now());
+      if (now === clock) return;                       // once per frame, whoever asks first
+      const dt = clock < 0 ? 0 : Math.min(0.05, (now - clock) / 1000);
+      clock = now;
+      if (!ready) {
+        const t = rawT(); outside = t < 0 || t > 1;
+        T = t < 0 ? -1 : t > 1 ? N : Math.round(cAt(t)); c = m = T; ready = true; return;
+      }
+      // out of the hold the camera hurries back to the whole wall, so the next move starts where it should;
+      // inside, a long fling never races past more than ~8 pictures a second
+      [m, mv] = damp(m, T, mv, outside ? 0.06 : 0.11, dt, outside ? 40 : 8);
+      [c, cv] = damp(c, m, cv, outside ? 0.14 : 0.25, dt);
+      if (Math.abs(c - T) < 2e-4 && Math.abs(m - T) < 2e-4 && Math.abs(cv) < 2e-3) { c = m = T; cv = mv = 0; }
+    };
+
+    // ---- framing. Desktop: one steady zoom for the whole walk, the picture big on the left and its plaque next to it;
+    // phone: each picture as big as the screen allows, the plaque below.
     function target(i: number, base: Frame, W: number, H: number, hh: number): Frame {
       const r = WALL[i].r, wide = isWide();
       const availH = wide ? H - hh : H * 0.58 - hh;
-      // desktop: one zoom for the whole walk; phone: each picture as big as the screen allows
       const k = wide ? Math.min(base.k * 2.8, (availH * 0.5) / 200) : Math.min(base.k * 3, (W * 0.84) / r.w, (availH * 0.82) / r.h);
       const cx = wide ? W * 0.34 : W / 2, cy = hh + availH / 2;
       let left = cx - (r.x + r.w / 2) * k, top = cy - (r.y + r.h / 2) * k;
       left = Math.max(W - 1920 * k, Math.min(0, left)); top = Math.max(H - 1080 * k, Math.min(0, top));
       return { k, left, top };
     }
-    // the camera along the wall, driven by the scroll position inside this stop
-    const view = () => {
-      const t = W_.__stopT ?? 0;
-      if (t < IN) return { a: -1, b: -1, e: 0, t };
-      if (t > 1 - OUT) return { a: N - 1, b: -1, e: smooth((t - (1 - OUT)) / OUT), t };
-      const u = (t - IN) / SPAN, i = Math.min(N - 1, Math.floor(u)), f = u - i;
-      return { a: i - 1, b: i, e: smooth(f / 0.45), t };   // 45 % of each span sliding to the next frame, the rest resting
-    };
+    // the camera between pictures lives in "camera space": the wall point under the anchor (X, Y) and the zoom (log k)
+    type Cam = { X: number; Y: number; lk: number };
+    let geoKey = '', base: Frame = { k: 1, left: 0, top: 0 }, cams: Cam[] = [], ax = 0, ay = 0;
+    function geometry(W: number, H: number, hh: number) {
+      const wide = isWide(), key = `${W}x${H}x${hh}x${wide}`;
+      if (key === geoKey) return;
+      geoKey = key;
+      const keep = W_.__stopFrame.wall; W_.__stopFrame.wall = null;
+      base = stopFrame(S, W, H, hh, 0);
+      W_.__stopFrame.wall = keep;
+      const availH = wide ? H - hh : H * 0.58 - hh;
+      ax = wide ? W * 0.34 : W / 2; ay = hh + availH / 2;
+      const fr = [base, ...WALL.map((_, i) => target(i, base, W, H, hh)), base];   // [whole wall, picture 0 … 9, whole wall]
+      cams = fr.map((f) => ({ X: (ax - f.left) / f.k, Y: (ay - f.top) / f.k, lk: Math.log(f.k) }));
+      // the plaque stays on one side per picture (decided here, never flipping while the camera moves)
+      plaques.forEach((p, i) => { const f = fr[i + 1], r = WALL[i].r; p.classList.toggle('pl', wide && f.left + (r.x + r.w / 2) * f.k > W * 0.5); });
+    }
+    const TEN = 0.32;   // how much of its sideways drift the camera carries through a picture (0 = straight lines)
+    function camFrame(cc: number, W: number, H: number): Frame {
+      const j = cc + 1;                                   // 0 = whole wall, 1..N = pictures, N + 1 = whole wall
+      if (j <= 0 || j >= N + 1) return base;
+      const a = Math.floor(j), s = j - a, A = cams[a], B = cams[a + 1];
+      let X: number, Y: number;
+      if (a === 0 || a === N) { X = A.X + (B.X - A.X) * s; Y = A.Y + (B.Y - A.Y) * s; }   // zooming in from / out to the whole wall
+      else {
+        // picture to picture: a soft curve through the pictures (cardinal spline), so passing several never zigzags
+        const tan = (q: number, key: 'X' | 'Y') => {
+          const prev = q > 1 ? cams[q - 1][key] : 2 * cams[q][key] - cams[q + 1][key];
+          const next = q < N ? cams[q + 1][key] : 2 * cams[q][key] - cams[q - 1][key];
+          return TEN * (next - prev);
+        };
+        const s2 = s * s, s3 = s2 * s, h00 = 2 * s3 - 3 * s2 + 1, h10 = s3 - 2 * s2 + s, h01 = -2 * s3 + 3 * s2, h11 = s3 - s2;
+        X = h00 * A.X + h10 * tan(a, 'X') + h01 * B.X + h11 * tan(a + 1, 'X');
+        Y = h00 * A.Y + h10 * tan(a, 'Y') + h01 * B.Y + h11 * tan(a + 1, 'Y');
+      }
+      const k = Math.exp(A.lk + (B.lk - A.lk) * s), iw = 1920 * k, ih = 1080 * k;
+      let left = ax - X * k, top = ay - Y * k;
+      if (a > 0 && a < N) {   // never show an edge of the picture on the way
+        left = Math.max(Math.min(0, W - iw), Math.min(Math.max(0, W - iw), left));
+        top = Math.max(Math.min(0, H - ih), Math.min(Math.max(0, H - ih), top));
+      }
+      return { k, left, top };
+    }
     W_.__stopFrame ??= {};
     W_.__stopFrame.wall = (W: number, H: number, hh: number) => {
-      const keep = W_.__stopFrame.wall; W_.__stopFrame.wall = null;
-      const base = stopFrame(S, W, H, hh, 0);
-      W_.__stopFrame.wall = keep;
+      geometry(W, H, hh);
       if (W_.__stop !== 'wall') return base;
-      const v = view();
-      const A = v.a < 0 ? base : target(v.a, base, W, H, hh);
-      const B = v.b < 0 ? base : target(v.b, base, W, H, hh);
-      const f = lerpFrame(A, B, v.e);
-      return { k: f.k, left: Math.round(f.left), top: Math.round(f.top) };
+      advance();
+      // at the very ends of the hold the frame is exactly the whole wall, where the moves in and out begin
+      const t = W_.__stopT ?? 0, g = Math.min(smooth(t / 0.012), smooth((1 - t) / 0.012));
+      const cam = camFrame(c, W, H), f = g >= 1 ? cam : lerpFrame(base, cam, g);
+      return { k: f.k, left: Math.round(f.left * 100) / 100, top: Math.round(f.top * 100) / 100 };
     };
 
-    let shown = -2, flipAt = 0;
+    // ---- what the visitor sees around the camera
+    let shownPl = -2, shownCur = -2;
     const update = () => {
-      const v = view();
-      const cur = v.b >= 0 ? (v.e > 0.55 ? v.b : v.a) : (v.a === N - 1 && v.e < 0.4 ? N - 1 : -1);
-      if (cur !== shown) {
-        shown = cur;
-        plaques.forEach((p, i) => p.classList.toggle('on', i === cur));
-        frames.forEach((f, i) => f.classList.toggle('cur', i === cur));
-        el.classList.toggle('walking', cur >= 0);
-        flipAt = performance.now() + 120;
-      }
-      const cap = v.t < IN ? 1 - smooth(v.t / IN * 1.4) : v.t > 1 - OUT ? smooth((v.t - (1 - OUT)) / OUT) : 0;
+      advance();
+      const at = T >= 0 && T < N && Math.abs(c - T) < 0.14 ? T : -1;   // the plaque comes when the camera arrives
+      if (at !== shownPl) { shownPl = at; plaques.forEach((p, i) => p.classList.toggle('on', i === at)); }
+      const cur = T >= 0 && T < N ? T : -1;                             // the picture we are heading to lights up at once
+      if (cur !== shownCur) { shownCur = cur; frames.forEach((f, i) => f.classList.toggle('cur', i === cur)); el.classList.toggle('walking', cur >= 0); }
+      const cap = c < -0.5 ? 1 - smooth((c + 1) / 0.5) : c > N - 0.5 ? smooth((c - (N - 0.5)) / 0.5) : 0;
       el.style.setProperty('--cap', cap.toFixed(3));
-      // keep the plaque beside the picture, never on top of it
-      if (shown >= 0 && performance.now() > flipAt && isWide()) {
-        const r = frames[shown].getBoundingClientRect();
-        el.classList.toggle('flip', r.left + r.width / 2 > innerWidth * 0.5);
-      }
-      el.style.setProperty('--prog', `${Math.max(0, Math.min(1, (v.t - IN) / (1 - IN - OUT - SPAN))) * 100}%`);
     };
 
-    // click a frame: scroll to it (the camera then walks there)
-    const step = HOUSE.timeline.steps.find((s) => s.kind === 'hold' && s.stop === 'wall')!;
-    const scrollToFrame = (i: number) => {
-      const sec = document.querySelector<HTMLElement>('.scrub')!, vh = stage().clientHeight / 100;
-      const t = IN + SPAN * (i + 0.5);
-      scrollTo({ top: sec.offsetTop + (HOUSE.timeline.start * 1000 + step.from + t * step.len) * vh, behavior: 'smooth' });
-    };
-    el.querySelectorAll<HTMLButtonElement>('.wf').forEach((b) => b.addEventListener('click', () => scrollToFrame(Number(b.dataset.i))));
+    // ---- scrolling → which picture. A new gesture (wheel notch, swipe, arrow key) goes one picture on;
+    // a long scroll or fling carries on through the pictures it passes. When the page comes to rest,
+    // it settles on the picture the camera went to, so the next gesture starts from there.
+    let lastY = scrollY, dir = 0, touching = false, touchY = 0, touchArm = false, lastWheel = -1e9, idle = 0;
+    let pend: { dir: number; at: number; acc: number; done: boolean } | null = null;
+    // (a gesture that starts outside the wall only brings you to it: you arrive at the whole wall first;
+    // judged by where the page was before the gesture, the browser may already have moved it when we hear of it)
+    const arm = (d: number) => { const t = tAtY(lastY); pend = t >= 0 && t <= 1 ? { dir: d, at: performance.now(), acc: 0, done: false } : null; };
+    const kick = () => { clearTimeout(idle); idle = window.setTimeout(settle, 170); };
+    function settle() {
+      if (touching || reduce || lbx.open) return;
+      const t = rawT();
+      if (t < 0 || t > 1 || Math.abs(cAt(t) - T) < 1e-6) return;
+      scrollTo({ top: topFor(tOf(T)), behavior: 'smooth' });
+    }
+    addEventListener('wheel', (e) => {
+      if (!e.deltaY || e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+      const now = performance.now();
+      if (now - lastWheel > 180) arm(Math.sign(e.deltaY));          // a pause before it: a new gesture
+      lastWheel = now; kick();
+    }, { passive: true });
+    addEventListener('touchstart', (e) => { touching = true; touchArm = true; touchY = e.touches[0]?.clientY ?? 0; clearTimeout(idle); }, { passive: true });
+    addEventListener('touchmove', (e) => {
+      if (!touchArm) return;
+      const dy = touchY - (e.touches[0]?.clientY ?? touchY);
+      if (Math.abs(dy) > 10) { touchArm = false; arm(Math.sign(dy)); }
+    }, { passive: true });
+    const lift = (e: TouchEvent) => { touching = e.touches.length > 0; if (!touching) kick(); };
+    addEventListener('touchend', lift, { passive: true });
+    addEventListener('touchcancel', lift, { passive: true });
+    const KEYS: Record<string, number> = { ArrowDown: 1, PageDown: 1, ' ': 1, ArrowUp: -1, PageUp: -1 };
+    addEventListener('keydown', (e) => {
+      const d = KEYS[e.key];
+      if (d && !e.repeat && !e.altKey && !e.ctrlKey && !e.metaKey) arm(e.key === ' ' && e.shiftKey ? -1 : d);
+    });
+    addEventListener('scroll', () => {
+      const y = scrollY, dy = y - lastY, t0 = tAtY(lastY);
+      lastY = y;
+      if (dy) dir = Math.sign(dy);
+      const t = tAtY(y);
+      outside = t < 0 || t > 1;
+      if (outside) { T = t < 0 ? -1 : N; pend = null; kick(); return; }
+      if (t0 < 0 || t0 > 1) pend = null;   // just came in from outside
+      // the gesture counts once the page really moved its way (a wheel over a scrolling box, or a tap on a button, does not)
+      if (pend && !pend.done && dy && Math.sign(dy) === pend.dir && performance.now() - pend.at < 700) {
+        pend.acc += Math.abs(dy);
+        if (pend.acc >= 12) { pend.done = true; T = clampT(T + pend.dir); }
+      }
+      // and the camera is never behind the scroll position itself
+      const cr = cAt(t);
+      if (dir > 0) T = Math.max(T, Math.ceil(cr - 1e-6));
+      else if (dir < 0) T = Math.min(T, Math.floor(cr + 1e-6));
+      kick();
+    }, { passive: true });
+
+    // click a frame: walk straight there
+    const scrollToFrame = (i: number) => { T = i; scrollTo({ top: topFor(Q(i)), behavior: 'smooth' }); };
+    frames.forEach((b) => b.addEventListener('click', () => scrollToFrame(Number(b.dataset.i))));
     el.querySelectorAll<HTMLButtonElement>('.th').forEach((th) => th.addEventListener('click', () => { lbx.querySelector('img')!.src = th.dataset.full!; lbx.showModal(); }));
     lbx.addEventListener('click', () => lbx.close());
 
+    // the film waits at the wall's edge while the camera is still zooming back out to the whole wall (after a fast fling)
+    (W_.__holdBusy ??= {}).wall = (side: number) => Math.abs(c - (side > 0 ? N : -1)) > 0.02;
+
     mountStop('wall', el, { onFrame: () => update() });
-    // the frame moves even when nothing else changes (scroll drives it), so keep the plaques in step
-    const loop = () => { if (W_.__stop === 'wall') update(); requestAnimationFrame(loop); };
+    // the camera keeps gliding between scroll events, so the plaques and the springs run every frame
+    const loop = () => { advance(); if (W_.__stop === 'wall') update(); requestAnimationFrame(loop); };
     requestAnimationFrame(loop);
   }
 </script>
