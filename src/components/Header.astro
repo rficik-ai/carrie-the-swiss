@@ -49,6 +49,10 @@ const s = t(locale);
   :global(body.scrolled) .top { background: rgba(13,12,10,.86); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
   /* standing inside a scene of the film: the menu floats over the picture */
   :global(body.in-scene) .top { background: linear-gradient(180deg, rgba(13,12,10,.62), rgba(13,12,10,0)); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  /* ...but its links do not sit on the painting: they step aside while you stand in a scene and come back when you reach for them */
+  .links { transition: opacity .4s ease; }
+  :global(body.in-scene) .top .links { opacity: 0; pointer-events: none; }
+  :global(body.in-scene) .top:hover .links, :global(body.in-scene) .top:focus-within .links { opacity: 1; pointer-events: auto; }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-block: 14px; }
   .mark { display: flex; align-items: center; gap: 10px; text-decoration: none; }
   .crest img { width: 34px; height: auto; }
