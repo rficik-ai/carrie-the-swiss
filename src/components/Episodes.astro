@@ -15,7 +15,7 @@ const pull = E.pull ?? 'Pull out a book';
 import { SHELF } from '../data/shelf';
 const EDGES = SHELF.edges;
 const BOOK_TOP = SHELF.top, BOOK_BOTTOM = SHELF.bottom;
-const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-size:${SHELF.numSize}px;--plaque-top:${SHELF.plaqueTop}px;--plaque-h:${SHELF.plaqueH}px;--caption-top:${SHELF.captionTop}px`;
+const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-size:${SHELF.numSize}px;--caption-top:${SHELF.captionTop}px`;
 ---
 <div class="scene-wrap" id="shelf">
   <div class="scene" aria-label={s.episodes.eyebrow}>
@@ -26,15 +26,11 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
       {EPISODES.map((e, i) => {
         const x0 = EDGES[i], w = EDGES[i + 1] - EDGES[i];
         return (
-          <button type="button" class="sbook" data-n={e.n} aria-label={`${e.n} · ${e.title}`} data-cur={E.open ?? 'Open the book'} style={`left:${x0}px;width:${w}px;top:${BOOK_TOP}px;height:${BOOK_BOTTOM - BOOK_TOP}px`}>
+          <button type="button" class="sbook" data-n={e.n} aria-label={`${e.n} · ${e.title}`} data-cur={`${e.n} · ${e.title}`} style={`left:${x0}px;width:${w}px;top:${BOOK_TOP}px;height:${BOOK_BOTTOM - BOOK_TOP}px`}>
             <span class="slot" aria-hidden="true" style={`background-position:-${x0}px -${BOOK_TOP}px`}></span>
             <span class="slice" aria-hidden="true" style={`background-position:-${x0}px -${BOOK_TOP}px`}><span class="snum">{e.n}</span></span>
           </button>
         );
-      })}
-      {EPISODES.map((e, i) => {
-        const x0 = EDGES[i], w = EDGES[i + 1] - EDGES[i];
-        return <span class="plaque" data-n={e.n} aria-hidden="true" style={`left:${x0 + 4}px;width:${w - 8}px`}><span>{e.title}</span></span>;
       })}
     </div>
     <div class="cap-bar rv" aria-live="polite">
@@ -278,23 +274,8 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     .sbook:nth-of-type(5) .snum { transition-delay: .16s } .sbook:nth-of-type(6) .snum { transition-delay: .2s } .sbook:nth-of-type(7) .snum { transition-delay: .24s }
     .sbook:nth-of-type(8) .snum { transition-delay: .28s } .sbook:nth-of-type(9) .snum { transition-delay: .32s } .sbook:nth-of-type(10) .snum { transition-delay: .36s }
     .sbook:nth-of-type(11) .snum { transition-delay: .4s } .sbook:nth-of-type(12) .snum { transition-delay: .44s }
-    .plaque { position: absolute; top: var(--plaque-top); height: var(--plaque-h); display: grid; place-items: center; padding: 4px 6px; text-align: center; border-radius: 4px; cursor: pointer;
-      background: linear-gradient(180deg, #f3d995 0%, #c99a46 48%, #a87a2c 52%, #e4c27a 100%); box-shadow: 0 3px 6px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,250,220,.8), inset 0 -1px 0 rgba(90,55,10,.6);
-      opacity: 0; transform: translateY(6px); transition: opacity .7s ease .5s, transform .7s ease .5s, filter .3s; }
-    .plaque span { font: 800 11.5px/1.1 var(--f-body); letter-spacing: .05em; text-transform: uppercase; color: #2a1806; text-shadow: 0 1px 0 rgba(255,240,200,.6);
-      display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
-    .scene.live .plaque { opacity: 1; transform: none; }
-    .plaque.hot { filter: brightness(1.12) drop-shadow(0 0 10px rgba(255,210,120,.6)); }
-    /* ---- the shelf labels, three ways to choose from (?police=a|b|c) ----
-       A: nothing on the shelf, the title rides along with the pointer (Cursor.astro)
-       B: engraved into the wood of the shelf, tone on tone; the book you point at catches the light
-       C: nothing on the shelf, the departures board above it shows the book you point at */
-    .scene.pl-a .plaque, .scene.pl-c .plaque { display: none; }
-    .scene.pl-b .plaque { background: none; box-shadow: none; padding: 4px 2px; }
-    .scene.pl-b .plaque span { font: 800 13.5px/1.18 var(--f-head); letter-spacing: .06em; color: rgba(52,28,10,.9);
-      text-shadow: 0 1px 0 rgba(255,216,160,.32), 0 -1px 0 rgba(0,0,0,.45); transition: color .35s, text-shadow .35s; }
-    .scene.pl-b .plaque.hot { filter: none; }
-    .scene.pl-b .plaque.hot span { color: #ffdf9a; text-shadow: 0 0 12px rgba(255,186,84,.85), 0 0 2px rgba(255,230,170,.9); }
+    /* no labels on the shelf: the title of the book you point at rides along with the pointer (Cursor.astro);
+       a book reached with the keyboard turns the board above the shelf to its title */
     .wpull.quick.go :global(.c) { transition-delay: calc(var(--i) * 14ms); }
     .wall.rv.rv-in.showing .wmore { opacity: 0; transition: opacity .25s ease; }
     /* reader: the pulled-out book opens over the shelf */
@@ -316,7 +297,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
   /* phone: bigger books you pan sideways, the centred book's title in a caption bar */
   .cap-bar { display: none; }
   @media (max-width: 899px), (hover: none) {
-    .plaque, .wall { display: none; }
+    .wall { display: none; }
     .cap-bar { display: grid; position: absolute; left: 12px; right: 12px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 3; gap: 8px; justify-items: center; text-align: center;
       padding: 14px 14px 12px; border-radius: 18px; background: rgba(16,10,4,.78); backdrop-filter: blur(8px); box-shadow: 0 0 0 1px rgba(234,211,154,.25);
       opacity: 0; transform: translateY(10px); transition: opacity .6s ease .3s, transform .6s ease .3s; }
@@ -450,7 +431,6 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     const pagesOf = new Map<string, HTMLElement>();
     books.forEach((li) => { const pg = li.querySelector<HTMLElement>('.pages')!; reader.appendChild(pg); pagesOf.set(li.dataset.n!, pg); });
     const sbooks = [...scene.querySelectorAll<HTMLElement>('.sbook')];
-    const plaques = [...scene.querySelectorAll<HTMLElement>('.plaque')];
     function closeAll() {
       reader.hidden = true;
       pagesOf.forEach((pg) => pg.classList.remove('on'));
@@ -468,8 +448,6 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     // a second tap on it, or the button, opens it
     const capTitle = scene.querySelector<HTMLElement>('.cb-title')!;
     const wallTitle = scene.querySelector<HTMLElement>('.wpull')!;
-    const variant = new URLSearchParams(location.search).get('police') ?? '';
-    if (/^[abc]$/.test(variant)) scene.classList.add(`pl-${variant}`);
     let sel = '';
     const esc = (t: string) => t.replace(/[&<>"]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' } as Record<string, string>)[m]);
     // a title flips in letter by letter, like a departures board (fx-flap in global.css)
@@ -488,7 +466,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
       select((outs[outs.length - 1] ?? books[0]).dataset.n!);   // start on the newest episode
       scene.querySelector('.cb-open')!.addEventListener('click', () => sel && openBook(byN(sel)));
     }
-    // C: the board above the shelf turns to the book under the pointer, and back once the pointer leaves the shelf
+    // keyboard: the board above the shelf turns to the focused book, and back once focus leaves the shelf
     const wallRow = scene.querySelector<HTMLElement>('.wall')!;
     let boardText = '', boardT = 0;
     const boardTo = (text: string, home = false) => {
@@ -504,23 +482,15 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     const pullText = wallTitle.getAttribute('aria-label') ?? '';
     // leaving the shelf: the board quietly shows its own title again (no flap while nobody looks)
     const boardHome = () => { if (boardText && boardText !== pullText) { boardTo(pullText, true); wallTitle.classList.remove('go', 'quick'); } };
-    if (variant === 'a') sbooks.forEach((b) => { b.dataset.cur = b.getAttribute('aria-label') ?? ''; });
-    sbooks.forEach((b, i) => {
-      if (variant === 'c' && wide) {
-        b.addEventListener('mouseenter', () => boardTo(b.getAttribute('aria-label') ?? ''));
-        b.addEventListener('mouseleave', () => { boardT = window.setTimeout(() => boardTo(pullText, true), 420); });
+    sbooks.forEach((b) => {
+      if (wide) {
+        b.addEventListener('focus', () => { if (b.matches(':focus-visible')) boardTo(b.getAttribute('aria-label') ?? ''); });
+        b.addEventListener('blur', () => { boardT = window.setTimeout(() => boardTo(pullText, true), 300); });
       }
       b.addEventListener('click', () => {
         if (wide || b.dataset.n === sel) return openBook(byN(b.dataset.n!));
         select(b.dataset.n!);
       });
-      b.addEventListener('mouseenter', () => plaques[i].classList.add('hot'));
-      b.addEventListener('mouseleave', () => plaques[i].classList.remove('hot'));
-    });
-    plaques.forEach((pl, i) => {
-      pl.addEventListener('click', () => openBook(byN(pl.dataset.n!)));
-      pl.addEventListener('mouseenter', () => { pl.classList.add('hot'); sbooks[i].classList.add('hov'); });
-      pl.addEventListener('mouseleave', () => { pl.classList.remove('hot'); sbooks[i].classList.remove('hov'); });
     });
     reader.querySelector('.rback')!.addEventListener('click', closeAll);
     reader.querySelectorAll('.shut').forEach((x) => x.addEventListener('click', closeAll));
