@@ -64,7 +64,7 @@ const chapters = [
   .anchor { position: absolute; left: 0; width: 1px; height: 1px; }
   .house { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
   .house img.still { z-index: 2; } .house .hvid { z-index: 1; }
-  .hfill { position: absolute; inset: -40px; background: #0d0c0a center / cover; filter: blur(26px) brightness(.45) saturate(1.1); opacity: 0; transition: opacity .3s; }
+  .hfill { position: absolute; inset: -40px; background: #0d0c0a center / cover; filter: blur(26px) brightness(.45) saturate(1.1); opacity: 0; }   /* no fade: it only ever shows in a gap, which must never be empty */
   .still { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; max-width: none; max-height: none; opacity: 0; object-fit: fill; }
   .toInk { position: absolute; inset: 0; z-index: 6; pointer-events: none; opacity: 0; background: var(--ink); }
   .stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
@@ -212,6 +212,16 @@ const chapters = [
     const v = vids.get(id)!, st = vst.get(id)!;
     st.cur = seek(v, st.cur, t * (v.duration - 0.05));
   }
+  // the blurred room behind a picture framed narrower than the screen, in the stops and on the way between them alike:
+  // the edges never show the scene before (the photo wall) or a black bar
+  function fillWith(id: string | null) {
+    if (!hfill) return;
+    if (id && hfill.dataset.img !== id) { hfill.dataset.img = id; hfill.style.backgroundImage = `url(${stills.get(id)!.dataset.src})`; }
+    hfill.style.opacity = id ? '1' : '0';
+  }
+  // in a move: the room we come from for the first half, the room we walk into for the second (the swap happens
+  // mid-move, where the picture covers the whole screen); the first move starts on the photo wall, which brings its own
+  const moveFill = (i: number, t: number) => (t < 0.5 ? (i > 0 ? STOPS[i - 1].id : null) : STOPS[i].id);
   function renderHouse(now: number) {
     if (!HT || !houseEl) return;
     const { y, raw } = houseYs(now);
@@ -239,7 +249,8 @@ const chapters = [
     if (step.kind === 'hold') { W_.__stop = step.stop; W_.__stopT = t; } else W_.__stop = null;
     const cur = stills.get(step.stop)!, f = frameOf(step.stop);
     stills.forEach((im, id) => { if (id !== step!.stop && (i === 0 || id !== STOPS[i - 1].id)) im.style.opacity = '0'; });
-    const needFill = f.k < coverFrame(W, H).k - 1e-3 || 1080 * f.k < H - 1;
+    // any edge of the screen left uncovered (a stop's own camera, e.g. the wall's, can pan up to the picture's edge)
+    const needFill = f.left > 0.5 || f.top > 0.5 || f.left + 1920 * f.k < W - 0.5 || f.top + 1080 * f.k < H - 0.5;
     if (step.kind === 'move' && vReady) {
       // the generated move: starts in the previous room's framing, ends in this room's framing
       const cov = coverFrame(W, H);
@@ -250,22 +261,19 @@ const chapters = [
       place(cur, f, smooth((t - 0.92) / 0.08));
       place(vid as unknown as HTMLImageElement, fr, 1);
       scrubVid(step.stop, t);
-      if (hfill) hfill.style.opacity = '0';
+      fillWith(moveFill(i, t));
     } else if (step.kind === 'move') {
       // stills phase: a slow push into the next room (replaced by the generated video later)
       const x = smooth(t);
       if (i > 0) { const pid = STOPS[i - 1].id; place(stills.get(pid)!, zoom(frameOf(pid), 1 + 0.12 * x, W, H), 1); }
       place(cur, zoom(f, 1.08 - 0.08 * x, W, H), x);
-      if (hfill) hfill.style.opacity = '0';
+      fillWith(moveFill(i, t));
       if (vid && vs?.ready && vid.duration) { scrubVid(step.stop, t); vs.seeked = true; }   // the hidden video gets there meanwhile
     } else {
       if (i > 0) stills.get(STOPS[i - 1].id)!.style.opacity = '0';
       place(cur, f, 1);   // the stops sit on the sharp stills (the overlays are measured on them)
       if (vid) vid.style.opacity = '0';
-      if (hfill) {
-        if (needFill && hfill.dataset.img !== step.stop) { hfill.dataset.img = step.stop; hfill.style.backgroundImage = `url(${cur.dataset.src})`; }
-        hfill.style.opacity = needFill ? '1' : '0';
-      }
+      fillWith(needFill ? step.stop : null);
     }
     document.body.classList.toggle('in-scene', step.kind === 'hold');
   }
