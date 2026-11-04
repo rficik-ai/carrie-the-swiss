@@ -353,5 +353,9 @@
     "nav_fire": "Zeptejte se mě",
     "nav_door": "Dobrou noc",
     "more": "Posouvejte dál"
+  },
+  "cursor": {
+    "flip": "Otočit",
+    "read": "Přečíst"
   }
 }

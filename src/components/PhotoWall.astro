@@ -8,11 +8,12 @@ import Split from './Split.astro';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const r = t(locale).real as Record<string, string>;
+const cur = (t(locale) as any).cursor;
 ---
 <div class="pwall" aria-label={r.title}>
   <div class="pf">
     {PHOTOS.map((ph) => (
-      <button type="button" class="pcard" aria-label={r.anim_caption} style={`width:${ph.w}px;height:${ph.h}px;transform:${ph.css}`} data-h={JSON.stringify(ph.H)} data-w={ph.w} data-hh={ph.h}>
+      <button type="button" class="pcard" aria-label={r.anim_caption} data-cur={cur.flip} style={`width:${ph.w}px;height:${ph.h}px;transform:${ph.css}`} data-h={JSON.stringify(ph.H)} data-w={ph.w} data-hh={ph.h}>
         <span class="flip">
           <canvas class="front" width={ph.w} height={ph.h}></canvas>
           <span class="back"><img src={ph.back} alt="" loading="lazy" /></span>

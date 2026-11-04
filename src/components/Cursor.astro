@@ -1,0 +1,49 @@
+---
+// Desktop only: a small gold dot trails the pointer (the system cursor stays). Over anything clickable it swells,
+// and over the things in the scenes it turns into a label that says what a click does (data-cur="…").
+---
+<div class="cur" aria-hidden="true"><span class="cd"></span><span class="cl"></span></div>
+
+<style>
+  .cur { display: none; }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .cur { display: block; position: fixed; left: 0; top: 0; z-index: 9999; pointer-events: none; transition: opacity .3s; }
+  }
+  .cd { position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold-hi);
+    box-shadow: 0 0 14px rgba(234,211,154,.75); transition: transform .35s cubic-bezier(.2,.7,.2,1), opacity .3s, background .3s; }
+  .cl { position: absolute; left: 18px; top: 14px; white-space: nowrap; padding: 8px 13px 7px; border-radius: 999px;
+    background: rgba(13,12,10,.84); border: 1px solid rgba(234,211,154,.55); color: #fff; font: 800 11px/1 var(--f-head);
+    letter-spacing: .12em; text-transform: uppercase; box-shadow: 0 10px 24px -10px rgba(0,0,0,.7);
+    opacity: 0; translate: -6px 4px; scale: .9; transform-origin: 0 0; transition: opacity .2s ease, translate .3s cubic-bezier(.2,.7,.2,1), scale .3s cubic-bezier(.2,.7,.2,1); }
+  .cur.hot .cd { transform: scale(3.2); opacity: .28; }
+  .cur.lab .cd { transform: scale(1.4); opacity: 1; }
+  .cur.lab .cl { opacity: 1; translate: 0 0; scale: 1; }
+  .cur.away { opacity: 0; }
+</style>
+
+<script>
+  const el = document.querySelector<HTMLElement>('.cur');
+  if (el && matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)').matches) {
+    const lab = el.querySelector<HTMLElement>('.cl')!;
+    let x = -100, y = -100, cx = -100, cy = -100, raf = 0, shown = '';
+    const loop = () => {
+      cx += (x - cx) * 0.2; cy += (y - cy) * 0.2;
+      el.style.transform = `translate(${cx.toFixed(1)}px, ${cy.toFixed(1)}px)`;
+      raf = Math.abs(x - cx) + Math.abs(y - cy) > 0.2 ? requestAnimationFrame(loop) : 0;
+    };
+    const wake = () => { if (!raf) raf = requestAnimationFrame(loop); };
+    addEventListener('pointermove', (e) => { if (e.pointerType !== 'mouse') return; x = e.clientX; y = e.clientY; el.classList.remove('away'); wake(); }, { passive: true });
+    document.documentElement.addEventListener('mouseleave', () => el.classList.add('away'));
+    // what is under the pointer: a label (data-cur, read live so a component may change it) or just something to click
+    const look = (t: Element | null) => {
+      const hit = t?.closest<HTMLElement>('[data-cur], a, button, summary, input, select, textarea, label');
+      const text = hit?.closest<HTMLElement>('[data-cur]')?.dataset.cur ?? '';
+      el.classList.toggle('hot', !!hit && !text);
+      el.classList.toggle('lab', !!text);
+      if (text && text !== shown) { shown = text; lab.textContent = text; }
+    };
+    addEventListener('pointerover', (e) => look(e.target as Element), { passive: true });
+    // the scenes move under a still pointer while you scroll: look again when the page moves
+    addEventListener('scroll', () => look(document.elementFromPoint(x, y)), { passive: true });
+  }
+</script>

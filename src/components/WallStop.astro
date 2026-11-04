@@ -32,7 +32,7 @@ const href = (x: string) => `/${locale}/${x}`;
         <p class="txt">{h[`${w.id}_x`]}</p>
         <div class="row">
           <div class="ths">{w.pics.map((p) => (
-            <button type="button" class:list={['th', p.kind]} data-full={p.src} aria-label={h.zoom}><img src={p.src} alt="" loading="lazy" decoding="async" /></button>
+            <button type="button" class:list={['th', p.kind]} data-full={p.src} aria-label={h.zoom} data-cur={h.zoom}><img src={p.src} alt="" loading="lazy" decoding="async" /></button>
           ))}</div>
           {w.link && <a class="lnk" href={href(w.link.href)} data-open-book={w.link.ep}>{h[w.link.key]} →</a>}
         </div>

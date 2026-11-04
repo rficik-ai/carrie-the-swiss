@@ -353,5 +353,9 @@
     "nav_fire": "Posez-moi une question",
     "nav_door": "Bonne nuit",
     "more": "Continuez à défiler"
+  },
+  "cursor": {
+    "flip": "Retourner",
+    "read": "Lire"
   }
 }

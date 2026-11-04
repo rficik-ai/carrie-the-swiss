@@ -19,7 +19,7 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
 <div class="hstop dstop" data-stop="desk" aria-label={c.title}>
   <div class="layer">
     {papers.map((p, i) => (
-      <button type="button" class="paper" data-i={i} data-q={JSON.stringify(p.q)} style={`width:${PW}px;height:${PH}px;transform:${rectToQuad(PW, PH, p.q)}`} aria-label={p.name}>
+      <button type="button" class="paper" data-cur={all.cursor.read} data-i={i} data-q={JSON.stringify(p.q)} style={`width:${PW}px;height:${PH}px;transform:${rectToQuad(PW, PH, p.q)}`} aria-label={p.name}>
         <span class="ink">{p.name}</span>
         <span class="tick" aria-hidden="true">✓</span>
       </button>

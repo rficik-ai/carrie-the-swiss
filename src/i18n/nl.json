@@ -353,5 +353,9 @@
     "nav_fire": "Vraag het me",
     "nav_door": "Welterusten",
     "more": "Scroll verder"
+  },
+  "cursor": {
+    "flip": "Omdraaien",
+    "read": "Lezen"
   }
 }

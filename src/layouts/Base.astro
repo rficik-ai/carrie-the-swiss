@@ -6,6 +6,7 @@ import '@fontsource-variable/playfair-display/wght-italic.css';
 import '@fontsource-variable/manrope';
 import '@fontsource-variable/montserrat';
 import '../styles/global.css';
+import Cursor from '../components/Cursor.astro';
 import { availableLocales, HTML_LANG, type Locale } from '../i18n';
 
 interface Props { locale: Locale; title: string; description: string; path?: string; noindex?: boolean }
@@ -39,6 +40,7 @@ const ogImage = `${site}/assets/img/og.jpg`;
   </head>
   <body>
     <slot />
+    <Cursor />
   
 <script>
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;   // js / nofilm classes: inline script in <head>

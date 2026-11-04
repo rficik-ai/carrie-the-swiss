@@ -353,5 +353,9 @@
     "nav_fire": "Kérdezz",
     "nav_door": "Jó éjt",
     "more": "Görgess tovább"
+  },
+  "cursor": {
+    "flip": "Fordítsd meg",
+    "read": "Olvasd el"
   }
 }

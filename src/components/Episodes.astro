@@ -26,7 +26,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
       {EPISODES.map((e, i) => {
         const x0 = EDGES[i], w = EDGES[i + 1] - EDGES[i];
         return (
-          <button type="button" class="sbook" data-n={e.n} aria-label={`${e.n} · ${e.title}`} style={`left:${x0}px;width:${w}px;top:${BOOK_TOP}px;height:${BOOK_BOTTOM - BOOK_TOP}px`}>
+          <button type="button" class="sbook" data-n={e.n} aria-label={`${e.n} · ${e.title}`} data-cur={E.open ?? 'Open the book'} style={`left:${x0}px;width:${w}px;top:${BOOK_TOP}px;height:${BOOK_BOTTOM - BOOK_TOP}px`}>
             <span class="slot" aria-hidden="true" style={`background-position:-${x0}px -${BOOK_TOP}px`}></span>
             <span class="slice" aria-hidden="true" style={`background-position:-${x0}px -${BOOK_TOP}px`}><span class="snum">{e.n}</span></span>
           </button>
@@ -285,6 +285,18 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
       display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
     .scene.live .plaque { opacity: 1; transform: none; }
     .plaque.hot { filter: brightness(1.12) drop-shadow(0 0 10px rgba(255,210,120,.6)); }
+    /* ---- the shelf labels, three ways to choose from (?police=a|b|c) ----
+       A: nothing on the shelf, the title rides along with the pointer (Cursor.astro)
+       B: engraved into the wood of the shelf, tone on tone; the book you point at catches the light
+       C: nothing on the shelf, the departures board above it shows the book you point at */
+    .scene.pl-a .plaque, .scene.pl-c .plaque { display: none; }
+    .scene.pl-b .plaque { background: none; box-shadow: none; padding: 4px 2px; }
+    .scene.pl-b .plaque span { font: 800 13.5px/1.18 var(--f-head); letter-spacing: .06em; color: rgba(52,28,10,.9);
+      text-shadow: 0 1px 0 rgba(255,216,160,.32), 0 -1px 0 rgba(0,0,0,.45); transition: color .35s, text-shadow .35s; }
+    .scene.pl-b .plaque.hot { filter: none; }
+    .scene.pl-b .plaque.hot span { color: #ffdf9a; text-shadow: 0 0 12px rgba(255,186,84,.85), 0 0 2px rgba(255,230,170,.9); }
+    .wpull.quick.go :global(.c) { transition-delay: calc(var(--i) * 14ms); }
+    .wall.rv.rv-in.showing .wmore { opacity: 0; transition: opacity .25s ease; }
     /* reader: the pulled-out book opens over the shelf */
     .reader { position: absolute; inset: 0; z-index: 5; display: grid; place-items: center; }
     .reader[hidden] { display: none; }
@@ -431,7 +443,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
         scene.classList.toggle('live', on); if (!on) closeAll();
         scene.querySelector('.cap-bar')!.classList.toggle('rv-in', on);
         scene.querySelector('.wall')!.classList.toggle('rv-in', on);
-        if (on) flap(wide ? wallTitle : capTitle); else wallTitle.classList.remove('go');
+        if (on) { wallTitle.classList.remove('quick'); flap(wide ? wallTitle : capTitle); } else { wallTitle.classList.remove('go'); boardHome(); }
       }
       requestAnimationFrame(watch);
     };
@@ -456,6 +468,8 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     // a second tap on it, or the button, opens it
     const capTitle = scene.querySelector<HTMLElement>('.cb-title')!;
     const wallTitle = scene.querySelector<HTMLElement>('.wpull')!;
+    const variant = new URLSearchParams(location.search).get('police') ?? '';
+    if (/^[abc]$/.test(variant)) scene.classList.add(`pl-${variant}`);
     let sel = '';
     const esc = (t: string) => t.replace(/[&<>"]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' } as Record<string, string>)[m]);
     // a title flips in letter by letter, like a departures board (fx-flap in global.css)
@@ -474,7 +488,28 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
       select((outs[outs.length - 1] ?? books[0]).dataset.n!);   // start on the newest episode
       scene.querySelector('.cb-open')!.addEventListener('click', () => sel && openBook(byN(sel)));
     }
+    // C: the board above the shelf turns to the book under the pointer, and back once the pointer leaves the shelf
+    const wallRow = scene.querySelector<HTMLElement>('.wall')!;
+    let boardText = '', boardT = 0;
+    const boardTo = (text: string, home = false) => {
+      clearTimeout(boardT);
+      if (boardText === text) return;
+      boardText = text;
+      let k = 0;
+      wallTitle.innerHTML = `<span class="sp" aria-hidden="true">${text.split(/\s+/).filter(Boolean)
+        .map((w) => `<span class="w">${[...w].map((ch) => `<span class="c" style="--i:${k++}">${esc(ch)}</span>`).join('')}</span>`).join(' ')}</span>`;
+      wallTitle.classList.add('quick'); wallRow.classList.toggle('showing', !home);
+      flap(wallTitle);
+    };
+    const pullText = wallTitle.getAttribute('aria-label') ?? '';
+    // leaving the shelf: the board quietly shows its own title again (no flap while nobody looks)
+    const boardHome = () => { if (boardText && boardText !== pullText) { boardTo(pullText, true); wallTitle.classList.remove('go', 'quick'); } };
+    if (variant === 'a') sbooks.forEach((b) => { b.dataset.cur = b.getAttribute('aria-label') ?? ''; });
     sbooks.forEach((b, i) => {
+      if (variant === 'c' && wide) {
+        b.addEventListener('mouseenter', () => boardTo(b.getAttribute('aria-label') ?? ''));
+        b.addEventListener('mouseleave', () => { boardT = window.setTimeout(() => boardTo(pullText, true), 420); });
+      }
       b.addEventListener('click', () => {
         if (wide || b.dataset.n === sel) return openBook(byN(b.dataset.n!));
         select(b.dataset.n!);

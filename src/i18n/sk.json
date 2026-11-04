@@ -353,5 +353,9 @@
     "nav_fire": "Opýtajte sa ma",
     "nav_door": "Dobrú noc",
     "more": "Posúvajte ďalej"
+  },
+  "cursor": {
+    "flip": "Otočiť",
+    "read": "Prečítať"
   }
 }
