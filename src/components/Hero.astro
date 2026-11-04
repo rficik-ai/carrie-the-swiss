@@ -196,14 +196,16 @@ const chapters = [
   const zoom = (f: Frame, z: number, W: number, H: number): Frame => ({ k: f.k * z, left: W / 2 - (W / 2 - f.left) * z, top: H / 2 - (H / 2 - f.top) * z });
   // the moves between rooms: generated videos, scrubbed by the scroll like the film
   const vids = new Map([...section.querySelectorAll<HTMLVideoElement>('.house .hvid')].map((v) => [v.dataset.stop!, v]));
-  const vst = new Map<string, { cur: number; ready: boolean; loading: boolean }>();
-  vids.forEach((_, id) => vst.set(id, { cur: 0, ready: false, loading: false }));
+  const vst = new Map<string, { cur: number; ready: boolean; loading: boolean; painted: boolean; seeked: boolean }>();
+  vids.forEach((_, id) => vst.set(id, { cur: 0, ready: false, loading: false, painted: false, seeked: false }));
   async function loadVid(id: string) {
     const v = vids.get(id), st = vst.get(id);
     if (!v || !st || st.loading) return;
     st.loading = true;
     v.src = await blobSrc(wide ? v.dataset.src! : v.dataset.srcMobile!);
-    v.addEventListener('loadedmetadata', () => { st.ready = true; }, { once: true });
+    // ready only with a decoded picture: a video that knows just its length paints nothing (the photo wall showed through)
+    v.preload = 'auto';
+    v.addEventListener('loadeddata', () => { st.ready = true; }, { once: true });
     v.load();
   }
   function scrubVid(id: string, t: number) {
@@ -221,9 +223,17 @@ const chapters = [
     houseEl.style.opacity = '1';
     const i = STOPS.findIndex((s) => s.id === step!.stop);
     [i, i + 1].forEach((j) => { const n = STOPS[j] && stills.get(STOPS[j].id); if (n && !n.src) n.src = n.dataset.src!; });
+    // once this room's picture is in, fetch the other rooms too: a jump from the menu then never lands on a hole
+    if (stills.get(step.stop)!.complete) stills.forEach((im) => { if (!im.src) im.src = im.dataset.src!; });
+    // past the first move nothing of the photo-wall film may show through a picture that is still on its way
+    houseEl.style.background = i > 0 ? 'var(--ink)' : '';
     [i, i + 1].forEach((j) => { if (STOPS[j]) loadVid(STOPS[j].id); });
-    vids.forEach((v, id) => { if (id !== step!.stop) v.style.opacity = '0'; });
-    const vid = vids.get(step.stop), vs = vst.get(step.stop), vReady = !!(vid && vs?.ready && vid.duration);
+    vids.forEach((v, id) => { if (id !== step!.stop) { v.style.opacity = '0'; const s = vst.get(id)!; s.painted = s.seeked = false; } });
+    const vid = vids.get(step.stop), vs = vst.get(step.stop);
+    // a move video takes over only once its first seek has landed: until then the stills carry the picture
+    // (shown while it is still seeking, it paints nothing for a few frames)
+    if (vid && vs?.ready && !vs.painted && step.kind === 'move' && vid.readyState >= 2 && !vid.seeking && vs.seeked) vs.painted = true;
+    const vReady = !!(vid && vs?.ready && vs.painted && vid.duration);
     const t = clamp((y - step.from) / step.len);
     // tell the stops where we are BEFORE asking for frames, so the picture and the layer on top of it agree in this frame
     if (step.kind === 'hold') { W_.__stop = step.stop; W_.__stopT = t; } else W_.__stop = null;
@@ -247,6 +257,7 @@ const chapters = [
       if (i > 0) { const pid = STOPS[i - 1].id; place(stills.get(pid)!, zoom(frameOf(pid), 1 + 0.12 * x, W, H), 1); }
       place(cur, zoom(f, 1.08 - 0.08 * x, W, H), x);
       if (hfill) hfill.style.opacity = '0';
+      if (vid && vs?.ready && vid.duration) { scrubVid(step.stop, t); vs.seeked = true; }   // the hidden video gets there meanwhile
     } else {
       if (i > 0) stills.get(STOPS[i - 1].id)!.style.opacity = '0';
       place(cur, f, 1);   // the stops sit on the sharp stills (the overlays are measured on them)
