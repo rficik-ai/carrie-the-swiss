@@ -1,10 +1,10 @@
 ---
 // Where am I in the film, and is there more? A page-wide guide: chapter rail on the right (desktop),
-// a thin bar + chapter name under the menu (phone), and a "keep scrolling" cue whenever the visitor pauses.
+// a thin bar under the menu (phone), and one quiet "scroll" cue on the very first screen, nowhere else.
 import { type Locale, t } from '../i18n';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
-const h = (t(locale) as any).house;
+const s = t(locale) as any, h = s.house;
 const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'];
 ---
 <nav class="prog" aria-label={h.nav_label}>
@@ -12,8 +12,7 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
   <ol class="rail">
     {CH.map((c) => <li data-c={c}><button type="button"><span class="lb">{h[`nav_${c}`]}</span><i aria-hidden="true"></i></button></li>)}
   </ol>
-  <p class="now" aria-live="polite"></p>
-  <button type="button" class="more" aria-label={h.more}><span>{h.more}</span><i aria-hidden="true">↓</i></button>
+  <button type="button" class="more" aria-label={h.more}><span>{s.hero.scroll}</span><i aria-hidden="true"></i></button>
 </nav>
 
 <style>
@@ -29,23 +28,16 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
   .rail li.on i { background: var(--gold-hi); border-color: var(--gold-hi); transform: scale(1.35); box-shadow: 0 0 0 5px rgba(234,211,154,.2); }
   .lb { font: 600 12px var(--f-body); letter-spacing: .08em; color: var(--ivory); padding: 4px 10px; border-radius: 999px; background: rgba(13,12,10,.72); opacity: 0; transform: translateX(6px); transition: opacity .25s, transform .25s; white-space: nowrap; }
   .rail li.on .lb, .rail button:hover .lb, .rail button:focus-visible .lb { opacity: 1; transform: none; }
-  .now { display: none; }
-  .more { all: unset; position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 10px); display: flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: 999px; cursor: pointer;
-    background: rgba(13,12,10,.78); backdrop-filter: blur(8px); box-shadow: 0 0 0 1px rgba(234,211,154,.45), 0 10px 30px -10px rgba(0,0,0,.7); color: var(--ivory); font: 700 12px var(--f-body); letter-spacing: .14em; text-transform: uppercase;
-    opacity: 0; pointer-events: none; transition: opacity .4s, transform .4s; }
-  .more i { font-style: normal; color: var(--gold-hi); font-size: 16px; animation: bob 1.4s ease-in-out infinite; }
-  @keyframes bob { 50% { transform: translateY(4px); } }
-  .prog.idle .more { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
-  /* inside a scene the bottom is busy (cards, quiz, chat): the cue moves up beside the rail */
-  .prog.busy .more { left: auto; right: 14px; bottom: auto; top: calc(50% + 150px); transform: none; padding: 10px; }
-  .prog.busy .more span { display: none; }
+  /* the one scroll cue: a word and a falling line, only on the first screen */
+  .more { all: unset; position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 8px); display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 8px 16px; cursor: pointer;
+    color: rgba(255,255,255,.88); font: 700 10px/1 var(--f-body); letter-spacing: .32em; text-indent: .32em; text-transform: uppercase; text-shadow: 0 1px 8px rgba(0,0,0,.5);
+    opacity: 0; pointer-events: none; transition: opacity .6s, transform .6s; }
+  .more i { display: block; width: 1px; height: 30px; background: linear-gradient(#fff, rgba(255,255,255,0)); animation: drip 1.8s ease-in-out infinite; }
+  @keyframes drip { 0% { transform: scaleY(0); transform-origin: top } 50% { transform: scaleY(1); transform-origin: top } 51% { transform-origin: bottom } 100% { transform: scaleY(0); transform-origin: bottom } }
+  .prog.cue .more { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
   @media (max-width: 899px), (hover: none) {
     .rail { display: none; }
     .bar { top: var(--hh, 64px); height: 2px; }
-    .now { display: block; position: fixed; left: 50%; top: calc(var(--hh, 64px) + 10px); transform: translateX(-50%); margin: 0; padding: 5px 12px; border-radius: 999px; background: rgba(13,12,10,.72); color: var(--gold-hi);
-      font: 700 11px var(--f-body); letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; opacity: 0; transition: opacity .4s; }
-    .now.show { opacity: 1; }
-    .prog.busy .more { right: 10px; top: calc(var(--hh, 64px) + 44px); }
   }
   @media (prefers-reduced-motion: reduce) { .more i { animation: none; } }
 </style>
@@ -55,9 +47,7 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
   const nav = document.querySelector<HTMLElement>('.prog');
   const sec = document.querySelector<HTMLElement>('.scrub.with-house');
   if (nav && sec) {
-    const W_ = window as any;
     const items = [...nav.querySelectorAll<HTMLLIElement>('.rail li')];
-    const now = nav.querySelector<HTMLElement>('.now')!;
     const more = nav.querySelector<HTMLButtonElement>('.more')!;
     const stage = sec.querySelector<HTMLElement>('.stage')!;
     const hold = (id: string) => HOUSE.timeline.steps.find((s) => s.kind === 'hold' && s.stop === id)!;
@@ -78,16 +68,12 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
       if (c !== cur) {
         cur = c;
         items.forEach((li, i) => { li.classList.toggle('on', i === c); li.classList.toggle('past', i < c); });
-        now.textContent = items[c].textContent!.trim(); now.classList.add('show');
-        clearTimeout((now as any)._t); (now as any)._t = setTimeout(() => now.classList.remove('show'), 2200);
       }
-      nav.classList.toggle('busy', !!W_.__stop);
-      // hide the cue at the very end of the page
-      if (scrollY > max - 40) nav.classList.remove('idle');
     };
+    // the cue: only while the visitor is still on the very first screen
     const poke = () => {
-      nav.classList.remove('idle'); clearTimeout(idleT);
-      idleT = window.setTimeout(() => { if (scrollY < document.documentElement.scrollHeight - innerHeight - 40) nav.classList.add('idle'); }, 2600);
+      nav.classList.remove('cue'); clearTimeout(idleT);
+      if (scrollY < 30) idleT = window.setTimeout(() => { if (scrollY < 30) nav.classList.add('cue'); }, 1200);
     };
     addEventListener('scroll', () => { update(); poke(); }, { passive: true });
     update(); poke();

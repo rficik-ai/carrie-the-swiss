@@ -9,7 +9,7 @@ const a = (t(locale) as any).ask;
 <div class="hstop fstop ask" data-stop="fire" aria-label={a.title}>
   <div class="panel">
     <button type="button" class="cx" aria-label={a.close ?? 'Close'}>×</button>
-    <p class="eyebrow">{a.eyebrow}</p>
+    <p class="eyebrow kicker"><span class="no">07</span>{a.eyebrow}</p>
     <h2>{a.title}</h2>
     <ChatPanel locale={locale} />
     <p class="note">{a.note}</p>
@@ -21,7 +21,7 @@ const a = (t(locale) as any).ask;
   .hstop.live { opacity: 1; pointer-events: auto; }
   .panel { position: absolute; right: max(96px, 7vw); top: calc(var(--hh, 68px) + 20px); bottom: 24px; width: min(520px, 40vw); display: flex; flex-direction: column; gap: 10px; box-sizing: border-box;
     padding: 24px 24px 16px; border-radius: 10px; background: rgba(16,11,7,.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 0 0 1px rgba(234,211,154,.18), 0 40px 80px -30px rgba(0,0,0,.8); }
-  .panel h2 { font-size: clamp(26px, 2.4vw, 36px); color: var(--ivory); margin: 0 0 4px; }
+  .panel h2 { font-size: clamp(22px, 2vw, 30px); color: #fff; margin: 0 0 4px; }
   .panel :global(.chat) { flex: 1; min-height: 0; grid-template-rows: 1fr auto auto; padding: 0; background: none; box-shadow: none; }
   .panel :global(.log) { height: auto; min-height: 0; }
   .note { margin: 0; font-size: 12px; color: var(--muted-dark); }
@@ -29,7 +29,7 @@ const a = (t(locale) as any).ask;
   @media (max-width: 899px), (hover: none) {
     /* at rest: a compact sheet under Carrie; typing or a question chip opens the chat full screen */
     .panel { left: 0; right: 0; top: auto; bottom: 0; width: auto; height: calc(100% - 420px); min-height: 330px; border-radius: 18px 18px 0 0; padding: 18px 16px calc(12px + env(safe-area-inset-bottom, 0px)); }
-    .panel h2 { font-size: 22px; }
+    .panel h2 { font-size: 20px; }
     .panel :global(.chips) { gap: 6px; }
     .panel :global(.chip) { padding: 7px 12px; font-size: 12.5px; }
     .note { display: none; }

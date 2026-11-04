@@ -11,7 +11,7 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
 <section class="block follow" id="follow">
   <div class="wrap">
     <div class="head" data-reveal>
-      <p class="eyebrow">{f.eyebrow}</p>
+      <p class="eyebrow kicker">{f.eyebrow}</p>
       <h2>{f.title}</h2>
       <p class="muted">{f.intro}</p>
       <form class="notify" novalidate data-lang={locale} data-msg={JSON.stringify({ ok: f.ok, err: f.err, invalid: f.invalid, off: f.off, done: f.done })}>
@@ -45,9 +45,9 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
 <style>
   .follow { background: radial-gradient(60% 50% at 10% 0%, rgba(201,163,91,.12), transparent 70%), var(--ink); overflow: hidden; }
   .head { display: grid; gap: 14px; max-width: 46em; margin-bottom: 34px; }
-  .head h2 { font-size: clamp(34px, 4.6vw, 60px); }
+  .head h2 { font-size: clamp(28px, 3.9vw, 50px); color: #fff; }
   .notify { display: grid; gap: 10px; margin-top: 8px; padding: 18px; border-radius: 18px; background: rgba(251,248,241,.04); box-shadow: 0 0 0 1px rgba(234,211,154,.2); max-width: 560px; }
-  .nl-title { margin: 0; font: 600 18px var(--f-display); color: var(--ivory); }
+  .nl-title { margin: 0; font: 800 15px/1.25 var(--f-head); letter-spacing: .02em; text-transform: uppercase; color: #fff; }
   .nl-row { display: flex; gap: 10px; }
   .nl-row input { flex: 1; min-width: 0; height: 50px; border-radius: 999px; border: 1px solid rgba(234,211,154,.35); background: rgba(13,12,10,.6); color: var(--ivory); padding: 0 18px; font: 500 16px var(--f-body); }
   .nl-row input:focus { outline: none; border-color: var(--gold); }
@@ -58,7 +58,7 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
   .consent input { margin-top: 2px; accent-color: var(--gold); width: 16px; height: 16px; flex: none; }
   .nl-msg { margin: 0; font-size: 14px; color: var(--gold-hi); min-height: 1em; }
   .nl-msg.err { color: #e7a07a; }
-  @media (max-width: 520px) { .nl-row { flex-direction: column; } }
+  @media (max-width: 520px) { .nl-row { flex-direction: column; } .nl-row input { flex: none; } }   /* stacked: the field keeps its 50 px */
   .links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
   .ghost { display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border-radius: 999px; border: 1px solid rgba(234,211,154,.45); color: var(--ivory); text-decoration: none; font-weight: 600; }
   .ghost:hover { border-color: var(--gold); color: var(--gold-hi); }

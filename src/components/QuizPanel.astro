@@ -8,7 +8,7 @@ const results = [1, 2, 3].map((i) => ({ title: q[`r${i}_title`], text: q[`r${i}_
 ---
     <div class="panel" data-reveal data-results={JSON.stringify(results)} data-qlabel={q.q}>
   <div class="step intro">
-    <p class="eyebrow">{q.eyebrow}</p>
+    <p class="eyebrow kicker">{q.eyebrow}</p>
     <h2>{q.title}</h2>
     <p class="muted">{q.intro}</p>
     <button type="button" class="pill-cta start">{q.start} <span aria-hidden="true">→</span></button>
@@ -44,7 +44,7 @@ const results = [1, 2, 3].map((i) => ({ title: q[`r${i}_title`], text: q[`r${i}_
   .step { display: grid; gap: 18px; border: 0; margin: 0; padding: 0; min-width: 0; animation: enter .5s cubic-bezier(.2,.7,.2,1); }
   .step[hidden] { display: none; }
   @keyframes enter { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
-  .intro h2 { font-size: clamp(36px, 5vw, 64px); }
+  .intro h2 { font-size: clamp(30px, 4.2vw, 54px); }
   .intro .start, .ractions .pill-cta { justify-self: start; border: 0; cursor: pointer; font-family: var(--f-body); }
   legend { display: grid; gap: 10px; padding: 0; margin-bottom: 8px; }
   .qn { font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-deep); }

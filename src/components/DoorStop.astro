@@ -3,6 +3,7 @@
 // the newsletter, the latest episodes and the footer then scroll up over the same scene.
 import { type Locale, t } from '../i18n';
 import { INSTAGRAM } from '../data/episodes';
+import TapIcon from './TapIcon.astro';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const s = t(locale) as any, h = s.house;
@@ -12,10 +13,10 @@ const s = t(locale) as any, h = s.house;
     <button type="button" class="hook" style="left:840px;top:150px;width:330px;height:430px" aria-label={s.shop.title}></button>
   </div>
   <div class="cap">
-    <p class="eyebrow">{h.door_eyebrow}</p>
+    <p class="eyebrow kicker"><span class="no">08</span>{h.door_eyebrow}</p>
     <h2>{h.door_title}</h2>
     <p class="say">{h.door_say}</p>
-    <p class="hint"><span class="h-wide">{h.door_hint_wide}</span><span class="h-tap">{h.door_hint_tap}</span></p>
+    <p class="hint tapchip"><TapIcon /><span><span class="h-wide">{h.door_hint_wide}</span><span class="h-tap">{h.door_hint_tap}</span></span></p>
   </div>
   <div class="tag" hidden>
     <button type="button" class="x" aria-label={h.close}>×</button>
@@ -33,9 +34,9 @@ const s = t(locale) as any, h = s.house;
   .hook { all: unset; position: absolute; cursor: pointer; border-radius: 30px; }
   .hook:focus-visible { outline: 3px solid var(--gold-hi); }
   .cap { position: absolute; left: var(--gutter); top: 50%; transform: translateY(-40%); max-width: min(520px, 40vw); display: grid; gap: 10px; justify-items: start; pointer-events: none; transition: opacity .4s; opacity: var(--fade, 1); }
-  .cap h2 { font-size: clamp(38px, 4.6vw, 68px); color: var(--ivory); }
-  .cap .say { margin: 0; font-family: var(--f-display); font-style: italic; font-size: clamp(17px, 1.5vw, 21px); color: rgba(244,238,226,.9); }
-  .cap .hint { margin: 6px 0 0; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-hi); }
+  .cap h2 { font-size: clamp(32px, 3.9vw, 58px); color: #fff; text-shadow: 0 2px 24px rgba(0,0,0,.35); }
+  .cap .say { margin: 0; font: 500 clamp(16px, 1.25vw, 19px)/1.5 var(--f-body); color: rgba(244,238,226,.88); }
+  .cap .hint { margin: 6px 0 0; }
   .h-tap { display: none; }
   .dostop.tagged .cap { opacity: 0; }
   .tag { position: absolute; z-index: 3; left: var(--tx, 50%); top: var(--ty, 50%); width: min(340px, 80vw); padding: 22px 22px 20px; box-sizing: border-box; display: grid; gap: 8px; justify-items: start;
@@ -43,13 +44,14 @@ const s = t(locale) as any, h = s.house;
   .tag[hidden] { display: none; }
   @keyframes tagIn { from { opacity: 0; transform: translateY(14px) rotate(-1.5deg); } }
   .tag .eyebrow { color: #8a6a35; }
-  .tt { margin: 0; font: 600 28px/1.1 var(--f-display); color: #1d160e; }
+  .tt { margin: 0; font: 800 23px/1.15 var(--f-head); letter-spacing: -0.01em; text-transform: uppercase; color: #1d160e; }
   .tx { margin: 0; font-size: 15px; line-height: 1.55; color: #3d3226; }
   .x { all: unset; position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; font-size: 22px; color: #5a4220; }
   @media (max-width: 899px), (hover: none) {
     .h-wide { display: none; } .h-tap { display: inline; }
-    .cap { left: 0; right: 0; top: auto; bottom: 0; transform: none; max-width: none; padding: 80px 18px calc(24px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(0deg, rgba(13,9,4,.9) 0%, rgba(13,9,4,.6) 60%, rgba(13,9,4,0) 100%); }
-    .cap h2 { font-size: 34px; } .cap .say { font-size: 15.5px; }
+    .cap { left: 0; right: 0; top: auto; bottom: 0; transform: none; max-width: none; padding: 80px 18px calc(24px + env(safe-area-inset-bottom, 0px)); justify-items: center; text-align: center; background: linear-gradient(0deg, rgba(13,9,4,.9) 0%, rgba(13,9,4,.6) 60%, rgba(13,9,4,0) 100%); }
+    .cap .kicker::before { margin-inline: auto; }
+    .cap h2 { font-size: 34px; } .cap .say { font-size: 15px; }
     .tag { left: 50% !important; top: auto !important; bottom: 20px; transform: translateX(-50%); }
   }
 </style>

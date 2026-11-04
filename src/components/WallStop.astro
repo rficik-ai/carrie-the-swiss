@@ -19,10 +19,9 @@ const href = (x: string) => `/${locale}/${x}`;
   </div>
   <div class="vig" aria-hidden="true"></div>
   <div class="cap">
-    <p class="eyebrow">{h.wall_eyebrow}</p>
+    <p class="eyebrow kicker"><span class="no">04</span>{h.wall_eyebrow}</p>
     <h2>{h.wall_title}</h2>
     <p class="say">{h.wall_say}</p>
-    <p class="hint">{h.wall_hint_scroll} <i aria-hidden="true">↓</i></p>
   </div>
   <div class="plaques">
     {WALL.map((w, i) => (
@@ -61,11 +60,8 @@ const href = (x: string) => `/${locale}/${x}`;
 
   .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 120px var(--gutter-r) max(40px, 5vh) var(--gutter); display: grid; gap: 8px; justify-items: start; pointer-events: none;
     background: linear-gradient(0deg, rgba(20,11,4,.82) 0%, rgba(20,11,4,.5) 55%, rgba(20,11,4,0) 100%); opacity: var(--cap, 1); }
-  .cap h2 { font-size: clamp(36px, 4.4vw, 64px); color: var(--ivory); }
-  .cap .say { margin: 0; max-width: 34em; font-family: var(--f-display); font-style: italic; font-size: clamp(16px, 1.4vw, 20px); color: rgba(244,238,226,.9); }
-  .cap .hint { margin: 4px 0 0; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-hi); }
-  .cap .hint i { display: inline-block; font-style: normal; animation: nudge 1.6s ease-in-out infinite; }
-  @keyframes nudge { 50% { transform: translateY(4px); } }
+  .cap h2 { font-size: clamp(32px, 3.8vw, 56px); color: #fff; text-shadow: 0 2px 24px rgba(0,0,0,.35); }
+  .cap .say { margin: 0; max-width: 34em; font: 500 clamp(16px, 1.2vw, 18px)/1.5 var(--f-body); color: rgba(244,238,226,.88); }
 
   /* the museum plaque next to the frame the camera is looking at */
   .plaque { position: absolute; left: 58vw; top: calc(50% + var(--hh, 68px) / 2); width: min(420px, 31vw); box-sizing: border-box; padding: 24px 26px 20px; display: grid; gap: 8px;
@@ -74,8 +70,8 @@ const href = (x: string) => `/${locale}/${x}`;
   .plaque.on { opacity: 1; transform: translate(0, -50%); pointer-events: auto; }
   .plaque.pl { left: var(--gutter); }   /* this picture ends up on the right half: its plaque hangs on the left */
   .plaque .row .ths { display: flex; gap: 8px; flex-wrap: wrap; }
-  .date { margin: 0; font: italic 600 15px var(--f-display); color: #8a6a35; }
-  .plaque h3 { margin: 0; font-size: clamp(24px, 2.2vw, 32px); line-height: 1.12; color: #1d160e; }
+  .date { margin: 0; font: 800 11px/1 var(--f-body); letter-spacing: .2em; text-transform: uppercase; color: #8a6a35; }
+  .plaque h3 { margin: 0; font-size: clamp(19px, 1.6vw, 24px); line-height: 1.16; color: #1d160e; }
   .txt { margin: 0; font-size: 16px; line-height: 1.6; color: #3d3226; }
   .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 6px; }
   .th { all: unset; cursor: zoom-in; width: 54px; height: 54px; border-radius: 3px; overflow: hidden; box-shadow: 0 0 0 1px rgba(120,90,40,.3), 0 4px 10px -4px rgba(60,35,10,.4); transition: transform .2s; }
@@ -100,11 +96,12 @@ const href = (x: string) => `/${locale}/${x}`;
   .lx { all: unset; position: fixed; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 28px; color: var(--ivory); cursor: pointer; border: 1px solid rgba(234,211,154,.5); }
 
   @media (max-width: 899px), (hover: none) {
-    .cap { padding: 70px 18px calc(22px + env(safe-area-inset-bottom, 0px)); gap: 6px; }
+    .cap { padding: 70px 18px calc(22px + env(safe-area-inset-bottom, 0px)); gap: 8px; justify-items: center; text-align: center; }
+    .cap .kicker::before { margin-inline: auto; }
     .cap h2 { font-size: 32px; } .cap .say { font-size: 15px; }
     .plaque { left: 12px; right: 12px; top: auto; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); width: auto; padding: 16px 18px 14px; gap: 6px; transform: translateY(12px); }
     .plaque.on { transform: none; }
-    .plaque h3 { font-size: 22px; } .txt { font-size: 14.5px; line-height: 1.5; }
+    .plaque h3 { font-size: 18px; } .txt { font-size: 14.5px; line-height: 1.5; }
     .th { width: 44px; height: 44px; }
     .line { left: 14px; right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
     .line li span { display: none; }

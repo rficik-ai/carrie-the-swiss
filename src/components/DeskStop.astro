@@ -3,6 +3,7 @@
 // Click a paper: it lifts off the desk toward you and tells you what it really means.
 import { type Locale, t } from '../i18n';
 import { rectToQuad, type Pt } from '../lib/persp';
+import TapIcon from './TapIcon.astro';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const all = t(locale) as any;
@@ -25,10 +26,10 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
   </div>
   <div class="veil" aria-hidden="true"></div>
   <div class="cap">
-    <p class="eyebrow">{c.eyebrow}</p>
+    <p class="eyebrow kicker"><span class="no">05</span>{c.eyebrow}</p>
     <h2>{c.title}</h2>
     <p class="say"><span class="intro">{c.intro}</span></p>
-    <p class="hint"><span class="h-wide">{h.desk_hint_wide}</span><span class="h-tap">{h.desk_hint_tap}</span> · <span class="count">0</span> {c.progress}</p>
+    <p class="hint tapchip"><TapIcon /><span><span class="h-wide">{h.desk_hint_wide}</span><span class="h-tap">{h.desk_hint_tap.split(' · ')[0]}</span> · <span class="count">0</span> / {papers.length}</span></p>
     <div class="done" hidden>
       <p class="done-title">{c.done_title}</p>
       <a class="pill-cta" href={`/${locale}/papers/`}>{c.done_cta} <span aria-hidden="true">→</span></a>
@@ -70,12 +71,12 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
   .dstop.reading .veil { opacity: 1; pointer-events: auto; }
   .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 120px var(--gutter-r) max(36px, 4.5vh) var(--gutter); display: grid; gap: 8px; justify-items: start; pointer-events: none;
     background: linear-gradient(0deg, rgba(20,11,4,.86) 0%, rgba(20,11,4,.55) 55%, rgba(20,11,4,0) 100%); transition: opacity .4s; }
-  .cap h2 { font-size: clamp(32px, 3.8vw, 56px); color: var(--ivory); max-width: 16em; }
-  .cap .say { margin: 0; max-width: 34em; font-family: var(--f-display); font-style: italic; font-size: clamp(16px, 1.4vw, 20px); color: rgba(244,238,226,.9); }
-  .cap .hint { margin: 4px 0 0; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-hi); }
+  .cap h2 { font-size: clamp(28px, 3.2vw, 48px); color: #fff; max-width: 17em; text-shadow: 0 2px 24px rgba(0,0,0,.35); }
+  .cap .say { margin: 0; max-width: 34em; font: 500 clamp(16px, 1.2vw, 18px)/1.5 var(--f-body); color: rgba(244,238,226,.88); }
+  .cap .hint { margin: 6px 0 0; }
   .done { display: grid; gap: 10px; justify-items: start; pointer-events: auto; }
   .done[hidden] { display: none; }
-  .done-title { margin: 6px 0 0; font: 600 clamp(20px, 2vw, 26px) var(--f-display); color: var(--ivory); }
+  .done-title { margin: 6px 0 0; font: 800 clamp(18px, 1.7vw, 24px)/1.2 var(--f-head); letter-spacing: -0.01em; text-transform: uppercase; color: #fff; }
   .h-tap { display: none; }
   .dstop.reading .cap { opacity: 0; }
 
@@ -87,7 +88,7 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
   .doc img { width: 100%; max-height: 52vh; object-fit: contain; filter: drop-shadow(0 10px 16px rgba(60,35,10,.35)); }
   .words { padding: 34px 34px 20px; display: grid; gap: 12px; align-content: center; }
   .nm { margin: 0; font: 700 12px var(--f-body); letter-spacing: .18em; text-transform: uppercase; color: #8a6a35; }
-  .bigw { margin: 0; font: 600 clamp(38px, 4.4vw, 60px)/1 var(--f-display); color: #1d160e; }
+  .bigw { margin: 0; font: 800 clamp(30px, 3.4vw, 48px)/1.12 var(--f-head); letter-spacing: -0.015em; text-transform: uppercase; color: #1d160e; }
   .txt { margin: 0; font-size: 17px; line-height: 1.6; color: #3d3226; }
   .ep { justify-self: start; margin-top: 6px; font-weight: 700; color: #7a5520; text-decoration: none; border-bottom: 1px solid currentColor; }
   .rnav { display: flex; justify-content: flex-end; padding: 12px 18px 16px; border-top: 1px solid rgba(120,90,40,.15); }
@@ -96,13 +97,15 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
 
   @media (max-width: 899px), (hover: none) {
     .h-wide { display: none; } .h-tap { display: inline; }
-    .cap { padding: 60px 18px calc(20px + env(safe-area-inset-bottom, 0px)); gap: 6px; }
-    .cap h2 { font-size: 26px; } .cap .say { font-size: 15px; }
+    .cap { padding: 60px 18px calc(20px + env(safe-area-inset-bottom, 0px)); gap: 8px; justify-items: center; text-align: center; }
+    .cap .kicker::before { margin-inline: auto; }
+    .done { justify-items: center; }
+    .cap h2 { font-size: 27px; } .cap .say { font-size: 15px; }
     .read { left: 0; right: 0; top: auto; bottom: 0; width: auto; max-height: 84svh; transform: none; border-radius: 18px 18px 0 0; }
     .sheet { grid-template-columns: 1fr; }
     .doc { padding: 16px; } .doc img { max-height: 30svh; }
     .words { padding: 18px 20px 10px; gap: 8px; }
-    .bigw { font-size: 36px; } .txt { font-size: 15.5px; }
+    .bigw { font-size: 28px; } .txt { font-size: 15.5px; }
     .rnav { padding: 10px 14px calc(12px + env(safe-area-inset-bottom, 0px)); }
   }
 </style>
