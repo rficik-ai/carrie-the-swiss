@@ -99,4 +99,89 @@ section.block { padding-block: clamp(72px, 10vw, 140px); }
 .js [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
 .js [data-reveal].in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .js [data-reveal] { opacity: 1; transform: none; transition: none; } }
+
+/* ---- text that arrives. Every scene brings its title in its own way (Split.astro cuts it into words / letters).
+   A caption marked .rv plays when it gets .rv-in (the scene goes live) and leaves quickly when it loses it.
+   Around the title: the kicker's gold rule draws itself, the rest (.rf) follows after --fd. */
+.sp .w { display: inline-block; white-space: nowrap; }
+.sp .c { display: inline-block; }
+.js .rv .rf { opacity: 0; translate: 0 10px; transition: opacity .25s ease, translate .25s ease; }
+.rv.rv-in .rf { opacity: 1; translate: 0 0; transition: opacity .7s ease var(--fd, .5s), translate .8s cubic-bezier(.2,.7,.2,1) var(--fd, .5s); }
+.js .rv .kicker::before { scale: 0 1; transform-origin: var(--ko, left); transition: scale .25s ease; }
+.rv.rv-in .kicker::before { scale: 1 1; transition: scale .9s cubic-bezier(.2,.7,.2,1) .05s; }
+.rv .kicker { --fd: 0s; }
+
+/* sunrise (first chapter): the letters rise over the horizon in a warm glow */
+.fx-rise .w { clip-path: inset(-.6em -.3em 0 -.3em); }
+.js .rv .fx-rise .c { translate: 0 108%; text-shadow: 0 0 22px rgba(255,176,86,.95); transition: translate .35s cubic-bezier(.5,0,.75,0); }
+.rv.rv-in .fx-rise .c { translate: 0 0; text-shadow: 0 2px 24px rgba(0,0,0,.35);
+  transition: translate 1s cubic-bezier(.2,.75,.2,1) calc(.15s + var(--i) * 34ms), text-shadow 1.8s ease calc(.5s + var(--i) * 34ms); }
+
+/* focus pull (chapters 2 and 3): the words sharpen like a lens, from the middle outwards */
+.js .rv .fx-focus .w { opacity: 0; filter: blur(12px); scale: 1.2; transition: opacity .25s ease, filter .25s ease, scale .25s ease; }
+.rv.rv-in .fx-focus .w { opacity: 1; filter: blur(0); scale: 1;
+  transition: opacity .7s ease, filter 1s ease, scale 1.2s cubic-bezier(.2,.7,.2,1); transition-delay: calc(.1s + var(--a) * 110ms); }
+
+/* split-flap (library): a new book title flips in letter by letter, like a departures board */
+.fx-flap .w { perspective: 420px; }
+.js .fx-flap .c { rotate: x -92deg; opacity: 0; transform-origin: 50% 0; }
+.fx-flap.go .c { rotate: x 0deg; opacity: 1; transition: rotate .55s cubic-bezier(.3,1.5,.5,1) calc(var(--i) * 24ms), opacity .15s linear calc(var(--i) * 24ms); }
+
+/* photo flip (the photo wall): each word turns over like one of the photos */
+.fx-flip { perspective: 700px; }
+.fx-flip .w { backface-visibility: hidden; transform-origin: 0 50%; }
+.js .rv .fx-flip .w { rotate: y -96deg; opacity: 0; transition: rotate .3s ease, opacity .3s ease; }
+.rv.rv-in .fx-flip .w { rotate: y 0deg; opacity: 1;
+  transition: rotate 1s cubic-bezier(.2,.85,.25,1) calc(.15s + var(--wi) * 120ms), opacity .35s ease calc(.15s + var(--wi) * 120ms); }
+
+/* hanging (the wall of my life): every letter is hung on its nail and swings still; leaving, they drop off their nails */
+.fx-hang .c { transform-origin: 50% -.3em; }
+.js .rv .fx-hang .c { opacity: 0; translate: 0 .5em; rotate: calc(var(--r) * 36deg - 18deg);
+  transition: opacity .3s ease calc(var(--r) * 90ms), translate .35s cubic-bezier(.5,0,.75,0) calc(var(--r) * 90ms), rotate .35s ease calc(var(--r) * 90ms); }
+.rv.rv-in .fx-hang .c { opacity: 1; translate: 0 0; rotate: 0deg; animation: hang 1.4s ease-out calc(.15s + var(--i) * 36ms) backwards; }
+@keyframes hang {
+  0% { opacity: 0; translate: 0 -.75em; rotate: -18deg; }
+  28% { opacity: 1; translate: 0 0; rotate: 10deg; }
+  50% { rotate: -5deg; } 68% { rotate: 2.5deg; } 84% { rotate: -1deg; }
+  100% { opacity: 1; translate: 0 0; rotate: 0deg; }
+}
+
+/* typewriter (the papers on the desk): typed letter by letter, a gold caret running ahead; leaving, it is backspaced */
+.fx-type .c { position: relative; }
+.fx-type .c::after { content: ''; position: absolute; right: -.07em; top: .1em; bottom: .1em; width: .07em; background: var(--gold-hi); opacity: 0; }
+.js .rv .fx-type .c { opacity: 0; transition: opacity 0s linear calc((var(--n) - var(--i)) * 8ms); }
+.rv.rv-in .fx-type .c { opacity: 1; transition: opacity 0s linear calc(.25s + var(--i) * 30ms); }
+.rv.rv-in .fx-type .c::after { animation: caret 30ms linear calc(.25s + var(--i) * 30ms); }
+.rv.rv-in .fx-type .w:last-child .c:last-child::after { animation: caret 30ms linear calc(.25s + var(--i) * 30ms), blink 1s steps(2, jump-none) calc(.28s + var(--i) * 30ms) 3; }
+@keyframes caret { from, to { opacity: 1; } }
+@keyframes blink { from { opacity: 1; } to { opacity: 0; } }
+
+/* playful (the garden quiz): the words jump in like a happy dog, the question mark wags */
+.js .rv .fx-bounce .w { opacity: 0; translate: 0 .9em; scale: .4; rotate: var(--rot); transition: opacity .25s ease, translate .25s ease, scale .25s ease; }
+.rv.rv-in .fx-bounce .w { opacity: 1; translate: 0 0; scale: 1; rotate: 0deg;
+  transition: translate .75s cubic-bezier(.3,1.7,.5,1) calc(.12s + var(--wi) * 90ms), scale .75s cubic-bezier(.3,1.7,.5,1) calc(.12s + var(--wi) * 90ms),
+    rotate .85s cubic-bezier(.3,1.7,.5,1) calc(.12s + var(--wi) * 90ms), opacity .2s ease calc(.12s + var(--wi) * 90ms); }
+.fx-bounce .w:last-child { transform-origin: 70% 90%; }
+.rv.rv-in .fx-bounce .w:last-child { animation: wag .45s ease-in-out calc(.95s + var(--wi) * 90ms) 3; }
+@keyframes wag { 0%, 100% { rotate: 0deg; } 25% { rotate: 8deg; } 75% { rotate: -8deg; } }
+
+/* embers (the fireplace): the letters catch fire one by one, out of order, and cool to white */
+.js .rv .fx-ember .c { opacity: 0; color: #ffb066; text-shadow: 0 0 14px rgba(255,138,36,.95), 0 0 3px rgba(255,210,140,.9); transition: opacity .3s ease; }
+.rv.rv-in .fx-ember .c { opacity: 1; color: #fff; text-shadow: 0 0 0 rgba(255,138,36,0);
+  transition: opacity .3s ease calc(.15s + var(--r) * .8s), color 1.5s ease calc(.3s + var(--r) * .8s), text-shadow 1.8s ease calc(.3s + var(--r) * .8s); }
+
+/* night (the front door): slowly, one breath at a time, the words drift down out of the dark */
+.js .rv .fx-night .w { opacity: 0; translate: 0 -.3em; filter: blur(8px); transition: opacity .6s ease, translate .6s ease, filter .6s ease; }
+.rv.rv-in .fx-night .w { opacity: 1; translate: 0 0; filter: blur(0);
+  transition: opacity 1.7s ease calc(.3s + var(--wi) * 300ms), translate 2.2s cubic-bezier(.2,.7,.2,1) calc(.3s + var(--wi) * 300ms), filter 1.7s ease calc(.3s + var(--wi) * 300ms); }
+
+/* wipe (the follow section): a sweep uncovers the title */
+.js [data-reveal] .fx-wipe { clip-path: inset(-.4em 100% -.4em 0); }
+.js [data-reveal].in .fx-wipe { clip-path: inset(-.4em 0 -.4em 0); transition: clip-path 1.2s cubic-bezier(.65,0,.35,1) .25s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .rv .rf, .js .rv .kicker::before, .js .rv .sp .w, .js .rv .sp .c, .js .fx-flap .c, .js [data-reveal] .fx-wipe {
+    opacity: 1 !important; translate: none !important; scale: none !important; rotate: none !important; filter: none !important; clip-path: none !important; animation: none !important; transition: none !important; }
+  .js .rv .fx-ember .c { color: inherit !important; text-shadow: none !important; }
+}
 canvas.dust { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }

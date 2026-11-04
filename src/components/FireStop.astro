@@ -2,15 +2,16 @@
 // House walk, stop 4: evening by the fireplace. "Ask Carrie": the AI chat about breeding, training, shows and feeding.
 import { type Locale, t } from '../i18n';
 import ChatPanel from './ChatPanel.astro';
+import Split from './Split.astro';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const a = (t(locale) as any).ask;
 ---
 <div class="hstop fstop ask" data-stop="fire" aria-label={a.title}>
-  <div class="panel">
+  <div class="panel rv">
     <button type="button" class="cx" aria-label={a.close ?? 'Close'}>×</button>
-    <p class="eyebrow kicker"><span class="no">07</span>{a.eyebrow}</p>
-    <h2>{a.title}</h2>
+    <p class="eyebrow kicker rf"><span class="no">07</span>{a.eyebrow}</p>
+    <h2 class="fx-ember" aria-label={a.title}><Split text={a.title} /></h2>
     <ChatPanel locale={locale} />
     <p class="note">{a.note}</p>
   </div>

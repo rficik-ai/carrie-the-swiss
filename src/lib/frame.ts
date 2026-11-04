@@ -18,9 +18,8 @@ export function coverFrame(W: number, H: number): Frame {
   return { k, left: Math.round((W - 1920 * k) / 2), top: Math.round((H - 1080 * k) / 2) };
 }
 
-const clampPan = (pan: number, max: number) => Math.max(-max, Math.min(max, pan));
-
-/** shelf stop: desktop fits books + plaques + caption below the menu; phone shows bigger books you can pan sideways */
+/** shelf stop: desktop fits books + plaques + caption below the menu; phone shows all twelve books across the screen
+ *  (nothing to drag sideways: the page only ever scrolls down). `pan` is kept for callers, unused. */
 export function fitFrame(W: number, H: number, hh = headerHeight(), pan = 0): Frame {
   const c = coverFrame(W, H);
   if (isWide()) {
@@ -28,26 +27,27 @@ export function fitFrame(W: number, H: number, hh = headerHeight(), pan = 0): Fr
     const k = Math.min(c.k, (W * 0.96) / R.w, (H - hh - 14) / R.h);
     return { k, left: Math.round(W / 2 - (R.x + R.w / 2) * k), top: Math.round(hh + (H - hh - R.h * k) / 2 - R.y * k), maxPan: 0 };
   }
-  const x0 = SHELF.edges[0] - 24, x1 = SHELF.edges[SHELF.edges.length - 1] + 24;
+  void pan;
+  const x0 = SHELF.edges[0] - 14, x1 = SHELF.edges[SHELF.edges.length - 1] + 14;
   const y0 = SHELF.top - 18, y1 = SHELF.bottom + 18;
   const avail = H - hh - NARROW_UI - 16;
-  const k = Math.min(c.k, avail / (y1 - y0), 0.62);
-  const maxPan = Math.max(0, ((x1 - x0) * k - (W - 24)) / 2);
+  const k = Math.min(c.k, avail / (y1 - y0), (W - 12) / (x1 - x0));
   return {
-    k, maxPan,
-    left: Math.round(W / 2 - ((x0 + x1) / 2) * k + clampPan(pan, maxPan)),
+    k, maxPan: 0,
+    left: Math.round(W / 2 - ((x0 + x1) / 2) * k),
     top: Math.round(hh + 8 + (avail - (y1 - y0) * k) / 2 - y0 * k),
   };
 }
 
-/** photo-wall stop: desktop = cover; phone = the whole frame tall enough to tap, pan sideways */
+/** photo-wall stop: desktop = cover; phone = all three real photos across the screen, nothing to drag sideways */
 export function wallFrame(W: number, H: number, hh = headerHeight(), pan = 0): Frame {
   const c = coverFrame(W, H);
   if (isWide()) return { ...c, maxPan: 0 };
+  void pan;
+  const X0 = 150, X1 = 1890;            // the photos span x 178…1862 of the frame
   const avail = H - hh - 250;
-  const k = Math.min(c.k, avail / 1080);
-  const maxPan = Math.max(0, (1920 * k - W) / 2);
-  return { k, maxPan, left: Math.round(W / 2 - 960 * k + clampPan(pan, maxPan)), top: Math.round(hh + (avail - 1080 * k) / 2) };
+  const k = Math.min(c.k, avail / 1080, (W - 8) / (X1 - X0));
+  return { k, maxPan: 0, left: Math.round(W / 2 - ((X0 + X1) / 2) * k), top: Math.round(hh + (avail - 1080 * k) / 2) };
 }
 
 export const lerpFrame = (a: Frame, b: Frame, e: number): Frame => ({
@@ -64,47 +64,6 @@ export function damp(x: number, to: number, v: number, time: number, dt: number,
   let nv = (v - w * tmp) * e, nx = goal + (ch + tmp) * e;
   if ((to - x > 0) === (nx > to)) { nx = to; nv = 0; }
   return [nx, nv];
-}
-
-/** horizontal drag on an element → pan value in window[key]; vertical scrolling stays native */
-export function attachPan(el: HTMLElement, key: string, getMax: () => number) {
-  const W_ = window as any;
-  W_[key] = W_[key] ?? 0;
-  let sx = 0, sy = 0, p0 = 0, dragging = false, decided = false, moved = false;
-  el.style.touchAction = 'pan-y';
-  el.addEventListener('pointerdown', (e) => { if (e.pointerType === 'mouse') return; sx = e.clientX; sy = e.clientY; p0 = W_[key]; dragging = true; decided = false; moved = false; });
-  el.addEventListener('pointermove', (e) => {
-    if (!dragging) return;
-    const dx = e.clientX - sx, dy = e.clientY - sy;
-    if (!decided && Math.abs(dx) + Math.abs(dy) > 8) { decided = true; if (Math.abs(dy) > Math.abs(dx)) { dragging = false; return; } }
-    if (decided) { moved = true; const m = getMax(); W_[key] = Math.max(-m, Math.min(m, p0 + dx)); }
-  });
-  const end = () => { dragging = false; };
-  el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
-  // a drag must not count as a tap on whatever is under the finger
-  el.addEventListener('click', (e) => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
-}
-
-/** one gentle sideways "peek" so visitors see there is more to the left and right; stops as soon as they touch */
-export function peek(key: string, getMax: () => number, el: HTMLElement) {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const W_ = window as any;
-  let stop = false;
-  const cancel = () => { stop = true; };
-  el.addEventListener('pointerdown', cancel, { once: true });
-  const p0 = W_[key] ?? 0, dur = 2400;
-  let t0 = 0;
-  const keys = [0, -0.55, 0.55, 0];
-  const step = (t: number) => {
-    if (stop) return;
-    if (!t0) t0 = t;
-    const m = getMax();
-    const k = Math.min(1, (t - t0) / dur) * (keys.length - 1), i = Math.min(keys.length - 2, Math.floor(k)), f = k - i;
-    const e = f < .5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2;
-    W_[key] = Math.max(-m, Math.min(m, p0 + (keys[i] + (keys[i + 1] - keys[i]) * e) * m));
-    if (k < keys.length - 1) requestAnimationFrame(step);
-  };
-  setTimeout(() => requestAnimationFrame(step), 700);
 }
 
 /** house stops (see src/data/house.ts): desktop keeps `region` below the menu, phone centres on the stop's focus.
@@ -128,6 +87,7 @@ export function stopFrame(s: HouseStop, W: number, H: number, hh = headerHeight(
     return bound(k, R.x + R.w / 2, R.y + R.h / 2, hh, H - hh);
   }
   const P = s.phone;
-  const k = P.h >= 1080 ? c.k : Math.min(c.k * 1.6, (H - hh - P.ui - 16) / P.h);
-  return bound(k, P.cx, P.cy, P.h >= 1080 ? 0 : hh + 8, P.h >= 1080 ? H : H - hh - P.ui - 16);
+  const full = P.h >= 1080 && !P.w;   // the whole height of the scene; else fit P.h (and P.w: everything tappable across the screen)
+  const k = full ? c.k : Math.min(c.k * 1.6, (H - hh - P.ui - 16) / P.h, P.w ? (W - 16) / P.w : Infinity);
+  return bound(k, P.cx, P.cy, full ? 0 : hh + 8, full ? H : H - hh - P.ui - 16);
 }

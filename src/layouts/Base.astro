@@ -33,15 +33,15 @@ const ogImage = `${site}/assets/img/og.jpg`;
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:locale" content={HTML_LANG[locale]} />
+    <!-- before the first paint: the hidden starting states of the text animations must never be reached by a transition -->
+    <script is:inline>document.documentElement.classList.add('js'); if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('nofilm');</script>
     <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
     <slot />
   
 <script>
-  document.documentElement.classList.add('js');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) document.documentElement.classList.add('nofilm');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;   // js / nofilm classes: inline script in <head>
   // reveal on scroll
   const rio = new IntersectionObserver((ents) => ents.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } }), { threshold: 0.15 });
   document.querySelectorAll('[data-reveal]').forEach((el) => rio.observe(el));

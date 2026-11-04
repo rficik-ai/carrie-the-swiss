@@ -3,6 +3,7 @@
 // and an optional detailed evaluation written by Carrie (AI, /api/quiz).
 import type { Locale } from '../i18n';
 import { QUESTIONS, DIMS, FLAGS, UI } from '../data/quiz';
+import Split from './Split.astro';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const L: string = UI[locale] ? locale : 'en';
@@ -16,11 +17,11 @@ const data = {
 };
 ---
 <div class="gq" data-q={JSON.stringify(data)} data-err={u.ai_err} data-wait={u.ai_wait}>
-  <section class="step intro">
-    <p class="eyebrow kicker"><span class="no">06</span>{u.eyebrow}</p>
-    <h2>{u.title}</h2>
-    <p class="muted">{u.intro}</p>
-    <div class="row">
+  <section class="step intro rv">
+    <p class="eyebrow kicker rf"><span class="no">06</span>{u.eyebrow}</p>
+    <h2 class="fx-bounce" aria-label={u.title}><Split text={u.title} by="word" /></h2>
+    <p class="muted rf" style="--fd:.7s">{u.intro}</p>
+    <div class="row rf" style="--fd:.85s">
       <button type="button" class="pill-cta start">{u.start} <span aria-hidden="true">→</span></button>
       <button type="button" class="link method-open">{u.method}</button>
     </div>

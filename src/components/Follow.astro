@@ -12,7 +12,7 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
   <div class="wrap">
     <div class="head" data-reveal>
       <p class="eyebrow kicker">{f.eyebrow}</p>
-      <h2>{f.title}</h2>
+      <h2 class="fx-wipe">{f.title}</h2>
       <p class="muted">{f.intro}</p>
       <form class="notify" novalidate data-lang={locale} data-msg={JSON.stringify({ ok: f.ok, err: f.err, invalid: f.invalid, off: f.off, done: f.done })}>
         <p class="nl-title">{f.nl_title}</p>

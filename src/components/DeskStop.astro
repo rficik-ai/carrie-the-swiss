@@ -4,6 +4,7 @@
 import { type Locale, t } from '../i18n';
 import { rectToQuad, type Pt } from '../lib/persp';
 import TapIcon from './TapIcon.astro';
+import Split from './Split.astro';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const all = t(locale) as any;
@@ -25,11 +26,11 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
     ))}
   </div>
   <div class="veil" aria-hidden="true"></div>
-  <div class="cap">
-    <p class="eyebrow kicker"><span class="no">05</span>{c.eyebrow}</p>
-    <h2>{c.title}</h2>
-    <p class="say"><span class="intro">{c.intro}</span></p>
-    <p class="hint tapchip"><TapIcon /><span><span class="h-wide">{h.desk_hint_wide}</span><span class="h-tap">{h.desk_hint_tap.split(' · ')[0]}</span> · <span class="count">0</span> / {papers.length}</span></p>
+  <div class="cap rv" style={`--n:${c.title.replace(/\s+/g, '').length}`}>
+    <p class="eyebrow kicker rf"><span class="no">05</span>{c.eyebrow}</p>
+    <h2 class="fx-type" aria-label={c.title}><Split text={c.title} /></h2>
+    <p class="say rf" style="--fd: calc(.35s + var(--n) * 30ms)"><span class="intro">{c.intro}</span></p>
+    <p class="hint tapchip rf" style="--fd: calc(.5s + var(--n) * 30ms)"><TapIcon /><span><span class="h-wide">{h.desk_hint_wide}</span><span class="h-tap">{h.desk_hint_tap.split(' · ')[0]}</span> · <span class="count">0</span> / {papers.length}</span></p>
     <div class="done" hidden>
       <p class="done-title">{c.done_title}</p>
       <a class="pill-cta" href={`/${locale}/papers/`}>{c.done_cta} <span aria-hidden="true">→</span></a>
@@ -97,7 +98,7 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
 
   @media (max-width: 899px), (hover: none) {
     .h-wide { display: none; } .h-tap { display: inline; }
-    .cap { padding: 60px 18px calc(20px + env(safe-area-inset-bottom, 0px)); gap: 8px; justify-items: center; text-align: center; }
+    .cap { padding: 60px 18px calc(20px + env(safe-area-inset-bottom, 0px)); gap: 8px; justify-items: center; text-align: center; --ko: center; }
     .cap .kicker::before { margin-inline: auto; }
     .done { justify-items: center; }
     .cap h2 { font-size: 27px; } .cap .say { font-size: 15px; }
@@ -112,8 +113,7 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
 
 <script>
   import { mountStop } from '../lib/stop';
-  import { isWide, peek, headerHeight, stopFrame } from '../lib/frame';
-  import { STOPS } from '../data/house';
+  import { headerHeight } from '../lib/frame';
 
   const el = document.querySelector<HTMLElement>('.dstop');
   if (el) {
@@ -156,14 +156,7 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
     });
     addEventListener('keydown', (e) => { if (e.key === 'Escape' && !read.hidden) close(); });
 
-    let peeked = false;
-    const S = STOPS.find((s) => s.id === 'desk')!;
-    mountStop('desk', el, {
-      pan: true,
-      onLive: (on) => {
-        if (!on) close();
-        else if (!isWide() && !peeked) { peeked = true; peek('__panTmp_desk', () => { const st = document.querySelector<HTMLElement>('.scrub .stage')!; return stopFrame(S, st.clientWidth, st.clientHeight, headerHeight(), 0).maxPan ?? 0; }, el); }
-      },
-    });
+    // all three papers are on screen (phones too): nothing to drag sideways
+    mountStop('desk', el, { onLive: (on) => { if (!on) close(); } });
   }
 </script>

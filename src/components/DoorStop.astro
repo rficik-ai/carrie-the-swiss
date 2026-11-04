@@ -4,6 +4,7 @@
 import { type Locale, t } from '../i18n';
 import { INSTAGRAM } from '../data/episodes';
 import TapIcon from './TapIcon.astro';
+import Split from './Split.astro';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const s = t(locale) as any, h = s.house;
@@ -12,11 +13,11 @@ const s = t(locale) as any, h = s.house;
   <div class="layer">
     <button type="button" class="hook" style="left:840px;top:150px;width:330px;height:430px" aria-label={s.shop.title}></button>
   </div>
-  <div class="cap">
-    <p class="eyebrow kicker"><span class="no">08</span>{h.door_eyebrow}</p>
-    <h2>{h.door_title}</h2>
-    <p class="say">{h.door_say}</p>
-    <p class="hint tapchip"><TapIcon /><span><span class="h-wide">{h.door_hint_wide}</span><span class="h-tap">{h.door_hint_tap}</span></span></p>
+  <div class="cap rv">
+    <p class="eyebrow kicker rf" style="--fd:.15s"><span class="no">08</span>{h.door_eyebrow}</p>
+    <h2 class="fx-night" aria-label={h.door_title}><Split text={h.door_title} by="word" /></h2>
+    <p class="say rf" style="--fd:1.5s">{h.door_say}</p>
+    <p class="hint tapchip rf" style="--fd:1.9s"><TapIcon /><span><span class="h-wide">{h.door_hint_wide}</span><span class="h-tap">{h.door_hint_tap}</span></span></p>
   </div>
   <div class="tag" hidden>
     <button type="button" class="x" aria-label={h.close}>×</button>
@@ -49,7 +50,7 @@ const s = t(locale) as any, h = s.house;
   .x { all: unset; position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; font-size: 22px; color: #5a4220; }
   @media (max-width: 899px), (hover: none) {
     .h-wide { display: none; } .h-tap { display: inline; }
-    .cap { left: 0; right: 0; top: auto; bottom: 0; transform: none; max-width: none; padding: 80px 18px calc(24px + env(safe-area-inset-bottom, 0px)); justify-items: center; text-align: center; background: linear-gradient(0deg, rgba(13,9,4,.9) 0%, rgba(13,9,4,.6) 60%, rgba(13,9,4,0) 100%); }
+    .cap { left: 0; right: 0; top: auto; bottom: 0; transform: none; max-width: none; padding: 80px 18px calc(24px + env(safe-area-inset-bottom, 0px)); justify-items: center; text-align: center; --ko: center; background: linear-gradient(0deg, rgba(13,9,4,.9) 0%, rgba(13,9,4,.6) 60%, rgba(13,9,4,0) 100%); }
     .cap .kicker::before { margin-inline: auto; }
     .cap h2 { font-size: 34px; } .cap .say { font-size: 15px; }
     .tag { left: 50% !important; top: auto !important; bottom: 20px; transform: translateX(-50%); }

@@ -7,13 +7,13 @@ export type HouseStop = {
   img: string;
   video?: string; videoMobile?: string;   // the move INTO this stop (added once generated)
   region: Rect;                            // desktop: keep this inside the screen, below the menu
-  phone: { cx: number; cy: number; h: number; ui: number }; // phone: centre on (cx, cy), fit h px of frame height, leave ui px free at the bottom
+  phone: { cx: number; cy: number; h: number; ui: number; w?: number }; // phone: centre on (cx, cy), fit h px of frame height (and w px of width), leave ui px free at the bottom
 };
 
 export const HOUSE_START = 0.97;         // share of the old 1000vh film where the house begins
 export const STOPS: HouseStop[] = [
   { id: 'wall', video: '/assets/house/move-wall-d1.mp4', img: '/assets/house/wall-hd-v1.jpg', region: { x: 270, y: 40, w: 1450, h: 960 }, phone: { cx: 990, cy: 560, h: 980, ui: 0 } },
-  { id: 'desk', video: '/assets/house/move-desk-d2.mp4', img: '/assets/house/desk-v2.jpg', region: { x: 150, y: 180, w: 1720, h: 840 }, phone: { cx: 700, cy: 540, h: 1080, ui: 0 } },
+  { id: 'desk', video: '/assets/house/move-desk-d2.mp4', img: '/assets/house/desk-v2.jpg', region: { x: 150, y: 180, w: 1720, h: 840 }, phone: { cx: 692, cy: 455, h: 520, w: 1000, ui: 330 } },
   { id: 'garden', video: '/assets/house/move-garden-d2.mp4', img: '/assets/house/garden-v1.jpg', region: { x: 0, y: 0, w: 1920, h: 1080 }, phone: { cx: 1240, cy: 400, h: 700, ui: 420 } },
   { id: 'fire', video: '/assets/house/move-fire-d1.mp4', img: '/assets/house/fire-v1.jpg', region: { x: 0, y: 0, w: 1920, h: 1080 }, phone: { cx: 600, cy: 560, h: 760, ui: 430 } },
   { id: 'door', video: '/assets/house/move-door-d1.mp4', img: '/assets/house/door-v1.jpg', region: { x: 0, y: 0, w: 1920, h: 1080 }, phone: { cx: 1300, cy: 560, h: 1080, ui: 0 } },

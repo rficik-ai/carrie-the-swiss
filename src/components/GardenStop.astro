@@ -41,7 +41,7 @@ const q = (t(locale) as any).quiz;
     .qcard.tall { max-height: calc(100% - var(--hh, 64px) - 130px); }   /* the result needs the room; Carrie has asked her questions */
     .qcard :global(.intro h2) { font-size: 25px; }
     /* phone: the invitation sits centred, the questions stay left */
-    .qcard :global(.intro) { justify-items: center; text-align: center; }
+    .qcard :global(.intro) { justify-items: center; text-align: center; --ko: center; }
     .qcard :global(.intro .row) { justify-content: center; }
     .qcard :global(.intro .kicker::before) { margin-inline: auto; }
     .qcard :global(.qhint) { font-size: 21px; }

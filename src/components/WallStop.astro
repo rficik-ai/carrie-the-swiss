@@ -4,6 +4,7 @@
 // frame by frame; next to each one a little plaque tells its story (photos and papers open full screen).
 import { type Locale, t } from '../i18n';
 import { WALL } from '../data/wall';
+import Split from './Split.astro';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const h = (t(locale) as any).house;
@@ -18,16 +19,16 @@ const href = (x: string) => `/${locale}/${x}`;
     ))}
   </div>
   <div class="vig" aria-hidden="true"></div>
-  <div class="cap">
-    <p class="eyebrow kicker"><span class="no">04</span>{h.wall_eyebrow}</p>
-    <h2>{h.wall_title}</h2>
-    <p class="say">{h.wall_say}</p>
+  <div class="cap rv">
+    <p class="eyebrow kicker rf"><span class="no">04</span>{h.wall_eyebrow}</p>
+    <h2 class="fx-hang" aria-label={h.wall_title}><Split text={h.wall_title} /></h2>
+    <p class="say rf" style="--fd:.75s">{h.wall_say}</p>
   </div>
   <div class="plaques">
     {WALL.map((w, i) => (
       <article class="plaque" data-i={i}>
         {w.date && <p class="date">{w.date}</p>}
-        <h3>{h[`${w.id}_t`]}</h3>
+        <h3 aria-label={h[`${w.id}_t`]}><Split text={h[`${w.id}_t`]} by="word" /></h3>
         <p class="txt">{h[`${w.id}_x`]}</p>
         <div class="row">
           <div class="ths">{w.pics.map((p) => (
@@ -69,6 +70,15 @@ const href = (x: string) => `/${locale}/${x}`;
     opacity: 0; transform: translate(16px, -50%); pointer-events: none; transition: opacity .35s ease, transform .5s cubic-bezier(.2,.7,.2,1); }
   .plaque.on { opacity: 1; transform: translate(0, -50%); pointer-events: auto; }
   .plaque.pl { left: var(--gutter); }   /* this picture ends up on the right half: its plaque hangs on the left */
+  /* a museum label being read: date, then the title word by word, then the story */
+  :global(.js) .plaque .date, :global(.js) .plaque .txt, :global(.js) .plaque .row { opacity: 0; translate: 0 6px; transition: opacity .2s ease, translate .2s ease; }
+  :global(.js) .plaque h3 :global(.w) { opacity: 0; filter: blur(4px); translate: 0 .25em; transition: opacity .2s ease, filter .2s ease, translate .2s ease; }
+  .plaque.on .date, .plaque.on .txt, .plaque.on .row, .plaque.on h3 :global(.w) { opacity: 1; filter: blur(0); translate: 0 0; }
+  .plaque.on .date { transition: opacity .5s ease .1s, translate .6s ease .1s; }
+  .plaque.on h3 :global(.w) { transition: opacity .55s ease calc(.18s + var(--wi) * 50ms), filter .6s ease calc(.18s + var(--wi) * 50ms), translate .7s cubic-bezier(.2,.7,.2,1) calc(.18s + var(--wi) * 50ms); }
+  .plaque.on .txt { transition: opacity .6s ease .45s, translate .7s ease .45s; }
+  .plaque.on .row { transition: opacity .6s ease .6s, translate .7s ease .6s; }
+  @media (prefers-reduced-motion: reduce) { .plaque .date, .plaque .txt, .plaque .row, .plaque h3 :global(.w) { opacity: 1 !important; filter: none !important; translate: none !important; transition: none !important; } }
   .plaque .row .ths { display: flex; gap: 8px; flex-wrap: wrap; }
   .date { margin: 0; font: 800 11px/1 var(--f-body); letter-spacing: .2em; text-transform: uppercase; color: #8a6a35; }
   .plaque h3 { margin: 0; font-size: clamp(19px, 1.6vw, 24px); line-height: 1.16; color: #1d160e; }
@@ -96,7 +106,7 @@ const href = (x: string) => `/${locale}/${x}`;
   .lx { all: unset; position: fixed; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 28px; color: var(--ivory); cursor: pointer; border: 1px solid rgba(234,211,154,.5); }
 
   @media (max-width: 899px), (hover: none) {
-    .cap { padding: 70px 18px calc(22px + env(safe-area-inset-bottom, 0px)); gap: 8px; justify-items: center; text-align: center; }
+    .cap { padding: 70px 18px calc(22px + env(safe-area-inset-bottom, 0px)); gap: 8px; justify-items: center; text-align: center; --ko: center; }
     .cap .kicker::before { margin-inline: auto; }
     .cap h2 { font-size: 32px; } .cap .say { font-size: 15px; }
     .plaque { left: 12px; right: 12px; top: auto; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); width: auto; padding: 16px 18px 14px; gap: 6px; transform: translateY(12px); }
@@ -113,6 +123,7 @@ const href = (x: string) => `/${locale}/${x}`;
   import { stopFrame, isWide, lerpFrame, damp, type Frame } from '../lib/frame';
   import { STOPS, HOUSE } from '../data/house';
   import { WALL } from '../data/wall';
+import Split from './Split.astro';
 
   const el = document.querySelector<HTMLElement>('.wstop');
   const sec = document.querySelector<HTMLElement>('.scrub');

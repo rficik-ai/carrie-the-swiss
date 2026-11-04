@@ -1,6 +1,7 @@
 ---
 import { type Locale, t } from '../i18n';
 import { HOUSE } from '../data/house';
+import Split from './Split.astro';
 interface Props { locale: Locale; house?: boolean }
 const { locale, house = false } = Astro.props;
 const s = t(locale);
@@ -27,11 +28,12 @@ const chapters = [
     <div class="toPaper" aria-hidden="true"></div>
     <div class="chapters wrap">
       {chapters.map((c, i) => (
-        <article class="chapter" data-i={i}>
-          {c.eyebrow && <p class="eyebrow kicker">{c.eyebrow}</p>}
-          <h1 class={i === 0 ? 'big' : ''}>{c.title}</h1>
-          <p class="lead">{c.text}</p>
-          {c.cta && <a class="pill-cta" href="#episodes">{s.hero.cta} <span aria-hidden="true">→</span></a>}
+        <article class="chapter rv" data-i={i}>
+          {c.eyebrow && <p class="eyebrow kicker rf">{c.eyebrow}</p>}
+          {/* the first title rises like the sun over the hills; the next ones come into focus */}
+          <h1 class={i === 0 ? 'big fx-rise' : 'fx-focus'} aria-label={c.title}><Split text={c.title} by={i === 0 ? 'char' : 'word'} /></h1>
+          <p class="lead rf">{c.text}</p>
+          {c.cta && <a class="pill-cta rf" style="--fd:.75s" href="#episodes">{s.hero.cta} <span aria-hidden="true">→</span></a>}
         </article>
       ))}
     </div>
@@ -75,9 +77,9 @@ const chapters = [
   .chapters { position: absolute; z-index: 2; inset: 0; display: grid; align-items: end; padding-bottom: max(13vh, 96px); }
   .chapter {
     grid-area: 1 / 1; max-width: 640px; display: grid; gap: 18px; justify-items: start;
-    opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; pointer-events: none;
+    opacity: 0; transition: opacity .35s ease; pointer-events: none;   /* the words do the moving (text that arrives) */
   }
-  .chapter.on { opacity: 1; transform: none; pointer-events: auto; }
+  .chapter.on { opacity: 1; pointer-events: auto; transition: opacity .2s ease; }
   .chapter h1 { font-size: clamp(32px, 4.6vw, 64px); color: #fff; text-shadow: 0 2px 24px rgba(0,0,0,.35); }
   .chapter h1.big { font-size: clamp(40px, 6.6vw, 92px); }
   .lead { font-size: clamp(17px, 1.5vw, 20px); color: rgba(244,238,226,.82); max-width: 32em; }
@@ -90,7 +92,7 @@ const chapters = [
     .shade { background: linear-gradient(0deg, rgba(13,12,10,.92) 0%, rgba(13,12,10,.4) 50%, rgba(13,12,10,.1) 75%); }
     .chapters { padding-bottom: max(11vh, 84px); }
     /* phone: the chapters sit centred, like the stops */
-    .chapter { justify-items: center; text-align: center; margin-inline: auto; }
+    .chapter { justify-items: center; text-align: center; margin-inline: auto; --ko: center; }
     .chapter .kicker::before { margin-inline: auto; }
     .chapter h1 { font-size: 32px; } .chapter h1.big { font-size: 44px; }
     .lead { font-size: 16px; }
@@ -130,6 +132,10 @@ const chapters = [
   const smooth = (x: number) => { x = clamp(x); return x * x * (3 - 2 * x); };
   let cur1 = 0, cur2 = 0, ready1 = false, ready2 = false, loading2 = false;
   const W_ = window as any;
+  // the first title rises only once the page has painted with its fonts: switched on at once it would land unseen
+  let painted = false;
+  Promise.race([document.fonts?.ready, new Promise((r) => setTimeout(r, 1500))])
+    .then(() => requestAnimationFrame(() => requestAnimationFrame(() => { painted = true; })));
 
   // ---- the walk through the house (beta page): continues after the photo wall
   const HT = section.dataset.house ? JSON.parse(section.dataset.house) as { steps: Step[]; total: number; start: number } : null;
@@ -186,7 +192,7 @@ const chapters = [
     im.style.left = `${f.left}px`; im.style.top = `${f.top}px`;
     im.style.width = `${1920 * f.k}px`; im.style.height = `${1080 * f.k}px`;
   }
-  const frameOf = (id: string) => { const [W, H] = dims(); return stopFrame(STOPS.find((s) => s.id === id)!, W, H, undefined, (W_.__pan?.[id]) ?? 0); };
+  const frameOf = (id: string) => { const [W, H] = dims(); return stopFrame(STOPS.find((s) => s.id === id)!, W, H); };
   const zoom = (f: Frame, z: number, W: number, H: number): Frame => ({ k: f.k * z, left: W / 2 - (W / 2 - f.left) * z, top: H / 2 - (H / 2 - f.top) * z });
   // the moves between rooms: generated videos, scrubbed by the scroll like the film
   const vids = new Map([...section.querySelectorAll<HTMLVideoElement>('.house .hvid')].map((v) => [v.dataset.stop!, v]));
@@ -227,7 +233,7 @@ const chapters = [
     if (step.kind === 'move' && vReady) {
       // the generated move: starts in the previous room's framing, ends in this room's framing
       const cov = coverFrame(W, H);
-      const s0 = i > 0 ? frameOf(STOPS[i - 1].id) : (wide ? cov : wallFrame(W, H, undefined, W_.__panW ?? 0));
+      const s0 = i > 0 ? frameOf(STOPS[i - 1].id) : (wide ? cov : wallFrame(W, H));
       const fr = lerpFrame(lerpFrame(cov, s0, 1 - smooth(t / 0.25)), f, smooth((t - 0.75) / 0.25));
       // the video's first/last frames are near (not pixel-exact) copies of the stills: blend over a few % at each end
       if (i > 0) place(stills.get(STOPS[i - 1].id)!, s0, 1 - smooth(t / 0.06));
@@ -265,8 +271,8 @@ const chapters = [
     v.style.transform = (L !== c.left || T !== c.top || r !== 1) ? `translate(${L - c.left}px, ${T - c.top}px) scale(${r})` : '';
   }
   const dims = () => [stage.clientWidth, stage.clientHeight] as const;
-  const shelfF = () => { const [W, H] = dims(); return fitFrame(W, H, undefined, W_.__panS ?? 0); };
-  const wallF = () => { const [W, H] = dims(); return wallFrame(W, H, undefined, W_.__panW ?? 0); };
+  const shelfF = () => { const [W, H] = dims(); return fitFrame(W, H); };
+  const wallF = () => { const [W, H] = dims(); return wallFrame(W, H); };
 
   function seek(v: HTMLVideoElement, cur: number, target: number) {
     cur += (target - cur) * 0.18;
@@ -279,7 +285,7 @@ const chapters = [
     const q1 = clamp(p / A1);
     const pc = q1 / split;
     const idx = pc > 1.02 ? -1 : Math.min(chapters.length - 1, Math.floor(Math.min(1, pc) * chapters.length * 0.999));
-    chapters.forEach((c, i) => c.classList.toggle('on', reduce || i === idx));
+    chapters.forEach((c, i) => { const on = reduce || i === idx; c.classList.toggle('on', on); c.classList.toggle('rv-in', on && (painted || reduce)); });
     shade.style.opacity = String(1 - clamp((q1 - split) / 0.06));
     bar.style.width = `${q1 * 100}%`;
     bar.parentElement!.style.opacity = q1 > 0.97 ? '0' : '1';
