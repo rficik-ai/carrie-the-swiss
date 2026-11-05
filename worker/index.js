@@ -2,7 +2,7 @@
 // The Anthropic API key lives only in the Worker secret ANTHROPIC_API_KEY (never in the code or the browser).
 import { systemPrompt } from './knowledge.js';
 import { event, stats } from './stats.js';
-import { subscribe, confirm, unsubscribe, keepAlive } from './mail.js';
+import { subscribe, confirm, unsubscribe, keepAlive, samples } from './mail.js';
 export { Stats } from './stats.js';   // the Durable Object that tallies the anonymous events
 
 const MODEL = 'claude-haiku-5-5';
@@ -162,6 +162,7 @@ export default {
     if (url.pathname === '/api/subscribe') return subscribe(request, env);
     if (url.pathname === '/api/confirm') return confirm(request, env, ctx);
     if (url.pathname === '/api/unsubscribe') return unsubscribe(request, env);
+    if (url.pathname === '/api/mail-samples') return samples(request, env);   // TEMPORARY, see mail.js
     if (url.pathname === '/api/ev') return event(request, env, ctx);
     if (url.pathname === '/api/stats') return stats(request, env);
     const t = url.pathname.match(/^\/api\/thumb\/([\w-]+)\.jpg$/);

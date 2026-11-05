@@ -236,3 +236,37 @@ export async function keepAlive(env) {
   });
   if (!r.ok) console.log('brevo keep-alive', r.status, (await r.text()).slice(0, 200));
 }
+
+// ------------------------------------------------------------------ TEMPORARY (Nov 2026): samples for Rob
+// POST /api/mail-samples {email, lang}: sends that language's confirmation and welcome e-mail, with "[Ukážka nn/22]"
+// in the subject, so Rob can see every version in his inbox. Only to an address already confirmed on the list
+// (nobody else can be sent anything), a few calls a minute, and only until 7 Nov 2026. Delete after use.
+const SAMPLE_ORDER = ['sk', 'en', 'cs', 'de', 'pl', 'fr', 'it', 'es', 'uk', 'hu', 'nl'];
+export async function samples(request, env) {
+  if (request.method !== 'POST' || Date.now() > Date.UTC(2026, 10, 7)) return json({ error: 'gone' }, 410);
+  if (!configured(env)) return json({ error: 'not_configured' }, 503);
+  let b; try { b = await request.json(); } catch { return json({ error: 'bad_json' }, 400); }
+  const email = String(b?.email || '').trim().toLowerCase(), lang = b?.lang;
+  if (!email || !LANGS.has(lang)) return json({ error: 'invalid' }, 400);
+  if (env.MAIL_LIMIT && !(await env.MAIL_LIMIT.limit({ key: `samples:${email}` })).success) return json({ error: 'rate' }, 429);
+  const c = await fetch(`https://api.brevo.com/v3/contacts/${encodeURIComponent(email)}`, {
+    headers: { accept: 'application/json', 'api-key': env.BREVO_API_KEY },
+  });
+  const lists = c.ok ? ((await c.json()).listIds || []) : [];
+  if (!lists.includes(Number(env.BREVO_LIST_ID))) return json({ error: 'not_on_list' }, 403);
+  const origin = new URL(request.url).origin, i = SAMPLE_ORDER.indexOf(lang);
+  const tag = (n, kind) => `[Ukážka ${String(2 * i + n).padStart(2, '0')}/22 · ${lang.toUpperCase()} · ${kind}] `;
+  const sender = { name: env.MAIL_NAME || 'Carrie the Swiss', email: env.MAIL_FROM || 'carrie@carrietheswiss.com' };
+  const link = `${origin}/api/confirm?t=${await sign(env, email, lang)}&l=${lang}`;
+  const out = `${origin}/api/unsubscribe?t=${await sign(env, email, lang, 'out')}`;
+  const r1 = await brevo(env, '/smtp/email', {
+    sender, to: [{ email }], subject: tag(1, 'potvrdenie') + COPY[lang].subject,
+    htmlContent: confirmHtml(lang, link), textContent: confirmText(lang, link), tags: ['sample', lang],
+  });
+  const r2 = await brevo(env, '/smtp/email', {
+    sender, to: [{ email }], subject: tag(2, 'uvítanie') + (WELCOME[lang] ?? WELCOME.en).subject,
+    htmlContent: welcomeHtml(lang, out), textContent: welcomeText(lang, out),
+    headers: { 'List-Unsubscribe': `<${out}>` }, tags: ['sample', lang],
+  });
+  return json({ lang, confirm: r1.status, welcome: r2.status });
+}
