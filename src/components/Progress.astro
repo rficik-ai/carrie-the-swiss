@@ -1,6 +1,7 @@
 ---
 // Where am I in the film, and is there more? A page-wide guide: chapter rail on the right (desktop),
-// a thin bar under the menu (phone), and one quiet "scroll" cue on the very first screen, nowhere else.
+// a thin bar under the menu (phone), and a quiet "scroll" cue: on the first screen after a moment, and anywhere
+// in the film once the visitor has stood still for 3 seconds.
 import { type Locale, t } from '../i18n';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -32,7 +33,7 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
   .rail li.on i { background: var(--gold-hi); border-color: var(--gold-hi); transform: scale(1.35); box-shadow: 0 0 0 5px rgba(234,211,154,.2); }
   .lb { font: 600 12px var(--f-body); letter-spacing: .08em; color: var(--ivory); padding: 4px 10px; border-radius: 999px; background: rgba(13,12,10,.72); opacity: 0; transform: translateX(6px); transition: opacity .25s, transform .25s; white-space: nowrap; }
   .rail li.on .lb, .rail button:hover .lb, .rail button:focus-visible .lb { opacity: 1; transform: none; }
-  /* the one scroll cue, only on the first screen: the word runs round a slowly turning ring, a line falls through the middle */
+  /* the scroll cue: the word runs round a slowly turning ring, a line falls through the middle */
   .more { all: unset; position: fixed; left: 50%; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); width: 104px; height: 104px; transform: translate(-50%, 8px);
     display: grid; place-items: center; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .6s, transform .6s; filter: drop-shadow(0 1px 6px rgba(0,0,0,.55)); }
   .more .ring { position: absolute; inset: 0; width: 100%; height: 100%; animation: spin 18s linear infinite; }
@@ -41,6 +42,9 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
   @keyframes spin { to { rotate: 360deg; } }
   @keyframes drip { 0% { transform: scaleY(0); transform-origin: top } 50% { transform: scaleY(1); transform-origin: top } 51% { transform-origin: bottom } 100% { transform: scaleY(0); transform-origin: bottom } }
   .prog.cue .more { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+  /* the script puts the ring where nothing to read or tap lies under it (desktop: a corner, phone: along an edge) */
+  .prog.placed .more { left: var(--rx); top: var(--ry); right: auto; bottom: auto; transform: translateY(8px); }
+  .prog.placed.cue .more { transform: none; }
   @media (max-width: 899px), (hover: none) {
     .rail { display: none; }
     .bar { top: var(--hh, 64px); height: 2px; }
@@ -61,10 +65,11 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
     const stage = sec.querySelector<HTMLElement>('.stage')!;
     const hold = (id: string) => HOUSE.timeline.steps.find((s) => s.kind === 'hold' && s.stop === id)!;
     // chapter starts in page pixels (old film: 1000vh of scroll; house after HOUSE_START)
-    let starts: number[] = [];
+    let starts: number[] = [], filmEnd = Infinity;
     const measure = () => {
       const vh = stage.clientHeight / 100, top = sec.offsetTop, hs = HOUSE.timeline.start * 1000;
       starts = [0, top + 500 * vh, top + 840 * vh, ...['wall', 'desk', 'garden', 'fire', 'door'].map((id) => top + (hs + hold(id).from) * vh)];
+      filmEnd = top + (hs + HOUSE.timeline.total) * vh;   // after the door: "Follow me" and the footer
       nav.style.setProperty('--hh', `${(document.querySelector('header.top') as HTMLElement)?.offsetHeight ?? 64}px`);
     };
     measure(); addEventListener('resize', measure); addEventListener('load', measure);
@@ -80,22 +85,86 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
         items.forEach((li, i) => { li.classList.toggle('on', i === c); li.classList.toggle('past', i < c); });
       }
     };
-    // the cue: only while the visitor is still on the very first screen
+    // the cue: on the first screen after a moment, anywhere in the film after 3 s of standing still. Not after the film,
+    // and not while something lies open on top (the shelf's open book, a paper being read, the quiz method, a dialog)
+    const W = window as any;
+    const busy = () => !!document.querySelector('.reader:not([hidden]), .dstop.reading, .method:not([hidden]), dialog[open]')
+      || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName ?? '');
+    // the ring never sits over something to read or tap: it would hide it, or catch the tap
+    const TAP = 'a[href], button, input, textarea, select, [role="button"]', READ = 'p, h1, h2, h3, li, label';
+    const visible = (el: Element) => {
+      for (let e: Element | null = el; e && e !== document.body; e = e.parentElement) {
+        const cs = getComputedStyle(e);
+        if (cs.display === 'none' || cs.visibility === 'hidden' || Number(cs.opacity) < 0.15) return false;
+      }
+      return true;
+    };
+    const obstacles = () => {   // what is on screen now: things to tap (with their size) and lines of text
+      const skip = (el: Element) => nav.contains(el) || !!el.closest('header, [inert]');
+      const seen = (r: DOMRect) => r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
+      const taps: DOMRect[] = [], lines: DOMRect[] = [];
+      document.querySelectorAll(TAP).forEach((el) => { const r = el.getBoundingClientRect(); if (!skip(el) && seen(r) && visible(el)) taps.push(r); });
+      document.querySelectorAll(READ).forEach((el) => {
+        if (skip(el) || !seen(el.getBoundingClientRect()) || !visible(el)) return;
+        const rg = document.createRange(); rg.selectNodeContents(el); lines.push(...rg.getClientRects());   // the lines, not the block
+      });
+      return { taps, lines };
+    };
+    const free = (x: number, y: number, size: number, o: ReturnType<typeof obstacles>) => {
+      const pad = 8, L = x - pad, T = y - pad, R = x + size + pad, B = y + size + pad, ring = (R - L) * (B - T);
+      const over = (r: DOMRect) => r.width > 0 && r.height > 0 && r.left < R && r.right > L && r.top < B && r.bottom > T;
+      const shared = (r: DOMRect) => Math.max(0, Math.min(r.right, R) - Math.max(r.left, L)) * Math.max(0, Math.min(r.bottom, B) - Math.max(r.top, T));
+      // a button, a link or a chip: not even its edge. A big picture to tap (a paper, a photo): only a small corner of it
+      return !o.taps.some((r) => over(r) && (r.width * r.height < ring * 5 || shared(r) > r.width * r.height * 0.12)) && !o.lines.some(over);
+    };
+    const phone = matchMedia('(max-width: 899px), (hover: none)');
+    // places to try, best first. Desktop: the first screen's centre, then the bottom and top right corners. Phone: up the
+    // right edge from the bottom corner, then up the left edge (captions and buttons fill the bottom of the scenes there)
+    const spots = (first: boolean) => {
+      nav.classList.remove('placed');   // the plain CSS place gives "the bottom" with the phone's safe area included
+      const size = more.offsetWidth, low = more.offsetTop, high = ((document.querySelector('header.top') as HTMLElement)?.offsetHeight ?? 64) + 12;
+      const vw = document.documentElement.clientWidth;   // without the scrollbar
+      if (!phone.matches) {
+        const right = vw - 26 - size, corners = [{ x: right, y: low }, { x: right, y: high }];
+        return first ? [{ x: (vw - size) / 2, y: low }, ...corners] : corners;
+      }
+      const out: { x: number; y: number }[] = [];
+      for (const x of [vw - 10 - size, 10]) for (let y = low; y >= high; y -= 10) out.push({ x, y });
+      return out;
+    };
     const poke = () => {
       nav.classList.remove('cue'); clearTimeout(idleT);
-      if (scrollY < 30) idleT = window.setTimeout(() => { if (scrollY < 30) nav.classList.add('cue'); }, 1200);
+      idleT = window.setTimeout(() => {
+        const first = scrollY < 30, film = !document.documentElement.classList.contains('nofilm');
+        const late = scrollY + innerHeight * 0.5 > filmEnd || scrollY > document.documentElement.scrollHeight - innerHeight * 1.5;
+        if (busy() || (!first && (!film || late))) return;   // reduced motion: a plain page, the cue only on the first screen
+        const o = obstacles(), size = more.offsetWidth;
+        const at = spots(first).find((p) => free(p.x, p.y, size, o));
+        if (!at) return;   // nowhere free: better no cue than one in the way
+        more.style.transition = 'none';   // jump there while hidden, no sliding across
+        more.style.setProperty('--rx', `${at.x}px`); more.style.setProperty('--ry', `${at.y}px`); nav.classList.add('placed');
+        void more.offsetWidth; more.style.transition = '';
+        nav.classList.add('cue');
+      }, scrollY < 30 ? 1200 : 3000);
     };
     addEventListener('scroll', () => { update(); poke(); }, { passive: true });
+    // any other touch or key counts as being busy (the ring itself must stay put long enough to take its own click)
+    addEventListener('pointerdown', (e) => { if (!more.contains(e.target as Node)) poke(); }, { passive: true });
+    addEventListener('keydown', (e) => { if (!more.contains(e.target as Node)) poke(); });
+    addEventListener('resize', poke);
     update(); poke();
     const jump = (i: number) => {
       const target = i < starts.length ? starts[i] + innerHeight * 0.2 : document.documentElement.scrollHeight;
       scrollTo({ top: target, behavior: Math.abs(target - scrollY) > innerHeight * 4 ? 'auto' : 'smooth' });
     };
     items.forEach((li, i) => li.querySelector('button')!.addEventListener('click', () => jump(i)));
-    // "keep scrolling": a gentle step forward (one screen), or to the next chapter if it's close
+    // "keep scrolling": a gentle step forward (one screen), or on to the next chapter if it's close or if the visitor
+    // stands at a stop whose picture doesn't move (desk, garden, fire, door), where a small step would show nothing
     more.addEventListener('click', () => {
-      const next = starts[cur + 1];
-      const target = next !== undefined && next - scrollY < innerHeight * 1.6 ? next + innerHeight * 0.2 : scrollY + innerHeight * 0.9;
+      const last = cur + 1 >= starts.length;
+      const next = last ? filmEnd : starts[cur + 1] + innerHeight * 0.2;
+      const still = typeof W.__stop === 'string' && W.__stop !== 'wall';
+      const target = still || next - scrollY < innerHeight * 1.8 ? next : scrollY + innerHeight * 0.9;
       scrollTo({ top: target, behavior: 'smooth' });
     });
   }
