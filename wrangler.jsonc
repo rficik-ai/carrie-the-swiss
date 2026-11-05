@@ -10,9 +10,9 @@
     "html_handling": "auto-trailing-slash",
     "run_worker_first": ["/api/*"]
   },
-  // anonymous measurement (worker/stats.js): no cookies, no IPs. The Analytics Engine binding goes back in once the
-  // account has Analytics Engine enabled (a deploy with it did not go through):
-  // "analytics_engine_datasets": [{ "binding": "EV", "dataset": "carrie_events" }],
+  // anonymous measurement (worker/stats.js): counts per day in one SQLite Durable Object, no cookies, no IPs
+  "durable_objects": { "bindings": [{ "name": "STATS", "class_name": "Stats" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Stats"] }],
   // 15 questions per minute per visitor
   "ratelimits": [{ "name": "CHAT_LIMIT", "namespace_id": "1001", "simple": { "limit": 15, "period": 60 } }],
   "observability": { "enabled": true },
