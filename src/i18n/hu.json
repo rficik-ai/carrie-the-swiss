@@ -254,7 +254,8 @@
     "err": "Valami hiba történt. Megpróbálod később?",
     "invalid": "Adj meg érvényes e-mail címet, és pipáld be a négyzetet.",
     "off": "A feliratkozás hamarosan indul!",
-    "done": "Bent vagy! Köszönöm a megerősítést."
+    "done": "Bent vagy! Köszönöm a megerősítést.",
+    "expired": "A link lejárt. Add meg újra az e-mail-címed, és küldök egy újat."
   },
   "album": {
     "eyebrow": "Az eddigi életem",

@@ -18,7 +18,7 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
       <p class="eyebrow kicker">{f.eyebrow}</p>
       <h2 class="fx-wipe fx-fill">{f.title}</h2>
       <p class="muted">{f.intro}</p>
-      <form class="notify" novalidate data-lang={locale} data-msg={JSON.stringify({ ok: f.ok, err: f.err, invalid: f.invalid, off: f.off, done: f.done })}>
+      <form class="notify" novalidate data-lang={locale} data-msg={JSON.stringify({ ok: f.ok, err: f.err, invalid: f.invalid, off: f.off, done: f.done, expired: f.expired })}>
         <p class="nl-title">{f.nl_title}</p>
         <div class="nl-row">
           <label class="sr-only" for="nl-email">{f.nl_placeholder}</label>
@@ -114,7 +114,8 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
     const msg = form.querySelector<HTMLElement>('.nl-msg')!;
     const btn = form.querySelector<HTMLButtonElement>('button')!;
     const say = (t: string, err = false) => { msg.textContent = t; msg.classList.toggle('err', err); };
-    if (new URLSearchParams(location.search).has('subscribed')) say(M.done);
+    const back = new URLSearchParams(location.search);   // coming back from the link in the confirmation e-mail
+    if (back.has('subscribed')) say(M.done); else if (back.get('nl')) say(back.get('nl') === 'expired' ? M.expired : M.err, true);
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = (form.elements.namedItem('email') as HTMLInputElement).value.trim();

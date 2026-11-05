@@ -254,7 +254,8 @@
     "err": "Algo salió mal. ¿Lo intentas más tarde?",
     "invalid": "Introduce un e-mail válido y marca la casilla.",
     "off": "¡Las suscripciones abren muy pronto!",
-    "done": "¡Ya estás dentro! Gracias por confirmar."
+    "done": "¡Ya estás dentro! Gracias por confirmar.",
+    "expired": "El enlace ha caducado. Escribe tu correo otra vez y te envío uno nuevo."
   },
   "album": {
     "eyebrow": "Mi vida hasta ahora",

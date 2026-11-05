@@ -254,7 +254,8 @@
     "err": "Something went wrong. Try again later?",
     "invalid": "Please enter a valid e-mail and tick the box.",
     "off": "Sign-ups open very soon!",
-    "done": "You're in! Thanks for confirming."
+    "done": "You're in! Thanks for confirming.",
+    "expired": "That link has expired. Enter your e-mail again and I'll send a new one."
   },
   "album": {
     "eyebrow": "My life so far",

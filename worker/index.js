@@ -2,6 +2,7 @@
 // The Anthropic API key lives only in the Worker secret ANTHROPIC_API_KEY (never in the code or the browser).
 import { systemPrompt } from './knowledge.js';
 import { event, stats } from './stats.js';
+import { subscribe, confirm } from './mail.js';
 export { Stats } from './stats.js';   // the Durable Object that tallies the anonymous events
 
 const MODEL = 'claude-haiku-5-5';
@@ -148,45 +149,7 @@ async function thumb(request, ctx, id) {
   });
 }
 
-// ---- newsletter: Brevo double opt-in (the visitor confirms by e-mail before being added)
-async function subscribe(request, env) {
-  // GET only says whether the three Brevo settings are in place (nothing else, no call to Brevo)
-  if (request.method === 'GET') return json({ configured: !!(env.BREVO_API_KEY && env.BREVO_LIST_ID && env.BREVO_DOI_TEMPLATE_ID) });
-  if (request.method !== 'POST') return json({ error: 'method' }, 405);
-  const origin = request.headers.get('origin') || '';
-  if (origin && new URL(origin).host !== new URL(request.url).host) return json({ error: 'origin' }, 403);
-  if (!env.BREVO_API_KEY || !env.BREVO_LIST_ID || !env.BREVO_DOI_TEMPLATE_ID) return json({ error: 'not_configured' }, 503);
-  if (env.CHAT_LIMIT) {
-    const { success } = await env.CHAT_LIMIT.limit({ key: 'sub:' + (request.headers.get('cf-connecting-ip') || 'anon') });
-    if (!success) return json({ error: 'rate' }, 429);
-  }
-  let b; try { b = await request.json(); } catch { return json({ error: 'bad_json' }, 400); }
-  const email = String(b?.email || '').trim().toLowerCase();
-  if (b?.website) return json({ ok: true }); // honeypot: bots fill hidden fields
-  if (!/^[^\s@]{1,64}@[^\s@]{1,190}\.[a-z]{2,}$/i.test(email) || b?.consent !== true) return json({ error: 'invalid' }, 400);
-  const lang = LANGS.has(b?.lang) ? b.lang : 'en';
-  const host = new URL(request.url).origin;
-  // the DOI template's button must link to {{ params.DOIurl }} so the confirmation lands back here
-  const send = (attributes) => fetch('https://api.brevo.com/v3/contacts/doubleOptinConfirmation', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', accept: 'application/json', 'api-key': env.BREVO_API_KEY },
-    body: JSON.stringify({
-      email,
-      includeListIds: [Number(env.BREVO_LIST_ID)],
-      templateId: Number(env.BREVO_DOI_TEMPLATE_ID),
-      redirectionUrl: `${host}/${lang}/?subscribed=1#follow`,
-      ...(attributes ? { attributes } : {}),
-    }),
-  });
-  let r = await send({ LANGUAGE: lang });
-  let t = r.ok ? '' : await r.text();
-  // the LANGUAGE attribute is optional in Brevo: without it, sign the visitor up anyway
-  if (r.status === 400 && /attribute/i.test(t)) { r = await send(null); t = r.ok ? '' : await r.text(); }
-  if (r.ok || r.status === 204) return json({ ok: true });
-  if (/duplicate|already/i.test(t)) return json({ ok: true });
-  console.log('brevo error', r.status, t.slice(0, 300));
-  return json({ error: 'upstream' }, 502);
-}
+// ---- newsletter: worker/mail.js (double opt-in e-mail in the visitor's language, then the Brevo list)
 
 export default {
   async fetch(request, env, ctx) {
@@ -195,6 +158,7 @@ export default {
     if (url.pathname === '/api/quiz') return quiz(request, env);
     if (url.pathname === '/api/latest') return latest(request, ctx);
     if (url.pathname === '/api/subscribe') return subscribe(request, env);
+    if (url.pathname === '/api/confirm') return confirm(request, env);
     if (url.pathname === '/api/ev') return event(request, env, ctx);
     if (url.pathname === '/api/stats') return stats(request, env);
     const t = url.pathname.match(/^\/api\/thumb\/([\w-]+)\.jpg$/);

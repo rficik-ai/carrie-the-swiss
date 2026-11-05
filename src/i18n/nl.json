@@ -254,7 +254,8 @@
     "err": "Er ging iets mis. Probeer je het later nog eens?",
     "invalid": "Vul een geldig e-mailadres in en vink het vakje aan.",
     "off": "Aanmelden kan heel binnenkort!",
-    "done": "Je bent erbij! Bedankt voor het bevestigen."
+    "done": "Je bent erbij! Bedankt voor het bevestigen.",
+    "expired": "Die link is verlopen. Vul je e-mail opnieuw in en ik stuur je een nieuwe."
   },
   "album": {
     "eyebrow": "Mijn leven tot nu toe",

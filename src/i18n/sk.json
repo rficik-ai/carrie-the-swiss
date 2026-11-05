@@ -254,7 +254,8 @@
     "err": "Niečo sa pokazilo. Skúsite to neskôr?",
     "invalid": "Zadajte platný e-mail a zaškrtnite súhlas.",
     "off": "Prihlasovanie čoskoro spustíme!",
-    "done": "Ste prihlásení! Ďakujem za potvrdenie."
+    "done": "Ste prihlásení! Ďakujem za potvrdenie.",
+    "expired": "Odkaz už vypršal. Zadajte e-mail znova a pošlem nový."
   },
   "album": {
     "eyebrow": "Môj doterajší život",

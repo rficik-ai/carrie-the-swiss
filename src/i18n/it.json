@@ -254,7 +254,8 @@
     "err": "Qualcosa è andato storto. Riprovi più tardi?",
     "invalid": "Inserisci un'e-mail valida e spunta la casella.",
     "off": "Le iscrizioni aprono prestissimo!",
-    "done": "Ci sei! Grazie per la conferma."
+    "done": "Ci sei! Grazie per la conferma.",
+    "expired": "Il link è scaduto. Inserisci di nuovo la tua e-mail e te ne mando uno nuovo."
   },
   "album": {
     "eyebrow": "La mia vita finora",

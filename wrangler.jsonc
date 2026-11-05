@@ -13,8 +13,13 @@
   // anonymous measurement (worker/stats.js): counts per day in one SQLite Durable Object, no cookies, no IPs
   "durable_objects": { "bindings": [{ "name": "STATS", "class_name": "Stats" }] },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Stats"] }],
-  // 15 questions per minute per visitor
-  "ratelimits": [{ "name": "CHAT_LIMIT", "namespace_id": "1001", "simple": { "limit": 15, "period": 60 } }],
+  // 15 questions per minute per visitor; 3 confirmation e-mails per minute per visitor and per address
+  "ratelimits": [
+    { "name": "CHAT_LIMIT", "namespace_id": "1001", "simple": { "limit": 15, "period": 60 } },
+    { "name": "MAIL_LIMIT", "namespace_id": "1002", "simple": { "limit": 3, "period": 60 } }
+  ],
+  // newsletter (worker/mail.js): Brevo list "Web carrietheswiss.com" and the sender; the API key is the Secret BREVO_API_KEY
+  "vars": { "BREVO_LIST_ID": "3", "MAIL_FROM": "carrie@carrietheswiss.com", "MAIL_NAME": "Carrie the Swiss" },
   "observability": { "enabled": true },
   // keep variables and secrets added in the dashboard when Git deploys run
   "keep_vars": true

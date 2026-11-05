@@ -254,7 +254,8 @@
     "err": "Coś poszło nie tak. Spróbujesz później?",
     "invalid": "Wpisz poprawny e-mail i zaznacz zgodę.",
     "off": "Zapisy ruszą już wkrótce!",
-    "done": "Jesteś zapisany! Dzięki za potwierdzenie."
+    "done": "Jesteś zapisany! Dzięki za potwierdzenie.",
+    "expired": "Link wygasł. Wpisz e-mail jeszcze raz, a wyślę nowy."
   },
   "album": {
     "eyebrow": "Moje dotychczasowe życie",

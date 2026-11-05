@@ -254,7 +254,8 @@
     "err": "Un problème est survenu. Réessayez plus tard ?",
     "invalid": "Saisissez un e-mail valide et cochez la case.",
     "off": "Les inscriptions ouvrent très bientôt !",
-    "done": "C'est fait ! Merci pour la confirmation."
+    "done": "C'est fait ! Merci pour la confirmation.",
+    "expired": "Ce lien a expiré. Saisissez à nouveau votre e-mail et je vous en enverrai un nouveau."
   },
   "album": {
     "eyebrow": "Ma vie jusqu’ici",
