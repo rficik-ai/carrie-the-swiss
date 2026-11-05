@@ -150,6 +150,8 @@ async function thumb(request, ctx, id) {
 
 // ---- newsletter: Brevo double opt-in (the visitor confirms by e-mail before being added)
 async function subscribe(request, env) {
+  // GET only says whether the three Brevo settings are in place (nothing else, no call to Brevo)
+  if (request.method === 'GET') return json({ configured: !!(env.BREVO_API_KEY && env.BREVO_LIST_ID && env.BREVO_DOI_TEMPLATE_ID) });
   if (request.method !== 'POST') return json({ error: 'method' }, 405);
   const origin = request.headers.get('origin') || '';
   if (origin && new URL(origin).host !== new URL(request.url).host) return json({ error: 'origin' }, 403);
@@ -164,7 +166,8 @@ async function subscribe(request, env) {
   if (!/^[^\s@]{1,64}@[^\s@]{1,190}\.[a-z]{2,}$/i.test(email) || b?.consent !== true) return json({ error: 'invalid' }, 400);
   const lang = LANGS.has(b?.lang) ? b.lang : 'en';
   const host = new URL(request.url).origin;
-  const r = await fetch('https://api.brevo.com/v3/contacts/doubleOptinConfirmation', {
+  // the DOI template's button must link to {{ params.DOIurl }} so the confirmation lands back here
+  const send = (attributes) => fetch('https://api.brevo.com/v3/contacts/doubleOptinConfirmation', {
     method: 'POST',
     headers: { 'content-type': 'application/json', accept: 'application/json', 'api-key': env.BREVO_API_KEY },
     body: JSON.stringify({
@@ -172,11 +175,14 @@ async function subscribe(request, env) {
       includeListIds: [Number(env.BREVO_LIST_ID)],
       templateId: Number(env.BREVO_DOI_TEMPLATE_ID),
       redirectionUrl: `${host}/${lang}/?subscribed=1#follow`,
-      attributes: { LANGUAGE: lang },
+      ...(attributes ? { attributes } : {}),
     }),
   });
+  let r = await send({ LANGUAGE: lang });
+  let t = r.ok ? '' : await r.text();
+  // the LANGUAGE attribute is optional in Brevo: without it, sign the visitor up anyway
+  if (r.status === 400 && /attribute/i.test(t)) { r = await send(null); t = r.ok ? '' : await r.text(); }
   if (r.ok || r.status === 204) return json({ ok: true });
-  const t = await r.text();
   if (/duplicate|already/i.test(t)) return json({ ok: true });
   console.log('brevo error', r.status, t.slice(0, 300));
   return json({ error: 'upstream' }, 502);
