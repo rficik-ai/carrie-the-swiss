@@ -157,7 +157,13 @@
   },
   "footer": {
     "contact": "Questions about the breed, dog shows or an episode? Send a message on Instagram.",
-    "disclaimer": "Educational content only. Ask your vet and your breed club about your own dog."
+    "disclaimer": "Educational content only. Ask your vet and your breed club about your own dog.",
+    "big1": "Ask",
+    "big2": "Carrie.",
+    "cta": "Write to Carrie",
+    "social": "Social",
+    "site": "On the site",
+    "news": "News by e-mail"
   },
   "cards": {
     "eyebrow": "A little game",

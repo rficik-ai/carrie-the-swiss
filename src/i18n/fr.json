@@ -157,7 +157,13 @@
   },
   "footer": {
     "contact": "Une question sur la race, les expositions ou un épisode ? Envoyez un message sur Instagram.",
-    "disclaimer": "Contenu uniquement éducatif. Pour votre propre chien, demandez à votre vétérinaire et à votre club de race."
+    "disclaimer": "Contenu uniquement éducatif. Pour votre propre chien, demandez à votre vétérinaire et à votre club de race.",
+    "big1": "Demandez à",
+    "big2": "Carrie.",
+    "cta": "Écrire à Carrie",
+    "social": "Réseaux sociaux",
+    "site": "Sur le site",
+    "news": "Nouveautés par e-mail"
   },
   "cards": {
     "eyebrow": "Un petit jeu",

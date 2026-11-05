@@ -11,15 +11,15 @@ const articles = [
 ];
 ---
 <section class="block light guide" id="guide">
-  <div class="wrap grid">
+  <div class="wrap wide grid">
     <div class="dossier" aria-hidden="true">
       <figure class="doc d1"><img src="/assets/img/doc-xray.jpg" alt="" loading="lazy" /><figcaption>Fig. 1</figcaption></figure>
       <figure class="doc d2"><img src="/assets/img/doc-pedigree.jpg" alt="" loading="lazy" /><figcaption>Fig. 2</figcaption></figure>
       <figure class="doc d3"><img src="/assets/img/doc-critique.jpg" alt="" loading="lazy" /><figcaption>Fig. 3</figcaption></figure>
     </div>
     <div class="text">
-      <p class="eyebrow kicker">{g.eyebrow}</p>
-      <h2>{g.title}</h2>
+      <p class="cap-k muted">{g.eyebrow}</p>
+      <h2 class="statement md">{g.title}</h2>
       <p class="muted intro">{g.intro}</p>
 
       <div class="table" role="region" aria-label={g.a1_title} tabindex="0">
@@ -66,7 +66,7 @@ const articles = [
   .d3 { right: 0; bottom: 0; width: 42%; height: 52%; transform: rotate(4deg); z-index: 3; }
 
   .text { display: grid; gap: 20px; min-width: 0; }
-  .text h2 { font-size: clamp(28px, 3.8vw, 52px); }
+  .text h2 { color: #1c1914; }
   .intro { max-width: 36em; }
   .table { overflow-x: auto; margin-top: 10px; }
   table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 15px; }
@@ -78,9 +78,9 @@ const articles = [
   details { border-bottom: 1px solid var(--paper-line); }
   summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: start; padding: 22px 0; }
   summary::-webkit-details-marker { display: none; }
-  .no { font-family: var(--f-head); font-weight: 800; font-size: 20px; color: var(--gold-deep); line-height: 1.2; }
+  .no { font-family: var(--f-head); font-weight: 300; font-size: 22px; color: var(--gold-deep); line-height: 1.1; }
   .st { display: grid; gap: 4px; }
-  .at { font: 800 clamp(18px, 1.7vw, 23px)/1.2 var(--f-head); letter-spacing: -0.01em; text-transform: uppercase; }
+  .at { font: 700 clamp(18px, 1.7vw, 23px)/1.2 var(--f-head); letter-spacing: -0.01em; }
   .al { font-size: 15px; }
   .pm { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--paper-line); position: relative; transition: transform .3s; }
   .pm::before, .pm::after { content: ''; position: absolute; left: 50%; top: 50%; width: 12px; height: 1.5px; background: #1c1914; transform: translate(-50%, -50%); }

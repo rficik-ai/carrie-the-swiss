@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
+import SubHero from '../../components/SubHero.astro';
 import Guide from '../../components/Guide.astro';
 import Footer from '../../components/Footer.astro';
 import { availableLocales, t, type Locale } from '../../i18n';
@@ -12,53 +13,45 @@ const locale = Astro.params.lang as Locale;
 const s = t(locale);
 const sub = (s as any).sub;
 const r = s.real;
-const stats = [
-  ['63.5 cm', r.height], ['A / A', r.hips], ['0 / 0', r.elbows], ['14 / 14', r.character], [r.show_value, r.show],
+const stats: [string, string][] = [
+  [r.height, '63.5 cm'], [r.hips, 'A / A'], [r.elbows, '0 / 0'], [r.character, '14 / 14'], [r.show, r.show_value],
 ];
 ---
 <Base locale={locale} title={sub.meta_title} description={sub.meta_description} path="papers/">
   <Header locale={locale} page="papers/" />
   <main>
-    <section class="block sub-hero">
-      <div class="wrap grid">
-        <div class="head">
-          <a class="back" href={`/${locale}/#episodes`}>← {sub.back}</a>
-          <p class="eyebrow kicker">{r.eyebrow}</p>
-          <h1>{sub.title}</h1>
-          <p class="muted lead">{sub.intro}</p>
-        </div>
-        <div class="card">
-          <img src="/assets/img/carrie-real.jpg" alt={r.photo_caption} />
-          <div class="res">
-            <p class="eyebrow">{sub.results}</p>
-            <dl>
-              {stats.map(([v, k]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
-            </dl>
-            <p class="approved">✓ {r.approved}</p>
-          </div>
+    <SubHero kicker={r.eyebrow} title={sub.title} lead={sub.intro} back={{ href: `/${locale}/#episodes`, label: sub.back }} meta={[[r.standard, '58'], [r.approved, '✓']]}>
+      <div class="pair" data-reveal>
+        <figure class="shot">
+          <div class="card-media"><img src="/assets/img/carrie-real.jpg" alt={r.photo_caption} width="1200" height="1500" /></div>
+          <figcaption><span class="cap-k">{r.eyebrow}</span><span class="cap-t">{r.photo_caption}</span></figcaption>
+        </figure>
+        <div class="results card-media">
+          <p class="cap-k">{sub.results}</p>
+          <dl>
+            {stats.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+          </dl>
         </div>
       </div>
-    </section>
+    </SubHero>
     <Guide locale={locale} />
   </main>
   <Footer locale={locale} />
 </Base>
 
 <style>
-  .sub-hero { background: radial-gradient(80% 60% at 80% 10%, rgba(201,163,91,.14), transparent 60%), var(--ink); padding-top: clamp(120px, 14vw, 180px); }
-  .grid { display: grid; gap: 48px; align-items: center; }
-  @media (min-width: 1000px) { .grid { grid-template-columns: 1fr 1fr; gap: 72px; } }
-  .head { display: grid; gap: 18px; }
-  .back { color: var(--gold-hi); text-decoration: none; font-weight: 600; font-size: 14px; letter-spacing: .04em; }
-  h1 { font-size: clamp(36px, 6vw, 84px); }
-  .lead { font-size: 18px; max-width: 34em; }
-  .card { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1fr); border-radius: 18px; overflow: hidden; background: #15120d; box-shadow: 0 40px 80px -40px rgba(0,0,0,.8), 0 0 0 1px rgba(234,211,154,.2); }
-  .card img { width: 100%; height: 100%; object-fit: cover; min-height: 380px; }
-  .res { padding: 28px; display: grid; align-content: center; gap: 10px; }
+  .pair { display: grid; gap: clamp(20px, 2.5vw, 36px); }
+  @media (min-width: 860px) { .pair { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; } }
+  .shot { margin: 0; display: grid; gap: 14px; align-content: start; }
+  .shot .card-media { aspect-ratio: 4 / 5; }
+  figcaption { display: grid; gap: 4px; }
+  figcaption .cap-k { color: var(--muted-dark); }
+  figcaption .cap-t { color: #fff; }
+  .results { padding: clamp(24px, 3vw, 44px); display: grid; align-content: center; gap: 22px; box-shadow: inset 0 0 0 1px rgba(234,211,154,.18); }
+  .results .cap-k { color: var(--gold); }
   dl { margin: 0; }
-  dl div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--ink-line); }
-  dt { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
-  dd { margin: 0; font-family: var(--f-head); font-size: clamp(18px, 1.7vw, 24px); font-weight: 800; letter-spacing: -0.01em; text-align: right; }
-  .approved { margin: 12px 0 0; font-family: var(--f-mark); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-hi); }
-  @media (max-width: 600px) { .card { grid-template-columns: 1fr; } .card img { min-height: 0; aspect-ratio: 4 / 5; } }
+  dl div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 16px 0; border-top: 1px solid rgba(244,238,226,.18); }
+  dt { font: 300 14px/1.3 var(--f-head); letter-spacing: .08em; text-transform: uppercase; color: var(--ivory); }
+  dd { margin: 0; font: 300 clamp(26px, 2.6vw, 40px)/1 var(--f-head); letter-spacing: -.01em; color: #fff; text-align: right; white-space: nowrap; }
+  @media (max-width: 480px) { dd { white-space: normal; } }
 </style>

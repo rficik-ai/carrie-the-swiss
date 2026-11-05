@@ -157,7 +157,13 @@
   },
   "footer": {
     "contact": "Domande sulla razza, sulle esposizioni o su un episodio? Scrivi un messaggio su Instagram.",
-    "disclaimer": "Contenuti solo a scopo educativo. Per il tuo cane chiedi al tuo veterinario e al tuo club di razza."
+    "disclaimer": "Contenuti solo a scopo educativo. Per il tuo cane chiedi al tuo veterinario e al tuo club di razza.",
+    "big1": "Chiedi a",
+    "big2": "Carrie.",
+    "cta": "Scrivi a Carrie",
+    "social": "Social",
+    "site": "Sul sito",
+    "news": "Novità via e-mail"
   },
   "cards": {
     "eyebrow": "Un piccolo gioco",

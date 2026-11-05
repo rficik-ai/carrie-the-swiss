@@ -1,0 +1,48 @@
+---
+// The opening of a sub-page, laid out like a case study: a small light label and one big thin statement on the left,
+// the lead and a few facts (label / value) on the right, a hairline under both. Whatever follows (a media card, the
+// body) goes in the slot.
+interface Props { kicker: string; title: string; lead?: string; back?: { href: string; label: string }; meta?: [string, string][]; light?: boolean }
+const { kicker, title, lead, back, meta = [], light = false } = Astro.props;
+---
+<section class:list={['sub-hero', { light }]}>
+  <div class="wrap wide">
+    {back && <a class="back" href={back.href}>← {back.label}</a>}
+    <div class="intro">
+      <div class="say">
+        <p class="cap-k">{kicker}</p>
+        <h1 class="statement lg">{title}</h1>
+      </div>
+      <div class="facts">
+        {lead && <p class="lead">{lead}</p>}
+        {meta.length > 0 && (
+          <dl>{meta.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+        )}
+      </div>
+    </div>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .sub-hero { background: var(--ink); padding: clamp(112px, 13vw, 180px) 0 clamp(56px, 7vw, 110px); }
+  .sub-hero.light { background: var(--paper); }
+  .back { display: inline-block; margin-bottom: clamp(28px, 4vw, 56px); color: var(--gold-hi); text-decoration: none; font-weight: 600; font-size: 14px; letter-spacing: .04em; }
+  .light .back { color: var(--gold-deep); }
+  .intro { display: grid; gap: clamp(32px, 4vw, 64px); padding-bottom: clamp(36px, 4vw, 64px); margin-bottom: clamp(36px, 4vw, 64px); border-bottom: 1px solid rgba(244,238,226,.22); }
+  .light .intro { border-color: rgba(28,25,20,.25); }
+  @media (min-width: 960px) { .intro { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; } }
+  .say { display: grid; gap: 18px; }
+  .cap-k { color: var(--muted-dark); }
+  .light .cap-k { color: var(--muted-light); }
+  h1 { color: #fff; }
+  .light h1 { color: #1c1914; }
+  .facts { display: grid; gap: 30px; padding-top: .6em; }
+  .lead { font-size: clamp(17px, 1.4vw, 20px); line-height: 1.6; max-width: 34em; color: var(--ivory); }
+  .light .lead { color: #1c1914; }
+  dl { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 18px 24px; }
+  dl div { display: grid; gap: 4px; }
+  dt { font: 300 13px/1.3 var(--f-head); letter-spacing: .08em; text-transform: uppercase; color: var(--muted-dark); }
+  .light dt { color: var(--muted-light); }
+  dd { margin: 0; font: 700 16px/1.3 var(--f-body); }
+</style>

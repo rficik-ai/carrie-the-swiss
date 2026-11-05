@@ -157,7 +157,13 @@
   },
   "footer": {
     "contact": "Fragen zur Rasse, zu Ausstellungen oder zu einer Folge? Schreib eine Nachricht auf Instagram.",
-    "disclaimer": "Nur zu Informationszwecken. Frag bei deinem eigenen Hund deine Tierärztin oder deinen Tierarzt und deinen Zuchtverein."
+    "disclaimer": "Nur zu Informationszwecken. Frag bei deinem eigenen Hund deine Tierärztin oder deinen Tierarzt und deinen Zuchtverein.",
+    "big1": "Frag",
+    "big2": "Carrie.",
+    "cta": "Carrie schreiben",
+    "social": "Social Media",
+    "site": "Auf der Seite",
+    "news": "Neues per E-Mail"
   },
   "cards": {
     "eyebrow": "Ein kleines Spiel",

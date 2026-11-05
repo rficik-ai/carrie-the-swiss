@@ -19,11 +19,11 @@ let n = 0;
 <Base locale={locale} title={`${c.title} · Carrie the Swiss`} description={c.meta} path="checklist/" noindex>
   <Header locale={locale} page="checklist/" />
   <main class="desk">
-    <div class="wrap tools">
+    <div class="wrap wide tools">
       <a class="back" href={`/${locale}/`}>← {back}</a>
       <div class="act">
         <a class="pill-cta" href={pdf} download>{c.pdf}</a>
-        <button class="link-cta print" type="button">{c.print}</button>
+        <button class="pill-ghost print" type="button">{c.print}</button>
       </div>
     </div>
     <article class="sheet">
@@ -76,10 +76,9 @@ let n = 0;
 
 <style>
   .desk { background: radial-gradient(70% 50% at 50% 0%, rgba(201,163,91,.16), transparent 60%), var(--ink); padding: clamp(104px, 12vw, 150px) 0 clamp(64px, 8vw, 110px); }
-  .tools { max-width: 860px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+  .tools { max-width: 920px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
   .back { color: var(--gold-hi); text-decoration: none; font-weight: 600; font-size: 14px; letter-spacing: .04em; }
-  .act { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; }
-  .print { background: none; border: 0; border-bottom: 1px solid currentColor; color: var(--ivory); cursor: pointer; font: inherit; font-weight: 600; font-size: 15px; padding: 0 0 4px; }
+  .act { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 
   /* the sheet: Carrie's paper */
   .sheet { --ink2: #1c1914; --soft: #5f5646; --line: #e3d9c4; box-sizing: border-box; width: min(820px, calc(100% - 2 * var(--gutter))); margin: 0 auto; background: var(--paper); color: var(--ink2);

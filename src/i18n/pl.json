@@ -157,7 +157,13 @@
   },
   "footer": {
     "contact": "Pytania o rasę, wystawy albo któryś odcinek? Napisz wiadomość na Instagramie.",
-    "disclaimer": "Treści wyłącznie edukacyjne. W sprawie własnego psa zapytaj weterynarza i klub rasy."
+    "disclaimer": "Treści wyłącznie edukacyjne. W sprawie własnego psa zapytaj weterynarza i klub rasy.",
+    "big1": "Zapytaj",
+    "big2": "Carrie.",
+    "cta": "Napisz do Carrie",
+    "social": "Social media",
+    "site": "Na stronie",
+    "news": "Nowości e-mailem"
   },
   "cards": {
     "eyebrow": "Mała gra",

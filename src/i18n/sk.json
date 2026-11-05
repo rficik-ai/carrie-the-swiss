@@ -157,7 +157,13 @@
   },
   "footer": {
     "contact": "Otázky o plemene, výstavách alebo niektorej epizóde? Napíšte správu na Instagrame.",
-    "disclaimer": "Len vzdelávací obsah. O svojom psovi sa poraďte s veterinárom a chovateľským klubom."
+    "disclaimer": "Len vzdelávací obsah. O svojom psovi sa poraďte s veterinárom a chovateľským klubom.",
+    "big1": "Opýtajte sa",
+    "big2": "Carrie.",
+    "cta": "Napísať Carrie",
+    "social": "Sociálne siete",
+    "site": "Na webe",
+    "news": "Novinky e-mailom"
   },
   "cards": {
     "eyebrow": "Malá hra",

@@ -157,7 +157,13 @@
   },
   "footer": {
     "contact": "Vragen over het ras, hondenshows of een aflevering? Stuur een bericht op Instagram.",
-    "disclaimer": "Alleen educatieve inhoud. Vraag je dierenarts en je rasvereniging naar je eigen hond."
+    "disclaimer": "Alleen educatieve inhoud. Vraag je dierenarts en je rasvereniging naar je eigen hond.",
+    "big1": "Vraag het",
+    "big2": "Carrie.",
+    "cta": "Schrijf Carrie",
+    "social": "Social media",
+    "site": "Op de site",
+    "news": "Nieuws per e-mail"
   },
   "cards": {
     "eyebrow": "Een spelletje",

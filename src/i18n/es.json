@@ -157,7 +157,13 @@
   },
   "footer": {
     "contact": "¿Preguntas sobre la raza, las exposiciones o algún episodio? Escribe un mensaje en Instagram.",
-    "disclaimer": "Contenido solo educativo. Consulta a tu veterinario y a tu club de raza sobre tu propio perro."
+    "disclaimer": "Contenido solo educativo. Consulta a tu veterinario y a tu club de raza sobre tu propio perro.",
+    "big1": "Pregúntale a",
+    "big2": "Carrie.",
+    "cta": "Escribir a Carrie",
+    "social": "Redes sociales",
+    "site": "En la web",
+    "news": "Novedades por e-mail"
   },
   "cards": {
     "eyebrow": "Un pequeño juego",

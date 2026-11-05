@@ -1,39 +1,62 @@
 ---
+// The end of every page: one big quiet invitation (ask Carrie), two short columns of links, the small print.
 import { type Locale, t } from '../i18n';
-import { INSTAGRAM } from '../data/episodes';
+import { INSTAGRAM, YOUTUBE } from '../data/episodes';
 import { PRIVACY } from '../data/privacy';
+import Corner from './Corner.astro';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const s = t(locale);
+const f = s.footer as any;
+const home = `/${locale}/`;
 ---
 <footer class="foot">
-  <div class="wrap row">
-    <div class="brand">
-      <span class="w"><b>CARRIE</b> / THE SWISS</span>
-      <p class="muted">{s.footer.contact}</p>
-      <p class="muted small">{s.footer.disclaimer}</p>
+  <div class="wrap wide top" data-reveal>
+    <div class="say">
+      <h2 class="statement lg"><span class="l1">{f.big1}</span><span class="l2"><Corner /><span>{f.big2}</span></span></h2>
+      <a class="pill-ghost" href={`${home}#ask`}>{f.cta}</a>
     </div>
-    <div class="links">
-      <a href={`/${locale}/#episodes`}>{s.nav.episodes}</a>
-      <a href={`/${locale}/papers/`}>{(s.nav as any).papers ?? s.nav.guide}</a>
-      <a href={`/${locale}/#carrie`}>{s.nav.carrie}</a>
-      <a href={INSTAGRAM} target="_blank" rel="noopener" class="ig">@carrietheswiss</a>
+    <div class="cols">
+      <div>
+        <h3>{f.social}</h3>
+        <a href={INSTAGRAM} target="_blank" rel="noopener">Instagram</a>
+        <a href={YOUTUBE} target="_blank" rel="noopener">YouTube</a>
+      </div>
+      <div>
+        <h3>{f.site}</h3>
+        <a href={`${home}#episodes`}>{s.nav.episodes}</a>
+        <a href={`${home}papers/`}>{(s.nav as any).papers ?? s.nav.guide}</a>
+        <a href={`${home}#carrie`}>{s.nav.carrie}</a>
+        <a href={`${home}#follow`}>{f.news}</a>
+      </div>
     </div>
   </div>
-  <div class="wrap legal"><span>© {new Date().getFullYear()} Carrie the Swiss</span><a href={`/${locale}/privacy/`}>{(PRIVACY[locale] ?? PRIVACY.en)!.link}</a></div>
+  <div class="wrap wide legal">
+    <span>© {new Date().getFullYear()} Carrie the Swiss</span>
+    <a href={`${home}privacy/`}>{(PRIVACY[locale] ?? PRIVACY.en)!.link}</a>
+    <span class="dis">{f.disclaimer}</span>
+    <span class="mark" aria-hidden="true"><b>CARRIE</b><small>THE SWISS</small></span>
+  </div>
 </footer>
 
 <style>
-  .foot { background: var(--ink); border-top: 1px solid var(--ink-line); padding-top: 64px; padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)); }
-  .row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 36px; }
-  .brand { display: grid; gap: 12px; max-width: 34em; }
-  .w { font-family: var(--f-mark); letter-spacing: .2em; color: var(--gold); font-size: 14px; }
-  .w b { font-size: 20px; }
-  .small { font-size: 13px; }
-  .links { display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start; font-size: 15px; }
-  .links a { text-decoration: none; color: var(--muted-dark); }
-  .links a:hover, .ig { color: var(--gold-hi) !important; }
-  .legal { margin-top: 48px; font-size: 12px; color: #6f6754; display: flex; flex-wrap: wrap; gap: 8px 22px; }
+  .foot { background: var(--ink); border-top: 1px solid var(--ink-line); padding-top: clamp(72px, 9vw, 140px); padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)); }
+  .top { display: grid; gap: clamp(48px, 6vw, 96px); }
+  @media (min-width: 900px) { .top { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: start; } }
+  .say { display: grid; gap: clamp(32px, 4vw, 56px); justify-items: start; }
+  .say h2 { color: #fff; display: grid; gap: .02em; }
+  .l2 { display: flex; align-items: center; gap: .25em; }
+  .l2 :global(svg) { flex: none; width: .78em; height: auto; }
+  .cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; padding-top: .4em; }
+  .cols h3 { font: 300 14px/1.3 var(--f-head); letter-spacing: .08em; text-transform: uppercase; color: var(--muted-dark); margin: 0 0 18px; }
+  .cols a { display: block; width: fit-content; text-decoration: none; font-weight: 600; font-size: 16px; line-height: 1.3; color: var(--ivory); padding: 7px 0; transition: color .2s; }
+  .cols a:hover { color: var(--gold-hi); }
+  .legal { margin-top: clamp(64px, 8vw, 120px); padding-top: 22px; border-top: 1px solid var(--ink-line); display: flex; flex-wrap: wrap; align-items: center; gap: 10px 28px; font-size: 13px; color: #8f8571; }
   .legal a { color: #8f8571; text-underline-offset: 3px; }
   .legal a:hover { color: var(--gold-hi); }
+  .dis { flex: 1 1 320px; min-width: 0; }
+  .mark { margin-left: auto; display: grid; justify-items: center; line-height: 1; font-family: var(--f-mark); color: var(--gold); }
+  .mark b { font-size: 22px; letter-spacing: .18em; font-weight: 700; }
+  .mark small { font-size: 8px; letter-spacing: .42em; margin-top: 5px; padding-left: .42em; }
+  @media (max-width: 600px) { .cols { grid-template-columns: 1fr; gap: 26px; } .mark { margin-left: 0; width: 100%; justify-items: start; } }
 </style>

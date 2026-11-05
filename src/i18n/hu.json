@@ -157,7 +157,13 @@
   },
   "footer": {
     "contact": "Kérdésed van a fajtáról, a kiállításokról vagy egy epizódról? Írj üzenetet az Instagramon.",
-    "disclaimer": "Kizárólag ismeretterjesztő tartalom. A saját kutyádról kérdezd az állatorvosodat és a fajtaklubodat."
+    "disclaimer": "Kizárólag ismeretterjesztő tartalom. A saját kutyádról kérdezd az állatorvosodat és a fajtaklubodat.",
+    "big1": "Kérdezd meg",
+    "big2": "Carrie-t.",
+    "cta": "Írj Carrie-nek",
+    "social": "Közösségi média",
+    "site": "Az oldalon",
+    "news": "Hírek e-mailben"
   },
   "cards": {
     "eyebrow": "Egy kis játék",

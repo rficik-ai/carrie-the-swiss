@@ -62,9 +62,9 @@ const s = t(locale);
     background: var(--grad-gold); -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .words small { font-family: var(--f-mark); font-size: 8.5px; letter-spacing: .38em; color: var(--gold); margin-top: 5px; padding-left: .38em; }
-  .links { display: none; gap: 30px; font-size: 14px; font-weight: 500; }
-  .links a { text-decoration: none; color: var(--muted-dark); transition: color .2s; }
-  .links a:hover { color: var(--ivory); }
+  .links { display: none; gap: 34px; font-size: 15px; font-weight: 400; letter-spacing: .01em; }
+  .links a { text-decoration: none; color: rgba(244,238,226,.86); transition: color .2s; }
+  .links a:hover, .links a[aria-current='page'] { color: #fff; }
   @media (min-width: 860px) { .links { display: flex; } }
 
   .tools { display: flex; align-items: center; gap: 10px; }
