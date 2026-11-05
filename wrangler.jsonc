@@ -20,6 +20,8 @@
   ],
   // newsletter (worker/mail.js): Brevo list "Web carrietheswiss.com" and the sender; the API key is the Secret BREVO_API_KEY
   "vars": { "BREVO_LIST_ID": "3", "MAIL_FROM": "carrie@carrietheswiss.com", "MAIL_NAME": "Carrie the Swiss" },
+  // Mondays 06:17 UTC: one read call so Brevo never retires the API key for inactivity (90 days)
+  "triggers": { "crons": ["17 6 * * 1"] },
   "observability": { "enabled": true },
   // keep variables and secrets added in the dashboard when Git deploys run
   "keep_vars": true

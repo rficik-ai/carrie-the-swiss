@@ -2,7 +2,7 @@
 // The Anthropic API key lives only in the Worker secret ANTHROPIC_API_KEY (never in the code or the browser).
 import { systemPrompt } from './knowledge.js';
 import { event, stats } from './stats.js';
-import { subscribe, confirm } from './mail.js';
+import { subscribe, confirm, keepAlive } from './mail.js';
 export { Stats } from './stats.js';   // the Durable Object that tallies the anonymous events
 
 const MODEL = 'claude-haiku-5-5';
@@ -152,6 +152,8 @@ async function thumb(request, ctx, id) {
 // ---- newsletter: worker/mail.js (double opt-in e-mail in the visitor's language, then the Brevo list)
 
 export default {
+  // weekly: keep the Brevo API key in use (worker/mail.js)
+  async scheduled(event, env, ctx) { ctx.waitUntil(keepAlive(env)); },
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === '/api/ask') return chat(request, env);

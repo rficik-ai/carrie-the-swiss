@@ -197,3 +197,13 @@ export async function confirm(request, env) {
   console.log('brevo contact error', r.status, t.slice(0, 300));
   return back(d.l, 'nl=error');
 }
+
+// Brevo switches an API key off after 90 days without use. Once a week the Worker reads the list (a harmless call
+// that counts as use), so a quiet stretch without sign-ups never breaks the form. Cron: wrangler.jsonc "triggers".
+export async function keepAlive(env) {
+  if (!configured(env)) return;
+  const r = await fetch(`https://api.brevo.com/v3/contacts/lists/${Number(env.BREVO_LIST_ID)}`, {
+    headers: { accept: 'application/json', 'api-key': env.BREVO_API_KEY },
+  });
+  if (!r.ok) console.log('brevo keep-alive', r.status, (await r.text()).slice(0, 200));
+}
