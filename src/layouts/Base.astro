@@ -102,6 +102,9 @@ const ogImage = `${site}/assets/img/og.jpg`;
   const pageKey = location.pathname.replace(/^\/(en|sk|cs|de|pl|fr|it|es|uk|hu|nl)\//, '/').replace(/\/+$/, '') || '/';
   track('visit', pageKey === '/' ? 'home' : pageKey.slice(1).split('/')[0], true, (qs.get('utm_source') || qs.get('src') || referrerHost()).slice(0, 60));
   if (qs.has('subscribed')) track('signup', 'confirmed', true);
+  // counted: tidy the address, so a shared link doesn't carry the tag on to the next visitor
+  const tags = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'src'].filter((k) => qs.has(k));
+  if (tags.length) { tags.forEach((k) => qs.delete(k)); const s = qs.toString(); history.replaceState(history.state, '', location.pathname + (s ? '?' + s : '') + location.hash); }
   document.addEventListener('click', (e) => {
     const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href]');
     if (!a || a.dataset.yt) return;   // a video played in the site's own player is counted there

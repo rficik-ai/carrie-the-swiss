@@ -20,7 +20,15 @@ const site = Astro.site!.toString().replace(/\/$/, '');
         var c = (langs[i] || '').slice(0, 2).toLowerCase();
         if (locales.indexOf(c) !== -1) { pick = c; break; }
       }
-      location.replace('/' + pick + '/');
+      // keep ?utm_source=… and the site the visitor came from: the language page counts the visit, and after this
+      // hop its referrer would be our own address
+      var q = location.search;
+      if (!/[?&](utm_source|src)=/.test(q)) {
+        var r = '';
+        try { r = document.referrer ? new URL(document.referrer).host.replace(/^www\.|^l\.|^m\.|^lm\./, '') : ''; } catch (e) {}
+        if (r && r !== location.host) q += (q ? '&' : '?') + 'src=' + encodeURIComponent(r);
+      }
+      location.replace('/' + pick + '/' + q + location.hash);
     </script>
     <noscript><meta http-equiv="refresh" content="0; url=/en/" /></noscript>
     <style>body{background:#0d0c0a;margin:0}</style>
