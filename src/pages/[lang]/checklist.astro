@@ -1,0 +1,155 @@
+---
+// The newsletter's thank-you: "10 questions for the breeder", a sheet of Carrie's paper. On screen it lies on the
+// dark desk; printed (or as the PDF in /assets/pdf/) it is the sheet alone. Linked from the welcome e-mail only.
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { availableLocales, t, type Locale } from '../../i18n';
+import { CHECKLIST } from '../../data/checklist';
+
+export function getStaticPaths() {
+  return availableLocales().map((lang) => ({ params: { lang } }));
+}
+const locale = Astro.params.lang as Locale;
+const c = CHECKLIST[locale] ?? CHECKLIST.en!;
+const back = (t(locale) as any).sub.back as string;
+const pdf = `/assets/pdf/carrie-10-questions-${locale}.pdf`;
+let n = 0;
+---
+<Base locale={locale} title={`${c.title} · Carrie the Swiss`} description={c.meta} path="checklist/" noindex>
+  <Header locale={locale} page="checklist/" />
+  <main class="desk">
+    <div class="wrap tools">
+      <a class="back" href={`/${locale}/`}>← {back}</a>
+      <div class="act">
+        <a class="pill-cta" href={pdf} download>{c.pdf}</a>
+        <button class="link-cta print" type="button">{c.print}</button>
+      </div>
+    </div>
+    <article class="sheet">
+      <header class="top">
+        <span class="mark"><b>CARRIE</b><i>THE SWISS</i></span>
+        <span class="site">carrietheswiss.com</span>
+      </header>
+      <div class="intro">
+        <div class="txt">
+          <span class="rule"></span>
+          <h1>{c.title}</h1>
+          <p class="sub">{c.subtitle}</p>
+          <p class="lead">{c.intro}</p>
+        </div>
+        <img class="face" src="/assets/img/twin-head.jpg" alt="Carrie" width="168" height="168" />
+      </div>
+      <div class="parts">
+      {c.parts.map((part, pi) => (
+        <section class="part">
+          <h2><span>{String(pi + 1).padStart(2, '0')}</span>{part.h}</h2>
+          <ol>
+            {part.qs.map((q) => { n += 1; return (
+              <li>
+                <span class="box" aria-hidden="true"></span>
+                <span class="no">{n}</span>
+                <div><p class="q">{q.q}</p><p class="why">{q.why}</p></div>
+              </li>
+            ); })}
+          </ol>
+        </section>
+      ))}
+      </div>
+      <div class="pair">
+        <section class="twist"><h2>{c.twist.h}</h2><p>{c.twist.p}</p></section>
+        <section class="flags"><h2>{c.flags.h}</h2><ul>{c.flags.items.map((f) => <li>{f}</li>)}</ul></section>
+      </div>
+      <p class="outro">{c.outro}</p>
+      <footer class="small">
+        <p><b>{c.sources_h}:</b> {c.sources}</p>
+        <p>{c.note} · @carrietheswiss · carrietheswiss.com</p>
+      </footer>
+    </article>
+  </main>
+  <Footer locale={locale} />
+</Base>
+
+<script>
+  document.querySelector('.desk .print')?.addEventListener('click', () => window.print());
+</script>
+
+<style>
+  .desk { background: radial-gradient(70% 50% at 50% 0%, rgba(201,163,91,.16), transparent 60%), var(--ink); padding: clamp(104px, 12vw, 150px) 0 clamp(64px, 8vw, 110px); }
+  .tools { max-width: 860px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+  .back { color: var(--gold-hi); text-decoration: none; font-weight: 600; font-size: 14px; letter-spacing: .04em; }
+  .act { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; }
+  .print { background: none; border: 0; border-bottom: 1px solid currentColor; color: var(--ivory); cursor: pointer; font: inherit; font-weight: 600; font-size: 15px; padding: 0 0 4px; }
+
+  /* the sheet: Carrie's paper */
+  .sheet { --ink2: #1c1914; --soft: #5f5646; --line: #e3d9c4; box-sizing: border-box; width: min(820px, calc(100% - 2 * var(--gutter))); margin: 0 auto; background: var(--paper); color: var(--ink2);
+    border-radius: 10px; padding: clamp(24px, 5vw, 52px); box-shadow: 0 40px 90px -40px rgba(0,0,0,.9), 0 0 0 1px rgba(234,211,154,.25); color-scheme: light; }
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+  .mark { display: grid; font-family: var(--f-mark); color: var(--gold-deep); letter-spacing: .22em; line-height: 1.1; }
+  .mark b { font-size: 18px; } .mark i { font-style: normal; font-size: 8px; letter-spacing: .42em; }
+  .site { font-size: 12px; letter-spacing: .08em; color: var(--soft); }
+  .intro { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: center; padding: 26px 0 8px; }
+  .rule { display: block; width: 34px; height: 2px; background: var(--gold); margin-bottom: 14px; }
+  h1 { font-size: clamp(28px, 4.6vw, 44px); color: var(--ink2); }
+  .sub { font-family: var(--f-display); font-style: italic; font-size: clamp(18px, 2.4vw, 22px); color: var(--gold-deep); margin-top: 8px; }
+  .lead { font-size: 15px; line-height: 1.6; color: var(--soft); margin-top: 12px; max-width: 46ch; }
+  .face { width: clamp(96px, 16vw, 150px); height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 50%; box-shadow: 0 0 0 3px var(--paper), 0 0 0 4px var(--gold); }
+  .part { margin-top: 24px; break-inside: avoid; }
+  .part h2 { font-family: var(--f-body); font-size: 12px; font-weight: 800; letter-spacing: .22em; color: var(--gold-deep); display: flex; gap: 12px; align-items: center; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .part h2 span { color: var(--gold); }
+  ol { list-style: none; margin: 0; padding: 0; }
+  ol li { display: grid; grid-template-columns: 20px 26px minmax(0, 1fr); gap: 10px; align-items: start; padding: 12px 0; border-bottom: 1px dashed var(--line); break-inside: avoid; }
+  .box { width: 16px; height: 16px; margin-top: 3px; border: 1.6px solid var(--gold-deep); border-radius: 3px; }
+  .no { font-family: var(--f-display); font-weight: 700; font-size: 20px; line-height: 1; color: var(--gold); text-align: right; }
+  .q { font-weight: 700; font-size: 16px; line-height: 1.35; }
+  .why { font-size: 13.5px; line-height: 1.5; color: var(--soft); margin-top: 4px; }
+  .pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 26px; break-inside: avoid; }
+  .pair section { border-radius: 8px; padding: 16px 18px; }
+  .pair h2 { font-family: var(--f-body); font-size: 12px; font-weight: 800; letter-spacing: .2em; margin-bottom: 8px; }
+  .twist { background: #f3ead6; box-shadow: inset 3px 0 0 var(--gold); }
+  .twist h2 { color: var(--gold-deep); } .twist p { font-size: 14px; line-height: 1.55; }
+  .flags { background: #f6e8df; box-shadow: inset 3px 0 0 var(--rust); }
+  .flags h2 { color: var(--rust); }
+  .flags ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; }
+  .flags li::before { content: '✗'; color: var(--rust); font-weight: 800; margin-right: 8px; }
+  .outro { font-family: var(--f-head); font-weight: 800; text-transform: uppercase; font-size: clamp(16px, 2.4vw, 22px); line-height: 1.25; text-align: center; margin: 30px 0 22px; color: var(--ink2); text-wrap: balance; }
+  .small { border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: 6px; font-size: 11px; line-height: 1.5; color: var(--soft); }
+  @media (max-width: 520px) { .intro { grid-template-columns: 1fr; } .face { order: -1; } }
+
+  /* printed or saved as PDF: the sheet alone, on white, one A4 page (a cheat sheet). No page margins: the sheet's
+     own padding is the margin, so nothing dark can show around it */
+  @media print {
+    @page { size: A4; margin: 0; }
+    :global(:root) { color-scheme: light !important; }
+    :global(html), :global(body) { background: #fff !important; }
+    :global(header.top:not(.sheet *)), :global(.foot), :global(.prog), :global(.cursor), :global(.music), :global(canvas) { display: none !important; }
+    .desk { background: none; padding: 0; }
+    .tools { display: none; }
+    .sheet { width: 210mm; min-height: 297mm; margin: 0; padding: 11mm 12mm 9mm; box-shadow: none; border-radius: 0; background: #fff; font-size: 9pt; }
+    .sheet, .sheet * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .top { padding-bottom: 3mm; }
+    .intro { padding: 4mm 0 0; gap: 6mm; }
+    .rule { margin-bottom: 2.5mm; }
+    h1 { font-size: 20pt; }
+    .sub { font-size: 12.5pt; margin-top: 1mm; }
+    .lead { font-size: 9pt; margin-top: 1.5mm; max-width: none; }
+    .face { width: 26mm; }
+    .parts { display: grid; grid-template-columns: 1fr 1fr; column-gap: 8mm; }
+    .parts .part:last-child { grid-column: 1 / -1; }
+    .parts .part:last-child ol { display: grid; grid-template-columns: 1fr 1fr; column-gap: 8mm; }
+    .part { margin-top: 4.5mm; }
+    .part h2 { font-size: 7.5pt; padding-bottom: 1.5mm; }
+    ol li { grid-template-columns: 4mm 5mm minmax(0, 1fr); gap: 2mm; padding: 2.2mm 0; }
+    .box { width: 3.4mm; height: 3.4mm; margin-top: .6mm; border-width: 1.2px; }
+    .no { font-size: 12pt; }
+    .q { font-size: 9.6pt; }
+    .why { font-size: 7.9pt; line-height: 1.42; margin-top: .6mm; }
+    .pair { margin-top: 4.5mm; gap: 6mm; grid-template-columns: 1fr 1fr; }
+    .pair section { padding: 3mm 4mm; }
+    .pair h2 { font-size: 7.5pt; margin-bottom: 1.5mm; }
+    .twist p, .flags ul { font-size: 8.6pt; }
+    .flags ul { gap: 1mm; }
+    .outro { font-size: 12pt; margin: 5mm 0 3.5mm; }
+    .small { font-size: 6.8pt; padding-top: 2mm; gap: 1mm; }
+  }
+</style>

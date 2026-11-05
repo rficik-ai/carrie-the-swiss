@@ -1,0 +1,61 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { availableLocales, t, type Locale } from '../../i18n';
+import { PRIVACY, CONTACT } from '../../data/privacy';
+
+export function getStaticPaths() {
+  return availableLocales().map((lang) => ({ params: { lang } }));
+}
+const locale = Astro.params.lang as Locale;
+const p = PRIVACY[locale] ?? PRIVACY.en!;
+const back = (t(locale) as any).sub.back as string;
+// the contact address becomes a link wherever it appears
+const parts = (text: string) => text.split(CONTACT);
+---
+<Base locale={locale} title={`${p.title} · Carrie the Swiss`} description={p.meta} path="privacy/">
+  <Header locale={locale} page="privacy/" />
+  <main class="priv">
+    <section class="hero">
+      <div class="wrap col">
+        <a class="back" href={`/${locale}/`}>← {back}</a>
+        <p class="eyebrow kicker">Carrie the Swiss</p>
+        <h1>{p.title}</h1>
+        <p class="lead">{p.intro}</p>
+        <p class="upd">{p.updated}</p>
+      </div>
+    </section>
+    <section class="body">
+      <div class="wrap col">
+        {p.sections.map((s, i) => (
+          <article>
+            <h2><span class="n">{String(i + 1).padStart(2, '0')}</span>{s.h}</h2>
+            {s.p.map((para) => (
+              <p>{parts(para).map((bit, j) => (<>{j > 0 && <a href={`mailto:${CONTACT}`}>{CONTACT}</a>}{bit}</>))}</p>
+            ))}
+          </article>
+        ))}
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</Base>
+
+<style>
+  .priv { background: var(--ink); }
+  .col { max-width: 760px; }
+  .hero { padding: clamp(120px, 14vw, 170px) 0 clamp(28px, 4vw, 48px); background: radial-gradient(70% 60% at 85% 0%, rgba(201,163,91,.14), transparent 60%); }
+  .hero .col { display: grid; gap: 16px; }
+  .back { color: var(--gold-hi); text-decoration: none; font-weight: 600; font-size: 14px; letter-spacing: .04em; }
+  h1 { font-size: clamp(34px, 6vw, 64px); }
+  .lead { font-size: 18px; line-height: 1.6; color: var(--ivory); }
+  .upd { font-size: 13px; color: var(--muted-dark); letter-spacing: .04em; }
+  .body { padding: 8px 0 clamp(72px, 10vw, 120px); }
+  .body .col { display: grid; gap: 34px; }
+  article { display: grid; gap: 12px; padding-top: 30px; border-top: 1px solid var(--ink-line); }
+  h2 { font-size: clamp(17px, 2.2vw, 21px); letter-spacing: .01em; display: flex; gap: 14px; align-items: baseline; }
+  .n { font-family: var(--f-body); font-size: 12px; font-weight: 700; letter-spacing: .14em; color: var(--gold); flex: none; }
+  article p { font-size: 16px; line-height: 1.7; color: #e3dccd; max-width: 65ch; }
+  article a { color: var(--gold-hi); text-underline-offset: 3px; }
+</style>

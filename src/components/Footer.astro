@@ -1,6 +1,7 @@
 ---
 import { type Locale, t } from '../i18n';
 import { INSTAGRAM } from '../data/episodes';
+import { PRIVACY } from '../data/privacy';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const s = t(locale);
@@ -19,7 +20,7 @@ const s = t(locale);
       <a href={INSTAGRAM} target="_blank" rel="noopener" class="ig">@carrietheswiss</a>
     </div>
   </div>
-  <div class="wrap legal"><span>© {new Date().getFullYear()} Carrie the Swiss</span></div>
+  <div class="wrap legal"><span>© {new Date().getFullYear()} Carrie the Swiss</span><a href={`/${locale}/privacy/`}>{(PRIVACY[locale] ?? PRIVACY.en)!.link}</a></div>
 </footer>
 
 <style>
@@ -32,5 +33,7 @@ const s = t(locale);
   .links { display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start; font-size: 15px; }
   .links a { text-decoration: none; color: var(--muted-dark); }
   .links a:hover, .ig { color: var(--gold-hi) !important; }
-  .legal { margin-top: 48px; font-size: 12px; color: #6f6754; }
+  .legal { margin-top: 48px; font-size: 12px; color: #6f6754; display: flex; flex-wrap: wrap; gap: 8px 22px; }
+  .legal a { color: #8f8571; text-underline-offset: 3px; }
+  .legal a:hover { color: var(--gold-hi); }
 </style>

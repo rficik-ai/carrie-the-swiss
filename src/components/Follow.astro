@@ -1,5 +1,6 @@
 ---
 // "Follow me": the latest shorts from the YouTube channel (via /api/latest, thumbnails proxied) + channel links.
+import { PRIVACY } from '../data/privacy';
 import { type Locale, t } from '../i18n';
 import { EPISODES, INSTAGRAM, YOUTUBE } from '../data/episodes';
 interface Props { locale: Locale }
@@ -26,7 +27,7 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
           <button type="submit">{f.nl_button}</button>
         </div>
         <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
-        <label class="consent"><input type="checkbox" name="consent" required /> <span>{f.nl_consent}</span></label>
+        <label class="consent"><input type="checkbox" name="consent" required /> <span>{f.nl_consent} <a href={`/${locale}/privacy/`}>{(PRIVACY[locale] ?? PRIVACY.en)!.link}</a></span></label>
         <p class="nl-msg" aria-live="polite"></p>
       </form>
       <div class="links">
@@ -67,6 +68,7 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
   .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
   .consent { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; line-height: 1.45; color: var(--muted-dark); cursor: pointer; }
   .consent input { margin-top: 2px; accent-color: var(--gold); width: 16px; height: 16px; flex: none; }
+  .consent a { color: var(--gold-hi); text-underline-offset: 3px; white-space: nowrap; }
   .nl-msg { margin: 0; font-size: 14px; color: var(--gold-hi); min-height: 1em; }
   .nl-msg.err { color: #e7a07a; }
   @media (max-width: 520px) { .nl-row { flex-direction: column; } .nl-row input { flex: none; } }   /* stacked: the field keeps its 50 px */
