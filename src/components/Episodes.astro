@@ -412,6 +412,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
       f.style.transform = `translate(${fr.left}px, ${fr.top}px) scale(${fr.k})`;
     };
     new ResizeObserver(fit).observe(scene); fit();
+    scene.inert = true;   // until the film rests on the shelf: nothing in the scene can be tapped or tabbed into
     // the scene takes over only when it sits exactly where the film's last frame is
     let lastKey = '';
     const watch = () => {
@@ -423,7 +424,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
       const fp = w.__filmP ?? 0;
       const on = (live ? q > 0.975 : q >= 0.999 && w.__filmAtEnd !== false) && fp < 0.6; // film 2 takes over at 60 %
       if (on !== scene.classList.contains('live')) {
-        scene.classList.toggle('live', on); if (!on) closeAll();
+        scene.classList.toggle('live', on); scene.inert = !on; if (!on) closeAll();
         scene.querySelector('.cap-bar')!.classList.toggle('rv-in', on);
         scene.querySelector('.wall')!.classList.toggle('rv-in', on);
         if (on) { wallTitle.classList.remove('quick'); flap(wide ? wallTitle : capTitle); } else { wallTitle.classList.remove('go'); boardHome(); }

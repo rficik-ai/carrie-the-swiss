@@ -50,7 +50,7 @@ const cur = (t(locale) as any).cursor;
     .ptext h2 { font-size: clamp(34px, 4.2vw, 60px); color: #fff; text-shadow: 0 2px 24px rgba(0,0,0,.35); }
     .ptext .say { margin: 0; max-width: 40em; font: 500 clamp(16px, 1.25vw, 19px)/1.5 var(--f-body); color: rgba(244,238,226,.88); }
     .ptext .hint { margin: 4px 0 8px; }
-    .ptext .pill-cta { pointer-events: auto; }
+    .pwall.live .ptext .pill-cta { pointer-events: auto; }   /* only while the wall shows: hidden, it sat over the shelf's "Open the book" */
   .h-tap { display: none; }
   @media (hover: hover) and (min-width: 900px) { .pcard:hover .flip { opacity: 1; transform: translateZ(14px) rotateY(180deg); transition: transform .85s cubic-bezier(.2,.7,.2,1), opacity 0s 0s; } }
   @media (max-width: 899px), (hover: none) {
@@ -122,9 +122,10 @@ const cur = (t(locale) as any).cursor;
       if (key !== lastKey) { lastKey = key; fit(); }
       const p = W_.__filmP ?? 0, live = wall.classList.contains('live');
       const on = live ? p > 0.83 && p < 0.985 : p >= 0.84 && p < 0.97 && W_.__film2AtEnd !== false && W_.__film2Q >= 0.999;
-      if (on !== live) { wall.classList.toggle('live', on); wall.querySelector('.ptext')!.classList.toggle('rv-in', on); }
+      if (on !== live) { wall.classList.toggle('live', on); wall.inert = !on; wall.querySelector('.ptext')!.classList.toggle('rv-in', on); }
       requestAnimationFrame(watch);
     };
+    wall.inert = true;   // hidden, the wall can't be tapped or tabbed into (it lies over the shelf)
     requestAnimationFrame(watch);
   }
 </script>
