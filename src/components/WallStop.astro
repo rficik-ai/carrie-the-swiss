@@ -259,17 +259,22 @@ import Split from './Split.astro';
     let shownPl = -2, shownCur = -2;
     const update = () => {
       advance();
-      const at = T >= 0 && T < N && Math.abs(c - T) < 0.14 ? T : -1;   // the plaque comes when the camera arrives
+      const near = Math.round(c);
+      const at = near >= 0 && near < N && Math.abs(c - near) < 0.14 ? near : -1;   // the plaque comes when the camera arrives
       if (at !== shownPl) { shownPl = at; plaques.forEach((p, i) => p.classList.toggle('on', i === at)); }
-      const cur = T >= 0 && T < N ? T : -1;                             // the picture we are heading to lights up at once
+      const head = paged ? T : near;
+      const cur = head >= 0 && head < N ? head : -1;                   // the picture we are heading to lights up at once
       if (cur !== shownCur) { shownCur = cur; frames.forEach((f, i) => f.classList.toggle('cur', i === cur)); el.classList.toggle('walking', cur >= 0); }
       const cap = c < -0.5 ? 1 - smooth((c + 1) / 0.5) : c > N - 0.5 ? smooth((c - (N - 0.5)) / 0.5) : 0;
       el.style.setProperty('--cap', cap.toFixed(3));
     };
 
-    // ---- scrolling → which picture. A new gesture (wheel notch, swipe, arrow key) goes one picture on;
-    // a long scroll or fling carries on through the pictures it passes. When the page comes to rest,
-    // it settles on the picture the camera went to, so the next gesture starts from there.
+    // ---- scrolling → which picture. With a mouse the walk is paged: a new gesture (wheel notch, arrow key) goes
+    // one picture on, a long scroll carries on through the pictures it passes, and when the page comes to rest it
+    // settles on the picture the camera went to. On touch screens (phones, tablets) it is a plain scroll: the camera
+    // follows the finger with a little inertia, rests briefly on each picture, and nothing snaps or pages
+    // (a swipe with momentum used to count as a gesture AND carry on, so one swipe skipped two pictures).
+    const paged = isWide();
     let lastY = scrollY, dir = 0, touching = false, touchY = 0, touchArm = false, lastWheel = -1e9, idle = 0;
     let pend: { dir: number; at: number; acc: number; done: boolean } | null = null;
     // (a gesture that starts outside the wall only brings you to it: you arrive at the whole wall first;
@@ -277,7 +282,7 @@ import Split from './Split.astro';
     const arm = (d: number) => { const t = tAtY(lastY); pend = t >= 0 && t <= 1 ? { dir: d, at: performance.now(), acc: 0, done: false } : null; };
     const kick = () => { clearTimeout(idle); idle = window.setTimeout(settle, 170); };
     function settle() {
-      if (touching || reduce || lbx.open) return;
+      if (!paged || touching || reduce || lbx.open) return;
       const t = rawT();
       if (t < 0 || t > 1 || Math.abs(cAt(t) - T) < 1e-6) return;
       scrollTo({ top: topFor(tOf(T)), behavior: 'smooth' });
@@ -309,6 +314,7 @@ import Split from './Split.astro';
       const t = tAtY(y);
       outside = t < 0 || t > 1;
       if (outside) { T = t < 0 ? -1 : N; pend = null; kick(); return; }
+      if (!paged) { T = clampT(cAt(t)); return; }   // touch: the camera simply follows the scroll
       if (t0 < 0 || t0 > 1) pend = null;   // just came in from outside
       // the gesture counts once the page really moved its way (a wheel over a scrolling box, or a tap on a button, does not)
       if (pend && !pend.done && dy && Math.sign(dy) === pend.dir && performance.now() - pend.at < 700) {
