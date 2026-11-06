@@ -35,7 +35,7 @@ const s = t(locale) as any, h = s.house;
   .hook { all: unset; position: absolute; cursor: pointer; border-radius: 30px; }
   .hook:focus-visible { outline: 3px solid var(--gold-hi); }
   .cap { position: absolute; left: var(--gutter); top: 50%; transform: translateY(-40%); max-width: min(520px, 40vw); display: grid; gap: 10px; justify-items: start; pointer-events: none; transition: opacity .4s; opacity: var(--fade, 1); }
-  .cap h2 { font-size: clamp(32px, 3.9vw, 58px); color: #fff; text-shadow: 0 2px 24px rgba(0,0,0,.35); }
+  .cap h2 { font-weight: 300; letter-spacing: .005em; line-height: 1.02; font-size: clamp(32px, 3.9vw, 58px); color: #fff; text-shadow: 0 2px 24px rgba(0,0,0,.35); }
   .cap .say { margin: 0; font: 500 clamp(16px, 1.25vw, 19px)/1.5 var(--f-body); color: rgba(244,238,226,.88); }
   .cap .hint { margin: 6px 0 0; }
   .h-tap { display: none; }

@@ -61,7 +61,7 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
   .layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
   .paper { all: unset; position: absolute; left: 0; top: 0; transform-origin: 0 0; cursor: pointer; }
   /* the paper's title written in ink, in the paper's own perspective */
-  .ink { position: absolute; left: 0; right: 0; top: 46px; text-align: center; font: italic 600 34px/1.1 var(--f-display); color: #3b2610; opacity: .78; mix-blend-mode: multiply; transition: opacity .3s; }
+  .ink { position: absolute; left: 0; right: 0; top: 46px; text-align: center; font: 300 30px/1.1 var(--f-head); letter-spacing: .06em; text-transform: uppercase; color: #3b2610; opacity: .82; mix-blend-mode: multiply; transition: opacity .3s; }
   .paper:nth-child(2) .ink { color: #dfe9f2; mix-blend-mode: normal; opacity: .7; }
   .tick { position: absolute; right: 30px; bottom: 30px; font: 700 54px/1 var(--f-display); color: #8a2a18; opacity: 0; transform: scale(1.6) rotate(-12deg); transition: opacity .3s, transform .4s cubic-bezier(.2,.7,.2,1); mix-blend-mode: multiply; }
   .paper:nth-child(2) .tick { color: #e7f0f7; mix-blend-mode: normal; }
@@ -72,7 +72,7 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
   .dstop.reading .veil { opacity: 1; pointer-events: auto; }
   .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 120px var(--gutter-r) max(36px, 4.5vh) var(--gutter); display: grid; gap: 8px; justify-items: start; pointer-events: none;
     background: linear-gradient(0deg, rgba(20,11,4,.86) 0%, rgba(20,11,4,.55) 55%, rgba(20,11,4,0) 100%); transition: opacity .4s; }
-  .cap h2 { font-size: clamp(28px, 3.2vw, 48px); color: #fff; max-width: 17em; text-shadow: 0 2px 24px rgba(0,0,0,.35); }
+  .cap h2 { font-weight: 300; letter-spacing: .005em; line-height: 1.02; font-size: clamp(30px, 3.4vw, 52px); color: #fff; max-width: 17em; text-shadow: 0 2px 24px rgba(0,0,0,.35); }
   .cap .say { margin: 0; max-width: 34em; font: 500 clamp(16px, 1.2vw, 18px)/1.5 var(--f-body); color: rgba(244,238,226,.88); }
   .cap .hint { margin: 6px 0 0; }
   .done { display: grid; gap: 10px; justify-items: start; pointer-events: auto; }

@@ -248,7 +248,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     .weye { font: 700 16px var(--f-body); letter-spacing: .28em; text-transform: uppercase; color: #d9b46a; }
     .weye .no::after { content: '—'; margin: 0 .55em; }
     /* the desktop shelf's own title flips in like a departures board, as the phone caption does (fx-flap) */
-    .wpull { font: 800 38px/1 var(--f-head); text-transform: uppercase; letter-spacing: -0.01em; color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,.75); }
+    .wpull { font: 300 40px/1 var(--f-head); text-transform: uppercase; letter-spacing: .005em; color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,.75); }
     .wpull.go :global(.c) { transition-delay: calc(.2s + var(--i) * 30ms); }
     .sbook { all: unset; position: absolute; cursor: pointer; }
     .slot { position: absolute; inset: 0; background-image: url(/assets/img/shelf-empty-v2.jpg); background-size: 1920px 1080px; box-shadow: inset 0 18px 18px -12px rgba(20,10,3,.6); opacity: 0; transition: opacity 0s .45s; }
@@ -307,7 +307,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     .scene.live .cap-bar { opacity: 1; transform: none; }
     .cb-eye { display: block; font: 800 11px/1 var(--f-body); letter-spacing: .22em; text-transform: uppercase; color: var(--gold-hi); }
     .cb-eye.kicker::before { margin-bottom: 10px; }
-    .cb-title { margin: 0; font: 800 19px/1.18 var(--f-head); letter-spacing: -0.01em; text-transform: uppercase; color: #fff; min-height: 1.18em; text-wrap: balance; }
+    .cb-title { margin: 0; font: 300 21px/1.1 var(--f-head); letter-spacing: .005em; text-transform: uppercase; color: #fff; min-height: 1.18em; text-wrap: balance; }
     .cb-row { display: flex; gap: 10px; align-items: center; }
     .cb-open { border: 0; border-radius: 999px; padding: 10px 18px; background: var(--gold-hi); color: #1a1408; letter-spacing: .1em; text-transform: uppercase; font: 700 14px var(--f-body); }
     .sbook.hov .slice, .sbook.hov .slice::before, .sbook.hov .slot { transition-delay: 0s; }
