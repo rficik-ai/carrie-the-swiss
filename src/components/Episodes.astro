@@ -23,7 +23,8 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
   <div class="scene" aria-label={s.episodes.eyebrow}>
     <div class="sfill" aria-hidden="true"></div>
     <div class="f1920" style={sceneVars}>
-      <img class="sbg" src="/assets/img/shelf-scene-v2.jpg" width="1920" height="1080" alt="" decoding="async" />
+      {/* never shown (.sbg is display:none): lazy, so it doesn't fetch the shelf ahead of the fonts; the CSS backgrounds load it when they need it */}
+      <img class="sbg" src="/assets/img/shelf-scene-v2.jpg" width="1920" height="1080" alt="" decoding="async" loading="lazy" />
       <p class="wall rv"><span class="weye rf" style="--fd:.1s"><span class="no">02</span>{s.episodes.eyebrow}</span><span class="wpull fx-flap" aria-label={pull}><Split text={pull} /></span><span class="wmore rf" style="--fd:.85s">{E.more_title ?? ''}</span></p>
       {EPISODES.map((e, i) => {
         const x0 = EDGES[i], w = EDGES[i + 1] - EDGES[i];
@@ -267,6 +268,8 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     /* the cut-out book only appears while it moves; at rest the film frame underneath is what you see */
     .slice::before { content: ''; position: absolute; inset: 0; border-radius: 4px; background-image: var(--shelf-img, url(/assets/img/shelf-scene-v2.jpg)); background-size: 1920px 1080px; background-position: inherit; opacity: 0; transition: opacity 0s .45s; }
     .sbook:hover .slice::before, .sbook.hov .slice::before, .sbook:focus-visible .slice::before { opacity: 1; transition-delay: 0s; }
+    /* both shelf pictures load with the film, once the first title is on screen (Hero adds html.after-title) */
+    :global(html.js:not(.nofilm):not(.after-title)) .slot, :global(html.js:not(.nofilm):not(.after-title)) .slice::before { background-image: none; }
     .snum { z-index: 1; }
     .sbook:hover .slice, .sbook.hov .slice, .sbook:focus-visible .slice { transform: translateY(-26px); box-shadow: 0 28px 30px -16px rgba(0,0,0,.7); }
     .sbook:focus-visible { outline: none; }

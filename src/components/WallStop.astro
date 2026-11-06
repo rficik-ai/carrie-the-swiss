@@ -4,6 +4,7 @@
 // frame by frame; next to each one a little plaque tells its story (photos and papers open full screen).
 import { type Locale, t } from '../i18n';
 import { WALL } from '../data/wall';
+import { pic } from '../lib/pic';
 import Split from './Split.astro';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -12,11 +13,13 @@ const href = (x: string) => `/${locale}/${x}`;
 ---
 <div class="hstop wstop" data-stop="wall" aria-label={h.wall_title}>
   <div class="layer">
-    {WALL.map((w, i) => (
+    {/* the frames sit in the 1920x1080 layer the camera zooms into: full-size pictures. Hidden on the first screen, they
+        load once the first title is on screen (data-late-*, see Hero), at low priority */}
+    {WALL.map((w, i) => { const c = pic(w.cover, 'f'); return (
       <button type="button" class="wf" data-i={i} style={`left:${w.r.x}px;top:${w.r.y}px;width:${w.r.w}px;height:${w.r.h}px`} aria-label={h[`${w.id}_t`]}>
-        <img src={w.cover} alt="" loading="lazy" decoding="async" style={`object-position:${w.pos ?? '50% 50%'}`} />
+        <picture style="display:contents">{c.avif && <source type="image/avif" data-late-srcset={c.avif} />}{c.webp && <source type="image/webp" data-late-srcset={c.webp} />}<img data-late-src={c.src} alt="" loading="lazy" decoding="async" fetchpriority="low" style={`object-position:${w.pos ?? '50% 50%'}`} /></picture>
       </button>
-    ))}
+    ); })}
   </div>
   <div class="vig" aria-hidden="true"></div>
   <div class="cap rv">
@@ -31,9 +34,10 @@ const href = (x: string) => `/${locale}/${x}`;
         <h3 aria-label={h[`${w.id}_t`]}><Split text={h[`${w.id}_t`]} by="word" /></h3>
         <p class="txt">{h[`${w.id}_x`]}</p>
         <div class="row">
-          <div class="ths">{w.pics.map((p) => (
-            <button type="button" class:list={['th', p.kind]} data-full={p.src} aria-label={h.zoom} data-cur={h.zoom}><img src={p.src} alt="" loading="lazy" decoding="async" /></button>
-          ))}</div>
+          {/* the squares show thumbnails; the full-screen view (data-full) opens the original file */}
+          <div class="ths">{w.pics.map((p) => { const t = pic(p.src, 't'); return (
+            <button type="button" class:list={['th', p.kind]} data-full={p.src} aria-label={h.zoom} data-cur={h.zoom}><picture style="display:contents">{t.avif && <source type="image/avif" data-late-srcset={t.avif} />}{t.webp && <source type="image/webp" data-late-srcset={t.webp} />}<img data-late-src={t.src} alt="" loading="lazy" decoding="async" fetchpriority="low" /></picture></button>
+          ); })}</div>
           {w.link && <a class="lnk" href={href(w.link.href)} data-open-book={w.link.ep}>{h[w.link.key]} →</a>}
         </div>
       </article>
@@ -257,11 +261,18 @@ import Split from './Split.astro';
 
     // ---- what the visitor sees around the camera
     let shownPl = -2, shownCur = -2;
+    // the squares are thumbnails: a story's original files load once its plaque shows, so its full-screen view opens at once
+    const warmed = new Set<number>(), keep: HTMLImageElement[] = [];
+    const warm = (i: number) => {
+      if (i < 0 || warmed.has(i)) return;
+      warmed.add(i);
+      plaques[i].querySelectorAll<HTMLElement>('.th').forEach((th) => { const im = new Image(); im.src = th.dataset.full!; keep.push(im); });
+    };
     const update = () => {
       advance();
       const near = Math.round(c);
       const at = near >= 0 && near < N && Math.abs(c - near) < 0.14 ? near : -1;   // the plaque comes when the camera arrives
-      if (at !== shownPl) { shownPl = at; plaques.forEach((p, i) => p.classList.toggle('on', i === at)); }
+      if (at !== shownPl) { shownPl = at; plaques.forEach((p, i) => p.classList.toggle('on', i === at)); warm(at); }
       const head = paged ? T : near;
       const cur = head >= 0 && head < N ? head : -1;                   // the picture we are heading to lights up at once
       if (cur !== shownCur) { shownCur = cur; frames.forEach((f, i) => f.classList.toggle('cur', i === cur)); el.classList.toggle('walking', cur >= 0); }

@@ -72,7 +72,14 @@ const chapters = [
   .toInk { position: absolute; inset: 0; z-index: 6; pointer-events: none; opacity: 0; background: var(--ink); }
   .stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
   .fill { position: absolute; inset: -40px; background: url(/assets/img/shelf-scene-v2.jpg) center / cover; filter: blur(26px) brightness(.42) saturate(1.1); opacity: 0; }
+  /* the shelf picture is first needed at the end of the film: it loads with the film, once the first title is on screen */
+  :global(html.js:not(.nofilm):not(.after-title)) .fill { background-image: none; }
   .film { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform-origin: 0 0; will-change: transform; background: radial-gradient(120% 80% at 70% 60%, #2a2418 0%, #0d0c0a 70%); }
+  /* from the first paint the film's box is already its cover frame (coverFrame, as frameVideo sets it at the top): the same
+     picture as object-fit: cover, but the box no longer jumps when the script takes over (a layout shift of 0.6) */
+  @supports (height: 100svh) {
+    :global(html:not(.nofilm)) .film { inset: auto; left: calc(50% - max(50%, 100svh * 8 / 9)); top: calc(50% - max(50%, 100vw * 9 / 32)); width: max(100%, 100svh * 16 / 9); height: max(100%, 100vw * 9 / 16); max-width: none; max-height: none; object-fit: fill; }
+  }
   .shade { position: absolute; inset: 0; background:
     linear-gradient(90deg, rgba(13,12,10,.78) 0%, rgba(13,12,10,.35) 45%, rgba(13,12,10,0) 70%),
     linear-gradient(0deg, rgba(13,12,10,.85) 0%, rgba(13,12,10,0) 40%); }
@@ -142,8 +149,8 @@ const chapters = [
   const W_ = window as any;
   // the first title rises only once the page has painted with its fonts: switched on at once it would land unseen
   let painted = false, paintedAt = 0;
-  Promise.race([document.fonts?.ready, new Promise((r) => setTimeout(r, 1500))])
-    .then(() => requestAnimationFrame(() => requestAnimationFrame(() => { painted = true; paintedAt = performance.now(); })));
+  const fontsPainted = Promise.race([document.fonts?.ready, new Promise((r) => setTimeout(r, 1500))])
+    .then(() => new Promise<void>((done) => requestAnimationFrame(() => requestAnimationFrame(() => { painted = true; paintedAt = performance.now(); done(); }))));
 
   // ---- the walk through the house (beta page): continues after the photo wall
   const HT = section.dataset.house ? JSON.parse(section.dataset.house) as { steps: Step[]; total: number; start: number } : null;
@@ -364,6 +371,29 @@ const chapters = [
     try { const r = await fetch(url); if (!r.ok) throw 0; return URL.createObjectURL(await r.blob()); } catch { return url; }
   }
 
+  // Load order: the fonts, the poster and the first title come first, the film (8–15 MB) once that title is on screen:
+  // when the browser reports it painted (largest-contentful-paint), at the latest 1.2 s after the fonts.
+  // A page opened further down (a link to a later scene, a reload mid-way) or the first scroll starts it at once.
+  // What else hides behind the first screen comes with it: the shelf's CSS pictures (html.after-title: .fill here,
+  // .slot / .slice in Episodes) and the scenes' photos (data-late-src / data-late-srcset: wall of my life, photo wall).
+  function lateLoad() {
+    document.documentElement.classList.add('after-title');
+    document.querySelectorAll<HTMLSourceElement>('source[data-late-srcset]').forEach((s) => { s.srcset = s.dataset.lateSrcset!; delete s.dataset.lateSrcset; });
+    document.querySelectorAll<HTMLImageElement>('img[data-late-src]').forEach((im) => { im.src = im.dataset.lateSrc!; delete im.dataset.lateSrc; });
+  }
+  let filmAsked = false;
+  const askFilm = () => { if (!filmAsked) { filmAsked = true; lateLoad(); load(); } };
+  function loadFilmAfterTitle() {
+    addEventListener('scroll', askFilm, { passive: true, once: true });
+    if (progress() > 0) return askFilm();
+    const h1 = chapters[0]?.querySelector('h1');
+    if (h1 && typeof PerformanceObserver !== 'undefined' && PerformanceObserver.supportedEntryTypes?.includes('largest-contentful-paint')) {
+      new PerformanceObserver((list, obs) => { if (list.getEntries().some((e) => (e as any).element === h1)) { obs.disconnect(); askFilm(); } })
+        .observe({ type: 'largest-contentful-paint', buffered: true });
+    }
+    fontsPainted.then(() => setTimeout(askFilm, 1200));
+  }
+
   async function load() {
     video.src = await blobSrc(wide ? video.dataset.srcDesktop! : video.dataset.srcMobile!);
     video.addEventListener('loadedmetadata', () => { ready1 = true; }, { once: true });
@@ -414,10 +444,10 @@ const chapters = [
     requestAnimationFrame(tick);
   }
 
-  if (reduce) { render(0); }
+  if (reduce) { render(0); lateLoad(); }
   else {
     render(0);
-    load();
+    loadFilmAfterTitle();
     // iOS needs a gesture before it will paint seeked frames reliably
     const prime = () => { video.play().then(() => video.pause()).catch(() => {}); removeEventListener('touchstart', prime); };
     addEventListener('touchstart', prime, { passive: true, once: true });
