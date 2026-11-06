@@ -25,10 +25,8 @@ export const EPISODES: Episode[] = [
   { n: '06', yt: ['_4M-m_QHh6o'], title: 'The show that saved my breed', image: '/assets/ep/ep06.jpg', topic: 'history', date: '2026-10-14' },
   { n: '07', yt: ['I5Ef4M4tZhA'], title: 'My three colours', image: '/assets/ep/ep07.jpg', topic: 'genetics', date: '2026-10-16' },
   { n: '08', yt: ['afU-00GUDLI'], title: 'A responsible litter', image: '/assets/ep/ep08.jpg', topic: 'breeding', date: '2026-10-19' },
-  { n: '09', yt: ['xX_iClvxNFE', 'mia5S8l_G1E'], title: "Why a good puppy isn't cheap", image: '/assets/ep/ep09.jpg', topic: 'buying', date: '2026-10-21', parts: ['The mom', 'One litter', 'My whole life'] },
-  // Uploaded to YouTube as drafts (6 Nov): EP09 P3 9hbxDt4QBtk · EP10 P1 pURD5ug_J28, P2 T-BRePEW01U, P3 RNasucpPOK0 · EP11 _pEpgKw0TfM.
-  // When they are public: EP09 yt gets the P3 id; EP10/EP11 switch from mp4 to yt (keep partDates).
-  { n: '10', mp4: [CDN + '8c4bb7f2-0ea7-419b-88f2-70f095285f97.mp4', CDN + 'e4664bc7-f37c-4244-92d4-d818e02311c3.mp4', CDN + 'e5d48c3a-3570-4ecb-ae3e-8d7de6b213dd.mp4'], partDates: ['2026-11-04', '2026-11-06', '2026-11-09'], title: 'What to ask a breeder', image: '/assets/ep/ep10.jpg', topic: 'buying', date: '2026-11-04', parts: ['The parents', 'The puppy', 'After you say yes'] },
-  { n: '11', mp4: [CDN + '187f8f03-8449-4b3e-b891-fe8411443c9f.mp4'], partDates: ['2026-11-11'], title: 'My breed evaluation', image: '/assets/ep/ep11.jpg', topic: 'breeding', date: '2026-11-11' },
+  { n: '09', yt: ['xX_iClvxNFE', 'mia5S8l_G1E', '9hbxDt4QBtk'], title: "Why a good puppy isn't cheap", image: '/assets/ep/ep09.jpg', topic: 'buying', date: '2026-10-21', parts: ['The mom', 'One litter', 'My whole life'] },
+  { n: '10', yt: ['pURD5ug_J28', 'T-BRePEW01U', 'RNasucpPOK0'], partDates: ['2026-11-04', '2026-11-06', '2026-11-09'], title: 'What to ask a breeder', image: '/assets/ep/ep10.jpg', topic: 'buying', date: '2026-11-04', parts: ['The parents', 'The puppy', 'After you say yes'] },
+  { n: '11', yt: ['_pEpgKw0TfM'], partDates: ['2026-11-11'], title: 'My breed evaluation', image: '/assets/ep/ep11.jpg', topic: 'breeding', date: '2026-11-11' },
   { n: '12', title: 'Is a Swissy right for you?', topic: 'ownership', date: null },
 ];
