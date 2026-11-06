@@ -4,6 +4,9 @@
 //
 // Rob sets in Cloudflare (Worker → Settings → Variables and Secrets):
 //   STATS_PASSWORD  (Secret)  the password for /api/stats
+//
+// /api/stats?format=json&d=3 (same password) gives the raw daily tallies for machines: the nightly snapshot in the
+// private repo rficik-ai/carrie-ops saves them, so the studio agent can track trends (d = 1–31 days, default 3).
 import { DurableObject } from 'cloudflare:workers';
 
 const LANGS = new Set(['en', 'sk', 'cs', 'de', 'pl', 'fr', 'it', 'es', 'uk', 'hu', 'nl']);
@@ -31,6 +34,10 @@ export class Stats extends DurableObject {
       perDay: q("SELECT day AS t, SUM(n) AS n FROM ev WHERE day >= ? AND e = 'visit' GROUP BY day ORDER BY day"),
       byLang: by('l'), byDev: by('d'), byRef: by('r', 15), byCountry: by('c', 15),
     };
+  }
+  // every tally row since a day, for the JSON export (counts only, nothing about people)
+  raw(since) {
+    return this.sql.exec('SELECT day, e, v, l, d, r, c, n FROM ev WHERE day >= ? ORDER BY day, e, v LIMIT 20000', since).toArray();
   }
 }
 const book = (env) => env.STATS.get(env.STATS.idFromName('carrie'));
@@ -81,7 +88,20 @@ export async function stats(request, env) {
   const pass = auth.startsWith('Basic ') ? (atob(auth.slice(6)).split(':').slice(1).join(':')) : '';
   if (pass !== env.STATS_PASSWORD) return new Response('Prihlásenie', { status: 401, headers: { 'www-authenticate': 'Basic realm="Carrie stats", charset="UTF-8"', 'cache-control': 'no-store' } });
   if (!env.STATS) return page('Štatistiky', '<h1>Štatistiky</h1><p class="note">Chýba úložisko štatistík (binding STATS).</p>');
-  const days = Math.min(90, Math.max(1, Number(new URL(request.url).searchParams.get('d')) || 30));
+  const params = new URL(request.url).searchParams;
+  if (params.get('format') === 'json') {
+    const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', 'x-robots-tag': 'noindex' } });
+    const d = Math.min(31, Math.max(1, Number(params.get('d')) || 3));
+    const since = new Date(Date.now() - (d - 1) * 864e5).toISOString().slice(0, 10);
+    try {
+      const rows = await book(env).raw(since);
+      return json({ v: 1, generated: new Date().toISOString(), days: d, since, cols: ['day', 'e', 'v', 'l', 'd', 'r', 'c', 'n'],
+        rows: rows.map((r) => [r.day, r.e, r.v, r.l, r.d, r.r, r.c, Number(r.n) || 0]), truncated: rows.length >= 20000 });
+    } catch (err) {
+      return json({ v: 1, error: String(err?.message || err) }, 500);
+    }
+  }
+  const days = Math.min(90, Math.max(1, Number(params.get('d')) || 30));
   const since = new Date(Date.now() - (days - 1) * 864e5).toISOString().slice(0, 10);
   try {
     const { byEv, perDay, byLang, byDev, byRef, byCountry } = await book(env).report(since);
