@@ -54,10 +54,17 @@ p { margin: 0; }
   letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
 }
 .light .eyebrow { color: var(--gold-deep); }
-/* a section's kicker: a short gold rule, the chapter number, the name */
+/* a section's kicker: a short gold rule, then the name as a thin white line with its number in gold. Under it the
+   bold title: the pair reads like a Galton caption (ORANGE / Pripravení na budúcnosť) */
+.kicker { font-family: var(--f-head); font-weight: 300; font-size: clamp(14px, 1.3vw, 19px); letter-spacing: .08em; color: var(--ivory); }
+.light .kicker { color: #1c1914; }
 .kicker::before { content: ''; display: block; width: 34px; height: 2px; margin: 0 0 12px; background: var(--gold-hi); }
 .light .kicker::before { background: var(--gold); }
-.kicker .no::after { content: '—'; margin: 0 0.55em; }
+.kicker .no { color: var(--gold); }
+.light .kicker .no { color: var(--gold-deep); }
+.kicker .no::after { content: '—'; margin: 0 0.55em; color: var(--gold); opacity: .7; }
+/* a word under the marker inside a split sentence (chapter 3: hips A/A, elbows 0/0, 14 of 14) */
+.w.mk { background: var(--gold-hi); color: #1a1408; padding: 0 .22em; margin: 0 -.06em; border-radius: .18em; }
 .center .kicker::before, .kicker.center::before { margin-inline: auto; }
 /* a hint for what to do here: one quiet chip */
 .tapchip { display: inline-flex; align-items: center; justify-content: center; gap: 9px; max-width: 100%; box-sizing: border-box; padding: 10px 15px; border-radius: 18px;

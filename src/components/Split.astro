@@ -2,8 +2,9 @@
 // Splits a title into words (and letters) so each scene can bring its text in its own way (see "text that arrives"
 // in global.css). The heading keeps its plain text as aria-label; the pieces are hidden from screen readers.
 // two: a title made of two sentences answers itself, the second one in gold ("Tri papiere. / Tri odpovede.")
-interface Props { text: string; by?: 'char' | 'word'; two?: boolean }
-const { text, by = 'char', two = false } = Astro.props;
+// nums: words that carry a number (A/A, 0/0, 14) get the marker, in every language
+interface Props { text: string; by?: 'char' | 'word'; two?: boolean; nums?: boolean }
+const { text, by = 'char', two = false, nums = false } = Astro.props;
 const words = text.split(/\s+/).filter(Boolean);
 const cut = two ? words.findIndex((w, i) => i < words.length - 1 && /[.?!…]$/.test(w)) + 1 : 0;   // first word of the second sentence
 const mid = (words.length - 1) / 2;
@@ -11,5 +12,5 @@ let ci = 0;
 const rnd = (i: number) => ((((i + 1) * 2654435761) >>> 0) % 997) / 997;   // a stable "random" 0…1 per letter (embers light up out of order)
 ---
 <span class="sp" aria-hidden="true" style={`--n:${by === 'char' ? words.join('').length : words.length}`}>{words.map((w, wi) => (
-  <Fragment>{wi > 0 && ' '}<span class={cut && wi >= cut ? 'w w2' : 'w'} style={`--wi:${wi};--a:${Math.abs(wi - mid).toFixed(1)};--rot:${wi % 2 ? 9 : -9}deg`}>{by === 'char' ? [...w].map((ch) => { const i = ci++; return <span class="c" style={`--i:${i};--r:${rnd(i).toFixed(2)}`}>{ch}</span>; }) : w}</span></Fragment>
+  <Fragment>{wi > 0 && ' '}<span class:list={['w', { w2: cut && wi >= cut, mk: nums && /\d|^[A-E]\/[A-E]/.test(w) }]} style={`--wi:${wi};--a:${Math.abs(wi - mid).toFixed(1)};--rot:${wi % 2 ? 9 : -9}deg`}>{by === 'char' ? [...w].map((ch) => { const i = ci++; return <span class="c" style={`--i:${i};--r:${rnd(i).toFixed(2)}`}>{ch}</span>; }) : w}</span></Fragment>
 ))}</span>

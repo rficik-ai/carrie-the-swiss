@@ -24,7 +24,7 @@ const s = t(locale);
     <div class="tools">
     <a class="game" href="/herna/" aria-label={(s.nav as any).game ?? 'Game'}>
       <span class="gic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7.5 7h9a5 5 0 0 1 4.9 6l-.8 3.6a2.4 2.4 0 0 1-4.1 1.1L14.2 15H9.8l-2.3 2.7a2.4 2.4 0 0 1-4.1-1.1L2.6 13A5 5 0 0 1 7.5 7zm0 3v1.5H6v1.5h1.5v1.5H9V13h1.5v-1.5H9V10zm8.25.25a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2zm2 2.2a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2z"/></svg></span>
-      <span class="glb">{(s.nav as any).game ?? 'Game'}</span>
+      <span class="sr-only">{(s.nav as any).game ?? 'Game'}</span>
     </a>
     <Music locale={locale} />
     <details class="lang">
@@ -68,19 +68,20 @@ const s = t(locale);
   @media (min-width: 860px) { .links { display: flex; } }
 
   .tools { display: flex; align-items: center; gap: 10px; }
-  .game { height: 40px; box-sizing: border-box; padding: 0 14px 0 6px; border-radius: 999px; display: flex; align-items: center; gap: 8px; text-decoration: none;
-    border: 1px solid rgba(234,211,154,.45); font: 700 12px var(--f-body); letter-spacing: .12em; text-transform: uppercase; color: var(--ivory); transition: border-color .2s, background .2s; }
-  .game:hover { border-color: var(--gold); background: rgba(234,211,154,.08); }
-  .gic { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--grad-gold, var(--gold)); }
-  .gic svg { width: 17px; height: 17px; fill: #1a1408; }
-  @media (max-width: 560px) { .glb { display: none; } .game { padding: 0 5px; } }
+  /* the game and the music: two quiet rings, icon only (the menu holds nothing that is not a word or a sign) */
+  .game { width: 40px; height: 40px; box-sizing: border-box; border-radius: 50%; display: grid; place-items: center; text-decoration: none;
+    border: 1px solid rgba(244,238,226,.5); color: var(--ivory); transition: border-color .2s, background .2s, color .2s; }
+  .game:hover { border-color: var(--gold-hi); background: rgba(234,211,154,.1); }
+  .gic { display: grid; place-items: center; }
+  .gic svg { width: 19px; height: 19px; fill: currentColor; }
   .lang { position: relative; }
   .lang summary {
     list-style: none; cursor: pointer; display: flex; align-items: center; gap: 6px;
     font-size: 12px; font-weight: 700; letter-spacing: .12em;
-    border: 1px solid rgba(234,211,154,.35); border-radius: 999px; padding: 8px 14px; min-height: 40px;
+    border: 1px solid rgba(244,238,226,.5); border-radius: 999px; padding: 8px 14px; min-height: 40px; transition: border-color .2s, background .2s;
   }
   .lang summary::-webkit-details-marker { display: none; }
+  .lang summary:hover, .lang[open] summary { border-color: var(--gold-hi); background: rgba(234,211,154,.1); }
   .lang span { font-size: 10px; opacity: .7; }
   .lang ul {
     position: absolute; right: 0; top: calc(100% + 8px); margin: 0; padding: 8px; list-style: none;
