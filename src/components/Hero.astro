@@ -45,10 +45,6 @@ const chapters = [
         <div class="hfill"></div>
         {HOUSE.stops.map((h) => <img class="still" data-stop={h.id} data-src={h.img} alt="" width="1920" height="1080" decoding="async" />)}
         {HOUSE.stops.filter((h) => h.video).map((h) => <video class="still hvid" data-stop={h.id} data-src={h.video} data-src-mobile={h.videoMobile ?? h.video} muted playsinline preload="none" disablepictureinpicture></video>)}
-        {/* the walk between two rooms carries the next chapter's name, big and thin, like a title card (the pause Galton leaves between blocks) */}
-        <div class="inter">{HOUSE.stops.map((h, i) => (
-          <p class="card" data-stop={h.id}><span class="no">{String(i + 4).padStart(2, '0')}</span><span class="statement xl">{(s.house as any)[`nav_${h.id}`]}</span></p>
-        ))}</div>
       </div>
     )}
     <slot />
@@ -71,10 +67,6 @@ const chapters = [
   .anchor { position: absolute; left: 0; width: 1px; height: 1px; }
   .house { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
   .house img.still { z-index: 2; } .house .hvid { z-index: 1; }
-  .inter { position: absolute; inset: 0; z-index: 3; display: grid; place-items: center; padding: 0 var(--gutter); }
-  .inter .card { grid-area: 1 / 1; margin: 0; display: grid; justify-items: center; gap: 14px; text-align: center; opacity: 0; color: #fff; text-shadow: 0 2px 30px rgba(0,0,0,.5); transform: translateY(var(--dy, 0)); }
-  .inter .no { font: 300 clamp(16px, 1.6vw, 24px)/1 var(--f-head); letter-spacing: .3em; color: var(--gold-hi); }
-  .inter .statement { font-size: clamp(42px, 10vw, 170px); }
   .hfill { position: absolute; inset: -40px; background: #0d0c0a center / cover; filter: blur(26px) brightness(.45) saturate(1.1); opacity: 0; }   /* no fade: it only ever shows in a gap, which must never be empty */
   .still { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; max-width: none; max-height: none; opacity: 0; object-fit: fill; }
   .toInk { position: absolute; inset: 0; z-index: 6; pointer-events: none; opacity: 0; background: var(--ink); }
@@ -159,19 +151,6 @@ const chapters = [
   const stills = new Map([...section.querySelectorAll<HTMLImageElement>('.house img.still')].map((im) => [im.dataset.stop!, im]));
   const houseEl = section.querySelector<HTMLElement>('.house');
   const hfill = section.querySelector<HTMLElement>('.house .hfill');
-  const inter = new Map([...section.querySelectorAll<HTMLElement>('.inter .card')].map((c) => [c.dataset.stop!, c]));
-  // the title card: fades in a third of the way into the walk, is gone before the room settles
-  function titleCard(step: { kind: string; stop: string; from: number; len: number } | null, y: number) {
-    inter.forEach((c, id) => {
-      let o = 0;
-      if (step && step.kind === 'move' && step.stop === id) {
-        const t = (y - step.from) / step.len;
-        o = Math.min(Math.max((t - .22) / .18, 0), 1) * Math.min(Math.max((.9 - t) / .18, 0), 1);
-        c.style.setProperty('--dy', `${(1 - t) * 40 - 20}px`);
-      }
-      c.style.opacity = o.toFixed(3);
-    });
-  }
   function sizeSpacer() {
     if (!HT || !spacer) return;
     const vh = stage.clientHeight / 100;
@@ -258,7 +237,6 @@ const chapters = [
     const [W, H] = dims();
     // preload the stills of the next stops a little ahead
     let step = HT.steps.find((s) => y >= s.from && y < s.from + s.len) ?? (y >= HT.total ? HT.steps[HT.steps.length - 1] : null);
-    titleCard(step, y);
     if (y < 0 || !step) { houseEl.style.opacity = '0'; W_.__stop = null; document.body.classList.remove('in-scene'); if (y > -150) { const f = stills.get(STOPS[0].id); if (f && !f.src) f.src = f.dataset.src!; } return; }
     houseEl.style.opacity = '1';
     const i = STOPS.findIndex((s) => s.id === step!.stop);

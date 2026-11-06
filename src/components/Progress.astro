@@ -13,6 +13,10 @@ const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
   <ol class="rail">
     {CH.map((c, i) => <li data-c={c}><button type="button"><span class="lb"><b>{String(i + 1).padStart(2, '0')}</b>{name(c)}</span><i aria-hidden="true"></i></button></li>)}
   </ol>
+  {/* between two chapters the next one's name passes by, big and thin, like a title card: the pause Galton leaves between blocks */}
+  <div class="inter" aria-hidden="true">{CH.map((c, i) => i > 0 && (
+    <p class="card" data-c={c}><span class="no">{String(i + 1).padStart(2, '0')}</span><span class="statement xl">{name(c)}</span></p>
+  ))}</div>
   <button type="button" class="more" aria-label={h.more}>
     <svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="ringp" d="M60,60 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0" /></defs>
       <text><textPath href="#ringp" textLength="282" lengthAdjust="spacing">{`${s.hero.scroll} ✦ Carrie the Swiss ✦ `.toUpperCase()}</textPath></text></svg>
@@ -40,6 +44,10 @@ const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
   .lb b::after { content: '·'; margin: 0 .5em; color: var(--gold); }
   .rail li.on .lb, .rail button:hover .lb, .rail button:focus-visible .lb { opacity: 1; translate: 0 -50%; }
   .rail:hover li.on:not(:hover) .lb { opacity: .35; }
+  .inter { position: fixed; inset: 0; z-index: 7; display: grid; place-items: center; padding: 0 var(--gutter); pointer-events: none; }
+  .inter .card { grid-area: 1 / 1; margin: 0; display: grid; justify-items: center; gap: 14px; text-align: center; opacity: 0; color: #fff; text-shadow: 0 2px 30px rgba(0,0,0,.6); transform: translateY(var(--dy, 0)); }
+  .inter .no { font: 300 clamp(16px, 1.6vw, 24px)/1 var(--f-head); letter-spacing: .3em; color: var(--gold-hi); }
+  .inter .statement { font-size: clamp(42px, 10vw, 170px); }
   /* the scroll cue: the word runs round a slowly turning ring, a line falls through the middle */
   .more { all: unset; position: fixed; left: 50%; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); width: 104px; height: 104px; transform: translate(-50%, 8px);
     display: grid; place-items: center; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .6s, transform .6s; filter: drop-shadow(0 1px 6px rgba(0,0,0,.55)); }
@@ -86,8 +94,25 @@ const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
     };
     measure(); addEventListener('resize', measure); addEventListener('load', measure);
 
+    // the title cards: each chapter's name passes by in the stretch before its start (in vh before it: [from, to]);
+    // the house stops get the walk between the rooms, the library and the photos the flight, "Follow me" the rise over the night
+    const cards = [...nav.querySelectorAll<HTMLElement>('.inter .card')];
+    const WIN: Record<string, [number, number]> = { library: [85, 25], real: [85, 25], wall: [187, 37], desk: [187, 37], garden: [187, 37], fire: [187, 37], door: [187, 37], follow: [60, 8] };
+    const titleCards = () => {
+      const vh = innerHeight / 100, y = scrollY, film = !document.documentElement.classList.contains('nofilm');
+      cards.forEach((c) => {
+        const id = c.dataset.c!, st = starts[items.findIndex((li) => li.dataset.c === id)]; let o = 0;
+        if (st !== undefined && film) {
+          const [a, b] = WIN[id], from = st - a * vh, to = st - b * vh, t = (y - from) / (to - from);
+          o = Math.min(Math.max(t / .25, 0), 1) * Math.min(Math.max((1 - t) / .25, 0), 1);
+          c.style.setProperty('--dy', `${(1 - t) * 40 - 20}px`);
+        }
+        c.style.opacity = o.toFixed(3);
+      });
+    };
     let cur = -1, idleT = 0;
     const update = () => {
+      titleCards();
       const y = scrollY + innerHeight * 0.35, max = document.documentElement.scrollHeight - innerHeight;
       nav.style.setProperty('--p', String(Math.min(1, scrollY / Math.max(1, max))));
       let c = 0; starts.forEach((s, i) => { if (y >= s) c = i; });
