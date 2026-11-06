@@ -11,7 +11,7 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
 <nav class="prog" aria-label={h.nav_label}>
   <div class="bar" aria-hidden="true"><i></i></div>
   <ol class="rail">
-    {CH.map((c) => <li data-c={c}><button type="button"><span class="lb">{h[`nav_${c}`]}</span><i aria-hidden="true"></i></button></li>)}
+    {CH.map((c, i) => <li data-c={c}><button type="button"><span class="lb"><b>{String(i + 1).padStart(2, '0')}</b>{h[`nav_${c}`]}</span><i aria-hidden="true"></i></button></li>)}
   </ol>
   <button type="button" class="more" aria-label={h.more}>
     <svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="ringp" d="M60,60 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0" /></defs>
@@ -24,15 +24,24 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
   .prog { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
   .bar { position: fixed; left: 0; right: 0; top: 0; height: 3px; background: rgba(234,211,154,.12); }
   .bar i { display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: linear-gradient(90deg, var(--gold), var(--gold-hi)); box-shadow: 0 0 10px rgba(234,211,154,.6); }
-  .rail { position: fixed; right: 18px; top: 50%; transform: translateY(-50%); margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; pointer-events: auto; }
-  .rail::before { content: ''; position: absolute; right: 6px; top: 6px; bottom: 6px; width: 2px; background: rgba(13,12,10,.45); box-shadow: 0 0 0 1px rgba(234,211,154,.25); }
-  .rail:hover .lb { opacity: .85; transform: none; }
-  .rail button { all: unset; cursor: pointer; display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
-  .rail i { position: relative; width: 14px; height: 14px; border-radius: 50%; box-sizing: border-box; border: 2px solid rgba(244,238,226,.85); background: rgba(13,12,10,.7); box-shadow: 0 0 0 3px rgba(13,12,10,.35); transition: transform .3s, background .3s; }
-  .rail li.past i { background: var(--gold); border-color: var(--gold); }
-  .rail li.on i { background: var(--gold-hi); border-color: var(--gold-hi); transform: scale(1.35); box-shadow: 0 0 0 5px rgba(234,211,154,.2); }
-  .lb { font: 600 12px var(--f-body); letter-spacing: .08em; color: var(--ivory); padding: 4px 10px; border-radius: 999px; background: rgba(13,12,10,.72); opacity: 0; transform: translateX(6px); transition: opacity .25s, transform .25s; white-space: nowrap; }
-  .rail li.on .lb, .rail button:hover .lb, .rail button:focus-visible .lb { opacity: 1; transform: none; }
+  /* the rail reads like the spine of a book: one hairline, a tick per chapter, the chapter you are in written along
+     the line (bottom to top, as on a spine) with its number in gold, and a small gold point that glides to it */
+  .rail { position: fixed; right: 22px; top: 50%; translate: 0 -50%; height: min(54vh, 480px); margin: 0; padding: 0; list-style: none; display: grid; grid-auto-rows: 1fr; pointer-events: auto; }
+  .rail::before { content: ''; position: absolute; right: 7px; top: 0; bottom: 0; width: 1px; background: rgba(244,238,226,.5); }
+  .rail li { position: relative; }
+  .rail button { all: unset; cursor: pointer; position: absolute; inset: 0; display: flex; align-items: center; justify-content: flex-end; }
+  .rail i { position: relative; flex: none; width: 16px; min-width: 16px; height: 1px; background: rgba(244,238,226,.85); box-shadow: 0 0 6px rgba(0,0,0,.6); transition: width .3s, background .3s; }
+  .rail i::after { content: ''; position: absolute; right: 3.5px; top: 50%; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%; background: var(--gold-hi); box-shadow: 0 0 12px rgba(234,211,154,.9); scale: 0; transition: scale .35s cubic-bezier(.2,.7,.2,1); }
+  .rail li.past i { background: var(--gold); }
+  .rail li.on i { width: 26px; background: var(--gold-hi); }
+  .rail li.on i::after { scale: 1; }
+  .lb { position: absolute; right: 36px; top: 50%; translate: 0 -50%; writing-mode: vertical-rl; rotate: 180deg; display: flex; align-items: center; gap: 10px;
+    font: 300 12px/1 var(--f-head); letter-spacing: .22em; text-transform: uppercase; color: var(--ivory); white-space: nowrap; text-shadow: 0 1px 3px rgba(0,0,0,.9), 0 0 14px rgba(0,0,0,.8);
+    opacity: 0; translate: -6px -50%; transition: opacity .3s, translate .3s; }
+  .lb b { font-weight: 300; color: var(--gold-hi); }
+  .lb b::after { content: '·'; margin: 0 .5em; color: var(--gold); }
+  .rail li.on .lb, .rail button:hover .lb, .rail button:focus-visible .lb { opacity: 1; translate: 0 -50%; }
+  .rail:hover li.on:not(:hover) .lb { opacity: .35; }
   /* the scroll cue: the word runs round a slowly turning ring, a line falls through the middle */
   .more { all: unset; position: fixed; left: 50%; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); width: 104px; height: 104px; transform: translate(-50%, 8px);
     display: grid; place-items: center; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .6s, transform .6s; filter: drop-shadow(0 1px 6px rgba(0,0,0,.55)); }
