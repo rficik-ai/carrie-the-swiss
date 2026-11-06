@@ -19,6 +19,13 @@ import Cards from '../../components/Cards.astro';
 import RealCarrie from '../../components/RealCarrie.astro';
 import Quiz from '../../components/Quiz.astro';
 import { availableLocales, t, type Locale } from '../../i18n';
+// the first screen's fonts, fetched with the stylesheet instead of after it: the logo (Cinzel 600/700), the first title
+// (Montserrat) and the line above it (Manrope). Only the latin files every language uses; other subsets load as before.
+import fMark6 from '@fontsource/cinzel/files/cinzel-latin-600-normal.woff2?url';
+import fMark7 from '@fontsource/cinzel/files/cinzel-latin-700-normal.woff2?url';
+import fHead from '@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2?url';
+import fBody from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+const FIRST_FONTS = [fHead, fBody, fMark7, fMark6];
 
 export function getStaticPaths() {
   return availableLocales().map((lang) => ({ params: { lang } }));
@@ -27,6 +34,9 @@ const locale = Astro.params.lang as Locale;
 const s = t(locale);
 ---
 <Base locale={locale} title={s.meta.title} description={s.meta.description}>
+  {/* the first screen's picture (the film's poster) comes first; the film itself waits for the first title (Hero) */}
+  <link slot="head" rel="preload" as="image" href="/assets/film/poster.jpg" fetchpriority="high" />
+  {FIRST_FONTS.map((f) => <link slot="head" rel="preload" as="font" type="font/woff2" href={f} crossorigin />)}
   <Header locale={locale} />
   <main>
     <Hero locale={locale} house>

@@ -3,6 +3,7 @@
 // Real photos flip to their animated twin. Everything sits on the frozen film frame (nothing is swapped).
 import { type Locale, t } from '../i18n';
 import { PHOTOS } from '../data/photos';
+import { pic } from '../lib/pic';
 import TapIcon from './TapIcon.astro';
 import Split from './Split.astro';
 interface Props { locale: Locale }
@@ -12,14 +13,16 @@ const cur = (t(locale) as any).cursor;
 ---
 <div class="pwall" aria-label={r.title}>
   <div class="pf">
-    {PHOTOS.map((ph) => (
+    {/* the backs show only when a photo turns over, long after the first screen: they load once the first title is
+        on screen (data-late-*, see Hero), at low priority */}
+    {PHOTOS.map((ph) => { const b = pic(ph.back, 'f'); return (
       <button type="button" class="pcard" aria-label={r.anim_caption} data-cur={cur.flip} style={`width:${ph.w}px;height:${ph.h}px;transform:${ph.css}`} data-h={JSON.stringify(ph.H)} data-w={ph.w} data-hh={ph.h}>
         <span class="flip">
           <canvas class="front" width={ph.w} height={ph.h}></canvas>
-          <span class="back"><img src={ph.back} alt="" loading="lazy" /></span>
+          <span class="back"><picture style="display:contents">{b.avif && <source type="image/avif" data-late-srcset={b.avif} />}{b.webp && <source type="image/webp" data-late-srcset={b.webp} />}<img data-late-src={b.src} alt="" loading="lazy" decoding="async" fetchpriority="low" /></picture></span>
         </span>
       </button>
-    ))}
+    ); })}
   </div>
   <div class="ptext center rv">
     <p class="eyebrow kicker rf"><span class="no">03</span>{r.eyebrow}</p>

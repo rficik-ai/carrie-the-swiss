@@ -1,0 +1,164 @@
+{
+ "/assets/album/diplom-2026-09-18.jpg": {
+  "t": {
+   "avif": "/assets/opt/album/diplom-2026-09-18-t176.avif",
+   "jpg": "/assets/opt/album/diplom-2026-09-18-t176.jpg",
+   "w": 249,
+   "h": 176
+  }
+ },
+ "/assets/album/doc-2025-09.jpg": {
+  "t": {
+   "avif": "/assets/opt/album/doc-2025-09-t176.avif",
+   "webp": "/assets/opt/album/doc-2025-09-t176.webp",
+   "jpg": "/assets/opt/album/doc-2025-09-t176.jpg",
+   "w": 176,
+   "h": 249
+  }
+ },
+ "/assets/album/doc-2026-05.jpg": {
+  "f": {
+   "avif": "/assets/opt/album/doc-2026-05.avif",
+   "webp": "/assets/opt/album/doc-2026-05.webp"
+  },
+  "t": {
+   "avif": "/assets/opt/album/doc-2026-05-t176.avif",
+   "webp": "/assets/opt/album/doc-2026-05-t176.webp",
+   "jpg": "/assets/opt/album/doc-2026-05-t176.jpg",
+   "w": 176,
+   "h": 249
+  }
+ },
+ "/assets/album/doc-2026-08.jpg": {
+  "t": {
+   "avif": "/assets/opt/album/doc-2026-08-t176.avif",
+   "webp": "/assets/opt/album/doc-2026-08-t176.webp",
+   "jpg": "/assets/opt/album/doc-2026-08-t176.jpg",
+   "w": 176,
+   "h": 249
+  }
+ },
+ "/assets/album/doc-2026-09-18.jpg": {
+  "t": {
+   "avif": "/assets/opt/album/doc-2026-09-18-t176.avif",
+   "jpg": "/assets/opt/album/doc-2026-09-18-t176.jpg",
+   "w": 176,
+   "h": 249
+  }
+ },
+ "/assets/album/doc-2026-09-19.jpg": {
+  "t": {
+   "avif": "/assets/opt/album/doc-2026-09-19-t176.avif",
+   "jpg": "/assets/opt/album/doc-2026-09-19-t176.jpg",
+   "w": 176,
+   "h": 249
+  }
+ },
+ "/assets/album/doc-2026-09-20.jpg": {
+  "t": {
+   "avif": "/assets/opt/album/doc-2026-09-20-t176.avif",
+   "webp": "/assets/opt/album/doc-2026-09-20-t176.webp",
+   "jpg": "/assets/opt/album/doc-2026-09-20-t176.jpg",
+   "w": 176,
+   "h": 249
+  }
+ },
+ "/assets/album/ig-profile.jpg": {
+  "t": {
+   "avif": "/assets/opt/album/ig-profile-t176.avif",
+   "jpg": "/assets/opt/album/ig-profile-t176.jpg",
+   "w": 190,
+   "h": 176
+  }
+ },
+ "/assets/album/ig-puppy.jpg": {
+  "t": {
+   "avif": "/assets/opt/album/ig-puppy-t176.avif",
+   "jpg": "/assets/opt/album/ig-puppy-t176.jpg",
+   "w": 176,
+   "h": 220
+  }
+ },
+ "/assets/album/ig-show-2025.jpg": {
+  "t": {
+   "avif": "/assets/opt/album/ig-show-2025-t176.avif",
+   "jpg": "/assets/opt/album/ig-show-2025-t176.jpg",
+   "w": 249,
+   "h": 176
+  }
+ },
+ "/assets/album/ig-snow.jpg": {
+  "t": {
+   "avif": "/assets/opt/album/ig-snow-t176.avif",
+   "jpg": "/assets/opt/album/ig-snow-t176.jpg",
+   "w": 176,
+   "h": 195
+  }
+ },
+ "/assets/album/ig-snowrun.jpg": {
+  "t": {
+   "avif": "/assets/opt/album/ig-snowrun-t176.avif",
+   "webp": "/assets/opt/album/ig-snowrun-t176.webp",
+   "jpg": "/assets/opt/album/ig-snowrun-t176.jpg",
+   "w": 317,
+   "h": 176
+  }
+ },
+ "/assets/album/p-2025-11.jpg": {
+  "t": {
+   "avif": "/assets/opt/album/p-2025-11-t176.avif",
+   "jpg": "/assets/opt/album/p-2025-11-t176.jpg",
+   "w": 176,
+   "h": 313
+  }
+ },
+ "/assets/album/p-2025-12a.jpg": {
+  "t": {
+   "avif": "/assets/opt/album/p-2025-12a-t176.avif",
+   "webp": "/assets/opt/album/p-2025-12a-t176.webp",
+   "jpg": "/assets/opt/album/p-2025-12a-t176.jpg",
+   "w": 176,
+   "h": 235
+  }
+ },
+ "/assets/album/p-2025-12b.jpg": {
+  "t": {
+   "avif": "/assets/opt/album/p-2025-12b-t176.avif",
+   "jpg": "/assets/opt/album/p-2025-12b-t176.jpg",
+   "w": 176,
+   "h": 235
+  }
+ },
+ "/assets/album/p-2026-01.jpg": {
+  "t": {
+   "avif": "/assets/opt/album/p-2026-01-t176.avif",
+   "jpg": "/assets/opt/album/p-2026-01-t176.jpg",
+   "w": 176,
+   "h": 235
+  }
+ },
+ "/assets/img/carrie-anim.jpg": {
+  "t": {
+   "avif": "/assets/opt/img/carrie-anim-t176.avif",
+   "jpg": "/assets/opt/img/carrie-anim-t176.jpg",
+   "w": 176,
+   "h": 220
+  }
+ },
+ "/assets/img/carrie-real.jpg": {
+  "t": {
+   "avif": "/assets/opt/img/carrie-real-t176.avif",
+   "jpg": "/assets/opt/img/carrie-real-t176.jpg",
+   "w": 176,
+   "h": 220
+  }
+ },
+ "/assets/img/doc-xray.jpg": {
+  "t": {
+   "avif": "/assets/opt/img/doc-xray-t176.avif",
+   "jpg": "/assets/opt/img/doc-xray-t176.jpg",
+   "w": 176,
+   "h": 220
+  }
+ }
+}
