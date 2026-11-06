@@ -11,6 +11,9 @@ import { DurableObject } from 'cloudflare:workers';
 
 const LANGS = new Set(['en', 'sk', 'cs', 'de', 'pl', 'fr', 'it', 'es', 'uk', 'hu', 'nl']);
 const EVENTS = new Set(['visit', 'scene', 'cta', 'ep_open', 'ep_play', 'out', 'signup', 'quiz', 'ask', 'paper', 'flip', 'wall']);
+// the heat map (src/lib/heat.ts) arrives as one batch per page view: rough tap spots (hm), scroll depth, time per scene
+const HEAT = new Set(['hm', 'depth', 'dwell']);
+const HEAT_SQL = "('hm', 'depth', 'dwell')";
 const BOTS = /bot|crawl|spider|slurp|preview|headless|lighthouse|pagespeed|facebookexternalhit|embedly|monitor/i;
 const clean = (s, n) => String(s ?? '').slice(0, n).replace(/[^\w.:\-]/g, '');
 
@@ -26,11 +29,15 @@ export class Stats extends DurableObject {
     this.sql.exec(`INSERT INTO ev (day, e, v, l, d, r, c, n) VALUES (?, ?, ?, ?, ?, ?, ?, 1)
       ON CONFLICT (day, e, v, l, d, r, c) DO UPDATE SET n = n + 1`, day, e, v, l, d, r, c);
   }
+  addMany(rows) {
+    for (const r of rows) this.add(...r);
+  }
   report(since) {
     const q = (s) => this.sql.exec(s, since).toArray();
     const by = (col, lim = 20) => q(`SELECT ${col} AS k, SUM(n) AS n FROM ev WHERE day >= ? AND e = 'visit' GROUP BY ${col} ORDER BY n DESC LIMIT ${lim}`);
     return {
-      byEv: q('SELECT e, v, SUM(n) AS n FROM ev WHERE day >= ? GROUP BY e, v ORDER BY n DESC LIMIT 400'),
+      byEv: q(`SELECT e, v, SUM(n) AS n FROM ev WHERE day >= ? AND e NOT IN ${HEAT_SQL} GROUP BY e, v ORDER BY n DESC LIMIT 400`),
+      heat: q(`SELECT e, v, SUM(n) AS n FROM ev WHERE day >= ? AND e IN ${HEAT_SQL} GROUP BY e, v ORDER BY n DESC LIMIT 2000`),
       perDay: q("SELECT day AS t, SUM(n) AS n FROM ev WHERE day >= ? AND e = 'visit' GROUP BY day ORDER BY day"),
       byLang: by('l'), byDev: by('d'), byRef: by('r', 15), byCountry: by('c', 15),
     };
@@ -48,12 +55,22 @@ export async function event(request, env, ctx) {
   if (BOTS.test(request.headers.get('user-agent') || '')) return done();
   const origin = request.headers.get('origin');
   if (origin && new URL(origin).host !== new URL(request.url).host) return done();
-  let b; try { b = JSON.parse((await request.text()).slice(0, 600)); } catch { return done(); }
-  const e = clean(b?.e, 16);
-  if (!EVENTS.has(e)) return done();
+  let b; try { b = JSON.parse((await request.text()).slice(0, 8000)); } catch { return done(); }
   const l = LANGS.has(b?.l) ? b.l : '';
   const d = b?.d === 'm' ? 'm' : 'd';
   const day = new Date().toISOString().slice(0, 10);
+  if (Array.isArray(b?.b)) {
+    // the heat map's tally: only heat events, at most 60, and without source or country (a rougher, smaller tally)
+    const rows = [];
+    for (const it of b.b.slice(0, 60)) {
+      const he = clean(it?.e, 16);
+      if (HEAT.has(he)) rows.push([day, he, clean(it?.v, 40), l, d, '', '']);
+    }
+    if (rows.length) ctx.waitUntil(book(env).addMany(rows).catch(() => {}));
+    return done();
+  }
+  const e = clean(b?.e, 16);
+  if (!EVENTS.has(e)) return done();
   ctx.waitUntil(book(env).add(day, e, clean(b?.v, 40), l, d, clean(b?.r, 60), clean(request.cf?.country, 2)).catch(() => {}));
   return done();
 }
@@ -61,9 +78,48 @@ export async function event(request, env, ctx) {
 // ---------------------------------------------------------------- the page for Rob
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
-const NAMES = { ig: 'Instagram', yt: 'YouTube', start: 'začatý', done: 'dokončený', try: 'odoslaný', ok: 'prihlásený (čaká na potvrdenie)', confirmed: 'potvrdený', zoom: 'zväčšená fotka/papier', q: 'otázka' };
+const NAMES = { ig: 'Instagram', yt: 'YouTube', fb: 'Facebook', start: 'začatý', done: 'dokončený', try: 'odoslaný', ok: 'prihlásený (čaká na potvrdenie)', confirmed: 'potvrdený', zoom: 'zväčšená fotka/papier', q: 'otázka' };
 const nice = (v) => NAMES[v] ?? v;
 const SCENES = [['intro', 'Úvod'], ['library', 'Knižnica'], ['real', 'Fotky'], ['wall', 'Stena'], ['desk', 'Stôl'], ['garden', 'Kvíz'], ['fire', 'Kozub'], ['door', 'Dvere'], ['follow', 'Sledujte ma']];
+
+const PAGE_NAMES = { home: 'úvodná', papers: 'Moje papiere', privacy: 'súkromie', checklist: 'ťahák', other: 'iné' };
+const SCENE_NAMES = Object.fromEntries(SCENES);
+// 'home.library.7x12' → 'úvodná · Knižnica · 8/13' (column/row of the 20 × 20 grid, counted from 1)
+const cellName = (k) => {
+  const [pg, sc, cell = ''] = String(k).split('.');
+  const [c, r] = cell.split('x').map((x) => Number(x) + 1);
+  const part = /^p\d$/.test(sc) ? `časť ${Number(sc.slice(1)) + 1}/10` : (SCENE_NAMES[sc] ?? sc);
+  return `${PAGE_NAMES[pg] ?? pg} · ${part} · ${c}/${r}`;
+};
+const tbl = (rows) => rows.length
+  ? `<table>${rows.map((r) => `<tr><td>${esc(r.k)}</td><td class="n">${r.n}</td><td>${esc(r.t)}</td></tr>`).join('')}</table>`
+  : '<p class="note">Zatiaľ nič.</p>';
+
+function heatHtml(heat) {
+  const rows = heat.map((r) => ({ e: r.e, v: String(r.v), n: Math.round(Number(r.n) || 0) }));
+  const cells = new Map(), dead = [];
+  for (const r of rows.filter((x) => x.e === 'hm')) {
+    const parts = r.v.split('.'), live = parts.pop(), key = parts.join('.');
+    cells.set(key, (cells.get(key) ?? 0) + r.n);
+    if (live === '0') dead.push({ k: key, n: r.n });
+  }
+  const top = [...cells].map(([k, n]) => ({ k, n })).sort((a, b) => b.n - a.n).slice(0, 10);
+  dead.sort((a, b) => b.n - a.n);
+  const depth = new Map(), dwell = new Map();
+  for (const r of rows.filter((x) => x.e === 'depth')) {
+    const [pg, pct] = r.v.split('.'), x = depth.get(pg) ?? { n: 0, half: 0, full: 0 };
+    x.n += r.n; if (Number(pct) >= 50) x.half += r.n; if (Number(pct) >= 100) x.full += r.n; depth.set(pg, x);
+  }
+  for (const r of rows.filter((x) => x.e === 'dwell')) {
+    const [pg, sc, b] = r.v.split('.'); if (pg !== 'home') continue;
+    const x = dwell.get(sc) ?? { n: 0, long: 0 }; x.n += r.n; if (['10-30', '30-60', '60p'].includes(b)) x.long += r.n; dwell.set(sc, x);
+  }
+  const depthRows = [...depth].map(([pg, x]) => ({ k: PAGE_NAMES[pg] ?? pg, n: x.n, t: `aspoň polovica ${Math.round(100 * x.half / x.n)} % · celá ${Math.round(100 * x.full / x.n)} %` }));
+  const dwellRows = SCENES.filter(([id]) => dwell.has(id)).map(([id, name]) => { const x = dwell.get(id); return { k: name, n: x.n, t: `aspoň 10 s: ${Math.round(100 * x.long / x.n)} %` }; });
+  return `<h2>Heatmapa</h2><p class="note">Ťuknutia v hrubej mriežke 20 × 20 obrazovky (stĺpec/riadok), ako ďaleko sa posúva a čas pri scénach; zbiera sa od 6. 11. 2026. Mapy ako obrázky kreslí agent (repo carrie-ops).</p>
+<div class="cols"><div><h2>Kde ľudia ťukajú</h2>${bars(top.map((r) => ({ k: cellName(r.k), n: r.n })), 0)}</div><div><h2>Ťuknutia mimo tlačidiel a odkazov</h2>${bars(dead.slice(0, 10).map((r) => ({ k: cellName(r.k), n: r.n })), 0)}</div></div>
+<div class="cols"><div><h2>Ako ďaleko sa posúva</h2>${tbl(depthRows)}</div><div><h2>Čas pri scénach (úvodná)</h2>${tbl(dwellRows)}</div></div>`;
+}
 
 function bars(rows, total, label = (r) => r.k) {
   if (!rows.length) return '<p class="note">Zatiaľ nič.</p>';
@@ -104,7 +160,7 @@ export async function stats(request, env) {
   const days = Math.min(90, Math.max(1, Number(params.get('d')) || 30));
   const since = new Date(Date.now() - (days - 1) * 864e5).toISOString().slice(0, 10);
   try {
-    const { byEv, perDay, byLang, byDev, byRef, byCountry } = await book(env).report(since);
+    const { byEv, heat = [], perDay, byLang, byDev, byRef, byCountry } = await book(env).report(since);
     const num = (x) => Math.round(Number(x) || 0);
     const get = (e, v) => num(byEv.find((r) => r.e === e && (v === undefined || r.v === v))?.n);
     const sum = (e) => byEv.filter((r) => r.e === e).reduce((a, r) => a + num(r.n), 0);
@@ -122,6 +178,7 @@ export async function stats(request, env) {
 <div class="cols"><div><h2>Kliky von</h2>${bars(list('out').map((r) => ({ ...r, k: nice(r.k) })), 0)}</div><div><h2>Tlačidlá a hry</h2>${bars([...list('cta').map((r) => ({ ...r, k: 'tlačidlo Pozrieť epizódy, kapitola ' + r.k.replace('ch', '') })), ...list('paper').map((r) => ({ ...r, k: 'papier ' + r.k })), ...list('flip').map((r) => ({ ...r, k: 'otočená fotka ' + r.k })), ...list('wall').map((r) => ({ ...r, k: 'stena: ' + nice(r.k) })), ...list('quiz').map((r) => ({ ...r, k: 'kvíz ' + nice(r.k) })), ...list('signup').map((r) => ({ ...r, k: 'e-mail ' + nice(r.k) }))], 0)}</div></div>
 <div class="cols"><div><h2>Odkiaľ prišli</h2>${bars(byRef.map((r) => ({ k: r.k ? nice(r.k) : 'priamo / neznáme', n: num(r.n) })), visits)}</div><div><h2>Jazyk</h2>${bars(byLang.map((r) => ({ k: r.k || '–', n: num(r.n) })), visits)}</div></div>
 <div class="cols"><div><h2>Zariadenie</h2>${bars(byDev.map((r) => ({ k: r.k === 'm' ? 'mobil' : 'počítač', n: num(r.n) })), visits)}</div><div><h2>Krajina</h2>${bars(byCountry.map((r) => ({ k: r.k || '–', n: num(r.n) })), visits)}</div></div>
+${heatHtml(heat)}
 <p class="note">Bez cookies a bez IP adries: vidno len, čo sa stalo, nie kto to bol. Počíta sa po dňoch (UTC).</p>`;
     return page('Carrie · štatistiky', body);
   } catch (err) {

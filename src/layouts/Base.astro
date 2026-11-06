@@ -44,6 +44,8 @@ const ogImage = `${site}/assets/img/og.jpg`;
   
 <script>
   import { track, referrerHost } from '../lib/ev';
+  import { startHeat } from '../lib/heat';
+  startHeat();   // anonymous heat map: rough tap spots, scroll depth, time per scene (sent once when the page is left)
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;   // js / nofilm classes: inline script in <head>
   // reveal on scroll
   const rio = new IntersectionObserver((ents) => ents.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } }), { threshold: 0.15 });

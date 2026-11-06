@@ -18,7 +18,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
     link: 'Ochrana súkromia',
     title: 'Ochrana súkromia',
     meta: 'Kto prevádzkuje Carrie the Swiss, aké údaje web spracúva a aké máte práva.',
-    updated: 'Platné od 5. 11. 2026',
+    updated: 'Platné od 6. 11. 2026',
     intro: 'Krátko a jasne: web nepoužíva sledovacie cookies, návštevy počítame anonymne a váš e-mail uchovávame, len ak sa prihlásite a prihlásenie potvrdíte.',
     sections: [
       { h: 'Kto zodpovedá za vaše údaje', p: ['Web carrietheswiss.com a newsletter Carrie the Swiss prevádzkuje Ing. Róbert Nagy. Kontakt: info@carrietheswiss.com.'] },
@@ -30,6 +30,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
       ] },
       { h: 'Anonymné počítanie návštev', p: [
         'Aby sme vedeli, čo na webe funguje, počítame anonymné udalosti: návštevu stránky, ktoré scény ľudia videli, ktorú epizódu spustili, jazyk, typ zariadenia (mobil alebo počítač), krajinu a stránku, z ktorej ste prišli.',
+        'Počítame aj to, kam sa na stránkach kliká (len približné miesto v hrubej mriežke), ako ďaleko sa posúva a ako dlho sa zostáva pri jednotlivých scénach, vždy len ako denné súčty bez väzby na konkrétnu návštevu.',
         'Neukladáme IP adresy a nepoužívame cookies ani žiadne identifikátory, takže z čísel sa nedá zistiť, kto ste. Ak váš prehliadač posiela signál Global Privacy Control alebo Do Not Track, neodosiela sa vôbec nič.',
       ] },
       { h: 'Opýtajte sa Carrie (chat)', p: ['Otázky, ktoré napíšete do chatu, posielame poskytovateľovi umelej inteligencie Anthropic (USA), aby vám Carrie mohla odpovedať. My ich neukladáme. Do chatu prosím nepíšte osobné údaje.'] },
@@ -47,7 +48,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
     link: 'Privacy',
     title: 'Privacy',
     meta: 'Who runs Carrie the Swiss, what data the site processes and what your rights are.',
-    updated: 'Effective 5 November 2026',
+    updated: 'Effective 6 November 2026',
     intro: 'Short and plain: the site uses no tracking cookies, visits are counted anonymously, and your e-mail is stored only if you sign up and confirm it.',
     sections: [
       { h: 'Who is responsible', p: ['The site carrietheswiss.com and the Carrie the Swiss newsletter are run by Ing. Róbert Nagy. Contact: info@carrietheswiss.com.'] },
@@ -59,6 +60,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
       ] },
       { h: 'Anonymous visit counting', p: [
         'To see what works on the site, we count anonymous events: a page visit, which scenes people reached, which episode they played, the language, the type of device (phone or computer), the country and the site you came from.',
+        'We also count where people click on the pages (only a rough spot on a coarse grid), how far they scroll and how long they stay with each scene, always as daily totals and never linked to a particular visit.',
         'We store no IP addresses and use no cookies or identifiers, so the numbers cannot tell who you are. If your browser sends Global Privacy Control or Do Not Track, nothing is sent at all.',
       ] },
       { h: 'Ask Carrie (chat)', p: ['Questions you type into the chat are sent to the AI provider Anthropic (USA) so that Carrie can answer. We don\'t store them. Please don\'t type personal information into the chat.'] },
@@ -76,7 +78,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
     link: 'Ochrana soukromí',
     title: 'Ochrana soukromí',
     meta: 'Kdo provozuje Carrie the Swiss, jaké údaje web zpracovává a jaká máte práva.',
-    updated: 'Platné od 5. listopadu 2026',
+    updated: 'Platné od 6. listopadu 2026',
     intro: 'Stručně a jasně: web nepoužívá sledovací cookies, návštěvy počítáme anonymně a váš e-mail uchováváme, jen pokud se přihlásíte a přihlášení potvrdíte.',
     sections: [
       { h: 'Kdo odpovídá za vaše údaje', p: ['Web carrietheswiss.com a newsletter Carrie the Swiss provozuje Ing. Róbert Nagy. Kontakt: info@carrietheswiss.com.'] },
@@ -88,6 +90,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
       ] },
       { h: 'Anonymní počítání návštěv', p: [
         'Abychom věděli, co na webu funguje, počítáme anonymní události: návštěvu stránky, které scény lidé viděli, kterou epizodu spustili, jazyk, typ zařízení (mobil nebo počítač), zemi a stránku, ze které jste přišli.',
+        'Počítáme také, kam se na stránkách kliká (jen přibližné místo v hrubé mřížce), jak daleko se posouvá a jak dlouho se zůstává u jednotlivých scén, vždy jen jako denní součty bez vazby na konkrétní návštěvu.',
         'Neukládáme IP adresy a nepoužíváme cookies ani žádné identifikátory, takže z čísel nelze zjistit, kdo jste. Pokud váš prohlížeč posílá signál Global Privacy Control nebo Do Not Track, neodesílá se vůbec nic.',
       ] },
       { h: 'Zeptejte se Carrie (chat)', p: ['Otázky, které napíšete do chatu, posíláme poskytovateli umělé inteligence Anthropic (USA), aby vám Carrie mohla odpovědět. My je neukládáme. Do chatu prosím nepište osobní údaje.'] },
@@ -105,7 +108,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
     link: 'Datenschutz',
     title: 'Datenschutzerklärung',
     meta: 'Wer Carrie the Swiss betreibt, welche Daten die Website verarbeitet und welche Rechte du hast.',
-    updated: 'Gültig ab 5. November 2026',
+    updated: 'Gültig ab 6. November 2026',
     intro: 'Kurz und klar: Die Website nutzt keine Tracking-Cookies, Besuche zählen wir anonym, und deine E-Mail-Adresse speichern wir nur, wenn du dich anmeldest und die Anmeldung bestätigst.',
     sections: [
       { h: 'Wer verantwortlich ist', p: ['Die Website carrietheswiss.com und der Newsletter von Carrie the Swiss werden von Ing. Róbert Nagy betrieben. Kontakt: info@carrietheswiss.com.'] },
@@ -117,6 +120,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
       ] },
       { h: 'Anonyme Besuchszählung', p: [
         'Damit wir sehen, was auf der Website funktioniert, zählen wir anonyme Ereignisse: einen Seitenbesuch, welche Szenen erreicht wurden, welche Folge abgespielt wurde, die Sprache, die Art des Geräts (Handy oder Computer), das Land und die Website, von der du gekommen bist.',
+        'Wir zählen außerdem, wohin auf den Seiten geklickt wird (nur ungefähr, in einem groben Raster), wie weit gescrollt wird und wie lange man bei den einzelnen Szenen bleibt, immer nur als Tagessummen und nie mit einem bestimmten Besuch verknüpft.',
         'Wir speichern keine IP-Adressen und verwenden weder Cookies noch Kennungen, daher lässt sich aus den Zahlen nicht ablesen, wer du bist. Sendet dein Browser Global Privacy Control oder Do Not Track, wird gar nichts übertragen.',
       ] },
       { h: 'Frag Carrie (Chat)', p: ['Fragen, die du in den Chat tippst, senden wir an den KI-Anbieter Anthropic (USA), damit Carrie antworten kann. Wir speichern sie nicht. Bitte gib im Chat keine persönlichen Daten ein.'] },
@@ -134,7 +138,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
     link: 'Prywatność',
     title: 'Polityka prywatności',
     meta: 'Kto prowadzi Carrie the Swiss, jakie dane przetwarza strona i jakie masz prawa.',
-    updated: 'Obowiązuje od 5 listopada 2026 r.',
+    updated: 'Obowiązuje od 6 listopada 2026 r.',
     intro: 'Krótko i jasno: strona nie używa śledzących plików cookie, wizyty liczymy anonimowo, a twój e-mail przechowujemy tylko wtedy, gdy się zapiszesz i potwierdzisz zapis.',
     sections: [
       { h: 'Kto odpowiada za twoje dane', p: ['Stronę carrietheswiss.com i newsletter Carrie the Swiss prowadzi Ing. Róbert Nagy. Kontakt: info@carrietheswiss.com.'] },
@@ -146,6 +150,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
       ] },
       { h: 'Anonimowe liczenie wizyt', p: [
         'Żeby wiedzieć, co na stronie działa, liczymy anonimowe zdarzenia: odwiedziny strony, do których scen ludzie dotarli, który odcinek włączyli, język, rodzaj urządzenia (telefon czy komputer), kraj oraz stronę, z której do nas trafiasz.',
+        'Liczymy też, gdzie na stronach się klika (tylko przybliżone miejsce w zgrubnej siatce), jak daleko się przewija i jak długo zostaje się przy poszczególnych scenach, zawsze tylko jako dzienne sumy, bez powiązania z konkretną wizytą.',
         'Nie zapisujemy adresów IP i nie używamy plików cookie ani identyfikatorów, więc z liczb nie da się ustalić, kim jesteś. Jeśli twoja przeglądarka wysyła sygnał Global Privacy Control lub Do Not Track, nie wysyłamy zupełnie nic.',
       ] },
       { h: 'Zapytaj Carrie (czat)', p: ['Pytania, które wpisujesz na czacie, wysyłamy do dostawcy sztucznej inteligencji Anthropic (USA), żeby Carrie mogła odpowiedzieć. Nie przechowujemy ich. Prosimy, nie wpisuj na czacie danych osobowych.'] },
@@ -163,7 +168,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
     link: 'Confidentialité',
     title: 'Politique de confidentialité',
     meta: 'Qui gère Carrie the Swiss, quelles données le site traite et quels sont vos droits.',
-    updated: 'En vigueur à compter du 5 novembre 2026',
+    updated: 'En vigueur à compter du 6 novembre 2026',
     intro: 'En bref : le site n’utilise aucun cookie de suivi, les visites sont comptées de façon anonyme et votre e-mail n’est conservé que si vous vous inscrivez et confirmez votre inscription.',
     sections: [
       { h: 'Responsable du traitement', p: ['Le site carrietheswiss.com et la newsletter Carrie the Swiss sont gérés par Ing. Róbert Nagy. Contact : info@carrietheswiss.com.'] },
@@ -175,6 +180,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
       ] },
       { h: 'Comptage anonyme des visites', p: [
         'Pour savoir ce qui fonctionne sur le site, nous comptons des événements anonymes : une visite de page, les scènes atteintes, l’épisode lancé, la langue, le type d’appareil (téléphone ou ordinateur), le pays et le site d’où vous venez.',
+        'Nous comptons aussi où l’on clique sur les pages (seulement un emplacement approximatif sur une grille grossière), jusqu’où l’on fait défiler et combien de temps on reste sur chaque scène, toujours en totaux journaliers et jamais liés à une visite précise.',
         'Nous n’enregistrons aucune adresse IP et n’utilisons ni cookies ni identifiants : ces chiffres ne permettent donc pas de savoir qui vous êtes. Si votre navigateur envoie le signal Global Privacy Control ou Do Not Track, rien n’est envoyé du tout.',
       ] },
       { h: 'Demandez à Carrie (chat)', p: ['Les questions que vous tapez dans le chat sont envoyées au fournisseur d’IA Anthropic (États-Unis) pour que Carrie puisse répondre. Nous ne les conservons pas. Merci de ne pas saisir de données personnelles dans le chat.'] },
@@ -192,7 +198,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
     link: 'Privacy',
     title: 'Informativa sulla privacy',
     meta: 'Chi gestisce Carrie the Swiss, quali dati tratta il sito e quali sono i tuoi diritti.',
-    updated: 'In vigore dal 5 novembre 2026',
+    updated: 'In vigore dal 6 novembre 2026',
     intro: 'In breve: il sito non usa cookie di tracciamento, le visite vengono contate in forma anonima e la tua e-mail viene conservata solo se ti iscrivi e confermi l’iscrizione.',
     sections: [
       { h: 'Titolare del trattamento', p: ['Il sito carrietheswiss.com e la newsletter di Carrie the Swiss sono gestiti da Ing. Róbert Nagy. Contatto: info@carrietheswiss.com.'] },
@@ -204,6 +210,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
       ] },
       { h: 'Conteggio anonimo delle visite', p: [
         'Per capire cosa funziona sul sito, contiamo eventi anonimi: una visita alla pagina, quali scene sono state raggiunte, quale episodio è stato avviato, la lingua, il tipo di dispositivo (telefono o computer), il paese e il sito da cui arrivi.',
+        'Contiamo anche dove si clicca sulle pagine (solo un punto approssimativo su una griglia grossolana), fin dove si scorre e quanto tempo si resta su ogni scena, sempre come totali giornalieri e mai collegati a una visita precisa.',
         'Non salviamo indirizzi IP e non usiamo cookie né identificatori, quindi dai numeri non si può risalire a chi sei. Se il tuo browser invia il segnale Global Privacy Control o Do Not Track, non viene inviato nulla.',
       ] },
       { h: 'Chiedi a Carrie (chat)', p: ['Le domande che scrivi nella chat vengono inviate al fornitore di intelligenza artificiale Anthropic (USA), così Carrie può risponderti. Noi non le conserviamo. Per favore, non scrivere dati personali nella chat.'] },
@@ -221,7 +228,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
     link: 'Privacidad',
     title: 'Política de privacidad',
     meta: 'Quién gestiona Carrie the Swiss, qué datos trata la web y qué derechos tienes.',
-    updated: 'Vigente desde el 5 de noviembre de 2026',
+    updated: 'Vigente desde el 6 de noviembre de 2026',
     intro: 'En pocas palabras: la web no usa cookies de seguimiento, las visitas se cuentan de forma anónima y tu correo solo se guarda si te suscribes y confirmas la suscripción.',
     sections: [
       { h: 'Responsable del tratamiento', p: ['La web carrietheswiss.com y la newsletter de Carrie the Swiss las gestiona Ing. Róbert Nagy. Contacto: info@carrietheswiss.com.'] },
@@ -233,6 +240,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
       ] },
       { h: 'Recuento anónimo de visitas', p: [
         'Para saber qué funciona en la web, contamos eventos anónimos: una visita a la página, qué escenas se vieron, qué episodio se reprodujo, el idioma, el tipo de dispositivo (móvil u ordenador), el país y la web desde la que llegas.',
+        'También contamos dónde se hace clic en las páginas (solo un punto aproximado en una cuadrícula gruesa), hasta dónde se desplaza la página y cuánto tiempo se queda uno en cada escena, siempre como totales diarios y nunca ligados a una visita concreta.',
         'No guardamos direcciones IP ni usamos cookies ni identificadores, así que los números no permiten saber quién eres. Si tu navegador envía la señal Global Privacy Control o Do Not Track, no se envía absolutamente nada.',
       ] },
       { h: 'Pregúntale a Carrie (chat)', p: ['Las preguntas que escribes en el chat se envían al proveedor de inteligencia artificial Anthropic (EE. UU.) para que Carrie pueda responder. No las guardamos. Por favor, no escribas datos personales en el chat.'] },
@@ -250,7 +258,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
     link: 'Конфіденційність',
     title: 'Політика конфіденційності',
     meta: 'Хто керує Carrie the Swiss, які дані обробляє сайт і які у вас права.',
-    updated: 'Діє з 5 листопада 2026 року',
+    updated: 'Діє з 6 листопада 2026 року',
     intro: 'Коротко і зрозуміло: сайт не використовує файлів cookie для відстеження, відвідування ми рахуємо анонімно, а ваш e-mail зберігаємо, лише якщо ви підпишетеся й підтвердите підписку.',
     sections: [
       { h: 'Хто відповідає за ваші дані', p: ['Сайт carrietheswiss.com і розсилку Carrie the Swiss веде Ing. Róbert Nagy. Контакт: info@carrietheswiss.com.'] },
@@ -262,6 +270,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
       ] },
       { h: 'Анонімний підрахунок відвідувань', p: [
         'Щоб розуміти, що на сайті працює, ми рахуємо анонімні події: відвідування сторінки, до яких сцен дійшли люди, який епізод увімкнули, мову, тип пристрою (телефон чи комп’ютер), країну та сайт, з якого ви прийшли.',
+        'Ми також рахуємо, куди натискають на сторінках (лише приблизне місце в грубій сітці), як далеко прокручують і скільки часу залишаються біля кожної сцени, завжди лише як щоденні суми, без зв’язку з конкретним відвідуванням.',
         'Ми не зберігаємо IP-адрес і не використовуємо файлів cookie чи ідентифікаторів, тож із цих цифр неможливо дізнатися, хто ви. Якщо ваш браузер надсилає сигнал Global Privacy Control або Do Not Track, не надсилається взагалі нічого.',
       ] },
       { h: 'Запитайте Керрі (чат)', p: ['Запитання, які ви пишете в чаті, ми передаємо постачальнику штучного інтелекту Anthropic (США), щоб Керрі могла відповісти. Ми їх не зберігаємо. Будь ласка, не пишіть у чаті персональних даних.'] },
@@ -279,7 +288,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
     link: 'Adatvédelem',
     title: 'Adatvédelmi tájékoztató',
     meta: 'Ki üzemelteti a Carrie the Swiss oldalt, milyen adatokat kezel a weboldal, és milyen jogaid vannak.',
-    updated: 'Hatályos: 2026. november 5-től',
+    updated: 'Hatályos: 2026. november 6-tól',
     intro: 'Röviden és érthetően: az oldal nem használ követő sütiket, a látogatásokat névtelenül számoljuk, az e-mail-címedet pedig csak akkor tároljuk, ha feliratkozol, és megerősíted a feliratkozást.',
     sections: [
       { h: 'Ki felel az adataidért', p: ['A carrietheswiss.com weboldalt és a Carrie the Swiss hírlevelet Ing. Róbert Nagy üzemelteti. Kapcsolat: info@carrietheswiss.com.'] },
@@ -291,6 +300,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
       ] },
       { h: 'Névtelen látogatásszámlálás', p: [
         'Hogy lássuk, mi működik az oldalon, névtelen eseményeket számolunk: az oldal megtekintését, hogy a látogatók mely jelenetekig jutottak el és melyik epizódot indították el, valamint a nyelvet, az eszköz típusát (telefon vagy számítógép), az országot és azt az oldalt, ahonnan érkeztél.',
+        'Azt is számoljuk, hová kattintanak az oldalakon (csak hozzávetőleges helyként, durva rácson), meddig görgetnek, és mennyi ideig maradnak az egyes jeleneteknél, mindig csak napi összesítésként, soha nem egy adott látogatáshoz kötve.',
         'Nem tárolunk IP-címeket, és nem használunk sütiket vagy azonosítókat, így a számokból nem derül ki, ki vagy. Ha a böngésződ Global Privacy Control vagy Do Not Track jelzést küld, semmit sem küldünk el.',
       ] },
       { h: 'Kérdezd Carrie-t (chat)', p: ['A chatbe írt kérdéseidet elküldjük az Anthropic (USA) nevű MI-szolgáltatónak, hogy Carrie válaszolni tudjon. Mi nem tároljuk őket. Kérjük, ne írj személyes adatokat a chatbe.'] },
@@ -308,7 +318,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
     link: 'Privacy',
     title: 'Privacyverklaring',
     meta: 'Wie Carrie the Swiss beheert, welke gegevens de site verwerkt en welke rechten je hebt.',
-    updated: 'Geldig vanaf 5 november 2026',
+    updated: 'Geldig vanaf 6 november 2026',
     intro: 'Kort en duidelijk: de site gebruikt geen trackingcookies, bezoeken tellen we anoniem en je e-mailadres bewaren we alleen als je je aanmeldt en de aanmelding bevestigt.',
     sections: [
       { h: 'Wie verantwoordelijk is', p: ['De site carrietheswiss.com en de nieuwsbrief van Carrie the Swiss worden beheerd door Ing. Róbert Nagy. Contact: info@carrietheswiss.com.'] },
@@ -320,6 +330,7 @@ export const PRIVACY: Partial<Record<Locale, PrivacyCopy>> = {
       ] },
       { h: 'Bezoeken anoniem tellen', p: [
         'Om te zien wat werkt op de site, tellen we anonieme gebeurtenissen: een paginabezoek, welke scènes mensen bereikten, welke aflevering ze afspeelden, de taal, het type apparaat (telefoon of computer), het land en de site waar je vandaan komt.',
+        'We tellen ook waar op de pagina’s wordt geklikt (alleen een globale plek op een grof raster), hoe ver er wordt gescrold en hoe lang men bij elke scène blijft, altijd alleen als dagtotalen en nooit gekoppeld aan een bepaald bezoek.',
         'We slaan geen IP-adressen op en gebruiken geen cookies of identificatoren, dus uit de cijfers valt niet op te maken wie je bent. Stuurt je browser een Global Privacy Control- of Do Not Track-signaal mee, dan wordt er helemaal niets verstuurd.',
       ] },
       { h: 'Vraag het Carrie (chat)', p: ['Vragen die je in de chat typt, sturen we naar AI-aanbieder Anthropic (VS), zodat Carrie kan antwoorden. Wij bewaren ze niet. Typ alsjeblieft geen persoonsgegevens in de chat.'] },

@@ -18,6 +18,20 @@ export function track(e: string, v = '', once = false, r = '') {
   } catch { /* measurement never breaks the page */ }
 }
 
+/** a visitor who asked not to be tracked: the heat map (heat.ts) stays off too */
+export const trackingOff = off;
+
+/** several events in one request: the heat map sends its tally once, when the page is left */
+export function trackMany(items: { e: string; v: string }[]) {
+  if (off || !items.length) return;
+  const body = JSON.stringify({ b: items.slice(0, 60), l: lang, d: device() });
+  try {
+    if (!navigator.sendBeacon?.('/api/ev', new Blob([body], { type: 'application/json' }))) {
+      fetch('/api/ev', { method: 'POST', body, keepalive: true, headers: { 'content-type': 'application/json' } }).catch(() => {});
+    }
+  } catch { /* measurement never breaks the page */ }
+}
+
 /** where the visit came from: only the other site's name (instagram.com), never the full address */
 export function referrerHost() {
   try {
