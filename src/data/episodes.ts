@@ -26,7 +26,7 @@ export const EPISODES: Episode[] = [
   { n: '07', yt: ['I5Ef4M4tZhA'], title: 'My three colours', image: '/assets/ep/ep07.jpg', topic: 'genetics', date: '2026-10-16' },
   { n: '08', yt: ['afU-00GUDLI'], title: 'A responsible litter', image: '/assets/ep/ep08.jpg', topic: 'breeding', date: '2026-10-19' },
   { n: '09', yt: ['xX_iClvxNFE', 'mia5S8l_G1E', '9hbxDt4QBtk'], title: "Why a good puppy isn't cheap", image: '/assets/ep/ep09.jpg', topic: 'buying', date: '2026-10-21', parts: ['The mom', 'One litter', 'My whole life'] },
-  { n: '10', yt: ['pURD5ug_J28', 'T-BRePEW01U', 'RNasucpPOK0'], partDates: ['2026-11-04', '2026-11-06', '2026-11-09'], title: 'What to ask a breeder', image: '/assets/ep/ep10.jpg', topic: 'buying', date: '2026-11-04', parts: ['The parents', 'The puppy', 'After you say yes'] },
-  { n: '11', yt: ['_pEpgKw0TfM'], partDates: ['2026-11-11'], title: 'My breed evaluation', image: '/assets/ep/ep11.jpg', topic: 'breeding', date: '2026-11-11' },
+  { n: '10', yt: ['pURD5ug_J28', 'T-BRePEW01U', 'RNasucpPOK0'], partDates: ['2026-11-04', '2026-11-06', '2026-11-06'], title: 'What to ask a breeder', image: '/assets/ep/ep10.jpg', topic: 'buying', date: '2026-11-04', parts: ['The parents', 'The puppy', 'After you say yes'] },
+  { n: '11', yt: ['_pEpgKw0TfM'], partDates: ['2026-11-06'], title: 'My breed evaluation', image: '/assets/ep/ep11.jpg', topic: 'breeding', date: '2026-11-06' },
   { n: '12', title: 'Is a Swissy right for you?', topic: 'ownership', date: null },
 ];
