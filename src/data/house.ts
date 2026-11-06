@@ -21,7 +21,9 @@ export const STOPS: HouseStop[] = [
 
 // scroll lengths in vh (of the visible height) after the old film
 const MOVE = 160, MOVE_VIDEO = 220;
-const HOLD: Record<HouseStop['id'], number> = { wall: 700, desk: 150, garden: 170, fire: 160, door: 140 };
+// a hold is about one screen: long enough to land on, short enough that scrolling through never feels stuck
+// (the picture also pushes in slowly across the hold, see drift in lib/frame)
+const HOLD: Record<HouseStop['id'], number> = { wall: 700, desk: 100, garden: 110, fire: 100, door: 100 };
 export type Step = { kind: 'move' | 'hold'; stop: HouseStop['id']; from: number; len: number };
 
 function build() {

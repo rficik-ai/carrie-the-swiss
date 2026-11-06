@@ -2,7 +2,7 @@
 // The film engine (Hero) sets window.__stop to the id of the stop the visitor is standing at;
 // each stop component runs this loop to show itself and to keep its 1920x1080 layer glued to the picture.
 import { STOPS, type HouseStop } from '../data/house';
-import { stopFrame, type Frame } from './frame';
+import { stopFrame, drift, type Frame } from './frame';
 
 const W_ = window as any;
 
@@ -13,7 +13,7 @@ export function mountStop(id: HouseStop['id'], el: HTMLElement, opts: { onFrame?
   const s = STOPS.find((x) => x.id === id)!;
   const layer = el.querySelector<HTMLElement>('.layer');
   let live = false, last = '';
-  const frame = () => stopFrame(s, stage.clientWidth, stage.clientHeight);
+  const frame = () => drift(stopFrame(s, stage.clientWidth, stage.clientHeight), W_.__drift ?? 1);
   const tick = () => {
     const on = W_.__stop === id;
     if (on !== live) {

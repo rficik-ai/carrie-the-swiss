@@ -115,7 +115,7 @@ const chapters = [
 <script>
   import { track } from '../lib/ev';
   document.querySelectorAll<HTMLAnchorElement>('.chapter .pill-cta').forEach((a) => a.addEventListener('click', () => track('cta', `ch${a.dataset.ch}`)));
-  import { coverFrame, fitFrame, wallFrame, lerpFrame, stopFrame, damp, type Frame } from '../lib/frame';
+  import { coverFrame, fitFrame, wallFrame, lerpFrame, stopFrame, damp, drift, DRIFT, type Frame } from '../lib/frame';
   import { STOPS, type Step } from '../data/house';
   const section = document.querySelector<HTMLElement>('.scrub')!;
   const stage = section.querySelector<HTMLElement>('.stage')!;
@@ -255,14 +255,20 @@ const chapters = [
     const t = clamp((y - step.from) / step.len);
     // tell the stops where we are BEFORE asking for frames, so the picture and the layer on top of it agree in this frame
     if (step.kind === 'hold') { W_.__stop = step.stop; W_.__stopT = t; } else W_.__stop = null;
-    const cur = stills.get(step.stop)!, f = frameOf(step.stop);
+    // the still stops push in slowly across their hold (the wall has a camera of its own); the move after one
+    // starts from that pushed-in frame, and the first move starts from the photo wall's
+    const pushes = (id: string) => id !== 'wall';
+    // (in a move the layers of the room before may still be fading: keep its pushed-in frame for them)
+    const z = step.kind === 'hold' ? (pushes(step.stop) ? 1 + (DRIFT - 1) * t : 1) : (i === 0 || pushes(STOPS[i - 1].id) ? DRIFT : 1);
+    W_.__drift = z;
+    const cur = stills.get(step.stop)!, f = drift(frameOf(step.stop), z);
     stills.forEach((im, id) => { if (id !== step!.stop && (i === 0 || id !== STOPS[i - 1].id)) im.style.opacity = '0'; });
     // any edge of the screen left uncovered (a stop's own camera, e.g. the wall's, can pan up to the picture's edge)
     const needFill = f.left > 0.5 || f.top > 0.5 || f.left + 1920 * f.k < W - 0.5 || f.top + 1080 * f.k < H - 0.5;
     if (step.kind === 'move' && vReady) {
       // the generated move: starts in the previous room's framing, ends in this room's framing
       const cov = coverFrame(W, H);
-      const s0 = i > 0 ? frameOf(STOPS[i - 1].id) : (wide ? cov : wallFrame(W, H));
+      const s0 = i > 0 ? drift(frameOf(STOPS[i - 1].id), pushes(STOPS[i - 1].id) ? DRIFT : 1) : drift(wide ? cov : wallFrame(W, H), DRIFT);
       const fr = lerpFrame(lerpFrame(cov, s0, 1 - smooth(t / 0.25)), f, smooth((t - 0.75) / 0.25));
       // the video's first/last frames are near (not pixel-exact) copies of the stills: blend over a few % at each end
       if (i > 0) place(stills.get(STOPS[i - 1].id)!, s0, 1 - smooth(t / 0.06));
@@ -273,7 +279,7 @@ const chapters = [
     } else if (step.kind === 'move') {
       // stills phase: a slow push into the next room (replaced by the generated video later)
       const x = smooth(t);
-      if (i > 0) { const pid = STOPS[i - 1].id; place(stills.get(pid)!, zoom(frameOf(pid), 1 + 0.12 * x, W, H), 1); }
+      if (i > 0) { const pid = STOPS[i - 1].id; place(stills.get(pid)!, zoom(drift(frameOf(pid), pushes(pid) ? DRIFT : 1), 1 + 0.12 * x, W, H), 1); }
       place(cur, zoom(f, 1.08 - 0.08 * x, W, H), x);
       fillWith(moveFill(i, t));
       if (vid && vs?.ready && vid.duration) { scrubVid(step.stop, t); vs.seeked = true; }   // the hidden video gets there meanwhile
@@ -330,14 +336,19 @@ const chapters = [
     // film 1: camera pulls back at the end so the whole shelf sits below the menu
     const e1 = smooth((q1 - 0.88) / 0.08);
     const q2 = clamp((p - H1) / (B1 - H1));
+    // the two holds of the old film (the shelf, the photo wall) push in slowly while you scroll through them, so the
+    // picture never freezes; the shelf eases back out as film 2 pulls away from it, the photo wall hands its push on
+    // to the first move of the house walk (renderHouse starts that move from the same pushed-in frame)
+    const zf = 1 + (DRIFT - 1) * (p < H1 ? clamp((p - A1) / (H1 - A1)) : Math.max(1 - smooth((p - H1) / 0.04), clamp((p - B1) / ((HT ? HT.start : H2) - B1))));
+    W_.__drift = zf;
     // the painted Carrie slowly fades from the spines while the real one jumps up: she leaves the painting
     const x = ready2 ? smooth(q2 / 0.1) : 0;
     const [W, H] = dims(), cov = coverFrame(W, H);
-    if (x < 1) frameVideo(video, lerpFrame(cov, shelfF(), e1));
+    if (x < 1) frameVideo(video, drift(lerpFrame(cov, shelfF(), e1), zf));
     if (ready2) {
       // film 2 starts in the shelf framing, eases back to full screen, and on phones pulls back again for the photo wall
       const eS = 1 - smooth((q2 - 0.1) / 0.3), eW = wide ? 0 : smooth((q2 - 0.86) / 0.14);
-      frameVideo(video2, lerpFrame(lerpFrame(cov, shelfF(), eS), wallF(), eW), eS);
+      frameVideo(video2, drift(lerpFrame(lerpFrame(cov, shelfF(), eS), wallF(), eW), zf), eS);
       if (!wide && eW > 0 && W_.__photosFrame && fill.dataset.img !== 'photos') { fill.dataset.img = 'photos'; fill.style.backgroundImage = `url(${W_.__photosFrame})`; }
     }
     video.style.opacity = String(1 - x);

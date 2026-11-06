@@ -65,7 +65,7 @@ const cur = (t(locale) as any).cursor;
 
 <script>
   import { track } from '../lib/ev';
-  import { wallFrame, isWide } from '../lib/frame';
+  import { wallFrame, drift, isWide } from '../lib/frame';
   const wide = isWide();
   const wall = document.querySelector<HTMLElement>('.pwall');
   if (wall && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -76,7 +76,7 @@ const cur = (t(locale) as any).cursor;
     let lastKey = '';
     // phones see all three photos at once (wallFrame): nothing to drag sideways
     const fit = () => {
-      const c = wallFrame(stage.clientWidth, stage.clientHeight);
+      const c = drift(wallFrame(stage.clientWidth, stage.clientHeight), W_.__drift ?? 1);
       pf.style.transform = `translate(${c.left}px, ${c.top}px) scale(${c.k})`;
     };
     // desktop flips a photo on hover: count each one once
@@ -118,7 +118,7 @@ const cur = (t(locale) as any).cursor;
     if (W_.__photosFrame) paint(W_.__photosFrame);
     window.addEventListener('photos-frame', (e) => paint((e as CustomEvent).detail));
     const watch = () => {
-      const key = `${stage.clientWidth}x${stage.clientHeight}`;
+      const key = `${stage.clientWidth}x${stage.clientHeight}x${W_.__drift ?? 1}`;
       if (key !== lastKey) { lastKey = key; fit(); }
       const p = W_.__filmP ?? 0, live = wall.classList.contains('live');
       const on = live ? p > 0.83 && p < 0.985 : p >= 0.84 && p < 0.97 && W_.__film2AtEnd !== false && W_.__film2Q >= 0.999;

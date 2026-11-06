@@ -50,6 +50,12 @@ export function wallFrame(W: number, H: number, hh = headerHeight(), pan = 0): F
   return { k, maxPan: 0, left: Math.round(W / 2 - ((X0 + X1) / 2) * k), top: Math.round(hh + (avail - 1080 * k) / 2) };
 }
 
+/** the slow push during a stop's hold: the same picture a little closer, zoomed about its own centre, so the scroll
+ *  never looks stuck. Every layer measured on that picture applies the same z (window.__drift), so it stays glued. */
+export const DRIFT = 1.035;
+export const drift = (f: Frame, z: number): Frame =>
+  z === 1 ? f : { ...f, k: f.k * z, left: f.left + 960 * f.k * (1 - z), top: f.top + 540 * f.k * (1 - z) };
+
 export const lerpFrame = (a: Frame, b: Frame, e: number): Frame => ({
   k: a.k + (b.k - a.k) * e, left: a.left + (b.left - a.left) * e, top: a.top + (b.top - a.top) * e,
 });

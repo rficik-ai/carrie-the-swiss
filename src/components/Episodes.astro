@@ -322,7 +322,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
 
 <script>
   import { track } from '../lib/ev';
-  import { fitFrame, isWide } from '../lib/frame';
+  import { fitFrame, drift, isWide } from '../lib/frame';
   const shelf = document.querySelector<HTMLElement>('.shelf')!;
   const L = JSON.parse(shelf.dataset.labels!);
   const loc = shelf.dataset.locale!;
@@ -416,7 +416,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     // place the 1920x1080 frame exactly like the film (object-fit: cover, centred)
     // phones see the whole shelf (fitFrame): nothing to drag sideways
     const fit = () => {
-      const fr = fitFrame(scene.clientWidth, scene.clientHeight);
+      const fr = drift(fitFrame(scene.clientWidth, scene.clientHeight), (window as any).__drift ?? 1);
       f.style.transform = `translate(${fr.left}px, ${fr.top}px) scale(${fr.k})`;
     };
     new ResizeObserver(fit).observe(scene); fit();
@@ -425,7 +425,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
     let lastKey = '';
     const watch = () => {
       // keep the framing identical to the film's even if the header or viewport changes
-      const key = `${scene.clientWidth}x${scene.clientHeight}x${(document.querySelector('header.top') as HTMLElement | null)?.offsetHeight}`;
+      const key = `${scene.clientWidth}x${scene.clientHeight}x${(document.querySelector('header.top') as HTMLElement | null)?.offsetHeight}x${(window as any).__drift ?? 1}`;
       if (key !== lastKey) { lastKey = key; fit(); }
       const w = window as any, q = w.__filmQ ?? 0, live = scene.classList.contains('live');
       // take over when the film rests on its last frame; let go only after a clear scroll back (no flicker)
