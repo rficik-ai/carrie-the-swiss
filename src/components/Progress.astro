@@ -6,12 +6,12 @@ import { type Locale, t } from '../i18n';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const s = t(locale) as any, h = s.house;
-const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'];
+const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door', 'follow'];
+const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
 ---
 <nav class="prog" aria-label={h.nav_label}>
-  <div class="bar" aria-hidden="true"><i></i></div>
   <ol class="rail">
-    {CH.map((c, i) => <li data-c={c}><button type="button"><span class="lb"><b>{String(i + 1).padStart(2, '0')}</b>{h[`nav_${c}`]}</span><i aria-hidden="true"></i></button></li>)}
+    {CH.map((c, i) => <li data-c={c}><button type="button"><span class="lb"><b>{String(i + 1).padStart(2, '0')}</b>{name(c)}</span><i aria-hidden="true"></i></button></li>)}
   </ol>
   <button type="button" class="more" aria-label={h.more}>
     <svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="ringp" d="M60,60 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0" /></defs>
@@ -22,8 +22,6 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
 
 <style>
   .prog { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
-  .bar { position: fixed; left: 0; right: 0; top: 0; height: 3px; background: rgba(234,211,154,.12); }
-  .bar i { display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: linear-gradient(90deg, var(--gold), var(--gold-hi)); box-shadow: 0 0 10px rgba(234,211,154,.6); }
   /* the rail reads like the spine of a book: one hairline, a tick per chapter, the chapter you are in written along
      the line (bottom to top, as on a spine) with its number in gold, and a small gold point that glides to it */
   .rail { position: fixed; right: 22px; top: 50%; translate: 0 -50%; height: min(54vh, 480px); margin: 0; padding: 0; list-style: none; display: grid; grid-auto-rows: 1fr; pointer-events: auto; }
@@ -54,9 +52,13 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
   /* the script puts the ring where nothing to read or tap lies under it (desktop: a corner, phone: along an edge) */
   .prog.placed .more { left: var(--rx); top: var(--ry); right: auto; bottom: auto; transform: translateY(8px); }
   .prog.placed.cue .more { transform: none; }
+  /* phone: the spine stays, smaller and higher up, clear of the sheets that rise from the bottom */
   @media (max-width: 899px), (hover: none) {
-    .rail { display: none; }
-    .bar { top: var(--hh, 64px); height: 2px; }
+    .rail { right: 8px; top: 38%; height: min(34vh, 300px); }
+    .rail i { width: 10px; min-width: 10px; }
+    .rail li.on i { width: 18px; }
+    .rail i::after { width: 7px; height: 7px; margin-top: -3.5px; right: 2.5px; }
+    .lb { right: 24px; font-size: 10px; letter-spacing: .18em; }
   }
   /* phones: the chapter text is centred at the bottom, so the ring keeps to the corner */
   @media (max-width: 899px), (hover: none) { .more { width: 74px; height: 74px; left: auto; right: 10px; transform: translateY(8px); } .prog.cue .more { transform: none; } }
@@ -79,6 +81,7 @@ const CH = ['intro', 'library', 'real', 'wall', 'desk', 'garden', 'fire', 'door'
       const vh = stage.clientHeight / 100, top = sec.offsetTop, hs = HOUSE.timeline.start * 1000;
       starts = [0, top + 500 * vh, top + 840 * vh, ...['wall', 'desk', 'garden', 'fire', 'door'].map((id) => top + (hs + hold(id).from) * vh)];
       filmEnd = top + (hs + HOUSE.timeline.total) * vh;   // after the door: "Follow me" and the footer
+      const follow = document.getElementById('follow'); if (follow) starts.push(follow.getBoundingClientRect().top + scrollY - innerHeight * 0.2);
       nav.style.setProperty('--hh', `${(document.querySelector('header.top') as HTMLElement)?.offsetHeight ?? 64}px`);
     };
     measure(); addEventListener('resize', measure); addEventListener('load', measure);
