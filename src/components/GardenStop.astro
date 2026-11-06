@@ -14,7 +14,7 @@ const q = (t(locale) as any).quiz;
     <div class="txt"><span class="who">{q.eyebrow}</span><p class="say">{q.title}</p></div>
   </div>
   <div class="qshade" aria-hidden="true"></div>
-  <div class="qcard"><GardenQuiz locale={locale} /></div>
+  <div class="qcard"><button type="button" class="qx" aria-label={(t(locale) as any).house.close}>×</button><GardenQuiz locale={locale} /></div>
 </div>
 
 <style>
@@ -38,6 +38,7 @@ const q = (t(locale) as any).quiz;
   /* no box: the words lie on the garden, a soft dusk over the left of the picture keeps them readable */
   .qshade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(13,9,4,.78) 0%, rgba(13,9,4,.62) 30%, rgba(13,9,4,.25) 50%, rgba(13,9,4,0) 66%); }
   .qcard :global(.panel) { min-height: 0; }
+  .qx { display: none; position: sticky; top: 0; z-index: 2; margin-left: auto; width: 40px; height: 40px; border-radius: 50%; place-items: center; border: 1px solid rgba(244,238,226,.5); background: rgba(13,12,10,.6); color: var(--ivory); font-size: 24px; cursor: pointer; }
   .qcard :global(.intro h2) { font-size: clamp(24px, 2.3vw, 34px); color: #fff; }
   .qcard :global(.muted) { color: rgba(244,238,226,.82); }
   .qcard :global(.dots) { margin-top: 20px; }
@@ -55,6 +56,13 @@ const q = (t(locale) as any).quiz;
     .qcard :global(.qhint) { font-size: 21px; }
     .qcard :global(.opt) { padding: 12px 14px; font-size: 15px; }
     .qcard :global(.step) { gap: 12px; }
+    /* phone: once a question is asked the quiz stands still on its own screen (the page beneath does not scroll), the
+       garden stays as its backdrop */
+    .gstop.quizzing .qcard { position: fixed; z-index: 45; inset: var(--hh, 64px) 0 0 0; max-height: none; min-height: 0; padding: 22px 18px calc(22px + env(safe-area-inset-bottom, 0px)); overflow-y: auto; overscroll-behavior: contain;
+      background: linear-gradient(rgba(13,9,4,.84), rgba(13,9,4,.94)), url(/assets/house/garden-v1.jpg) 62% 30% / cover; }
+    .gstop.quizzing .qshade { display: none; }
+    .gstop.quizzing .qx { display: grid; }
+    .gstop.quizzing .qcard :global(.question), .gstop.quizzing .qcard :global(.result) { min-height: calc(100% - 44px); align-content: center; }
   }
 </style>
 
@@ -64,7 +72,19 @@ const q = (t(locale) as any).quiz;
   const el = document.querySelector<HTMLElement>('.gstop');
   if (el) {
     const bubble = el.querySelector<HTMLElement>('.bubble')!;
+    // phone: a question opens the quiz on its own still screen; the intro, the close button or "next stop" bring the page back
+    const narrow = () => matchMedia('(max-width: 899px), (hover: none)').matches;
+    const quizzing = (on: boolean) => {
+      if (on && !narrow()) return;
+      el.classList.toggle('quizzing', on);
+      document.documentElement.classList.toggle('quizzing', on);   // the page guide (spine, scroll cue) steps aside
+      document.documentElement.style.overflow = on ? 'hidden' : '';
+    };
+    el.addEventListener('quiz:step', (e) => quizzing((e as CustomEvent).detail !== 'intro'));
+    el.querySelector('.qx')!.addEventListener('click', () => quizzing(false));
+    el.querySelector('.next-go')?.addEventListener('click', () => quizzing(false));
     mountStop('garden', el, {
+      onLive: (on) => { if (!on) quizzing(false); },
       onFrame: (f) => {
         el.style.setProperty('--hh', `${headerHeight()}px`);
         bubble.style.setProperty('--bx', `${f.left + 1395 * f.k}px`);

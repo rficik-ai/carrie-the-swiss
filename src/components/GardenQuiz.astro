@@ -170,6 +170,7 @@ const data = {
     const talk = (t: string) => { if (!say || !bubble) return; say.textContent = t; bubble.classList.remove('bump'); void bubble.offsetWidth; bubble.classList.add('bump'); };
     const show = (el: HTMLElement) => {
       [intro, result, ...steps].forEach((s) => (s.hidden = s !== el));
+      root.dispatchEvent(new CustomEvent('quiz:step', { bubbles: true, detail: el === intro ? 'intro' : el === result ? 'result' : 'question' }));
       root.classList.toggle('done', el === result);
       scroller?.classList.toggle('tall', el === result);
       scroller?.scrollTo({ top: 0 });

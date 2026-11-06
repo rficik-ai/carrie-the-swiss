@@ -60,6 +60,7 @@ const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
   /* the script puts the ring where nothing to read or tap lies under it (desktop: a corner, phone: along an edge) */
   .prog.placed .more { left: var(--rx); top: var(--ry); right: auto; bottom: auto; transform: translateY(8px); }
   .prog.placed.cue .more { transform: none; }
+  :global(html.quizzing) .rail, :global(html.quizzing) .more, :global(html.quizzing) .inter { display: none; }
   /* phone: the spine stays, smaller and higher up, clear of the sheets that rise from the bottom */
   @media (max-width: 899px), (hover: none) {
     .rail { right: 8px; top: 38%; height: min(34vh, 300px); }
@@ -125,7 +126,7 @@ const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
     // the cue: on the first screen after a moment, anywhere in the film after 3 s of standing still. Not after the film,
     // and not while something lies open on top (the shelf's open book, a paper being read, the quiz method, a dialog)
     const W = window as any;
-    const busy = () => !!document.querySelector('.reader:not([hidden]), .dstop.reading, .method:not([hidden]), dialog[open]')
+    const busy = () => !!document.querySelector('.reader:not([hidden]), .dstop.reading, .method:not([hidden]), dialog[open], .gstop.quizzing, .gq .question:not([hidden]), .fstop.chatting')
       || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName ?? '');
     // the ring never sits over something to read or tap: it would hide it, or catch the tap
     const TAP = 'a[href], button, input, textarea, select, [role="button"]', READ = 'p, h1, h2, h3, li, label';
