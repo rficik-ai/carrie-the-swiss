@@ -82,19 +82,19 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
   .dstop.reading .cap { opacity: 0; }
 
   .read { position: absolute; z-index: 3; left: 50%; top: calc(50% + var(--hh, 68px) / 2); width: min(880px, 92vw); max-height: calc(100% - var(--hh, 68px) - 40px); transform: translate(-50%, -50%);
-    display: flex; flex-direction: column; background: #f7f0e1; color: #2a2016; border-radius: 6px; box-shadow: 0 40px 80px -24px rgba(0,0,0,.75); transform-origin: 0 0; }
+    display: flex; flex-direction: column; color: var(--ivory); transform-origin: 0 0; }   /* no sheet: the paper lies on the darkened desk (the veil), the words beside it */
   .read[hidden], .sheet[hidden] { display: none; }
-  .sheet { display: grid; grid-template-columns: 42% 1fr; gap: 0; min-height: 0; overflow: auto; }
-  .doc { padding: 26px; background: #efe5d0; display: grid; place-items: center; }
+  .sheet { display: grid; grid-template-columns: 42% 1fr; gap: clamp(24px, 3vw, 48px); min-height: 0; overflow: auto; }
+  .doc { border-radius: 20px; overflow: hidden; background: #efe5d0; display: grid; place-items: center; padding: 22px; }
   .doc img { width: 100%; max-height: 52vh; object-fit: contain; filter: drop-shadow(0 10px 16px rgba(60,35,10,.35)); }
-  .words { padding: 34px 34px 20px; display: grid; gap: 12px; align-content: center; }
-  .nm { margin: 0; font: 700 12px var(--f-body); letter-spacing: .18em; text-transform: uppercase; color: #8a6a35; }
-  .bigw { margin: 0; font: 800 clamp(30px, 3.4vw, 48px)/1.12 var(--f-head); letter-spacing: -0.015em; text-transform: uppercase; color: #1d160e; }
-  .txt { margin: 0; font-size: 17px; line-height: 1.6; color: #3d3226; }
-  .ep { justify-self: start; margin-top: 6px; font-weight: 700; color: #7a5520; text-decoration: none; border-bottom: 1px solid currentColor; }
-  .rnav { display: flex; justify-content: flex-end; padding: 12px 18px 16px; border-top: 1px solid rgba(120,90,40,.15); }
+  .words { padding: 10px 0; display: grid; gap: 12px; align-content: center; }
+  .nm { margin: 0; font: 300 13px/1 var(--f-head); letter-spacing: .22em; text-transform: uppercase; color: var(--gold-hi); }
+  .bigw { margin: 0; font: 300 clamp(34px, 4.2vw, 64px)/1.02 var(--f-head); letter-spacing: .005em; text-transform: uppercase; color: #fff; }
+  .txt { margin: 0; font-size: 17px; line-height: 1.6; color: rgba(244,238,226,.86); max-width: 30em; }
+  .ep { justify-self: start; margin-top: 6px; font-weight: 700; color: var(--gold-hi); text-decoration: none; border-bottom: 1px solid currentColor; }
+  .rnav { display: flex; justify-content: flex-end; padding: 16px 0 0; }
   .nextp { all: unset; cursor: pointer; padding: 10px 18px; border-radius: 999px; font-weight: 700; font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase; color: #1a1408; background: var(--gold-hi); }
-  .x { all: unset; position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; font-size: 24px; color: #5a4220; background: rgba(247,240,225,.92); box-shadow: inset 0 0 0 1px rgba(120,90,40,.35); }
+  .x { all: unset; position: absolute; top: -8px; right: 0; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; font-size: 24px; color: var(--ivory); border: 1px solid rgba(244,238,226,.5); }
 
   @media (max-width: 899px), (hover: none) {
     .h-wide { display: none; } .h-tap { display: inline; }
@@ -102,10 +102,11 @@ const papers: { q: Pt[]; img: string; name: string; big: string; text: string; e
     .cap .kicker::before { margin-inline: auto; }
     .done { justify-items: center; }
     .cap h2 { font-size: 27px; } .cap .say { font-size: 15px; }
-    .read { left: 0; right: 0; top: auto; bottom: 0; width: auto; max-height: 84svh; transform: none; border-radius: 18px 18px 0 0; }
-    .sheet { grid-template-columns: 1fr; }
-    .doc { padding: 16px; } .doc img { max-height: 30svh; }
-    .words { padding: 18px 20px 10px; gap: 8px; }
+    .read { left: 0; right: 0; top: auto; bottom: 0; width: auto; max-height: 86svh; transform: none; padding: 0 18px calc(14px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; }
+    .sheet { grid-template-columns: 1fr; gap: 14px; }
+    .doc { padding: 14px; border-radius: 16px; } .doc img { max-height: 28svh; }
+    .words { padding: 4px 0; gap: 8px; }
+    .x { top: 6px; right: 18px; }
     .bigw { font-size: 28px; } .txt { font-size: 15.5px; }
     .rnav { padding: 10px 14px calc(12px + env(safe-area-inset-bottom, 0px)); }
   }

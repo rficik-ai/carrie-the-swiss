@@ -54,7 +54,7 @@ const href = (x: string) => `/${locale}/${x}`;
     background: linear-gradient(115deg, rgba(255,230,190,.28) 0%, rgba(255,230,190,0) 38%, rgba(255,255,255,.08) 52%, rgba(255,240,210,0) 60%); }
   .wf img { transition: filter .6s ease; }
   .wstop.walking .wf:not(.cur) img { filter: sepia(.3) saturate(.6) contrast(.9) brightness(.62); }
-  .vig { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .6s ease; background: radial-gradient(70% 80% at 34% 52%, rgba(20,10,3,0) 35%, rgba(20,10,3,.6) 100%); }
+  .vig { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .6s ease; background: radial-gradient(70% 80% at 34% 52%, rgba(20,10,3,0) 35%, rgba(20,10,3,.74) 100%); }
   .wstop.walking .vig { opacity: 1; }
   @media (max-width: 899px), (hover: none) { .vig { background: radial-gradient(90% 50% at 50% 28%, rgba(20,10,3,0) 30%, rgba(20,10,3,.6) 100%); } }
   .wf:focus-visible { outline: 3px solid var(--gold-hi); outline-offset: 4px; }
@@ -65,10 +65,13 @@ const href = (x: string) => `/${locale}/${x}`;
   .cap .say { margin: 0; max-width: 34em; font: 500 clamp(16px, 1.2vw, 18px)/1.5 var(--f-body); color: rgba(244,238,226,.88); }
 
   /* the museum plaque next to the frame the camera is looking at */
-  .plaque { position: absolute; left: 58vw; top: calc(50% + var(--hh, 68px) / 2); width: min(420px, 31vw); box-sizing: border-box; padding: 24px 26px 20px; display: grid; gap: 8px;
-    background: rgba(247,240,225,.96); color: #2a2016; border-radius: 4px; box-shadow: 0 26px 50px -18px rgba(40,20,0,.6), inset 0 0 0 1px rgba(120,90,40,.15);
+  /* no plaque: the story is written on the wall itself, in ink, with a soft light behind the words so they read over the plaster */
+  .plaque { position: absolute; left: 58vw; top: calc(50% + var(--hh, 68px) / 2); width: min(500px, 35vw); box-sizing: border-box; padding: 44px 52px 40px; display: grid; gap: 8px;
+    color: var(--ivory);
     opacity: 0; transform: translate(16px, -50%); pointer-events: none; transition: opacity .35s ease, transform .5s cubic-bezier(.2,.7,.2,1); }
   .plaque.on { opacity: 1; transform: translate(0, -50%); pointer-events: auto; }
+  /* the dusk behind the words: a blurred patch with no edge at all */
+  .plaque::before { content: ''; position: absolute; z-index: -1; inset: -10px -30px; border-radius: 50%; background: rgba(20,10,3,.62); filter: blur(44px); }
   .plaque.pl { left: var(--gutter); }   /* this picture ends up on the right half: its plaque hangs on the left */
   /* a museum label being read: date, then the title word by word, then the story */
   :global(.js) .plaque .date, :global(.js) .plaque .txt, :global(.js) .plaque .row { opacity: 0; translate: 0 6px; transition: opacity .2s ease, translate .2s ease; }
@@ -80,15 +83,15 @@ const href = (x: string) => `/${locale}/${x}`;
   .plaque.on .row { transition: opacity .6s ease .6s, translate .7s ease .6s; }
   @media (prefers-reduced-motion: reduce) { .plaque .date, .plaque .txt, .plaque .row, .plaque h3 :global(.w) { opacity: 1 !important; filter: none !important; translate: none !important; transition: none !important; } }
   .plaque .row .ths { display: flex; gap: 8px; flex-wrap: wrap; }
-  .date { margin: 0; font: 800 11px/1 var(--f-body); letter-spacing: .2em; text-transform: uppercase; color: #8a6a35; }
-  .plaque h3 { margin: 0; font-size: clamp(19px, 1.6vw, 24px); line-height: 1.16; color: #1d160e; }
-  .txt { margin: 0; font-size: 16px; line-height: 1.6; color: #3d3226; }
+  .date { margin: 0; font: 300 12px/1 var(--f-head); letter-spacing: .22em; text-transform: uppercase; color: var(--gold-hi); }
+  .plaque h3 { margin: 0; font-size: clamp(20px, 1.8vw, 28px); line-height: 1.12; color: #fff; text-shadow: 0 1px 10px rgba(0,0,0,.5); }
+  .txt { margin: 0; font-size: 16px; line-height: 1.6; color: rgba(244,238,226,.9); text-shadow: 0 1px 8px rgba(0,0,0,.5); }
   .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 6px; }
   .th { all: unset; cursor: zoom-in; width: 54px; height: 54px; border-radius: 3px; overflow: hidden; box-shadow: 0 0 0 1px rgba(120,90,40,.3), 0 4px 10px -4px rgba(60,35,10,.4); transition: transform .2s; }
   .th:hover, .th:focus-visible { transform: translateY(-2px) scale(1.05); }
   .th img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
   .th.doc img { object-position: 50% 0; }
-  .lnk { margin-left: 4px; font-weight: 700; font-size: 15px; color: #7a5520; text-decoration: none; border-bottom: 1px solid currentColor; }
+  .lnk { margin-left: 4px; font-weight: 700; font-size: 15px; color: var(--gold-hi); text-decoration: none; border-bottom: 1px solid currentColor; }
 
   /* a thin timeline: where on the wall (and in my life) we are */
   .line { position: absolute; left: var(--gutter); right: var(--gutter-r); bottom: calc(22px + env(safe-area-inset-bottom, 0px)); margin: 0; padding: 0; list-style: none; display: flex; justify-content: space-between;
@@ -109,9 +112,12 @@ const href = (x: string) => `/${locale}/${x}`;
     .cap { padding: 70px 18px calc(22px + env(safe-area-inset-bottom, 0px)); gap: 8px; justify-items: center; text-align: center; --ko: center; }
     .cap .kicker::before { margin-inline: auto; }
     .cap h2 { font-size: 32px; } .cap .say { font-size: 15px; }
-    .plaque { left: 12px; right: 12px; top: auto; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); width: auto; padding: 16px 18px 14px; gap: 6px; transform: translateY(12px); }
+    /* phone: the story sits at the bottom over the dusk of the wall, in ivory */
+    .plaque { left: 18px; right: 18px; top: auto; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); width: auto; padding: 0; gap: 6px; transform: translateY(12px); color: var(--ivory); }
+    .plaque::before { display: none; }
     .plaque.on { transform: none; }
-    .plaque h3 { font-size: 18px; } .txt { font-size: 14.5px; line-height: 1.5; }
+    .plaque h3 { font-size: 20px; color: #fff; } .txt { font-size: 14.5px; line-height: 1.5; color: rgba(244,238,226,.86); }
+    .vig { background: linear-gradient(0deg, rgba(20,10,3,.92) 0%, rgba(20,10,3,.7) 32%, rgba(20,10,3,0) 58%); }
     .th { width: 44px; height: 44px; }
     .line { left: 14px; right: 14px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
     .line li span { display: none; }
