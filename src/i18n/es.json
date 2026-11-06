@@ -19,8 +19,8 @@
     "ch1_text": "Gran boyero suizo y perra de exposición. Te enseño a elegir un cachorro por sus papeles, no por su foto.",
     "ch2_title": "En foto, todos los cachorros son perfectos.",
     "ch2_text": "La verdad está en los papeles: pedigrí, radiografías, informes de jueces y evaluación de cría. Te enseño a leerlos, en episodios cortos.",
-    "ch3_title": "Yo leo los papeles para que tú no tengas que hacerlo.",
-    "ch3_text": "Los míos: caderas A/A, codos 0/0, evaluación de cría 14 de 14. Datos según las normas de la FCI, sin dramas, con algún chiste.",
+    "ch3_title": "Mis humanos no sabían nada de esto. Lo aprendieron conmigo.",
+    "ch3_text": "Caderas A/A, codos 0/0, evaluación de cría 14 de 14. Hechos según las reglas de la FCI, sin drama, con algún chiste. Tú lo aprenderás más rápido: en doce episodios cortos.",
     "cta": "Ver los episodios",
     "scroll": "Desliza"
   },
@@ -181,14 +181,14 @@
     "c3_text": "Lo cerca que estoy del modelo de mi raza, puesto por escrito después de una exposición.",
     "watch": "Ver episodio",
     "done_title": "Un buen criador te enseña los tres.",
-    "done_text": "Ahora sabes qué pedir. La versión larga, con fuentes, está aquí.",
+    "done_text": "Ahora sabes qué pedir. Mi humano no lo sabía antes de que yo llegara. Por eso estos vídeos son gratis.",
     "done_cta": "Lee mis papeles",
     "progress": "de 3 girados"
   },
   "quiz": {
     "eyebrow": "Carrie pregunta",
     "title": "¿Es un Swissy para ti?",
-    "intro": "Cinco preguntas sinceras de mi parte. No hay respuestas incorrectas, solo útiles.",
+    "intro": "Cinco preguntas sinceras. Mis humanos las respondieron antes de elegir una raza. Funcionó.",
     "start": "Vamos a ver",
     "q": "Pregunta",
     "q1": "¿Cuánto espacio tienes?",
@@ -243,7 +243,8 @@
     "err_rate": "¡Guau, cuántas preguntas! Dame un minuto para respirar.",
     "err_gen": "Mmm, perdí el hilo. ¿Lo intentas en un momento?",
     "err_off": "Todavía estoy aprendiendo a hablar aquí. ¡Vuelvo muy pronto!",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "story": "Mis humanos nunca habían oído hablar de mi raza. Querían un perro para la familia, así que se sentaron y escribieron con sinceridad cómo viven, cuánto tiempo tienen y qué esperan de un perro. Así llegaron a un Swissy. Y querían un perro con papeles, porque no querían apoyar a nadie que venda cachorros sin ellos.\n\nLuego llegué yo, y empezó todo: adiestramiento desde el primer día, una primera exposición «solo para ver cómo funciona», el club, nuevos amigos, una segunda y una tercera exposición, radiografías, pruebas. Y una confesión: mi humano no sabía casi nada de lo que hoy explico. Lo aprendió todo conmigo.\n\nEstos vídeos son los que le habría gustado tener antes de traer un cachorro a casa. Por eso son gratis. Ojalá ayuden a tantas personas como sea posible. Y a tantos perros."
   },
   "follow": {
     "eyebrow": "Sígueme",

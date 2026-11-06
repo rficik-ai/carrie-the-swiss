@@ -19,8 +19,8 @@
     "ch1_text": "A Greater Swiss Mountain Dog and a show dog. I'll teach you to choose a puppy by its papers, not its photo.",
     "ch2_title": "Every puppy looks perfect in a photo.",
     "ch2_text": "The papers tell the truth: pedigree, X-rays, show critiques and breed evaluation. I'll show you how to read them, one short episode at a time.",
-    "ch3_title": "I read the papers so you don't have to.",
-    "ch3_text": "Mine say: hips A/A, elbows 0/0, breed evaluation 14 out of 14. Facts by the FCI rules, no drama, a few jokes.",
+    "ch3_title": "My humans knew none of this. They learned it with me.",
+    "ch3_text": "Hips A/A, elbows 0/0, breed evaluation 14 out of 14. Facts by the FCI rules, no drama, a few jokes. You'll learn it faster: in twelve short episodes.",
     "cta": "Watch the episodes",
     "scroll": "Scroll"
   },
@@ -181,14 +181,14 @@
     "c3_text": "How close I am to the blueprint of my breed, written down after a dog show.",
     "watch": "Watch episode",
     "done_title": "A good breeder shows you all three.",
-    "done_text": "Now you know what to ask for. The long version, with sources, is right here.",
+    "done_text": "Now you know what to ask for. My human didn't, before I came along. That's why these videos are free.",
     "done_cta": "Read my papers",
     "progress": "of 3 flipped"
   },
   "quiz": {
     "eyebrow": "Carrie asks",
     "title": "Is a Swissy right for you?",
-    "intro": "Five honest questions from me. No wrong answers, just useful ones.",
+    "intro": "Five honest questions. My humans answered them before they chose a breed. It worked.",
     "start": "Let's find out",
     "q": "Question",
     "q1": "How much space do you have?",
@@ -243,7 +243,8 @@
     "err_rate": "Woof, that's a lot of questions! Give me a minute to catch my breath.",
     "err_gen": "Hmm, I lost my train of thought. Try again in a moment?",
     "err_off": "I'm still learning to talk here. Back very soon!",
-    "close": "Close"
+    "close": "Close",
+    "story": "My humans had never heard of my breed. They wanted a dog for the family, so they sat down and wrote honestly how they live, how much time they have and what they expect from a dog. That's how they arrived at a Swissy. And they wanted a dog with papers, because they didn't want to support anyone who sells puppies without them.\n\nThen I arrived, and it began: training from day one, a first show \"just to see how it works\", the club, new friends, a second and a third show, X-rays, tests. And one confession: my human knew almost none of what I explain today. He learned it all with me.\n\nThese videos are the ones he wishes he'd had before he ever got a puppy. That's why they're free. May they help as many people as possible. And as many dogs."
   },
   "follow": {
     "eyebrow": "Follow me",

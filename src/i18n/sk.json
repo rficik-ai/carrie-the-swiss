@@ -19,8 +19,8 @@
     "ch1_text": "Výstavná fenka veľkého švajčiarskeho salašníckeho psa. Naučím vás vybrať šteňa podľa papierov, nie podľa fotky.",
     "ch2_title": "Na fotke je krásne každé šteňa.",
     "ch2_text": "Pravdu povedia až papiere: pôvod, röntgeny, posudky a bonitácia. Ukážem vám, ako ich čítať, vždy v jednej krátkej epizóde.",
-    "ch3_title": "Papiere čítam ja, aby ste nemuseli vy.",
-    "ch3_text": "Tie moje: bedrá A/A, lakte 0/0, bonitácia 14 zo 14. Všetko podľa pravidiel FCI, bez drámy, s pár vtipmi.",
+    "ch3_title": "Moji ľudia o tom nevedeli nič. Naučili sa to so mnou.",
+    "ch3_text": "Bedrá A/A, lakte 0/0, bonitácia 14 zo 14. Všetko podľa pravidiel FCI, bez drámy, s pár vtipmi. Vy sa to naučíte rýchlejšie: v dvanástich krátkych epizódach.",
     "cta": "Pozrieť epizódy",
     "scroll": "Posúvajte"
   },
@@ -181,14 +181,14 @@
     "c3_text": "Ako veľmi sa podobám na ideál môjho plemena. Rozhodca to spíše po výstave.",
     "watch": "Pozrieť epizódu",
     "done_title": "Dobrý chovateľ vám ukáže všetky tri.",
-    "done_text": "Teraz viete, čo pýtať. Dlhšia verzia aj so zdrojmi je tu.",
+    "done_text": "Teraz viete, čo pýtať. Môj človek to pred mojím príchodom nevedel. Preto sú tieto videá zadarmo.",
     "done_cta": "Prečítajte si moje papiere",
     "progress": "z 3 otočených"
   },
   "quiz": {
     "eyebrow": "Carrie sa pýta",
     "title": "Je Swissy ten pravý pes pre vás?",
-    "intro": "Päť úprimných otázok odo mňa. Žiadne zlé odpovede, len užitočné.",
+    "intro": "Päť úprimných otázok. Moji ľudia si na ne odpovedali skôr, než si vybrali plemeno. Fungovalo to.",
     "start": "Poďme na to",
     "q": "Otázka",
     "q1": "Koľko máte miesta?",
@@ -243,7 +243,8 @@
     "err_rate": "Haf, to je veľa otázok naraz! Dajte mi chvíľu vydýchnuť.",
     "err_gen": "Hm, stratila som niť. Skúsite to o chvíľu znova?",
     "err_off": "Ešte sa tu učím rozprávať. Čoskoro som späť!",
-    "close": "Zavrieť"
+    "close": "Zavrieť",
+    "story": "Moji ľudia o mojom plemene nikdy nepočuli. Chceli psa do rodiny, a tak si sadli a úprimne si spísali, ako žijú, koľko majú času a čo od psa čakajú. Takto došli k Swissy. A chceli psa s papiermi, lebo nechceli podporovať nikoho, kto predáva šteňatá bez nich.\n\nPotom som prišla ja a začalo sa to: tréning od prvého dňa, prvá výstava „len pozrieť, ako to prebieha“, klub, noví kamaráti, druhá a tretia výstava, röntgeny, testy. A jedno priznanie: môj človek nevedel skoro nič z toho, čo dnes vysvetľujem. Všetko sa to naučil až so mnou.\n\nTieto videá sú tie, ktoré by bol chcel mať skôr, než si vôbec zaobstaral šteňa. Preto sú zadarmo. Nech pomôžu čo najviac ľuďom. A čo najviac psom."
   },
   "follow": {
     "eyebrow": "Sledujte ma",

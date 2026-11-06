@@ -19,8 +19,8 @@
     "ch1_text": "Duży szwajcarski pies pasterski i suczka wystawowa. Nauczę cię wybierać szczeniaka po papierach, nie po zdjęciu.",
     "ch2_title": "Na zdjęciu każdy szczeniak wygląda idealnie.",
     "ch2_text": "Prawdę mówią dopiero papiery: rodowód, prześwietlenia, oceny sędziów i przegląd hodowlany. Pokażę ci, jak je czytać, po jednym krótkim odcinku.",
-    "ch3_title": "Czytam papiery za ciebie.",
-    "ch3_text": "Moje: biodra A/A, łokcie 0/0, przegląd hodowlany 14 na 14. Fakty według zasad FCI, bez dramatów, z kilkoma żartami.",
+    "ch3_title": "Moi ludzie nic o tym nie wiedzieli. Nauczyli się tego ze mną.",
+    "ch3_text": "Biodra A/A, łokcie 0/0, przegląd hodowlany 14 na 14. Fakty według zasad FCI, bez dramatów, z kilkoma żartami. Wy nauczycie się szybciej: w dwunastu krótkich odcinkach.",
     "cta": "Obejrzyj odcinki",
     "scroll": "Przewiń"
   },
@@ -181,14 +181,14 @@
     "c3_text": "Jak blisko mi do wzorca mojej rasy, spisane po wystawie.",
     "watch": "Obejrzyj odcinek",
     "done_title": "Dobry hodowca pokaże ci wszystkie trzy.",
-    "done_text": "Teraz wiesz, o co pytać. Dłuższa wersja ze źródłami jest tutaj.",
+    "done_text": "Teraz wiecie, o co pytać. Mój człowiek nie wiedział, zanim się pojawiłam. Dlatego te filmy są za darmo.",
     "done_cta": "Przeczytaj moje papiery",
     "progress": "z 3 odwróconych"
   },
   "quiz": {
     "eyebrow": "Carrie pyta",
     "title": "Czy Swissy to pies dla ciebie?",
-    "intro": "Pięć szczerych pytań ode mnie. Nie ma złych odpowiedzi, są tylko przydatne.",
+    "intro": "Pięć szczerych pytań. Moi ludzie odpowiedzieli na nie, zanim wybrali rasę. Zadziałało.",
     "start": "Sprawdźmy",
     "q": "Pytanie",
     "q1": "Ile masz miejsca?",
@@ -243,7 +243,8 @@
     "err_rate": "Hau, dużo pytań naraz! Daj mi chwilę na oddech.",
     "err_gen": "Hm, zgubiłam wątek. Spróbujesz za chwilę?",
     "err_off": "Jeszcze uczę się tu mówić. Wracam niedługo!",
-    "close": "Zamknij"
+    "close": "Zamknij",
+    "story": "Moi ludzie nigdy nie słyszeli o mojej rasie. Chcieli psa dla rodziny, więc usiedli i szczerze spisali, jak żyją, ile mają czasu i czego oczekują od psa. Tak doszli do Swissy. I chcieli psa z rodowodem, bo nie chcieli wspierać nikogo, kto sprzedaje szczenięta bez papierów.\n\nPotem pojawiłam się ja i zaczęło się: szkolenie od pierwszego dnia, pierwsza wystawa „tylko zobaczyć, jak to wygląda”, klub, nowi znajomi, druga i trzecia wystawa, prześwietlenia, testy. I jedno wyznanie: mój człowiek nie wiedział prawie nic z tego, co dziś tłumaczę. Wszystkiego nauczył się dopiero ze mną.\n\nTe filmy to te, które chciałby mieć, zanim w ogóle wziął szczeniaka. Dlatego są za darmo. Niech pomogą jak największej liczbie ludzi. I jak największej liczbie psów."
   },
   "follow": {
     "eyebrow": "Obserwuj mnie",

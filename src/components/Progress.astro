@@ -60,7 +60,7 @@ const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
   /* the script puts the ring where nothing to read or tap lies under it (desktop: a corner, phone: along an edge) */
   .prog.placed .more { left: var(--rx); top: var(--ry); right: auto; bottom: auto; transform: translateY(8px); }
   .prog.placed.cue .more { transform: none; }
-  :global(html.quizzing) .rail, :global(html.quizzing) .more, :global(html.quizzing) .inter { display: none; }
+  :global(html.quizzing) .rail, :global(html.quizzing) .more, :global(html.quizzing) .inter, :global(html.chatting) .rail, :global(html.chatting) .more, :global(html.chatting) .inter { display: none; }
   /* phone: the spine stays, smaller and higher up, clear of the sheets that rise from the bottom */
   @media (max-width: 899px), (hover: none) {
     .rail { right: 8px; top: 38%; height: min(34vh, 300px); }

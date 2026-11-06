@@ -19,8 +19,8 @@
     "ch1_text": "Große Schweizer Sennenhündin und Ausstellungshund. Ich zeige dir, wie du einen Welpen nach seinen Papieren aussuchst, nicht nach dem Foto.",
     "ch2_title": "Auf Fotos sieht jeder Welpe perfekt aus.",
     "ch2_text": "Die Wahrheit steht in den Papieren: Ahnentafel, Röntgen, Richterberichte und Zuchttauglichkeitsprüfung. Ich zeige dir, wie man sie liest, eine kurze Folge nach der anderen.",
-    "ch3_title": "Ich lese die Papiere, damit du es nicht musst.",
-    "ch3_text": "Meine: Hüften A/A, Ellbogen 0/0, Zuchttauglichkeitsprüfung 14 von 14. Fakten nach den Regeln der FCI, kein Drama, ein paar Witze.",
+    "ch3_title": "Meine Menschen wussten nichts davon. Sie haben es mit mir gelernt.",
+    "ch3_text": "Hüften A/A, Ellbogen 0/0, Zuchttauglichkeitsprüfung 14 von 14. Fakten nach den FCI-Regeln, kein Drama, ein paar Witze. Ihr lernt es schneller: in zwölf kurzen Folgen.",
     "cta": "Folgen ansehen",
     "scroll": "Scrollen"
   },
@@ -181,14 +181,14 @@
     "c3_text": "Wie nah ich am Bauplan meiner Rasse bin, aufgeschrieben nach einer Ausstellung.",
     "watch": "Folge ansehen",
     "done_title": "Ein guter Züchter zeigt dir alle drei.",
-    "done_text": "Jetzt weißt du, wonach du fragen musst. Die lange Version mit Quellen gibt es hier.",
+    "done_text": "Jetzt wisst ihr, wonach ihr fragen müsst. Mein Mensch wusste es nicht, bevor ich kam. Deshalb sind diese Videos kostenlos.",
     "done_cta": "Meine Papiere lesen",
     "progress": "von 3 umgedreht"
   },
   "quiz": {
     "eyebrow": "Carrie fragt",
     "title": "Ist ein Swissy der richtige Hund für dich?",
-    "intro": "Fünf ehrliche Fragen von mir. Keine falschen Antworten, nur nützliche.",
+    "intro": "Fünf ehrliche Fragen. Meine Menschen haben sie beantwortet, bevor sie eine Rasse gewählt haben. Es hat funktioniert.",
     "start": "Finden wir’s raus",
     "q": "Frage",
     "q1": "Wie viel Platz hast du?",
@@ -243,7 +243,8 @@
     "err_rate": "Wuff, das sind viele Fragen! Gib mir kurz Zeit zum Durchatmen.",
     "err_gen": "Hm, ich habe den Faden verloren. Versuch es gleich noch einmal?",
     "err_off": "Ich lerne hier noch sprechen. Bald bin ich zurück!",
-    "close": "Schließen"
+    "close": "Schließen",
+    "story": "Meine Menschen hatten noch nie von meiner Rasse gehört. Sie wollten einen Hund für die Familie, also setzten sie sich hin und schrieben ehrlich auf, wie sie leben, wie viel Zeit sie haben und was sie von einem Hund erwarten. So kamen sie auf einen Swissy. Und sie wollten einen Hund mit Papieren, weil sie niemanden unterstützen wollten, der Welpen ohne Papiere verkauft.\n\nDann kam ich, und es ging los: Training vom ersten Tag an, eine erste Ausstellung „nur um zu sehen, wie das läuft“, der Club, neue Freunde, eine zweite und dritte Ausstellung, Röntgen, Tests. Und ein Geständnis: Mein Mensch wusste fast nichts von dem, was ich heute erkläre. Er hat alles mit mir gelernt.\n\nDiese Videos sind die, die er sich gewünscht hätte, bevor er überhaupt einen Welpen holte. Deshalb sind sie kostenlos. Mögen sie so vielen Menschen wie möglich helfen. Und so vielen Hunden."
   },
   "follow": {
     "eyebrow": "Folge mir",

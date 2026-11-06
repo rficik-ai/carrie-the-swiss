@@ -19,8 +19,8 @@
     "ch1_text": "Grande bovaro svizzero e cane da esposizione. Ti insegno a scegliere un cucciolo dai documenti, non dalla foto.",
     "ch2_title": "In foto ogni cucciolo sembra perfetto.",
     "ch2_text": "La verità sta nei documenti: pedigree, lastre, giudizi e prova di selezione. Ti mostro come leggerli, un breve episodio alla volta.",
-    "ch3_title": "Leggo i documenti io, così non devi farlo tu.",
-    "ch3_text": "I miei: anche A/A, gomiti 0/0, prova di selezione 14 su 14. Fatti secondo le regole della FCI, niente drammi, qualche battuta.",
+    "ch3_title": "I miei umani non ne sapevano nulla. L'hanno imparato con me.",
+    "ch3_text": "Anche A/A, gomiti 0/0, valutazione di razza 14 su 14. Fatti secondo le regole FCI, niente drammi, qualche battuta. Voi imparerete più in fretta: in dodici brevi episodi.",
     "cta": "Guarda gli episodi",
     "scroll": "Scorri"
   },
@@ -181,14 +181,14 @@
     "c3_text": "Quanto sono vicina al modello della mia razza, messo nero su bianco dopo un’esposizione.",
     "watch": "Guarda l’episodio",
     "done_title": "Un buon allevatore te li mostra tutti e tre.",
-    "done_text": "Ora sai cosa chiedere. La versione lunga, con le fonti, è qui.",
+    "done_text": "Ora sapete cosa chiedere. Il mio umano non lo sapeva, prima che arrivassi io. Per questo questi video sono gratis.",
     "done_cta": "Leggi i miei documenti",
     "progress": "di 3 girati"
   },
   "quiz": {
     "eyebrow": "Carrie chiede",
     "title": "Uno Swissy fa per te?",
-    "intro": "Cinque domande sincere da parte mia. Nessuna risposta sbagliata, solo risposte utili.",
+    "intro": "Cinque domande oneste. I miei umani hanno risposto prima di scegliere una razza. Ha funzionato.",
     "start": "Scopriamolo",
     "q": "Domanda",
     "q1": "Quanto spazio hai?",
@@ -243,7 +243,8 @@
     "err_rate": "Bau, quante domande! Dammi un attimo per respirare.",
     "err_gen": "Hmm, ho perso il filo. Riprovi tra poco?",
     "err_off": "Sto ancora imparando a parlare qui. Torno prestissimo!",
-    "close": "Chiudi"
+    "close": "Chiudi",
+    "story": "I miei umani non avevano mai sentito parlare della mia razza. Volevano un cane per la famiglia, così si sono seduti e hanno scritto onestamente come vivono, quanto tempo hanno e cosa si aspettano da un cane. Così sono arrivati a uno Swissy. E volevano un cane con il pedigree, perché non volevano sostenere nessuno che vende cuccioli senza documenti.\n\nPoi sono arrivata io, ed è cominciato tutto: addestramento dal primo giorno, una prima esposizione «solo per vedere come funziona», il club, nuovi amici, una seconda e una terza esposizione, radiografie, test. E una confessione: il mio umano non sapeva quasi nulla di ciò che spiego oggi. L'ha imparato tutto con me.\n\nQuesti video sono quelli che avrebbe voluto avere prima ancora di prendere un cucciolo. Per questo sono gratis. Che aiutino più persone possibile. E più cani possibile."
   },
   "follow": {
     "eyebrow": "Seguimi",

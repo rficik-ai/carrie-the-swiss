@@ -19,8 +19,8 @@
     "ch1_text": "Výstavní fena velkého švýcarského salašnického psa. Naučím vás vybrat štěně podle papírů, ne podle fotky.",
     "ch2_title": "Na fotce je krásné každé štěně.",
     "ch2_text": "Pravdu řeknou až papíry: původ, rentgeny, posudky a bonitace. Ukážu vám, jak je číst, vždy v jedné krátké epizodě.",
-    "ch3_title": "Papíry čtu já, abyste nemuseli vy.",
-    "ch3_text": "Ty moje: kyčle A/A, lokty 0/0, bonitace 14 ze 14. Všechno podle pravidel FCI, bez dramatu, s pár vtipy.",
+    "ch3_title": "Moji lidé o tom nevěděli nic. Naučili se to se mnou.",
+    "ch3_text": "Kyčle A/A, lokty 0/0, bonitace 14 ze 14. Vše podle pravidel FCI, bez dramatu, s pár vtipy. Vy se to naučíte rychleji: ve dvanácti krátkých epizodách.",
     "cta": "Podívat se na epizody",
     "scroll": "Posouvejte"
   },
@@ -181,14 +181,14 @@
     "c3_text": "Jak moc se podobám ideálu svého plemene. Rozhodčí to sepíše po výstavě.",
     "watch": "Přehrát epizodu",
     "done_title": "Dobrý chovatel vám ukáže všechny tři.",
-    "done_text": "Teď víte, o co si říct. Delší verze i se zdroji je tady.",
+    "done_text": "Teď víte, na co se ptát. Můj člověk to před mým příchodem nevěděl. Proto jsou tato videa zdarma.",
     "done_cta": "Přečtěte si moje papíry",
     "progress": "ze 3 otočených"
   },
   "quiz": {
     "eyebrow": "Carrie se ptá",
     "title": "Je Swissy ten pravý pes pro vás?",
-    "intro": "Pět upřímných otázek ode mě. Žádné špatné odpovědi, jen užitečné.",
+    "intro": "Pět upřímných otázek. Moji lidé si na ně odpověděli dřív, než si vybrali plemeno. Fungovalo to.",
     "start": "Jdeme na to",
     "q": "Otázka",
     "q1": "Kolik máte místa?",
@@ -243,7 +243,8 @@
     "err_rate": "Haf, to je hodně otázek najednou! Dejte mi chvilku vydechnout.",
     "err_gen": "Hm, ztratila jsem nit. Zkusíte to za chvíli znovu?",
     "err_off": "Ještě se tu učím mluvit. Brzy jsem zpátky!",
-    "close": "Zavřít"
+    "close": "Zavřít",
+    "story": "Moji lidé o mém plemeni nikdy neslyšeli. Chtěli psa do rodiny, a tak si sedli a upřímně sepsali, jak žijí, kolik mají času a co od psa čekají. Tak došli ke Swissy. A chtěli psa s papíry, protože nechtěli podporovat nikoho, kdo prodává štěňata bez nich.\n\nPak jsem přišla já a začalo to: trénink od prvního dne, první výstava „jen se podívat, jak to probíhá“, klub, noví kamarádi, druhá a třetí výstava, rentgeny, testy. A jedno přiznání: můj člověk nevěděl skoro nic z toho, co dnes vysvětluji. Všechno se to naučil až se mnou.\n\nTato videa jsou ta, která by si byl přál mít dřív, než si vůbec pořídil štěně. Proto jsou zdarma. Ať pomůžou co nejvíce lidem. A co nejvíce psům."
   },
   "follow": {
     "eyebrow": "Sledujte mě",

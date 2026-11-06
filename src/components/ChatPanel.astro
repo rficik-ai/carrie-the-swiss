@@ -7,6 +7,7 @@ const chips = [a.c1, a.c2, a.c3, a.c4].filter(Boolean);
 ---
 <div class="chat" data-reveal data-lang={locale} data-err={JSON.stringify({ rate: a.err_rate, gen: a.err_gen, off: a.err_off })}>
   <ol class="log" aria-live="polite">
+    {a.story && <li class="msg carrie story"><p>{a.story}</p></li>}
     <li class="msg carrie"><p>{a.hello}</p></li>
   </ol>
   <div class="chips">{chips.map((c) => <button type="button" class="chip">{c}</button>)}</div>

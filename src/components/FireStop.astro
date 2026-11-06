@@ -33,8 +33,12 @@ const a = (t(locale) as any).ask;
   @media (max-width: 899px), (hover: none) {
     /* at rest: a compact sheet under Carrie; typing or a question chip opens the chat full screen */
     .fshade { background: linear-gradient(0deg, rgba(10,6,3,.96) 0%, rgba(10,6,3,.88) 45%, rgba(10,6,3,0) 72%); }
-    .panel { left: 0; right: 0; top: auto; bottom: 0; width: auto; height: calc(100% - 420px); min-height: 330px; padding: 18px 16px calc(12px + env(safe-area-inset-bottom, 0px)); }
+    .panel { left: 0; right: 0; top: auto; bottom: 0; width: auto; height: calc(100% - 400px); min-height: 370px; padding: 18px 16px calc(12px + env(safe-area-inset-bottom, 0px)); }
     .panel h2 { font-size: 20px; }
+    .panel :global(.story p) { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 15px; line-height: 1.45; }
+    .panel :global(.story) { cursor: pointer; padding-bottom: 8px; }
+    .fstop.chatting .panel :global(.story p) { display: block; -webkit-line-clamp: unset; overflow: visible; font-size: 16px; line-height: 1.55; }
+    .fstop.chatting .panel :global(.story) { cursor: default; }
     .panel :global(.chips) { gap: 6px; }
     .panel :global(.chip) { padding: 7px 12px; font-size: 12.5px; }
     .note { display: none; }
@@ -62,18 +66,20 @@ const a = (t(locale) as any).ask;
     };
     const open = () => {
       if (!narrow() || el.classList.contains('chatting')) return;
-      el.classList.add('chatting'); fit();
+      el.classList.add('chatting'); document.documentElement.classList.add('chatting'); fit();
       document.documentElement.style.overflow = 'hidden';
       window.visualViewport?.addEventListener('resize', fit); window.visualViewport?.addEventListener('scroll', fit);
     };
     const close = () => {
-      el.classList.remove('chatting');
+      el.classList.remove('chatting'); document.documentElement.classList.remove('chatting');
       document.documentElement.style.overflow = '';
       window.visualViewport?.removeEventListener('resize', fit); window.visualViewport?.removeEventListener('scroll', fit);
       (document.activeElement as HTMLElement | null)?.blur();
     };
     panel.addEventListener('focusin', (e) => { if ((e.target as HTMLElement).matches('input')) open(); });
     panel.querySelectorAll('.chip').forEach((c) => c.addEventListener('click', open));
+    // on a phone the resting sheet shows the first lines of Carrie's story; a tap opens it in full
+    panel.querySelector('.story')?.addEventListener('click', () => { const was = el.classList.contains('chatting'); open(); if (!was) panel.querySelector('.log')?.scrollTo({ top: 0 }); });
     panel.querySelector('.cx')!.addEventListener('click', close);
     mountStop('fire', el, { onFrame: () => el.style.setProperty('--hh', `${headerHeight()}px`), onLive: (on) => { if (!on) close(); } });
   }

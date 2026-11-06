@@ -19,8 +19,8 @@
     "ch1_text": "Grand bouvier suisse et chienne d'exposition. Je vous apprends à choisir un chiot sur ses papiers, pas sur sa photo.",
     "ch2_title": "En photo, tous les chiots sont parfaits.",
     "ch2_text": "La vérité est dans les papiers : pedigree, radios, rapports de juges et confirmation. Je vous montre comment les lire, un court épisode à la fois.",
-    "ch3_title": "Je lis les papiers pour que vous n'ayez pas à le faire.",
-    "ch3_text": "Les miens : hanches A/A, coudes 0/0, confirmation 14 sur 14. Des faits selon les règles de la FCI, sans drame, avec quelques blagues.",
+    "ch3_title": "Mes humains n'y connaissaient rien. Ils ont appris avec moi.",
+    "ch3_text": "Hanches A/A, coudes 0/0, confirmation d'élevage 14 sur 14. Des faits selon les règles de la FCI, sans drame, avec quelques blagues. Vous apprendrez plus vite : en douze courts épisodes.",
     "cta": "Voir les épisodes",
     "scroll": "Défiler"
   },
@@ -181,14 +181,14 @@
     "c3_text": "À quel point je ressemble au modèle de ma race, noté par écrit après une exposition.",
     "watch": "Voir l’épisode",
     "done_title": "Un bon éleveur vous montre les trois.",
-    "done_text": "Vous savez maintenant quoi demander. La version longue, avec les sources, est ici.",
+    "done_text": "Maintenant vous savez quoi demander. Mon humain ne le savait pas avant mon arrivée. C'est pour ça que ces vidéos sont gratuites.",
     "done_cta": "Lire mes papiers",
     "progress": "sur 3 retournés"
   },
   "quiz": {
     "eyebrow": "Carrie demande",
     "title": "Un Swissy est-il fait pour vous ?",
-    "intro": "Cinq questions honnêtes de ma part. Pas de mauvaises réponses, que des utiles.",
+    "intro": "Cinq questions honnêtes. Mes humains y ont répondu avant de choisir une race. Ça a marché.",
     "start": "C’est parti",
     "q": "Question",
     "q1": "De combien d’espace disposez-vous ?",
@@ -243,7 +243,8 @@
     "err_rate": "Ouaf, beaucoup de questions ! Laissez-moi reprendre mon souffle.",
     "err_gen": "Hmm, j'ai perdu le fil. Vous réessayez dans un instant ?",
     "err_off": "J'apprends encore à parler ici. Je reviens très vite !",
-    "close": "Fermer"
+    "close": "Fermer",
+    "story": "Mes humains n'avaient jamais entendu parler de ma race. Ils voulaient un chien pour la famille, alors ils se sont assis et ont écrit honnêtement comment ils vivent, combien de temps ils ont et ce qu'ils attendent d'un chien. C'est comme ça qu'ils sont arrivés au Swissy. Et ils voulaient un chien avec des papiers, parce qu'ils ne voulaient soutenir personne qui vend des chiots sans papiers.\n\nPuis je suis arrivée, et tout a commencé : l'éducation dès le premier jour, une première exposition « juste pour voir comment ça se passe », le club, de nouveaux amis, une deuxième et une troisième exposition, des radios, des tests. Et un aveu : mon humain ne savait presque rien de ce que j'explique aujourd'hui. Il a tout appris avec moi.\n\nCes vidéos sont celles qu'il aurait aimé avoir avant même de prendre un chiot. C'est pour ça qu'elles sont gratuites. Qu'elles aident le plus de gens possible. Et le plus de chiens possible."
   },
   "follow": {
     "eyebrow": "Suivez-moi",

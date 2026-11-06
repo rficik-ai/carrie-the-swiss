@@ -19,8 +19,8 @@
     "ch1_text": "Nagy svájci havasi kutya és kiállítási kutya. Megtanítalak a papírjai alapján választani kiskutyát, nem a fotója alapján.",
     "ch2_title": "A fotón minden kiskutya tökéletes.",
     "ch2_text": "Az igazságot a papírok mondják meg: törzskönyv, röntgen, bírói bírálatok és tenyészszemle. Megmutatom, hogyan olvasd őket, epizódról epizódra, röviden.",
-    "ch3_title": "Elolvasom helyetted a papírokat.",
-    "ch3_text": "Az enyéim: csípő A/A, könyök 0/0, tenyészszemle 14/14. Tények az FCI szabályai szerint, dráma nélkül, pár poénnal.",
+    "ch3_title": "Az embereim semmit sem tudtak erről. Velem tanulták meg.",
+    "ch3_text": "Csípő A/A, könyök 0/0, tenyészszemle 14 a 14-ből. Tények az FCI szabályai szerint, dráma nélkül, néhány viccel. Ti gyorsabban megtanuljátok: tizenkét rövid epizódban.",
     "cta": "Nézd meg az epizódokat",
     "scroll": "Görgess"
   },
@@ -181,14 +181,14 @@
     "c3_text": "Mennyire állok közel a fajtám tervrajzához, egy kiállítás után leírva.",
     "watch": "Megnézem az epizódot",
     "done_title": "Egy jó tenyésztő mindhármat megmutatja.",
-    "done_text": "Most már tudod, mit kérj. A hosszabb változat forrásokkal itt van.",
+    "done_text": "Most már tudjátok, mit kell kérni. Az emberem nem tudta, mielőtt én jöttem. Ezért ingyenesek ezek a videók.",
     "done_cta": "Olvasd el a papírjaimat",
     "progress": "/ 3 megfordítva"
   },
   "quiz": {
     "eyebrow": "Carrie kérdez",
     "title": "Neked való a Swissy?",
-    "intro": "Öt őszinte kérdés tőlem. Nincs rossz válasz, csak hasznos.",
+    "intro": "Öt őszinte kérdés. Az embereim megválaszolták őket, mielőtt fajtát választottak. Bevált.",
     "start": "Derítsük ki",
     "q": "Kérdés",
     "q1": "Mennyi helyed van?",
@@ -243,7 +243,8 @@
     "err_rate": "Vau, ez sok kérdés! Adj egy percet, hogy kifújjam magam.",
     "err_gen": "Hm, elvesztettem a fonalat. Megpróbálod mindjárt újra?",
     "err_off": "Még tanulok itt beszélni. Hamarosan visszajövök!",
-    "close": "Bezárás"
+    "close": "Bezárás",
+    "story": "Az embereim sosem hallottak a fajtámról. Kutyát akartak a családba, ezért leültek és őszintén leírták, hogyan élnek, mennyi idejük van és mit várnak egy kutyától. Így jutottak el a Swissyhez. És törzskönyves kutyát akartak, mert nem akartak senkit támogatni, aki papírok nélküli kölyköket árul.\n\nAztán jöttem én, és elkezdődött: tréning az első naptól, egy első kiállítás „csak hogy lássuk, hogy megy”, a klub, új barátok, második és harmadik kiállítás, röntgen, vizsgálatok. És egy vallomás: az emberem szinte semmit sem tudott abból, amit ma elmagyarázok. Mindent velem tanult meg.\n\nEzek azok a videók, amiket szeretett volna látni, mielőtt egyáltalán kölyköt hozott. Ezért ingyenesek. Segítsenek minél több embernek. És minél több kutyának."
   },
   "follow": {
     "eyebrow": "Kövess",
