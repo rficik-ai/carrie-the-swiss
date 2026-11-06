@@ -1,6 +1,8 @@
 ---
 import { type Locale, t } from '../i18n';
-import { EPISODES, INSTAGRAM } from '../data/episodes';
+import { EPISODES, YOUTUBE } from '../data/episodes';
+// what plays in the page: YouTube IDs ("yt:ID") or, until a part is on YouTube, the file itself
+const srcs = (e: (typeof EPISODES)[number]) => e.yt ? e.yt.map((id) => `yt:${id}`) : e.mp4 ?? [];
 import Split from './Split.astro';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -61,10 +63,10 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
             <span class="plate"><span class="stitle">{e.title}</span><span class="dot"></span></span>
           </button></div>
           <div class="pages">
-            <a href={e.yt ? `https://www.youtube.com/shorts/${e.yt[0]}` : INSTAGRAM} target="_blank" rel="noopener" class="page cover" data-n={e.n} data-yt={e.yt ? e.yt.join(',') : undefined} data-title={e.title} aria-label={e.yt ? `${play}: ${e.title}` : s.episodes.watch}>
+            <a href={e.yt ? `https://www.youtube.com/shorts/${e.yt[0]}` : e.mp4 ? e.mp4[0] : YOUTUBE} target="_blank" rel="noopener" class="page cover" data-n={e.n} data-yt={srcs(e).length ? srcs(e).join(',') : undefined} data-dates={e.partDates?.join(',')} data-title={e.title} aria-label={srcs(e).length ? `${play}: ${e.title}` : s.episodes.watch}>
               <span class="bg" style={e.image ? `background-image:url(${e.image})` : undefined}></span>
               {e.image && <video class="clip" muted loop playsinline preload="none" aria-hidden="true" data-src={e.image.replace('.jpg', '.mp4')}></video>}
-              {e.yt && <span class="playbtn" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span>}
+              {srcs(e).length > 0 && <span class="playbtn" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span>}
             </a>
             <div class="page story">
               <button type="button" class="shut" aria-label={close}>✕</button>
@@ -74,9 +76,9 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
               <span class="rule" aria-hidden="true"></span>
               <p class="line">{lines[e.n]?.line}</p>
               {e.parts && <p class="parts">{s.episodes.parts}: {e.parts.join(' · ')}</p>}
-              {e.yt
-                ? <a class="go play" href={`https://www.youtube.com/shorts/${e.yt[0]}`} data-n={e.n} data-yt={e.yt.join(',')} data-title={e.title}><span class="pi" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span><span>{play}</span></a>
-                : <a class="go link" href={INSTAGRAM} target="_blank" rel="noopener">{s.episodes.watch} →</a>}
+              {srcs(e).length
+                ? <a class="go play" href={e.yt ? `https://www.youtube.com/shorts/${e.yt[0]}` : e.mp4![0]} data-n={e.n} data-yt={srcs(e).join(',')} data-dates={e.partDates?.join(',')} data-title={e.title}><span class="pi" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span><span>{play}</span></a>
+                : <a class="go link" href={YOUTUBE} target="_blank" rel="noopener">{s.episodes.watch} →</a>}
             </div>
           </div>
         </li>
@@ -151,6 +153,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
   .status { font-size: 11px; font-weight: 700; letter-spacing: .06em; border: 1px solid rgba(138,100,36,.45); color: #5c4520; border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
   .status.out { background: var(--gold); color: #1a1408; border-color: var(--gold); }
   .status:empty { display: none; }
+  .book:not(.out) .playbtn, .book:not(.out) .go.play { display: none; }   /* nothing to play before the day */
   .title { margin: 0; font-size: clamp(21px, 1.8vw, 27px); line-height: 1.16; }
   .rule { width: 46px; height: 2px; background: var(--grad-gold, var(--gold)); }
   .line { margin: 0; font-size: 16px; line-height: 1.55; color: #3b342a; }
@@ -182,7 +185,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
   .ptitle { font: 800 17px/1.2 var(--f-head); letter-spacing: -0.01em; text-transform: uppercase; }
   .pclose { background: none; border: 1px solid rgba(234,211,154,.4); color: var(--ivory); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 16px; }
   .frame { position: relative; width: var(--fw); height: calc(var(--fw) * 16 / 9); border-radius: 14px; overflow: hidden; background: #000; }
-  .frame :global(iframe) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+  .frame :global(iframe), .frame :global(video) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; background: #000; }
   .pparts { display: flex; gap: 8px; flex-wrap: wrap; }
   .pparts :global(button) { background: none; border: 1px solid rgba(234,211,154,.4); color: var(--ivory); border-radius: 999px; padding: 8px 14px; cursor: pointer; font: 600 13px var(--f-body); }
   .pparts :global(button[aria-pressed='true']) { background: var(--gold); color: #1a1408; border-color: var(--gold); }
@@ -353,15 +356,20 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
   const frame = dlg.querySelector<HTMLElement>('.frame')!;
   const partsBox = dlg.querySelector<HTMLElement>('.pparts')!;
   const showPart = (id: string) => {
-    frame.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1" title="Carrie the Swiss" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+    frame.innerHTML = id.startsWith('yt:')
+      ? `<iframe src="https://www.youtube-nocookie.com/embed/${id.slice(3)}?autoplay=1&rel=0&playsinline=1" title="Carrie the Swiss" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`
+      : `<video src="${id}" controls autoplay playsinline preload="metadata" title="Carrie the Swiss"></video>`;
     partsBox.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === id)));
   };
   shelf.querySelectorAll<HTMLAnchorElement>('a[data-yt]').forEach((a) => {
     a.addEventListener('click', (ev) => {
       if (typeof dlg.showModal !== 'function') return;
       ev.preventDefault();
+      // a part before its release day is not offered yet
+      const dates = (a.dataset.dates || '').split(',');
+      const ids = a.dataset.yt!.split(',').filter((_, i) => !dates[i] || new Date(dates[i] + 'T00:00:00') <= new Date());
+      if (!ids.length) return;
       track('ep_play', a.dataset.n ?? '');
-      const ids = a.dataset.yt!.split(',');
       dlg.querySelector('.ptitle')!.textContent = a.dataset.title!;
       partsBox.innerHTML = ids.length > 1 ? ids.map((id, i) => `<button type="button" data-id="${id}">${i + 1}/${ids.length}</button>`).join('') : '';
       partsBox.querySelectorAll<HTMLButtonElement>('button').forEach((b) => b.addEventListener('click', () => showPart(b.dataset.id!)));

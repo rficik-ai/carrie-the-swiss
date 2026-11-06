@@ -8,7 +8,10 @@ export type Episode = {
   parts?: string[];
   image?: string; // /assets/ep/epXX.jpg once covers are added
   yt?: string[]; // YouTube video IDs (one per part)
+  mp4?: string[]; // until a part is on YouTube: the finished file itself (Higgsfield CDN), one per part
+  partDates?: string[]; // release day of each part (a part plays only from that day)
 };
+export const CDN = 'https://d2ol7oe51mr4n9.cloudfront.net/user_3FPAK2UslvAxxYzOCjOXqZRN8Bf/';
 
 export const YOUTUBE = 'https://www.youtube.com/@carrietheswiss';
 export const INSTAGRAM = 'https://www.instagram.com/carrietheswiss/';
@@ -23,7 +26,7 @@ export const EPISODES: Episode[] = [
   { n: '07', yt: ['I5Ef4M4tZhA'], title: 'My three colours', image: '/assets/ep/ep07.jpg', topic: 'genetics', date: '2026-10-16' },
   { n: '08', yt: ['afU-00GUDLI'], title: 'A responsible litter', image: '/assets/ep/ep08.jpg', topic: 'breeding', date: '2026-10-19' },
   { n: '09', yt: ['xX_iClvxNFE', 'mia5S8l_G1E'], title: "Why a good puppy isn't cheap", image: '/assets/ep/ep09.jpg', topic: 'buying', date: '2026-10-21', parts: ['The mom', 'One litter', 'My whole life'] },
-  { n: '10', title: 'What to ask a breeder', image: '/assets/ep/ep10.jpg', topic: 'buying', date: '2026-10-28', parts: ['The parents', 'The puppy', 'After you say yes'] },
-  { n: '11', title: 'My breed evaluation', image: '/assets/ep/ep11.jpg', topic: 'breeding', date: '2026-11-09' },
+  { n: '10', mp4: [CDN + '8c4bb7f2-0ea7-419b-88f2-70f095285f97.mp4', CDN + 'e4664bc7-f37c-4244-92d4-d818e02311c3.mp4', CDN + 'e5d48c3a-3570-4ecb-ae3e-8d7de6b213dd.mp4'], partDates: ['2026-11-04', '2026-11-06', '2026-11-09'], title: 'What to ask a breeder', image: '/assets/ep/ep10.jpg', topic: 'buying', date: '2026-11-04', parts: ['The parents', 'The puppy', 'After you say yes'] },
+  { n: '11', mp4: [CDN + '187f8f03-8449-4b3e-b891-fe8411443c9f.mp4'], partDates: ['2026-11-11'], title: 'My breed evaluation', image: '/assets/ep/ep11.jpg', topic: 'breeding', date: '2026-11-11' },
   { n: '12', title: 'Is a Swissy right for you?', topic: 'ownership', date: null },
 ];
