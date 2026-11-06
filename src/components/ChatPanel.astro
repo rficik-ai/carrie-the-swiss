@@ -18,23 +18,27 @@ const chips = [a.c1, a.c2, a.c3, a.c4].filter(Boolean);
 </div>
 
 <style>
-  .chat { display: grid; gap: 14px; padding: 18px; border-radius: 22px; background: rgba(251,248,241,.04); box-shadow: 0 0 0 1px rgba(234,211,154,.2), 0 40px 80px -40px rgba(0,0,0,.8); }
-  .log { list-style: none; margin: 0; padding: 4px; display: flex; flex-direction: column; gap: 10px; height: min(440px, 56vh); overflow-y: auto; scroll-behavior: smooth; }
-  :global(.msg) { max-width: 86%; padding: 12px 16px; border-radius: 18px; font-size: 16px; line-height: 1.5; animation: pop .35s cubic-bezier(.2,.7,.2,1); }
+  .chat { display: grid; gap: 14px; }
+  /* the conversation reads like a transcript: no bubbles, a hairline between the lines, Carrie in white, you in gold */
+  .log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; height: min(440px, 56vh); overflow-y: auto; scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: rgba(201,163,91,.35) transparent; }
+  :global(.msg) { max-width: 100%; padding: 12px 0; border-top: 1px solid rgba(244,238,226,.16); font-size: 16px; line-height: 1.55; animation: pop .35s cubic-bezier(.2,.7,.2,1); }
+  :global(.msg:first-child) { border-top: 0; }
   :global(.msg p) { margin: 0; white-space: pre-wrap; }
-  :global(.msg.carrie) { align-self: flex-start; background: #f8f2e4; color: #1c1914; border-bottom-left-radius: 4px; }
-  :global(.msg.me) { align-self: flex-end; background: var(--gold); color: #1a1408; border-bottom-right-radius: 4px; }
+  :global(.msg.carrie) { color: #fff; font-weight: 400; }
+  :global(.msg.carrie p) { padding-left: 18px; position: relative; }
+  :global(.msg.carrie p)::before { content: ''; position: absolute; left: 0; top: .62em; width: 8px; height: 1px; background: var(--gold-hi); }
+  :global(.msg.me) { color: var(--gold-hi); font-weight: 500; text-align: right; }
   :global(.msg.typing p)::after { content: '•••'; letter-spacing: 3px; animation: blink 1.2s infinite; }
-  :global(.msg.err) { background: rgba(180,97,42,.18); color: var(--ivory); }
+  :global(.msg.err) { color: #e7a07a; }
   @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.98); } }
   @keyframes blink { 50% { opacity: .3; } }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .chip { border: 1px solid rgba(234,211,154,.4); background: none; color: var(--ivory); border-radius: 999px; padding: 8px 14px; font: 600 13px var(--f-body); cursor: pointer; transition: background .25s, color .25s; }
   .chip:hover { background: var(--gold); color: #1a1408; }
   .send { display: flex; gap: 10px; }
-  .send input { flex: 1; min-width: 0; height: 52px; border-radius: 999px; border: 1px solid rgba(234,211,154,.35); background: rgba(13,12,10,.6); color: var(--ivory); padding: 0 20px; font: 500 16px var(--f-body); }
+  .send input { flex: 1; min-width: 0; height: 52px; border-radius: 999px; border: 1px solid rgba(244,238,226,.4); background: rgba(13,12,10,.35); color: var(--ivory); padding: 0 20px; font: 500 16px var(--f-body); }
   .send input:focus { outline: none; border-color: var(--gold); }
-  .send button { flex: none; width: 52px; height: 52px; border-radius: 50%; border: 0; background: var(--grad-gold, var(--gold)); cursor: pointer; display: grid; place-items: center; }
+  .send button { flex: none; width: 52px; height: 52px; border-radius: 50%; border: 0; background: var(--gold-hi); cursor: pointer; display: grid; place-items: center; }
   .send button svg { width: 22px; height: 22px; fill: #1a1408; }
   .send button:disabled { opacity: .5; cursor: default; }
 </style>
