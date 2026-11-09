@@ -92,6 +92,7 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
         <p class="eyebrow">{E.more_eyebrow ?? 'Coming next'}</p>
         <p class="more-title">{E.more_title ?? 'More seasons are in production.'}</p>
         <p class="muted">{E.more_text ?? 'So much more to learn. Follow along so you don\'t miss the next shelf.'}</p>
+        <p class="nl-cta"><span>{(s as any).follow.nl_title}</span><a class="pill-cta" href={`/${locale}/#follow`} data-nl="shelf">{(s as any).follow.nl_button} <span aria-hidden="true">→</span></a></p>
       </div>
     </div>
   </div>
@@ -175,6 +176,10 @@ const sceneVars = `--num-top:${SHELF.numTop}px;--num-h:${SHELF.numH}px;--num-siz
   .ghost i { font: 600 15px var(--f-display); font-style: normal; color: rgba(138,100,36,.7); }
   .more-title { margin: 6px 0 6px; font: 800 clamp(19px, 1.9vw, 25px)/1.18 var(--f-head); letter-spacing: -0.01em; text-transform: uppercase; }
   .more .muted { margin: 0; max-width: 34em; }
+  /* the cheat sheet under "more seasons": the sentence and a small pill, nothing boxed */
+  .nl-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin: 14px 0 0; max-width: 40em; font-size: 14.5px; line-height: 1.45; }
+  .nl-cta span { flex: 1 1 16em; text-wrap: pretty; }
+  .nl-cta a { min-height: 42px; padding: 0 20px; white-space: nowrap; }
   .plank { height: 18px; margin-top: 0; border-radius: 2px;
     background: linear-gradient(180deg, #6b4a2b, #4a311b 60%, #2e1f12); box-shadow: 0 14px 24px -10px rgba(40,25,10,.55), inset 0 1px 0 rgba(255,220,170,.25); }
 
