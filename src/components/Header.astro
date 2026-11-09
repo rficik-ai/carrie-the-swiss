@@ -1,18 +1,21 @@
 ---
+import { existsSync } from 'node:fs';
 import Music from './Music.astro';
 import { availableLocales, LOCALE_LABELS, type Locale, t } from '../i18n';
 interface Props { locale: Locale; page?: string }
 const { locale, page = '' } = Astro.props;
 const home = `/${locale}/`;
 const s = t(locale);
+// the crest shows only once its picture is in public/ (until then no request, so no 404 in the console on every page)
+const CREST = existsSync(`${process.cwd()}/public/assets/img/crest.png`);
 ---
 <header class="top" id="top">
   <div class="wrap bar">
     <a class="mark" href={`/${locale}/`} aria-label="Carrie the Swiss">
-      <span class="crest" aria-hidden="true">
+      {CREST && <span class="crest" aria-hidden="true">
         <img src="/assets/img/crest.png" alt="" width="40" height="48" onerror="this.parentElement.remove()" />
-      </span>
-      <span class="words"><b>CARRIE</b><small>THE SWISS</small></span>
+      </span>}
+      <span class="words"><b>CARRIE</b> <small>THE SWISS</small></span>
     </a>
     <nav class="links" aria-label="Main">
       <a href={`${home}#episodes`}>{s.nav.episodes}</a>
@@ -28,7 +31,7 @@ const s = t(locale);
     </a>
     <Music locale={locale} />
     <details class="lang">
-      <summary aria-label={s.nav.language}>{locale.toUpperCase()}<span aria-hidden="true">▾</span></summary>
+      <summary aria-label={`${locale.toUpperCase()}, ${s.nav.language}`}>{locale.toUpperCase()}<span aria-hidden="true">▾</span></summary>
       <ul>
         {availableLocales().map((l) => (
           <li><a href={`/${l}/${page}`} hreflang={l} aria-current={l === locale ? 'page' : undefined}>{LOCALE_LABELS[l]}</a></li>
