@@ -119,6 +119,17 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
     new IntersectionObserver(([e]) => { const was = on; on = e.isIntersecting; if (on && !was) { last = scrollY; requestAnimationFrame(tick); } }).observe(mqTrack);
   }
   const form = document.querySelector<HTMLFormElement>('.follow .notify');
+  // the cheat-sheet offers elsewhere on the page (after the quiz, under the shelf) bring you straight to this form, ready to type
+  document.addEventListener('click', (e) => {
+    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-nl]');
+    if (!a || !form) return;
+    e.preventDefault();
+    track('signup', `cta-${a.dataset.nl}`);
+    form.dataset.from = a.dataset.nl;
+    form.scrollIntoView({ block: 'center' });
+    // focus once the film has caught up with the jump (an earlier focus can be lost while the page re-lays out)
+    setTimeout(() => form.querySelector<HTMLInputElement>('input[type=email]')?.focus({ preventScroll: true }), 120);
+  });
   if (form) {
     const M = JSON.parse(form.dataset.msg!);
     const msg = form.querySelector<HTMLElement>('.nl-msg')!;
@@ -132,10 +143,11 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
       const consent = (form.elements.namedItem('consent') as HTMLInputElement).checked;
       if (!/^\S+@\S+\.\S+$/.test(email) || !consent) return say(M.invalid, true);
       btn.disabled = true; track('signup', 'try');
+      const from = form.dataset.from;   // which offer brought the visitor here (quiz / shelf), if any
       try {
         const r = await fetch('/api/subscribe', { method: 'POST', headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ email, consent, lang: form.dataset.lang, website: (form.elements.namedItem('website') as HTMLInputElement).value }) });
-        if (r.ok) { say(M.ok); form.reset(); track('signup', 'ok'); } else say(r.status === 503 ? M.off : r.status === 400 ? M.invalid : M.err, true);
+        if (r.ok) { say(M.ok); form.reset(); track('signup', 'ok'); if (from) track('signup', `ok-${from}`); } else say(r.status === 503 ? M.off : r.status === 400 ? M.invalid : M.err, true);
       } catch { say(M.err, true); }
       btn.disabled = false;
     });
