@@ -22,6 +22,11 @@ const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
       <text><textPath href="#ringp" textLength="282" lengthAdjust="spacing">{`${s.hero.scroll} ✦ Carrie the Swiss ✦ `.toUpperCase()}</textPath></text></svg>
     <i aria-hidden="true"></i>
   </button>
+  {/* D-002 v2 (Rob 9. 11.): the cheat sheet one tap away during the whole film. A small gold bell rests in the corner
+      and sits in the middle of the turning ring whenever the ring shows; it takes you to the form at the end */}
+  <a class="bell" href={`/${locale}/#follow`} data-nl="ring" aria-label={s.follow.nl_title} title={s.follow.nl_title}>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2c-3.1 0-5.4 2.4-5.4 5.6v3.6L4.8 15.6c-.3.5 0 1.1.6 1.1h13.2c.6 0 .9-.6.6-1.1l-1.8-3.2V8.8c0-3.2-2.3-5.6-5.4-5.6Z" /><path d="M9.7 19.1a2.4 2.4 0 0 0 4.6 0" /></svg>
+  </a>
 </nav>
 
 <style>
@@ -72,6 +77,23 @@ const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
   /* phones: the chapter text is centred at the bottom, so the ring keeps to the corner */
   @media (max-width: 899px), (hover: none) { .more { width: 74px; height: 74px; left: auto; right: 10px; transform: translateY(8px); } .prog.cue .more { transform: none; } }
   @media (prefers-reduced-motion: reduce) { .more i, .more .ring { animation: none; } }
+  /* the bell: the drip line in the ring makes room for it */
+  .more i { display: none; }
+  .bell { position: fixed; right: 56px; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); width: 44px; height: 44px; border-radius: 50%;
+    display: grid; place-items: center; pointer-events: auto; background: var(--grad-gold); color: #1c1914;
+    box-shadow: 0 2px 10px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,245,215,.6); transition: opacity .4s, scale .25s; }
+  .bell svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; transform-origin: 50% 15%; }
+  .bell:hover { scale: 1.06; } .bell:hover svg { animation: ring-bell .9s ease-in-out; }
+  @keyframes ring-bell { 0%, 100% { rotate: 0deg } 20% { rotate: 14deg } 40% { rotate: -11deg } 60% { rotate: 7deg } 80% { rotate: -3deg } }
+  .prog.belled .bell { right: auto; bottom: auto; left: calc(var(--bx) - 22px); top: calc(var(--by) - 22px); }
+  .prog.atform .bell, .prog.busy .bell { opacity: 0; pointer-events: none; }
+  :global(html.quizzing) .bell, :global(html.chatting) .bell { display: none; }
+  @media (max-width: 899px), (hover: none) {
+    .bell { width: 36px; height: 36px; right: 29px; bottom: calc(29px + env(safe-area-inset-bottom, 0px)); }
+    .bell svg { width: 17px; height: 17px; }
+    .prog.belled .bell { left: calc(var(--bx) - 18px); top: calc(var(--by) - 18px); }
+  }
+  @media (prefers-reduced-motion: reduce) { .bell:hover svg { animation: none; } }
 </style>
 
 <script>
@@ -82,6 +104,9 @@ const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
   if (nav && sec) {
     const items = [...nav.querySelectorAll<HTMLLIElement>('.rail li')];
     const more = nav.querySelector<HTMLButtonElement>('.more')!;
+    const follow = document.getElementById('follow');
+    // the bell rests while the form itself is on screen (nothing to jump to)
+    if (follow) new IntersectionObserver(([e]) => nav.classList.toggle('atform', e.isIntersecting), { threshold: 0.15 }).observe(follow);
     const stage = sec.querySelector<HTMLElement>('.stage')!;
     const hold = (id: string) => HOUSE.timeline.steps.find((s) => s.kind === 'hold' && s.stop === id)!;
     // chapter starts in page pixels (old film: 1000vh of scroll; house after HOUSE_START)
@@ -122,6 +147,7 @@ const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
         const id = items[c]?.dataset.c; if (id) track('scene', id, true);
         items.forEach((li, i) => { li.classList.toggle('on', i === c); li.classList.toggle('past', i < c); });
       }
+      nav.classList.toggle('busy', busy());
     };
     // the cue: on the first screen after a moment, anywhere in the film after 3 s of standing still. Not after the film,
     // and not while something lies open on top (the shelf's open book, a paper being read, the quiz method, a dialog)
@@ -171,7 +197,7 @@ const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
       return out;
     };
     const poke = () => {
-      nav.classList.remove('cue'); clearTimeout(idleT);
+      nav.classList.remove('cue', 'belled'); clearTimeout(idleT);
       idleT = window.setTimeout(() => {
         const first = scrollY < 30, film = !document.documentElement.classList.contains('nofilm');
         const late = scrollY + innerHeight * 0.5 > filmEnd || scrollY > document.documentElement.scrollHeight - innerHeight * 1.5;
@@ -183,6 +209,7 @@ const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
         more.style.setProperty('--rx', `${at.x}px`); more.style.setProperty('--ry', `${at.y}px`); nav.classList.add('placed');
         void more.offsetWidth; more.style.transition = '';
         nav.classList.add('cue');
+        nav.style.setProperty('--bx', `${at.x + size / 2}px`); nav.style.setProperty('--by', `${at.y + size / 2}px`); nav.classList.add('belled');
       }, scrollY < 30 ? 1200 : 3000);
     };
     addEventListener('scroll', () => { update(); poke(); }, { passive: true });

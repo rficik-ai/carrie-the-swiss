@@ -78,7 +78,7 @@ export async function event(request, env, ctx) {
 // ---------------------------------------------------------------- the page for Rob
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
-const NAMES = { ig: 'Instagram', yt: 'YouTube', fb: 'Facebook', start: 'začatý', done: 'dokončený', try: 'odoslaný', ok: 'prihlásený (čaká na potvrdenie)', confirmed: 'potvrdený', zoom: 'zväčšená fotka/papier', q: 'otázka', 'cta-quiz': 'klik na ponuku ťaháka po kvíze', 'cta-shelf': 'klik na ponuku ťaháka pri knižnici', 'ok-quiz': 'prihlásený cez ponuku po kvíze', 'ok-shelf': 'prihlásený cez ponuku pri knižnici' };
+const NAMES = { ig: 'Instagram', yt: 'YouTube', fb: 'Facebook', start: 'začatý', done: 'dokončený', try: 'odoslaný', ok: 'prihlásený (čaká na potvrdenie)', confirmed: 'potvrdený', zoom: 'zväčšená fotka/papier', q: 'otázka', 'cta-quiz': 'klik na ponuku ťaháka po kvíze', 'cta-shelf': 'klik na ponuku ťaháka pri knižnici', 'ok-quiz': 'prihlásený cez ponuku po kvíze', 'ok-shelf': 'prihlásený cez ponuku pri knižnici', 'cta-ring': 'klik na zvonček v krúžku', 'ok-ring': 'prihlásený cez zvonček v krúžku' };
 const nice = (v) => NAMES[v] ?? v;
 const SCENES = [['intro', 'Úvod'], ['library', 'Knižnica'], ['real', 'Fotky'], ['wall', 'Stena'], ['desk', 'Stôl'], ['garden', 'Kvíz'], ['fire', 'Kozub'], ['door', 'Dvere'], ['follow', 'Sledujte ma']];
 
