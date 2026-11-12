@@ -126,9 +126,22 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
     e.preventDefault();
     track('signup', `cta-${a.dataset.nl}`);
     form.dataset.from = a.dataset.nl;
+    const input = form.querySelector<HTMLInputElement>('input[type=email]');
+    // focus inside the tap itself (phones open the keyboard only then), then jump
+    input?.focus({ preventScroll: true });
     form.scrollIntoView({ block: 'center' });
-    // focus once the film has caught up with the jump (an earlier focus can be lost while the page re-lays out)
-    setTimeout(() => form.querySelector<HTMLInputElement>('input[type=email]')?.focus({ preventScroll: true }), 120);
+    // the page glides there (up to ~2 s on a long jump) while the film re-lays out behind it, so the form can end up
+    // off screen: once the glide ends, look again, jump straight to it if needed, and focus again if it was lost
+    let done = false;
+    const settle = () => {
+      if (done) return; done = true;
+      const r = form.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) form.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior });
+      const refocus = () => { if (input && document.activeElement !== input && !form.contains(document.activeElement)) input.focus({ preventScroll: true }); };
+      refocus(); setTimeout(refocus, 400);   // the film can still take focus away right after the glide
+    };
+    addEventListener('scrollend', settle, { once: true });
+    setTimeout(settle, 2200);   // browsers without scrollend
   });
   if (form) {
     const M = JSON.parse(form.dataset.msg!);
