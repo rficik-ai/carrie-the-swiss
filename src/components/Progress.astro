@@ -17,7 +17,7 @@ const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
   <div class="inter" aria-hidden="true">{CH.map((c, i) => i > 0 && (
     <p class="card" data-c={c}><span class="no">{String(i + 1).padStart(2, '0')}</span><span class="statement xl">{name(c)}</span></p>
   ))}</div>
-  <button type="button" class="more" aria-label={h.more}>
+  <button type="button" class="more" aria-label={`${s.hero.scroll} – Carrie the Swiss`}>
     <svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="ringp" d="M60,60 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0" /></defs>
       <text><textPath href="#ringp" textLength="282" lengthAdjust="spacing">{`${s.hero.scroll} ✦ Carrie the Swiss ✦ `.toUpperCase()}</textPath></text></svg>
     <i aria-hidden="true"></i>
