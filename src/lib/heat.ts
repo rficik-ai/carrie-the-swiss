@@ -75,13 +75,24 @@ export function startHeat() {
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  // A tap counts when the finger (or button) comes up close to where it went down. A swipe that scrolls the page ends in
+  // pointercancel or moves away, so it is not a tap: before 16. 11. 2026 every swipe start was counted as a "dead tap".
+  let down: { id: number; x: number; y: number; s: string; live: number } | null = null;
   addEventListener('pointerdown', (ev) => {
-    if (!ev.isPrimary || ev.button > 0 || taps >= MAX_TAPS) return;
-    taps++;
-    const col = Math.min(GRID - 1, Math.max(0, Math.floor((ev.clientX / innerWidth) * GRID)));
-    const row = Math.min(GRID - 1, Math.max(0, Math.floor((ev.clientY / innerHeight) * GRID)));
+    if (!ev.isPrimary || ev.button > 0) { down = null; return; }
     const live = (ev.target as Element | null)?.closest?.(CLICKABLE) ? 1 : 0;   // 0 = a tap on nothing clickable
-    queue.push({ e: 'hm', v: `${page}.${scene()}.${col}x${row}.${live}` });
+    down = { id: ev.pointerId, x: ev.clientX, y: ev.clientY, s: scene(), live };
+  }, { passive: true, capture: true });
+  addEventListener('pointercancel', () => { down = null; }, { passive: true, capture: true });
+  addEventListener('pointerup', (ev) => {
+    const d = down;
+    down = null;
+    if (!d || ev.pointerId !== d.id || taps >= MAX_TAPS) return;
+    if (Math.hypot(ev.clientX - d.x, ev.clientY - d.y) > 12) return;   // a swipe or a drag, not a tap
+    taps++;
+    const col = Math.min(GRID - 1, Math.max(0, Math.floor((d.x / innerWidth) * GRID)));
+    const row = Math.min(GRID - 1, Math.max(0, Math.floor((d.y / innerHeight) * GRID)));
+    queue.push({ e: 'hm', v: `${page}.${d.s}.${col}x${row}.${d.live}` });
     if (queue.length >= 30) flush(false);
   }, { passive: true, capture: true });
 
