@@ -1,7 +1,10 @@
 // Anonymous measurement (worker/stats.js): what happened on the page, never who did it. No cookie, no id, nothing
 // stored in the browser; a visitor who asks not to be tracked (Global Privacy Control / Do Not Track) sends nothing.
+// Automated browsers send nothing either (the nightly Lighthouse runs, crawlers): they are not people. The user agent
+// is only read here, never sent or stored.
 const nav = navigator as Navigator & { globalPrivacyControl?: boolean };
-const off = nav.globalPrivacyControl === true || nav.doNotTrack === '1';
+const robot = nav.webdriver === true || /bot\/|crawl|spider|slurp|headlesschrome|lighthouse/i.test(nav.userAgent);
+const off = nav.globalPrivacyControl === true || nav.doNotTrack === '1' || robot;
 const lang = document.documentElement.lang.slice(0, 2);
 const device = () => (matchMedia('(max-width: 899px), (hover: none)').matches ? 'm' : 'd');
 const sent = new Set<string>();
