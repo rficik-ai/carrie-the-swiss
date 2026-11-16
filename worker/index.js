@@ -123,18 +123,46 @@ async function cached(request, ctx, ttl, make) {
   return res;
 }
 
+// YouTube's feed sometimes answers 404/5xx to Cloudflare; try both feed forms, keep the last good list for 30 days
+// and never answer with an error (the page keeps its static list when items is empty)
+const FEEDS = [`https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL}`, `https://www.youtube.com/feeds/videos.xml?playlist_id=UU${CHANNEL.slice(2)}`];
+const jsonList = (items, ttl) => new Response(JSON.stringify({ items }), { headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': `public, max-age=${ttl}` } });
+
+async function feedItems() {
+  for (const u of FEEDS) {
+    try {
+      const r = await fetch(u, { headers: { 'user-agent': 'Mozilla/5.0 (compatible; carrietheswiss.com feed reader)', accept: 'application/atom+xml, application/xml;q=0.9, */*;q=0.8' }, cf: { cacheTtlByStatus: { '200-299': 1800, '300-599': 0 } } });
+      if (!r.ok) { console.log('latest feed', r.status, u.includes('playlist') ? 'playlist' : 'channel'); continue; }
+      const xml = await r.text();
+      const items = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].slice(0, 12).map((m) => {
+        const e = m[1];
+        const pick = (re) => (e.match(re) || [])[1] || '';
+        return { id: pick(/<yt:videoId>([^<]+)<\/yt:videoId>/), title: unescape(pick(/<title>([^<]*)<\/title>/)).replace(/\s*\|\s*Carrie the Swiss.*$/i, ''), published: pick(/<published>([^<]+)<\/published>/) };
+      }).filter((v) => /^[\w-]{11}$/.test(v.id));
+      if (items.length) return items;
+      console.log('latest feed empty', u.includes('playlist') ? 'playlist' : 'channel');
+    } catch (err) { console.log('latest feed error', String(err).slice(0, 200)); }
+  }
+  return null;
+}
+
 async function latest(request, ctx) {
-  return cached(request, ctx, 3600, async () => {
-    const r = await fetch(`https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL}`, { cf: { cacheTtl: 1800 } });
-    if (!r.ok) return json({ error: 'feed' }, 502);
-    const xml = await r.text();
-    const items = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)].slice(0, 12).map((m) => {
-      const e = m[1];
-      const pick = (re) => (e.match(re) || [])[1] || '';
-      return { id: pick(/<yt:videoId>([^<]+)<\/yt:videoId>/), title: unescape(pick(/<title>([^<]*)<\/title>/)).replace(/\s*\|\s*Carrie the Swiss.*$/i, ''), published: pick(/<published>([^<]+)<\/published>/) };
-    }).filter((v) => /^[\w-]{11}$/.test(v.id));
-    return new Response(JSON.stringify({ items }), { headers: { 'content-type': 'application/json; charset=utf-8' } });
-  });
+  const cache = caches.default;
+  const origin = new URL(request.url).origin;
+  const key = new Request(`${origin}/api/latest`, { method: 'GET' });
+  const lastGood = new Request(`${origin}/api/latest?last-good`, { method: 'GET' });
+  const hit = await cache.match(key);
+  if (hit) return hit;
+  const items = await feedItems();
+  if (items) {
+    const res = jsonList(items, 3600);
+    ctx.waitUntil(Promise.all([cache.put(key, res.clone()), cache.put(lastGood, jsonList(items, 30 * 86400))]));
+    return res;
+  }
+  const old = await cache.match(lastGood);
+  const res = jsonList(old ? (await old.json()).items : [], 600);
+  ctx.waitUntil(cache.put(key, res.clone()));
+  return res;
 }
 
 // thumbnails are proxied so visitors' browsers never contact Google (no third-party requests)
