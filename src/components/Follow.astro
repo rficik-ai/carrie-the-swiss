@@ -129,19 +129,38 @@ const fallback = EPISODES.filter((e) => e.yt).slice(-8).reverse().map((e) => ({ 
     const input = form.querySelector<HTMLInputElement>('input[type=email]');
     // focus inside the tap itself (phones open the keyboard only then), then jump
     input?.focus({ preventScroll: true });
-    form.scrollIntoView({ block: 'center' });
+    // land with the section's heading just below the menu bar (not half under the logo), as long as the whole form
+    // still fits on screen below it; on a short screen the form right below the bar, and only if even that is too
+    // tall, the form in the middle
+    // (page positions from the layout, not from the screen: the heading and the form still rise 28 px as they reveal)
+    const docTop = (el: HTMLElement) => { let y = 0; for (let n: HTMLElement | null = el; n; n = n.offsetParent as HTMLElement | null) y += n.offsetTop; return y; };
+    const where = () => {
+      const bar = document.getElementById('top')?.getBoundingClientRect().bottom ?? 0;
+      const head = fol?.querySelector<HTMLElement>('.head');
+      const fTop = docTop(form), fBot = fTop + form.offsetHeight;
+      if (head) { const y = docTop(head) - bar - 24; if (fBot - y <= innerHeight - 16) return y; }
+      // short screen (phone on its side): the form starts right below the bar, the heading stays above
+      const y = fTop - bar - 16; if (fBot - y <= innerHeight) return y;
+      return (fTop + fBot) / 2 - innerHeight / 2;
+    };
+    scrollTo({ top: where() });
     // the page glides there (up to ~2 s on a long jump) while the film re-lays out behind it, so the form can end up
-    // off screen: once the glide ends, look again, jump straight to it if needed, and focus again if it was lost
-    let done = false;
-    const settle = () => {
-      if (done) return; done = true;
-      const r = form.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > innerHeight) form.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior });
+    // off screen or the heading under the bar: once the glide ends, look again, jump straight there if needed,
+    // and focus again if it was lost
+    // (looks twice: when the glide ends, and once more at 2.2 s for browsers without scrollend or a glide that ended early;
+    // the second look only steps in if the form is off screen or the heading sits under the bar, so it never pulls back
+    // someone who has already scrolled on by hand)
+    const settle = (late = false) => {
+      const y = where(), r = form.getBoundingClientRect();
+      const bar = document.getElementById('top')?.getBoundingClientRect().bottom ?? 0;
+      const head = fol?.querySelector<HTMLElement>('.head')?.getBoundingClientRect();
+      const off = r.bottom < 0 || r.top > innerHeight || (!!head && head.top < bar - 2 && head.bottom > 0);
+      if (Math.abs(y - scrollY) > 8 && (!late || off)) scrollTo({ top: y, behavior: 'instant' as ScrollBehavior });
       const refocus = () => { if (input && document.activeElement !== input && !form.contains(document.activeElement)) input.focus({ preventScroll: true }); };
       refocus(); setTimeout(refocus, 400);   // the film can still take focus away right after the glide
     };
-    addEventListener('scrollend', settle, { once: true });
-    setTimeout(settle, 2200);   // browsers without scrollend
+    addEventListener('scrollend', () => settle(), { once: true });
+    setTimeout(() => settle(true), 2200);
   });
   if (form) {
     const M = JSON.parse(form.dataset.msg!);
