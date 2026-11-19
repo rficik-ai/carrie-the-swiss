@@ -85,13 +85,13 @@ const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
   .bell svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; transform-origin: 50% 15%; }
   .bell:hover { scale: 1.06; } .bell:hover svg { animation: ring-bell .9s ease-in-out; }
   @keyframes ring-bell { 0%, 100% { rotate: 0deg } 20% { rotate: 14deg } 40% { rotate: -11deg } 60% { rotate: 7deg } 80% { rotate: -3deg } }
-  .prog.belled .bell { right: auto; bottom: auto; left: calc(var(--bx) - 22px); top: calc(var(--by) - 22px); }
+  /* (it moves there by translate from its resting corner, not by left/top: the same place, but no layout shift for CLS) */
+  .prog.belled .bell { translate: var(--bdx, 0) var(--bdy, 0); }
   .prog.atform .bell, .prog.busy .bell { opacity: 0; pointer-events: none; }
   :global(html.quizzing) .bell, :global(html.chatting) .bell { display: none; }
   @media (max-width: 899px), (hover: none) {
     .bell { width: 36px; height: 36px; right: 29px; bottom: calc(29px + env(safe-area-inset-bottom, 0px)); }
     .bell svg { width: 17px; height: 17px; }
-    .prog.belled .bell { left: calc(var(--bx) - 18px); top: calc(var(--by) - 18px); }
   }
   @media (prefers-reduced-motion: reduce) { .bell:hover svg { animation: none; } }
 </style>
@@ -209,7 +209,9 @@ const name = (c: string) => (c === 'follow' ? s.follow.eyebrow : h[`nav_${c}`]);
         more.style.setProperty('--rx', `${at.x}px`); more.style.setProperty('--ry', `${at.y}px`); nav.classList.add('placed');
         void more.offsetWidth; more.style.transition = '';
         nav.classList.add('cue');
-        nav.style.setProperty('--bx', `${at.x + size / 2}px`); nav.style.setProperty('--by', `${at.y + size / 2}px`); nav.classList.add('belled');
+        // the bell: from its resting corner (where it is now, 'belled' was taken off above) to the middle of the ring
+        const bell = nav.querySelector<HTMLElement>('.bell'), br = bell?.getBoundingClientRect();
+        if (br?.width) { nav.style.setProperty('--bdx', `${at.x + size / 2 - (br.left + br.width / 2)}px`); nav.style.setProperty('--bdy', `${at.y + size / 2 - (br.top + br.height / 2)}px`); nav.classList.add('belled'); }
       }, scrollY < 30 ? 1200 : 3000);
     };
     addEventListener('scroll', () => { update(); poke(); }, { passive: true });
