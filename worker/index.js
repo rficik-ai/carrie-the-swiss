@@ -1,6 +1,6 @@
 // Cloudflare Worker: serves the static site and the "Ask Carrie" chat endpoint.
 // The Anthropic API key lives only in the Worker secret ANTHROPIC_API_KEY (never in the code or the browser).
-import { systemPrompt } from './knowledge.js';
+import { systemPrompt, splitTopic } from './knowledge.js';
 import { event, stats } from './stats.js';
 import { subscribe, confirm, unsubscribe, keepAlive } from './mail.js';
 export { Stats } from './stats.js';   // the Durable Object that tallies the anonymous events
@@ -53,12 +53,15 @@ async function chat(request, env) {
     return json({ error: 'upstream' }, 502);
   }
   const data = await res.json();
-  const text = (data.content || []).filter((c) => c.type === 'text').map((c) => c.text).join('\n').trim();
+  const raw = (data.content || []).filter((c) => c.type === 'text').map((c) => c.text).join('\n').trim();
+  // the topic word goes back to the page, which counts it like any other anonymous event (src/lib/ev.ts respects
+  // Global Privacy Control / Do Not Track); the worker stores nothing from the question
+  const { reply: text, topic } = splitTopic(raw);
   if (!text) {
     console.log('empty reply', data.stop_reason, JSON.stringify((data.content || []).map((c) => c.type)), JSON.stringify(data).slice(0, 400));
     return json({ error: 'empty_reply' }, 502);
   }
-  return json({ reply: text });
+  return json({ reply: text, topic });
 }
 
 // ---- "Is a Swissy right for you?": Carrie's detailed evaluation of the visitor's quiz answers

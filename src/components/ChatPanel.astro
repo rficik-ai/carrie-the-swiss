@@ -70,7 +70,11 @@ const chips = [a.c1, a.c2, a.c3, a.c4].filter(Boolean);
         const r = await fetch('/api/ask', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ lang, messages: history }) });
         const d = await r.json().catch(() => ({}));
         wait.remove();
-        if (r.ok && d.reply) { add('carrie', d.reply); history.push({ role: 'assistant', content: d.reply }); }
+        if (r.ok && d.reply) {
+          add('carrie', d.reply); history.push({ role: 'assistant', content: d.reply });
+          // only the topic word (health, coat, …), never the question itself
+          if (typeof d.topic === 'string' && /^[a-z]{2,16}$/.test(d.topic)) track('ask', `t:${d.topic}`);
+        }
         else { history.pop(); add('carrie err', r.status === 429 ? ERR.rate : r.status === 503 ? ERR.off : ERR.gen); }
       } catch { wait.remove(); history.pop(); add('carrie err', ERR.gen); }
       btn.disabled = false; input.focus({ preventScroll: true });
